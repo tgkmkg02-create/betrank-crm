@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BETRANK TOURS - 換金利益計算ツール</title>
+<style>
+  :root{--primary:#1a1a2e;--secondary:#16213e;--accent:#e94560;--gold:#f5a623;--green:#27ae60;--red:#e74c3c;--blue:#3498db;--text:#ecf0f1;--muted:#95a5a6;--card:#1e2a3a;--border:#2c3e50;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI','Meiryo',sans-serif;background:var(--primary);color:var(--text);min-height:100vh;}
+  .header{background:linear-gradient(135deg,var(--secondary),#0a0a1a);padding:20px 30px;border-bottom:2px solid var(--gold);display:flex;justify-content:space-between;align-items:center;}
+  .header h1{font-size:1.4em;color:var(--gold);}
+  .header .sub{color:var(--muted);font-size:0.85em;}
+  .container{max-width:1200px;margin:0 auto;padding:24px;}
+  .grid{display:grid;gap:20px;}
+  .grid-2{grid-template-columns:1fr 1fr;}
+  .grid-3{grid-template-columns:1fr 1fr 1fr;}
+  .card{background:var(--card);border-radius:12px;padding:20px;border:1px solid var(--border);}
+  .card h3{color:var(--gold);margin-bottom:12px;}
+  input,select{background:var(--secondary);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:1em;width:100%;font-family:inherit;}
+  input:focus{outline:none;border-color:var(--gold);}
+  label{display:block;margin-bottom:6px;color:var(--muted);font-size:0.85em;font-weight:600;}
+  .form-group{margin-bottom:14px;}
+  button{background:linear-gradient(135deg,var(--gold),#e67e22);color:#fff;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:700;font-size:1em;width:100%;}
+  button:hover{transform:scale(1.02);}
+  .result{background:rgba(39,174,96,0.1);border:1px solid var(--green);border-radius:10px;padding:20px;margin-top:16px;}
+  .result.loss{background:rgba(231,76,60,0.1);border-color:var(--red);}
+  .positive{color:var(--green);font-weight:700;}
+  .negative{color:var(--red);font-weight:700;}
+  .divider{border-top:1px solid var(--border);margin:14px 0;}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;}
+  .text-sm{font-size:0.85em;}
+  .text-muted{color:var(--muted);}
+  .stat{text-align:center;padding:12px;}
+  .stat .value{font-size:1.8em;font-weight:700;color:var(--gold);}
+  .stat .label{font-size:0.8em;color:var(--muted);margin-top:4px;}
+  table{width:100%;border-collapse:collapse;font-size:0.85em;}
+  th{background:rgba(245,166,35,0.15);color:var(--gold);padding:10px 8px;text-align:left;font-weight:600;border-bottom:2px solid var(--gold);}
+  td{padding:8px;border-bottom:1px solid var(--border);}
+  .history-row:hover{background:rgba(255,255,255,0.03);}
+  .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.75em;font-weight:600;}
+  .badge-profit{background:rgba(39,174,96,0.2);color:var(--green);}
+  .badge-loss{background:rgba(231,76,60,0.2);color:var(--red);}
+  .del-btn{background:rgba(231,76,60,0.3);color:var(--red);border:none;padding:3px 8px;border-radius:4px;cursor:pointer;font-size:0.75em;}
+  @media(max-width:768px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>BETRANK TOURS 換金利益計算ツール</h1>
+    <div class="sub">円→ウォン換金 / 負けバック計算 / 取引履歴管理</div>
+  </div>
+  <div style="text-align:right">
+    <a href="BetRankCRM.html" style="color:var(--gold);text-decoration:none;font-size:0.9em">← CRMに戻る</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- サマリー -->
+  <div class="grid grid-3" style="margin-bottom:20px" id="summaryCards"></div>
+
+  <div class="grid grid-2">
+    <!-- 左: 換金計算 -->
+    <div class="card">
+      <h3>換金利益計算</h3>
+      <div class="form-group">
+        <label>顧客名</label>
+        <input type="text" id="exName" placeholder="例: SANO SHOHEI">
+      </div>
+      <div class="form-group">
+        <label>お客様から受け取る円（JPY）</label>
+        <input type="number" id="exJPY" value="1000000" step="10000">
+      </div>
+      <div class="form-group">
+        <label>フィックスレート（円→₩）※お客様に提示するレート</label>
+        <input type="number" id="exFixRate" value="9.1" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>実際の市場レート（円→₩）</label>
+        <input type="number" id="exMarketRate" value="9.3" step="0.01">
+      </div>
+      <div class="divider"></div>
+      <h3>負けバック計算（任意）</h3>
+      <div class="form-group">
+        <label>お客様の負け額（₩）※勝った場合は0</label>
+        <input type="number" id="exLoss" value="0" step="100000">
+      </div>
+      <div class="form-group">
+        <label>シェア率</label>
+        <input type="number" id="exShare" value="60" step="1" min="0" max="100">
+        <div class="text-sm text-muted" style="margin-top:4px">固定60%</div>
+      </div>
+      <button onclick="calcExchange()">計算する</button>
+      <div id="exResult"></div>
+    </div>
+
+    <!-- 右: 負けバック早見表 -->
+    <div class="card">
+      <h3>負けバック累進制 早見表</h3>
+      <div class="text-sm text-muted" style="margin-bottom:12px">シェア60%固定 / 負けバックは会社シェアから支出</div>
+      <table>
+        <thead><tr><th>お客様負け額</th><th>会社シェア(60%)</th><th>負けバック</th><th>手残り</th><th>利益率</th></tr></thead>
+        <tbody>
+          <tr><td>100万₩</td><td>60万₩</td><td>0</td><td class="positive">60万₩</td><td>100%</td></tr>
+          <tr><td>200万₩</td><td>120万₩</td><td>0</td><td class="positive">120万₩</td><td>100%</td></tr>
+          <tr><td>300万₩</td><td>180万₩</td><td>3万₩</td><td class="positive">177万₩</td><td>98.3%</td></tr>
+          <tr><td>500万₩</td><td>300万₩</td><td>9万₩</td><td class="positive">291万₩</td><td>97.0%</td></tr>
+          <tr><td>700万₩</td><td>420万₩</td><td>19万₩</td><td class="positive">401万₩</td><td>95.5%</td></tr>
+          <tr><td>1000万₩</td><td>600万₩</td><td>34万₩</td><td class="positive">566万₩</td><td>94.3%</td></tr>
+          <tr><td>2000万₩</td><td>1200万₩</td><td>100万₩(上限)</td><td class="positive">1100万₩</td><td>91.7%</td></tr>
+          <tr><td>3000万₩</td><td>1800万₩</td><td>100万₩(上限)</td><td class="positive">1700万₩</td><td>94.4%</td></tr>
+          <tr><td>5000万₩</td><td>3000万₩</td><td>100万₩(上限)</td><td class="positive">2900万₩</td><td>96.7%</td></tr>
+          <tr><td>1億₩</td><td>6000万₩</td><td>100万₩(上限)</td><td class="positive">5900万₩</td><td>98.3%</td></tr>
+        </tbody>
+      </table>
+      <div class="divider"></div>
+      <div class="text-sm text-muted">
+        <strong>累進制レート:</strong><br>
+        0〜200万₩: 0%<br>
+        200万〜500万₩: 3%（超えた部分のみ）<br>
+        500万〜1000万₩: 5%（超えた部分のみ）<br>
+        1000万₩超: 7%（超えた部分のみ）<br>
+        <strong>上限: 100万₩</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- 取引履歴 -->
+  <div class="card" style="margin-top:20px">
+    <div class="flex-between">
+      <h3>取引履歴</h3>
+      <div>
+        <button onclick="exportHistory()" style="width:auto;padding:8px 16px;font-size:0.8em;background:linear-gradient(135deg,var(--blue),#2980b9)">CSVエクスポート</button>
+        <button onclick="if(confirm('全履歴を削除しますか？'))clearHistory()" style="width:auto;padding:8px 16px;font-size:0.8em;background:rgba(231,76,60,0.5);margin-left:8px">全削除</button>
+      </div>
+    </div>
+    <table style="margin-top:12px">
+      <thead><tr><th>日付</th><th>顧客名</th><th>受取円</th><th>フィックスレート</th><th>市場レート</th><th>換金利益</th><th>負け額</th><th>負けバック</th><th>総利益</th><th></th></tr></thead>
+      <tbody id="historyTable"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){return n.toLocaleString();}
+function fmtY(n){return'¥'+n.toLocaleString();}
+function fmtW(n){return'₩'+n.toLocaleString();}
+
+// 負けバック累進計算
+function calcLossRebate(lossW){
+  if(lossW<=2000000)return 0;
+  let rebate=0;
+  if(lossW>2000000) rebate+=Math.min(lossW-2000000,3000000)*0.03; // 200万〜500万: 3%
+  if(lossW>5000000) rebate+=Math.min(lossW-5000000,5000000)*0.05; // 500万〜1000万: 5%
+  if(lossW>10000000) rebate+=(lossW-10000000)*0.07; // 1000万超: 7%
+  return Math.min(Math.round(rebate),1000000); // 上限100万₩
+}
+
+function calcExchange(){
+  const name=document.getElementById('exName').value||'顧客';
+  const jpy=parseInt(document.getElementById('exJPY').value)||0;
+  const fixRate=parseFloat(document.getElementById('exFixRate').value)||9.1;
+  const marketRate=parseFloat(document.getElementById('exMarketRate').value)||9.3;
+  const lossW=parseInt(document.getElementById('exLoss').value)||0;
+  const shareP=parseInt(document.getElementById('exShare').value)||60;
+
+  // 換金計算
+  const wonForCustomer=Math.round(jpy*fixRate); // お客様に渡すウォン
+  const wonActual=Math.round(jpy*marketRate);    // 実際のウォン価値
+  const exchangeProfit=wonActual-wonForCustomer;  // 為替差益
+
+  // 負けバック計算
+  const shareW=Math.round(lossW*shareP/100);
+  const rebate=calcLossRebate(lossW);
+  const netFromLoss=shareW-rebate;
+
+  // 総合利益
+  const totalProfit=exchangeProfit+netFromLoss;
+
+  const isProfit=totalProfit>=0;
+
+  document.getElementById('exResult').innerHTML=`
+    <div class="result ${isProfit?'':'loss'}" style="margin-top:16px">
+      <div class="text-sm text-muted">換金詳細</div>
+      <div class="divider"></div>
+      <div class="flex-between text-sm"><span>受取円:</span><span>${fmtY(jpy)}</span></div>
+      <div class="flex-between text-sm" style="margin-top:6px"><span>フィックスレート (→₩):</span><span>×${fixRate}</span></div>
+      <div class="flex-between text-sm" style="margin-top:6px"><span>お客様に渡すウォン:</span><span>${fmtW(wonForCustomer)}</span></div>
+      <div class="flex-between text-sm" style="margin-top:6px"><span>市場レート (→₩):</span><span>×${marketRate}</span></div>
+      <div class="flex-between text-sm" style="margin-top:6px"><span>実際のウォン価値:</span><span>${fmtW(wonActual)}</span></div>
+      <div class="flex-between" style="margin-top:8px"><span><strong>換金差益:</strong></span><span class="${exchangeProfit>=0?'positive':'negative'}"><strong>${fmtW(exchangeProfit)}</strong></span></div>
+
+      ${lossW>0?`
+      <div class="divider"></div>
+      <div class="text-sm text-muted">負けバック詳細</div>
+      <div class="divider"></div>
+      <div class="flex-between text-sm"><span>お客様負け額:</span><span>${fmtW(lossW)}</span></div>
+      <div class="flex-between text-sm" style="margin-top:6px"><span>会社シェア (${shareP}%):</span><span>${fmtW(shareW)}</span></div>
+      <div class="flex-between text-sm" style="margin-top:6px"><span>負けバック (累進制):</span><span class="negative">-${fmtW(rebate)}</span></div>
+      <div class="flex-between" style="margin-top:8px"><span><strong>シェア手残り:</strong></span><span class="positive"><strong>${fmtW(netFromLoss)}</strong></span></div>
+      `:''}
+
+      <div class="divider"></div>
+      <div class="flex-between" style="font-size:1.3em">
+        <span><strong>総合利益:</strong></span>
+        <span class="${isProfit?'positive':'negative'}"><strong>${fmtW(totalProfit)}</strong></span>
+      </div>
+      <div class="flex-between text-sm" style="margin-top:6px">
+        <span>円換算:</span>
+        <span><strong>${fmtY(Math.round(totalProfit/marketRate))}</strong></span>
+      </div>
+    </div>
+    <button onclick="saveToHistory('${name}',${jpy},${fixRate},${marketRate},${exchangeProfit},${lossW},${rebate},${totalProfit})" style="margin-top:12px;background:linear-gradient(135deg,var(--green),#229954)">この取引を履歴に保存</button>
+  `;
+}
+
+// 履歴管理
+function getHistory(){return JSON.parse(localStorage.getItem('br_exchange_history')||'[]');}
+function saveHistory(data){localStorage.setItem('br_exchange_history',JSON.stringify(data));}
+
+function saveToHistory(name,jpy,fixRate,marketRate,exProfit,lossW,rebate,total){
+  const h=getHistory();
+  h.unshift({date:new Date().toISOString().slice(0,10),name,jpy,fixRate,marketRate,exProfit,lossW,rebate,total});
+  saveHistory(h);
+  renderHistory();
+  renderSummary();
+  alert('履歴に保存しました');
+}
+
+function deleteHistory(idx){
+  const h=getHistory();
+  h.splice(idx,1);
+  saveHistory(h);
+  renderHistory();
+  renderSummary();
+}
+
+function clearHistory(){
+  localStorage.removeItem('br_exchange_history');
+  renderHistory();
+  renderSummary();
+}
+
+function renderHistory(){
+  const h=getHistory();
+  let html='';
+  if(h.length===0){html='<tr><td colspan="10" class="text-muted" style="text-align:center;padding:20px">取引履歴なし</td></tr>';}
+  h.forEach((r,i)=>{
+    html+=`<tr class="history-row">
+      <td>${r.date}</td>
+      <td><strong>${r.name}</strong></td>
+      <td>${fmtY(r.jpy)}</td>
+      <td>×${r.fixRate}</td>
+      <td>×${r.marketRate}</td>
+      <td class="${r.exProfit>=0?'positive':'negative'}">${fmtW(r.exProfit)}</td>
+      <td>${r.lossW>0?fmtW(r.lossW):'-'}</td>
+      <td>${r.rebate>0?'-'+fmtW(r.rebate):'-'}</td>
+      <td class="${r.total>=0?'positive':'negative'}"><strong>${fmtW(r.total)}</strong></td>
+      <td><button class="del-btn" onclick="if(confirm('削除しますか？'))deleteHistory(${i})">削除</button></td>
+    </tr>`;
+  });
+  document.getElementById('historyTable').innerHTML=html;
+}
+
+function renderSummary(){
+  const h=getHistory();
+  const totalProfit=h.reduce((s,r)=>s+r.total,0);
+  const totalExProfit=h.reduce((s,r)=>s+r.exProfit,0);
+  const totalRebate=h.reduce((s,r)=>s+r.rebate,0);
+  document.getElementById('summaryCards').innerHTML=`
+    <div class="stat card"><div class="value">${h.length}</div><div class="label">取引件数</div></div>
+    <div class="stat card"><div class="value positive">${fmtW(totalExProfit)}</div><div class="label">累計換金差益</div></div>
+    <div class="stat card"><div class="value ${totalProfit>=0?'positive':'negative'}">${fmtW(totalProfit)}</div><div class="label">累計総合利益</div></div>
+  `;
+}
+
+function exportHistory(){
+  const h=getHistory();
+  if(h.length===0){alert('履歴がありません');return;}
+  let csv='日付,顧客名,受取円,フィックスレート,市場レート,換金差益,負け額,負けバック,総合利益\n';
+  h.forEach(r=>{csv+=`${r.date},${r.name},${r.jpy},${r.fixRate},${r.marketRate},${r.exProfit},${r.lossW},${r.rebate},${r.total}\n`;});
+  const blob=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='betrank_exchange_history_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+renderHistory();
+renderSummary();
+</script>
+</body>
+</html>

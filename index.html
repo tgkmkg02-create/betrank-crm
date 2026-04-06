@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BETRANK TOURS CRM</title>
+<style>
+  /* ========== LOGIN ========== */
+  #loginScreen {
+    display:flex; justify-content:center; align-items:center;
+    min-height:100vh; background:#1a1a2e;
+  }
+  .login-box {
+    background:#1e2a3a; border:1px solid #2c3e50; border-radius:16px;
+    padding:50px 40px; text-align:center; max-width:400px; width:90%;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  }
+  .login-box h1 { color:#f5a623; font-size:1.6em; margin-bottom:6px; }
+  .login-box .sub { color:#95a5a6; font-size:0.85em; margin-bottom:30px; }
+  .login-box input {
+    background:#16213e; border:1px solid #2c3e50; color:#ecf0f1;
+    padding:14px 18px; border-radius:10px; font-size:1em; width:100%;
+    text-align:center; letter-spacing:3px; margin-bottom:16px;
+  }
+  .login-box input:focus { outline:none; border-color:#f5a623; }
+  .login-box button {
+    background:linear-gradient(135deg,#e94560,#c0392b); color:#fff;
+    border:none; padding:14px 40px; border-radius:10px; cursor:pointer;
+    font-weight:700; font-size:1em; width:100%; transition:transform 0.1s;
+  }
+  .login-box button:hover { transform:scale(1.02); }
+  .login-error { color:#e74c3c; font-size:0.85em; margin-top:10px; display:none; }
+  #appMain { display:none; }
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #16213e;
+    --accent: #e94560;
+    --gold: #f5a623;
+    --green: #27ae60;
+    --red: #e74c3c;
+    --blue: #3498db;
+    --text: #ecf0f1;
+    --muted: #95a5a6;
+    --card: #1e2a3a;
+    --border: #2c3e50;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Segoe UI','Meiryo','Hiragino Kaku Gothic Pro',sans-serif; background:var(--primary); color:var(--text); min-height:100vh; }
+  .header { background:linear-gradient(135deg,var(--secondary),#0a0a1a); padding:20px 30px; border-bottom:2px solid var(--accent); display:flex; justify-content:space-between; align-items:center; }
+  .header h1 { font-size:1.5em; color:var(--gold); }
+  .header .subtitle { color:var(--muted); font-size:0.85em; }
+  .tabs { display:flex; background:var(--secondary); border-bottom:1px solid var(--border); overflow-x:auto; }
+  .tab { padding:14px 24px; cursor:pointer; border-bottom:3px solid transparent; color:var(--muted); font-weight:600; white-space:nowrap; transition:all 0.2s; }
+  .tab:hover { color:var(--text); background:rgba(255,255,255,0.05); }
+  .tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+  .tab-content { display:none; padding:24px; }
+  .tab-content.active { display:block; }
+  .grid { display:grid; gap:20px; }
+  .grid-2 { grid-template-columns:repeat(auto-fit,minmax(400px,1fr)); }
+  .grid-3 { grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); }
+  .grid-4 { grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+  .grid-6 { grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
+  .card { background:var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); }
+  .card h3 { color:var(--gold); margin-bottom:12px; font-size:1em; }
+  .card h2 { color:var(--gold); margin-bottom:16px; }
+  .stat { text-align:center; padding:15px; }
+  .stat .value { font-size:1.8em; font-weight:700; color:var(--gold); }
+  .stat .label { font-size:0.8em; color:var(--muted); margin-top:4px; }
+  table { width:100%; border-collapse:collapse; font-size:0.82em; }
+  th { background:rgba(233,69,96,0.15); color:var(--gold); padding:10px 8px; text-align:left; font-weight:600; border-bottom:2px solid var(--accent); white-space:nowrap; }
+  td { padding:8px; border-bottom:1px solid var(--border); }
+  tr:hover { background:rgba(255,255,255,0.03); }
+  .positive { color:var(--green); font-weight:600; }
+  .negative { color:var(--red); font-weight:600; }
+  .neutral { color:var(--blue); }
+  .badge { display:inline-block; padding:3px 10px; border-radius:12px; font-size:0.75em; font-weight:600; }
+  .badge-vvip { background:linear-gradient(135deg,#f5a623,#e74c3c); color:#fff; }
+  .badge-vip { background:linear-gradient(135deg,#8e44ad,#3498db); color:#fff; }
+  .badge-gold { background:linear-gradient(135deg,#f39c12,#e67e22); color:#fff; }
+  .badge-silver { background:rgba(149,165,166,0.3); color:#bdc3c7; }
+  .badge-alert { background:rgba(231,76,60,0.2); color:var(--red); }
+  .badge-ok { background:rgba(39,174,96,0.2); color:var(--green); }
+  input,select,textarea { background:var(--secondary); border:1px solid var(--border); color:var(--text); padding:10px 14px; border-radius:8px; font-size:0.95em; width:100%; font-family:inherit; }
+  input:focus,select:focus { outline:none; border-color:var(--gold); }
+  label { display:block; margin-bottom:6px; color:var(--muted); font-size:0.85em; font-weight:600; }
+  .form-group { margin-bottom:14px; }
+  button { background:linear-gradient(135deg,var(--accent),#c0392b); color:#fff; border:none; padding:12px 24px; border-radius:8px; cursor:pointer; font-weight:600; font-size:0.95em; transition:transform 0.1s; }
+  button:hover { transform:scale(1.02); }
+  button:active { transform:scale(0.98); }
+  .btn-gold { background:linear-gradient(135deg,var(--gold),#e67e22); }
+  .btn-blue { background:linear-gradient(135deg,var(--blue),#2980b9); }
+  .btn-sm { padding:6px 14px; font-size:0.8em; }
+  .result-box { background:rgba(39,174,96,0.1); border:1px solid var(--green); border-radius:10px; padding:20px; margin-top:16px; }
+  .alert-box { background:rgba(231,76,60,0.1); border:1px solid var(--red); border-radius:10px; padding:16px; margin-bottom:12px; }
+  .campaign-card { background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(233,69,96,0.05)); border:1px solid var(--gold); border-radius:12px; padding:20px; margin-bottom:16px; }
+  .campaign-card h4 { color:var(--gold); margin-bottom:8px; }
+  .divider { border-top:1px solid var(--border); margin:16px 0; }
+  .flex { display:flex; gap:12px; align-items:center; }
+  .flex-between { display:flex; justify-content:space-between; align-items:center; }
+  .text-right { text-align:right; }
+  .text-sm { font-size:0.8em; }
+  .text-muted { color:var(--muted); }
+  .mt-8 { margin-top:8px; } .mt-16 { margin-top:16px; }
+  .mb-8 { margin-bottom:8px; } .mb-16 { margin-bottom:16px; }
+  .radar-container { display:flex; justify-content:center; align-items:center; padding:10px; }
+  .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center; }
+  .modal-overlay.show { display:flex; }
+  .modal { background:var(--card); border:1px solid var(--gold); border-radius:16px; padding:30px; max-width:700px; width:90%; max-height:85vh; overflow-y:auto; }
+  .modal h3 { color:var(--gold); margin-bottom:16px; }
+  .repeat-score { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; font-weight:700; font-size:1.1em; }
+  .score-critical { background:rgba(231,76,60,0.3); color:var(--red); border:2px solid var(--red); }
+  .score-high { background:rgba(245,166,35,0.3); color:var(--gold); border:2px solid var(--gold); }
+  .score-medium { background:rgba(52,152,219,0.3); color:var(--blue); border:2px solid var(--blue); }
+  .score-low { background:rgba(149,165,166,0.2); color:var(--muted); border:2px solid var(--muted); }
+  .method-tag { display:inline-block; padding:2px 8px; border-radius:6px; font-size:0.75em; margin:2px; }
+  .method-phone { background:rgba(231,76,60,0.2); color:#e74c3c; }
+  .method-line { background:rgba(39,174,96,0.2); color:#27ae60; }
+  .method-visit { background:rgba(155,89,182,0.2); color:#9b59b6; }
+  .method-letter { background:rgba(241,196,15,0.2); color:#f1c40f; }
+  .line-msg-box { background:var(--secondary); border:1px solid var(--border); border-radius:10px; padding:16px; margin:8px 0; white-space:pre-wrap; font-size:0.9em; line-height:1.7; position:relative; }
+  .line-msg-box:hover { border-color:var(--gold); }
+  .copy-btn { position:absolute; top:8px; right:8px; background:var(--gold); color:#000; border:none; padding:4px 12px; border-radius:6px; font-size:0.75em; font-weight:700; cursor:pointer; }
+  .copy-btn:hover { background:#e6951a; }
+  .copy-btn.copied { background:var(--green); color:#fff; }
+  .msg-type-tag { display:inline-block; padding:2px 10px; border-radius:6px; font-size:0.7em; font-weight:600; margin-left:8px; }
+  @media(max-width:768px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} .tabs{flex-wrap:wrap;} .tab{padding:10px 16px;font-size:0.85em;} }
+</style>
+</head>
+<body>
+
+<!-- ========== LOGIN SCREEN ========== -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>BETRANK TOURS</h1>
+    <div class="sub">CRM System - Authorized Access Only</div>
+    <input type="password" id="loginPass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">LOGIN</button>
+    <div class="login-error" id="loginError">パスワードが正しくありません</div>
+  </div>
+</div>
+
+<!-- ========== MAIN APP (hidden until login) ========== -->
+<div id="appMain">
+
+<div class="header">
+  <div>
+    <h1>BETRANK TOURS CRM</h1>
+    <div class="subtitle">ローリング計算 / 期待値分析 / リピートキャンペーン管理</div>
+  </div>
+  <div style="text-align:right">
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-bottom:4px">
+      <a href="index.html" style="color:var(--gold);text-decoration:none;font-size:0.8em;padding:2px 8px;border:1px solid var(--gold);border-radius:4px">🇯🇵 日本語</a>
+      <a href="ko.html" style="color:var(--muted);text-decoration:none;font-size:0.8em;padding:2px 8px;border:1px solid var(--border);border-radius:4px">🇰🇷 한국어</a>
+      <a href="exchange.html" style="color:var(--muted);text-decoration:none;font-size:0.8em;padding:2px 8px;border:1px solid var(--border);border-radius:4px">💱 換金</a>
+    </div>
+    <div style="color:var(--gold);font-size:0.9em">2026年4月5日</div>
+    <div class="text-sm text-muted">登録顧客数: <span id="totalCustomers">0</span>名</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('profitability',this)">プラン損益分析</div>
+  <div class="tab" onclick="showTab('repeat',this)">リピートターゲット</div>
+  <div class="tab" onclick="showTab('customers',this)">顧客ランキング</div>
+  <div class="tab" onclick="showTab('profiles',this)">顧客プロファイル</div>
+  <div class="tab" onclick="showTab('calculator',this)">ローリング計算機</div>
+  <div class="tab" onclick="showTab('linemsg',this)">LINE営業文</div>
+  <div class="tab" onclick="showTab('campaigns',this)">キャンペーン提案</div>
+  <div class="tab" onclick="showTab('alerts',this)">アラート・アクション</div>
+</div>
+
+<!-- TAB 1: プラン損益分析 -->
+<div id="profitability" class="tab-content active">
+  <h2 style="color:var(--gold);margin-bottom:20px">プラン別 損益分析</h2>
+  <div class="grid grid-3 mb-16" id="planCards"></div>
+  <div class="card mt-16">
+    <h3>プラン比較表 — 損益分岐点 & 期待利益</h3>
+    <table>
+      <thead><tr>
+        <th>プラン</th><th>バイイン</th><th>フライト代</th><th>ホテル代</th><th>総コスト</th><th>条件ローリング</th><th>収益@0.85%</th><th>収益@1.40%</th><th>利益@0.85%</th><th>利益@1.40%</th><th>ROI</th>
+      </tr></thead>
+      <tbody id="planTable"></tbody>
+    </table>
+  </div>
+  <div class="card mt-16">
+    <h3>プレイヤー期待損失（バカラ ハウスエッジ 1.15%）</h3>
+    <p class="text-sm text-muted mb-8">バカラ平均ハウスエッジ = 1.15%（バンカー1.06% / プレイヤー1.24%）</p>
+    <table>
+      <thead><tr>
+        <th>プラン</th><th>条件ローリング(₩)</th><th>期待損失(₩)</th><th>期待損失(¥)</th><th>バイイン比%</th><th>資金持続性</th>
+      </tr></thead>
+      <tbody id="playerLossTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 2: リピートターゲット -->
+<div id="repeat" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:8px">リピートターゲットリスト</h2>
+  <p class="text-sm text-muted mb-16">営業優先度スコアに基づき、今リピートさせるべき顧客を順位付け。スコアは「顧客価値 × 離脱リスク × リピート確率 × 収益ポテンシャル」で算出。</p>
+  <div class="grid grid-6 mb-16" id="repeatSummary"></div>
+  <div class="card mb-16" style="padding:14px 20px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <input type="text" id="searchRepeat" placeholder="名前で検索..." oninput="renderRepeat()" style="max-width:250px">
+      <select id="filterTierRepeat" onchange="renderRepeat()" style="max-width:150px"><option value="">全ランク</option><option value="VVIP">VVIP</option><option value="VIP">VIP</option><option value="Gold">Gold</option><option value="Silver">Silver</option><option value="Bronze">Bronze</option></select>
+      <select id="filterStatusRepeat" onchange="renderRepeat()" style="max-width:150px"><option value="">全ステータス</option><option value="active">アクティブ(90日以内)</option><option value="risk">離脱リスク(90-180日)</option><option value="dormant">休眠(180日+)</option></select>
+    </div>
+  </div>
+  <div class="card">
+    <table>
+      <thead><tr>
+        <th>優先度</th><th>スコア</th><th>氏名</th><th>ランク</th><th>最終来店</th><th>経過日数</th><th>来店回数</th><th>累計ローリング</th><th>食事サービス</th><th>推奨営業方法</th><th>推奨オファー</th><th>期待収益/回</th><th>アクション</th>
+      </tr></thead>
+      <tbody id="repeatTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB 3: 顧客ランキング -->
+<div id="customers" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:20px">顧客ポートフォリオ</h2>
+  <div class="grid grid-6 mb-16" id="summaryStats"></div>
+  <div class="card mb-16" style="padding:14px 20px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <input type="text" id="searchCustomer" placeholder="名前で検索..." oninput="renderCustomers()" style="max-width:250px">
+      <select id="filterTierCustomer" onchange="renderCustomers()" style="max-width:150px"><option value="">全ランク</option><option value="VVIP">VVIP</option><option value="VIP">VIP</option><option value="Gold">Gold</option><option value="Silver">Silver</option><option value="Bronze">Bronze</option></select>
+      <select id="filterStatusCustomer" onchange="renderCustomers()" style="max-width:150px"><option value="">全ステータス</option><option value="active">アクティブ</option><option value="risk">離脱リスク</option><option value="dormant">休眠</option></select>
+    </div>
+  </div>
+  <div class="card">
+    <h3>顧客一覧（ローリング額順）</h3>
+    <table>
+      <thead><tr>
+        <th>#</th><th>氏名</th><th>ランク</th><th>来店回数</th><th>最終来店</th><th>経過日数</th><th>累計ローリング</th><th>コミッション%</th><th>累計収益</th><th>食事サービス</th><th>ステータス</th>
+      </tr></thead>
+      <tbody id="customerTable"></tbody>
+    </table>
+  </div>
+  <div class="card mt-16">
+    <h3>セグメント分布</h3>
+    <div class="grid grid-4" id="segmentCards"></div>
+  </div>
+</div>
+
+<!-- TAB 4: 顧客プロファイル -->
+<div id="profiles" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:8px">顧客プロファイル & レーダーチャート</h2>
+  <p class="text-sm text-muted mb-16">各顧客の性格・嗜好を可視化。クリックで詳細編集可能。</p>
+  <div class="card mb-16" style="border-color:var(--green)">
+    <div class="flex-between"><h3 style="color:var(--green)">新規顧客を追加</h3><button class="btn-sm btn-gold" onclick="document.getElementById('addForm').style.display=document.getElementById('addForm').style.display==='none'?'block':'none'">+ 新規追加</button></div>
+    <div id="addForm" style="display:none;margin-top:16px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="form-group"><label>氏名（日本語）*</label><input id="add_nameJa" placeholder="例: 山田 太郎"></div>
+        <div class="form-group"><label>PASSPORT NAME *</label><input id="add_name" placeholder="例: YAMADA TARO" style="text-transform:uppercase"></div>
+        <div class="form-group"><label>パスポート番号</label><input id="add_passport" placeholder="例: TK1234567"></div>
+        <div class="form-group"><label>パスポート有効期限</label><input id="add_passportExp" placeholder="例: 2030/05/15"></div>
+        <div class="form-group"><label>電話番号</label><input id="add_phone" placeholder="例: 090-1234-5678"></div>
+        <div class="form-group"><label>メールアドレス</label><input id="add_email" placeholder="例: name@example.com"></div>
+        <div class="form-group"><label>LINE ID</label><input id="add_lineId" placeholder=""></div>
+        <div class="form-group"><label>国籍</label><input id="add_nationality" value="日本"></div>
+        <div class="form-group"><label>ランク</label><select id="add_tier"><option value="Bronze">Bronze</option><option value="Silver">Silver</option><option value="Gold">Gold</option><option value="VIP">VIP</option><option value="VVIP">VVIP</option></select></div>
+      </div>
+      <button class="btn-gold mt-8" onclick="addNewCustomer()">顧客を追加</button>
+    </div>
+  </div>
+  <div class="card mb-16" style="padding:14px 20px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <input type="text" id="searchProfile" placeholder="名前で検索..." oninput="filterProfileSelect()" style="max-width:250px">
+      <select id="filterTierProfile" onchange="filterProfileSelect()" style="max-width:150px"><option value="">全ランク</option><option value="VVIP">VVIP</option><option value="VIP">VIP</option><option value="Gold">Gold</option><option value="Silver">Silver</option><option value="Bronze">Bronze</option></select>
+      <select id="profileSelect" onchange="renderProfile()" style="max-width:400px"></select>
+    </div>
+  </div>
+  <div class="grid grid-2 mt-16" id="profileArea"></div>
+</div>
+
+<!-- TAB 5: ローリング計算機 -->
+<div id="calculator" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:20px">ローリング & 期待値 計算機</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>入力パラメータ</h3>
+      <div class="form-group"><label>顧客名（任意）</label><input type="text" id="calcName" placeholder="例: SANO SHOHEI"></div>
+      <div class="form-group"><label>バイイン額（円）</label><input type="number" id="calcBuyin" value="5000000" step="100000"></div>
+      <div class="form-group"><label>予想ローリング（₩）</label><input type="number" id="calcRolling" value="150000000" step="1000000"></div>
+      <div class="form-group"><label>ローリングコミッション率（%）</label><input type="number" id="calcRate" value="1.40" step="0.05" min="0" max="5"></div>
+      <div class="form-group"><label>フライトクラス</label>
+        <select id="calcFlight"><option value="60000">エコノミー（上限¥60,000）</option><option value="120000">ビジネス（上限¥120,000）</option><option value="0">お客様負担</option></select>
+      </div>
+      <div class="form-group"><label>ホテル</label>
+        <select id="calcHotel">
+          <option value="paradise_deluxe">パラダイスシティ - デラックス</option>
+          <option value="paradise_premier">パラダイスシティ - プレミア</option>
+          <option value="paradise_suite">パラダイスシティ - スイート</option>
+          <option value="paradise_royal">パラダイスシティ - ロイヤルスイート</option>
+          <option value="inspire_deluxe">インスパイア - デラックス</option>
+          <option value="inspire_premium">インスパイア - プレミアム</option>
+          <option value="inspire_suite">インスパイア - スイート</option>
+          <option value="customer_pays">お客様負担</option>
+        </select>
+      </div>
+      <div class="form-group"><label>泊数</label><input type="number" id="calcNights" value="2" min="1" max="14"></div>
+      <div class="form-group"><label>曜日タイプ</label>
+        <select id="calcDayType"><option value="weekday">平日（日〜木）</option><option value="weekend">週末（金）</option><option value="weekend2">週末（土・祝）</option><option value="peak">ピーク期</option></select>
+      </div>
+      <div class="form-group"><label>キャッシュバック額（円）</label><input type="number" id="calcCashback" value="0" step="10000"></div>
+      <button onclick="calculate()">損益計算を実行</button>
+    </div>
+    <div class="card"><h3>計算結果</h3><div id="calcResults"><p class="text-muted">パラメータを入力して「損益計算を実行」をクリック</p></div></div>
+  </div>
+</div>
+
+<!-- TAB 6: LINE営業文 -->
+<div id="linemsg" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:8px">LINE営業文テンプレート</h2>
+  <p class="text-sm text-muted mb-16">顧客ごとにパーソナライズされたLINE営業メッセージを自動生成。コピーしてそのまま送信できます。</p>
+  <div class="card mb-16" style="padding:14px 20px">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <input type="text" id="searchLine" placeholder="名前で検索..." oninput="renderLineMessages()" style="max-width:250px">
+      <select id="filterTierLine" onchange="renderLineMessages()" style="max-width:150px"><option value="">全ランク</option><option value="VVIP">VVIP</option><option value="VIP">VIP</option><option value="Gold">Gold</option><option value="Silver">Silver</option><option value="Bronze">Bronze</option></select>
+      <select id="filterTypeLine" onchange="renderLineMessages()" style="max-width:200px">
+        <option value="">全テンプレート</option>
+        <option value="comeback">カムバック（長期未来店）</option>
+        <option value="thankyou">お礼（直近来店）</option>
+        <option value="upsell">アップセル（常連）</option>
+        <option value="newreturn">2回目促進（新規）</option>
+        <option value="event">イベント告知</option>
+      </select>
+    </div>
+  </div>
+  <div id="lineMessageList"></div>
+</div>
+
+<!-- TAB 7: キャンペーン提案 -->
+<div id="campaigns" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:20px">リピートキャンペーン提案</h2>
+  <div class="card mb-16"><h3>キャンペーン戦略概要</h3><p class="text-sm text-muted">顧客データ分析に基づき、リピート率向上と売上最大化のためのキャンペーンを自動提案します。</p></div>
+  <div id="campaignList"></div>
+</div>
+
+<!-- TAB 7: アラート -->
+<div id="alerts" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:20px">アラート & 推奨アクション</h2>
+  <div id="alertList"></div>
+</div>
+
+<!-- MODAL: プロファイル編集 -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="flex-between mb-16"><h3 id="modalTitle">プロファイル編集</h3><button class="btn-sm" onclick="closeModal()">閉じる</button></div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+</div><!-- /appMain -->
+
+<script>
+// ==================== LOGIN ====================
+const PASS_HASH='05a6a039966845f0405054e3d7280114b0f14083beaeaff1c2c0ef6eb647e955';
+
+async function sha256(text){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin(){
+  const input=document.getElementById('loginPass').value;
+  const hash=await sha256(input);
+  if(hash===PASS_HASH){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appMain').style.display='block';
+    sessionStorage.setItem('br_auth','1');
+    init();
+  } else {
+    document.getElementById('loginError').style.display='block';
+    document.getElementById('loginPass').value='';
+    document.getElementById('loginPass').focus();
+  }
+}
+
+// セッション中はログイン維持
+if(sessionStorage.getItem('br_auth')==='1'){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appMain').style.display='block';
+  window.addEventListener('DOMContentLoaded',()=>init());
+}
+
+// ==================== 定数 ====================
+const KRW_JPY=0.11, JPY_KRW=9.1, BACCARAT_EDGE=0.0115;
+const TODAY=new Date('2026-04-05');
+
+const HOTEL_RATES={
+  paradise_deluxe:{weekday:198000,weekend:357500,weekend2:372900,peak:401500},
+  paradise_premier:{weekday:231000,weekend:418000,weekend2:434500,peak:467500},
+  paradise_suite:{weekday:445500,weekend:715000,weekend2:748000,peak:825000},
+  paradise_royal:{weekday:880000,weekend:1100000,weekend2:1144000,peak:1287000},
+  inspire_deluxe:{weekday:220000,weekend:330000,weekend2:330000,peak:385000},
+  inspire_premium:{weekday:247500,weekend:357500,weekend2:357500,peak:412500},
+  inspire_suite:{weekday:385000,weekend:522500,weekend2:522500,peak:577500},
+  customer_pays:{weekday:0,weekend:0,weekend2:0,peak:0}
+};
+
+const PLANS=[
+  {name:'VIP体験',buyin:770000,flight:'economy',nights:1,minBet:300000,rolling:20000000,note:'初回・平日限定'},
+  {name:'スタンダード',buyin:1000000,flight:'economy',nights:1,minBet:300000,rolling:30000000,note:''},
+  {name:'プレミアム',buyin:2000000,flight:'economy',nights:2,minBet:300000,rolling:75000000,note:''},
+  {name:'ゴールド',buyin:3000000,flight:'economy',nights:3,minBet:300000,rolling:100000000,note:''},
+  {name:'プラチナ',buyin:5000000,flight:'business',nights:3,minBet:500000,rolling:150000000,note:'ビジネスクラス'},
+  {name:'ブラック',buyin:10000000,flight:'business',nights:3,minBet:1000000,rolling:300000000,note:'ビジネス+部屋グレードUP'}
+];
+
+// ==================== 顧客データ ====================
+const CUSTOMERS=[
+  {id:1,name:'SANO SHOHEI',nameJa:'佐野 翔平',visits:28,lastVisit:'2025-12-29',totalRolling:2093000000,rate:1.40,avgBuyin:68020000,selfPay:true,tier:'VVIP',
+   visitHistory:['2024-10-01','2024-10-14','2024-11-08','2024-11-13','2024-12-01','2024-12-18','2025-01-10','2025-01-22','2025-02-08','2025-03-02','2025-03-24','2025-04-05','2025-05-03','2025-05-25','2025-06-21','2025-06-25','2025-07-20','2025-08-03','2025-08-18','2025-08-22','2025-09-11','2025-09-22','2025-10-15','2025-10-24','2025-11-13','2025-12-04','2025-12-18','2025-12-29'],
+   traits:{sociability:9,riskAppetite:8,emotion:5,vipMind:7,priceSens:2,loyalty:10,referral:6,frequency:10},
+   notes:'最頻来店客。自費でも来る真のロイヤル顧客。BEST WESTERNも利用。バカラ中心。'},
+  {id:2,name:'MORITA MASANORI',nameJa:'森田 正則',visits:8,lastVisit:'2025-08-29',totalRolling:2591700000,rate:1.50,avgBuyin:92700000,selfPay:false,tier:'VVIP',
+   visitHistory:['2024-08-23','2025-01-10','2025-03-21','2025-05-02','2025-06-21','2025-08-22','2025-08-24','2025-08-29'],
+   traits:{sociability:6,riskAppetite:10,emotion:7,vipMind:10,priceSens:1,loyalty:6,referral:4,frequency:5},
+   notes:'単回最高額バイイン。9億超の大勝ちあり。VIP対応必須。感情の起伏あり。'},
+  {id:3,name:'HAYASHI YOICHI',nameJa:'林 陽一',visits:12,lastVisit:'2025-08-11',totalRolling:2296240000,rate:0.95,avgBuyin:45340000,selfPay:false,tier:'VVIP',
+   visitHistory:['2024-08-08','2025-01-21','2025-03-04','2025-04-18','2025-05-02','2025-06-07','2025-07-04','2025-07-11','2025-07-20','2025-08-03','2025-08-07','2025-08-11'],
+   traits:{sociability:7,riskAppetite:9,emotion:6,vipMind:9,priceSens:3,loyalty:7,referral:5,frequency:7},
+   notes:'安定した超高額プレイヤー。複数回来店実績。'},
+  {id:4,name:'LI QINFU',nameJa:'李 勤富',visits:3,lastVisit:'2025-09-01',totalRolling:6235000000,rate:1.50,avgBuyin:500000000,selfPay:false,tier:'VVIP',
+   traits:{sociability:5,riskAppetite:10,emotion:4,vipMind:10,priceSens:1,loyalty:3,referral:2,frequency:2},
+   notes:'外国人VIP。桁違いのローリング。専属通訳必要。'},
+  {id:5,name:'MOTODA YUKI',nameJa:'元田 悠希',visits:12,lastVisit:'2025-08-22',totalRolling:575100000,rate:0.70,avgBuyin:80000000,selfPay:true,tier:'VIP',
+   traits:{sociability:8,riskAppetite:8,emotion:6,vipMind:8,priceSens:3,loyalty:8,referral:7,frequency:8},
+   notes:'自費来店多し。お客様負担でも継続利用。安定したVIP。'},
+  {id:6,name:'UDA SHOTA',nameJa:'宇田 翔太',visits:10,lastVisit:'2025-09-01',totalRolling:489000000,rate:0.00,avgBuyin:50000000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:8,emotion:5,vipMind:7,priceSens:4,loyalty:7,referral:5,frequency:7},
+   notes:'成長中プレイヤー。ローリング額増加傾向。'},
+  {id:7,name:'KOISO MAKOTO',nameJa:'小磯 誠',visits:10,lastVisit:'2025-09-21',totalRolling:392100000,rate:0.85,avgBuyin:142105000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:9,emotion:5,vipMind:8,priceSens:3,loyalty:7,referral:4,frequency:6},
+   notes:'高額安定型。1回あたりのバイインが非常に大きい。'},
+  {id:8,name:'TOGA KAZUKI',nameJa:'門田 和樹',visits:12,lastVisit:'2025-10-24',totalRolling:340810000,rate:1.20,avgBuyin:74020000,selfPay:false,tier:'VIP',
+   traits:{sociability:8,riskAppetite:7,emotion:6,vipMind:7,priceSens:4,loyalty:8,referral:6,frequency:8},
+   notes:'リピーター。コミッション1.20%。安定した来店パターン。'},
+  {id:9,name:'IKEDA NISHIKI',nameJa:'池田 錦',visits:8,lastVisit:'2025-12-21',totalRolling:1100270000,rate:0.00,avgBuyin:39110000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:8,emotion:5,vipMind:8,priceSens:3,loyalty:7,referral:5,frequency:6},
+   notes:'最近も来店あり。コミッション率の設定が必要。'},
+  {id:10,name:'SOMA MASANORI',nameJa:'相馬 正則',visits:6,lastVisit:'2025-08-10',totalRolling:268750000,rate:0.00,avgBuyin:31500000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:8,emotion:6,vipMind:7,priceSens:4,loyalty:6,referral:5,frequency:5},
+   notes:'連続来店パターンあり（同月内2回）。集中型プレイヤー。'},
+  {id:11,name:'KUBOTA TAKU',nameJa:'久保田 拓',visits:8,lastVisit:'2025-10-06',totalRolling:275250000,rate:0.95,avgBuyin:11000000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:7,emotion:5,vipMind:7,priceSens:5,loyalty:7,referral:5,frequency:6},
+   notes:'安定したVIP顧客。'},
+  {id:12,name:'FUJIMOTO KOHEI',nameJa:'藤本 康平',visits:15,lastVisit:'2025-09-22',totalRolling:134830000,rate:0.00,avgBuyin:14000000,selfPay:false,tier:'Gold',
+   traits:{sociability:8,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:9,referral:7,frequency:9},
+   notes:'来店回数15回。最頻グループの一人。中額安定型。'},
+  {id:13,name:'HORIBIE TAKEMOTO',nameJa:'堀部 武元',visits:10,lastVisit:'2025-12-12',totalRolling:63410000,rate:1.40,avgBuyin:9210000,selfPay:false,tier:'Gold',
+   traits:{sociability:8,riskAppetite:5,emotion:4,vipMind:5,priceSens:6,loyalty:8,referral:6,frequency:8},
+   notes:'堅実なリピーター。コミッション1.40%確定済み。'},
+  {id:14,name:'SETOGUCHI KIYOSHI',nameJa:'瀬戸口 清',visits:5,lastVisit:'2025-12-18',totalRolling:71520000,rate:1.40,avgBuyin:31150000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:6,referral:4,frequency:5},
+   notes:'コミッション1.40%。成長余地あり。'},
+  {id:15,name:'OTSUKA KEISHI',nameJa:'大塚 圭司',visits:11,lastVisit:'2026-01-13',totalRolling:134210000,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:7,referral:5,frequency:7},
+   notes:'中額プレイヤー。来店回数多い。'},
+  {id:16,name:'TAKADA KIICHIRO',nameJa:'高田 紀一郎',visits:9,lastVisit:'2026-01-18',totalRolling:387935000,rate:0.00,avgBuyin:57030000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:8,emotion:6,vipMind:7,priceSens:4,loyalty:6,referral:4,frequency:5},
+   notes:'高額プレイヤー。コミッション未設定。'},
+  {id:17,name:'MIYAJIMA SHUNICHI',nameJa:'宮島 俊一',visits:3,lastVisit:'2025-08-03',totalRolling:557320000,rate:0.00,avgBuyin:129120000,selfPay:false,tier:'VIP',
+   traits:{sociability:5,riskAppetite:9,emotion:6,vipMind:9,priceSens:2,loyalty:4,referral:3,frequency:2},
+   notes:'超高額だが来店回数少ない。アプローチ次第で大化け。'},
+  {id:18,name:'FUJIMOTO HIROYUKI',nameJa:'藤本 裕之',visits:6,lastVisit:'2025-09-23',totalRolling:134830000,rate:0.00,avgBuyin:55140000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:7,priceSens:4,loyalty:5,referral:4,frequency:4},
+   notes:''},
+  {id:19,name:'NAKAZONO YUJI',nameJa:'中園 裕二',visits:4,lastVisit:'2025-03-02',totalRolling:47070000,rate:1.40,avgBuyin:28430000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:6,loyalty:4,referral:4,frequency:3},
+   notes:'長期未来店。離脱リスク高。'},
+  {id:20,name:'ISHIZUKA KOJI',nameJa:'石塚 浩二',visits:2,lastVisit:'2025-08-18',totalRolling:262910000,rate:0.00,avgBuyin:22160000,selfPay:false,tier:'VIP',
+   traits:{sociability:5,riskAppetite:8,emotion:6,vipMind:7,priceSens:3,loyalty:3,referral:3,frequency:2},
+   notes:'高額だが来店2回のみ。育成対象。'},
+  {id:21,name:'MATSUO HYOSEI',nameJa:'松尾 兵生',visits:5,lastVisit:'2025-07-20',totalRolling:188960000,rate:0.00,avgBuyin:50210000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:5,referral:4,frequency:4},
+   notes:''},
+  {id:22,name:'IKEGAMI DAIKI',nameJa:'池上 大樹',visits:4,lastVisit:'2025-08-08',totalRolling:364800000,rate:0.00,avgBuyin:25500000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:9,emotion:6,vipMind:8,priceSens:3,loyalty:4,referral:3,frequency:3},
+   notes:'高額ローリング。潜在価値大。'},
+  {id:23,name:'KAWASHIMA SHIMPEI',nameJa:'川島 新平',visits:6,lastVisit:'2025-08-18',totalRolling:93300000,rate:0.00,avgBuyin:12350000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:6,referral:5,frequency:5},
+   notes:''},
+  {id:24,name:'NAGASAWA YUTA',nameJa:'長澤 雄太',visits:3,lastVisit:'2025-07-24',totalRolling:169900000,rate:0.00,avgBuyin:67870000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:4,referral:3,frequency:2},
+   notes:''},
+  {id:25,name:'KATAOKA HITOSHI',nameJa:'片岡 仁',visits:4,lastVisit:'2025-12-30',totalRolling:189100000,rate:0.00,avgBuyin:33100000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:7,emotion:5,vipMind:7,priceSens:4,loyalty:5,referral:4,frequency:4},
+   notes:'直近来店あり。'},
+  {id:26,name:'OKADA KANA',nameJa:'岡田 佳奈',visits:3,lastVisit:'2025-12-31',totalRolling:214120000,rate:0.75,avgBuyin:21400000,selfPay:false,tier:'VIP',
+   traits:{sociability:8,riskAppetite:6,emotion:7,vipMind:7,priceSens:4,loyalty:5,referral:6,frequency:3},
+   notes:'女性VIP。直近来店。'},
+  {id:27,name:'TANAKA SHINICHI',nameJa:'田中 新一',visits:3,lastVisit:'2025-11-28',totalRolling:120505000,rate:0.00,avgBuyin:11865000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:5,referral:4,frequency:3},
+   notes:''},
+  {id:28,name:'NODA HARUO',nameJa:'野田 春雄',visits:4,lastVisit:'2025-08-19',totalRolling:85980000,rate:0.00,avgBuyin:23890000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:5,loyalty:5,referral:4,frequency:3},
+   notes:''},
+  {id:29,name:'SENGA SHINSUKE',nameJa:'千賀 慎介',visits:3,lastVisit:'2025-11-13',totalRolling:50360000,rate:0.00,avgBuyin:13840000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:5,referral:4,frequency:3},
+   notes:''},
+  {id:30,name:'WANAMI REN',nameJa:'和波 蓮',visits:3,lastVisit:'2025-03-02',totalRolling:19630000,rate:0.00,avgBuyin:19320000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:7,loyalty:3,referral:3,frequency:2},
+   notes:'長期離脱。'},
+  {id:31,name:'YAMADA KENTARO',nameJa:'山田 健太郎',visits:4,lastVisit:'2026-01-22',totalRolling:186630000,rate:0.00,avgBuyin:9100000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:4,referral:3,frequency:2},
+   notes:''},
+  {id:32,name:'NISHIGAKI TAKAYA',nameJa:'西垣 隆也',visits:4,lastVisit:'2025-07-17',totalRolling:91800000,rate:0.00,avgBuyin:30000000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:4,referral:3,frequency:3},
+   notes:''},
+  {id:33,name:'HASHIMOTO MARIKO',nameJa:'橋本 真理子',visits:3,lastVisit:'2025-12-03',totalRolling:34800000,rate:0.00,avgBuyin:18100000,selfPay:false,tier:'Gold',
+   traits:{sociability:8,riskAppetite:5,emotion:7,vipMind:6,priceSens:5,loyalty:5,referral:6,frequency:3},
+   notes:'女性顧客。'},
+  {id:34,name:'MATSUMURA NASAMIRO',nameJa:'松村 正廣',visits:3,lastVisit:'2025-04-04',totalRolling:75700000,rate:0.00,avgBuyin:19340000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:2},
+   notes:''},
+  {id:35,name:'NAKAI YUKI',nameJa:'中井 友紀',visits:2,lastVisit:'2025-01-10',totalRolling:160000000,rate:0.00,avgBuyin:9090000,selfPay:false,tier:'VIP',
+   traits:{sociability:5,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:3,referral:2,frequency:1},
+   notes:'高額ローリングだが来店少ない。長期離脱中。'},
+  {id:36,name:'FUJIMOTO RYUTO',nameJa:'藤本 龍斗',visits:1,lastVisit:'2025-05-04',totalRolling:0,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:7,priceSens:4,loyalty:2,referral:3,frequency:1},
+   notes:'初回1000万円バイイン。リピート未達。'},
+  {id:37,name:'TOGA KAZUKI_OLD',nameJa:'門田 一樹(旧)',visits:1,lastVisit:'2025-05-18',totalRolling:0,rate:0.00,avgBuyin:5000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:38,name:'MIURA TETSURO',nameJa:'三浦 哲朗',visits:3,lastVisit:'2025-05-31',totalRolling:284650000,rate:0.00,avgBuyin:146800000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:9,emotion:5,vipMind:8,priceSens:3,loyalty:4,referral:3,frequency:2},
+   notes:'超高額バイイン。'},
+  {id:39,name:'KAZAKAMI MADOKA',nameJa:'風上 円',visits:2,lastVisit:'2025-05-31',totalRolling:21000000,rate:0.00,avgBuyin:15800000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:6,loyalty:3,referral:4,frequency:1},notes:''},
+  {id:40,name:'NAWA KEISUKE',nameJa:'名和 敬介',visits:4,lastVisit:'2025-12-31',totalRolling:214120000,rate:0.75,avgBuyin:21400000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:6,referral:5,frequency:4},notes:'直近来店あり。'},
+  {id:41,name:'ITO YOSHIHIRO',nameJa:'伊藤 義弘',visits:2,lastVisit:'2025-01-04',totalRolling:51550000,rate:0.00,avgBuyin:24050000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:42,name:'FUJITA SAKUHO',nameJa:'藤田 作穂',visits:2,lastVisit:'2025-01-06',totalRolling:49770000,rate:0.00,avgBuyin:16920000,selfPay:false,tier:'Silver',
+   traits:{sociability:5,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:43,name:'SUIKE HYOTA',nameJa:'水池 兵太',visits:2,lastVisit:'2025-01-06',totalRolling:34260000,rate:0.00,avgBuyin:10010000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:44,name:'KOIKE TAKESHI',nameJa:'小池 武',visits:1,lastVisit:'2025-01-06',totalRolling:48650000,rate:0.00,avgBuyin:16470000,selfPay:false,tier:'Silver',
+   traits:{sociability:5,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:45,name:'KAKINOKI SEIJI',nameJa:'柿木 誠二',visits:7,lastVisit:'2026-03-08',totalRolling:149370000,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:5,referral:4,frequency:4},notes:''},
+  {id:46,name:'HOSHINO JANO',nameJa:'星野 雅乃',visits:2,lastVisit:'2025-01-09',totalRolling:269180000,rate:0.00,avgBuyin:36680000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:3,referral:3,frequency:2},notes:'高額ローリング。'},
+  {id:47,name:'TASAKUCHI MEIJIN',nameJa:'田作内 名人',visits:2,lastVisit:'2025-01-11',totalRolling:27750000,rate:0.00,avgBuyin:14490000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:48,name:'TAKAHASHI YUKA',nameJa:'高橋 由香',visits:1,lastVisit:'2025-01-11',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。プレイ記録なし。'},
+  {id:49,name:'IMANAKA HIDEYUKI',nameJa:'今中 秀之',visits:2,lastVisit:'2025-01-12',totalRolling:34880000,rate:0.00,avgBuyin:9060000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:50,name:'FUKUDA REIJI',nameJa:'福田 玲治',visits:2,lastVisit:'2025-01-12',totalRolling:10000000,rate:0.00,avgBuyin:9610000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:51,name:'MAENISHI HIROAKI',nameJa:'前西 弘明',visits:1,lastVisit:'2025-01-20',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:52,name:'ORITA NAOYA',nameJa:'折田 直也',visits:1,lastVisit:'2025-01-22',totalRolling:55640000,rate:0.00,avgBuyin:9190000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:53,name:'TANNO SHINYA',nameJa:'丹野 慎也',visits:6,lastVisit:'2026-03-24',totalRolling:113920000,rate:0.00,avgBuyin:9190000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:'直近来店あり。'},
+  {id:54,name:'TANNO KASUMI',nameJa:'丹野 霞',visits:2,lastVisit:'2026-03-24',totalRolling:41000000,rate:0.00,avgBuyin:7070000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:55,name:'YONEMURA KOSUKE',nameJa:'米村 康介',visits:3,lastVisit:'2025-07-20',totalRolling:0,rate:0.75,avgBuyin:18180000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:56,name:'KONAGATA TAKUYA',nameJa:'小長田 拓也',visits:2,lastVisit:'2025-02-26',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:57,name:'UEMURA RYO',nameJa:'植村 亮',visits:3,lastVisit:'2025-07-20',totalRolling:52780000,rate:1.40,avgBuyin:27170000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:6,emotion:5,vipMind:6,priceSens:4,loyalty:5,referral:4,frequency:3},notes:'コミッション1.40%設定済み。'},
+  {id:58,name:'SUKEGUCHI YOHEI',nameJa:'助口 洋平',visits:2,lastVisit:'2025-02-26',totalRolling:0,rate:0.75,avgBuyin:9090000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:59,name:'YAMAURA SHOWA',nameJa:'山浦 昭和',visits:2,lastVisit:'2025-02-26',totalRolling:0,rate:0.00,avgBuyin:10480000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:60,name:'JOTAI NODOKA',nameJa:'城台 和',visits:1,lastVisit:'2025-02-26',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:61,name:'UEDA SHINTARO',nameJa:'上田 慎太郎',visits:1,lastVisit:'2025-02-27',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:62,name:'UEDA ERI',nameJa:'上田 恵里',visits:1,lastVisit:'2025-02-27',totalRolling:0,rate:0.00,avgBuyin:26880000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:63,name:'UEDA YUTO',nameJa:'上田 裕斗',visits:1,lastVisit:'2025-02-27',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:64,name:'UEDA TAKUTO',nameJa:'上田 拓人',visits:1,lastVisit:'2025-02-27',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:65,name:'FUKUURA KATSUYA',nameJa:'福浦 勝也',visits:1,lastVisit:'2025-03-01',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:66,name:'ISONO KENJI',nameJa:'磯野 健二',visits:5,lastVisit:'2025-11-30',totalRolling:85900000,rate:0.00,avgBuyin:9210000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:5,referral:4,frequency:5},notes:'安定した来店。INSPIRE利用あり。'},
+  {id:67,name:'TAKEOKA JUNKI',nameJa:'竹岡 純紀',visits:5,lastVisit:'2025-08-18',totalRolling:44660000,rate:0.00,avgBuyin:10100000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:5,referral:3,frequency:4},notes:'INSPIRE利用あり。'},
+  {id:68,name:'HAYAMI SUMO',nameJa:'速水 寿茂',visits:3,lastVisit:'2025-04-09',totalRolling:56440000,rate:0.00,avgBuyin:13710000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:69,name:'SAKAI DAIKI',nameJa:'酒井 大樹',visits:2,lastVisit:'2025-12-18',totalRolling:4630000,rate:0.00,avgBuyin:4630000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:70,name:'NAKANO AINA',nameJa:'中野 愛奈',visits:1,lastVisit:'2025-12-18',totalRolling:4630000,rate:0.00,avgBuyin:4630000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:71,name:'IGARASHI YUICHI',nameJa:'五十嵐 裕一',visits:3,lastVisit:'2025-12-14',totalRolling:48160000,rate:0.00,avgBuyin:9850000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:72,name:'NISHIYAMA YOSHIMASA',nameJa:'西山 義政',visits:2,lastVisit:'2025-10-15',totalRolling:4570000,rate:0.00,avgBuyin:4570000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:73,name:'KAI HIROKI',nameJa:'甲斐 大樹',visits:2,lastVisit:'2025-10-15',totalRolling:4570000,rate:0.00,avgBuyin:4570000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:74,name:'KOISO MAKOTO_2',nameJa:'小磯 誠(INSPIRE)',visits:2,lastVisit:'2025-10-15',totalRolling:100000000,rate:0.00,avgBuyin:100000000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:9,emotion:5,vipMind:8,priceSens:3,loyalty:3,referral:3,frequency:2},notes:'INSPIRE来店分。'},
+  {id:75,name:'SEITO TAKEHARU',nameJa:'清藤 武治',visits:2,lastVisit:'2025-10-11',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:76,name:'HASEGAWA MAKOTO',nameJa:'長谷川 真',visits:2,lastVisit:'2025-08-15',totalRolling:36550000,rate:0.00,avgBuyin:11410000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:77,name:'KINASHI HIROSHI',nameJa:'木梨 浩',visits:2,lastVisit:'2025-08-15',totalRolling:77720000,rate:0.00,avgBuyin:14860000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:78,name:'OSAKA KOICHI',nameJa:'大阪 浩一',visits:2,lastVisit:'2025-08-15',totalRolling:18730000,rate:0.00,avgBuyin:9190000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:79,name:'MURAKAMI HIKARU',nameJa:'村上 光',visits:3,lastVisit:'2025-08-19',totalRolling:54840000,rate:0.00,avgBuyin:12620000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:4,referral:4,frequency:3},notes:''},
+  {id:80,name:'KODA YUSUKE',nameJa:'幸田 裕介',visits:2,lastVisit:'2025-12-22',totalRolling:54400000,rate:0.00,avgBuyin:9210000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:2},notes:'直近来店あり。'},
+  {id:81,name:'IDA KAZUKI',nameJa:'飯田 一樹',visits:2,lastVisit:'2025-12-22',totalRolling:24990000,rate:0.00,avgBuyin:9210000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:82,name:'AMANO KATSUHIRO',nameJa:'天野 勝博',visits:2,lastVisit:'2025-12-17',totalRolling:4580000,rate:0.00,avgBuyin:4580000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:83,name:'TAKAMI YUSUKE',nameJa:'高見 裕介',visits:3,lastVisit:'2025-12-23',totalRolling:46150000,rate:0.07,avgBuyin:9210000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:4,referral:4,frequency:3},notes:''},
+  {id:84,name:'CHIBA NAOYA',nameJa:'千葉 直也',visits:3,lastVisit:'2025-12-23',totalRolling:4570000,rate:0.00,avgBuyin:4570000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:85,name:'YOSHIMOTO ELI',nameJa:'吉本 エリ',visits:2,lastVisit:'2025-12-22',totalRolling:4520000,rate:0.00,avgBuyin:4520000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:'女性顧客。'},
+  {id:86,name:'NAKAJIMA SHIN',nameJa:'中島 伸',visits:2,lastVisit:'2025-12-22',totalRolling:18080000,rate:0.00,avgBuyin:9090000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:87,name:'NOGUCHI MANABU',nameJa:'野口 学',visits:3,lastVisit:'2025-11-27',totalRolling:18080000,rate:0.00,avgBuyin:9090000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:88,name:'AHAMAKI AKIHITO',nameJa:'赤巻 昭仁',visits:2,lastVisit:'2025-12-22',totalRolling:9040000,rate:0.00,avgBuyin:9040000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:89,name:'AHAMAKI KAORI',nameJa:'赤巻 香里',visits:2,lastVisit:'2025-12-22',totalRolling:27120000,rate:0.00,avgBuyin:9040000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:3,referral:4,frequency:2},notes:'女性顧客。'},
+  {id:90,name:'FUJIMOTO KOMEI',nameJa:'藤本 光明',visits:3,lastVisit:'2025-12-25',totalRolling:9860000,rate:0.00,avgBuyin:9860000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:91,name:'YAMAGATA TAKASHI',nameJa:'山形 隆',visits:2,lastVisit:'2025-12-25',totalRolling:9080000,rate:0.00,avgBuyin:9080000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:92,name:'MASUDA HARUNA',nameJa:'増田 春奈',visits:1,lastVisit:'2025-12-27',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:93,name:'KAYAMA KOKI',nameJa:'加山 光希',visits:3,lastVisit:'2025-12-27',totalRolling:4570000,rate:0.00,avgBuyin:4570000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:94,name:'AKAMINE TOMOKI',nameJa:'赤嶺 智樹',visits:1,lastVisit:'2025-12-30',totalRolling:7000000,rate:0.00,avgBuyin:7000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:95,name:'NARUSIMA KOHEI',nameJa:'成島 浩平',visits:1,lastVisit:'2025-01-06',totalRolling:4590000,rate:0.00,avgBuyin:4590000,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:96,name:'ICHIKAWA SHINYA',nameJa:'市川 慎也',visits:1,lastVisit:'2025-12-30',totalRolling:4590000,rate:0.00,avgBuyin:4590000,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:97,name:'DOBASHI HIROSHI',nameJa:'土橋 浩',visits:2,lastVisit:'2025-04-20',totalRolling:78230000,rate:0.00,avgBuyin:14730000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:3,referral:3,frequency:2},notes:'INSPIRE来店あり。'},
+  {id:98,name:'SHINDO TAKUMI',nameJa:'進藤 巧',visits:3,lastVisit:'2025-08-16',totalRolling:45710000,rate:0.00,avgBuyin:14630000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:'INSPIRE来店あり。'},
+  {id:99,name:'MATSUMOTO SHINGO',nameJa:'松本 真吾',visits:3,lastVisit:'2025-08-23',totalRolling:36800000,rate:0.00,avgBuyin:9190000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:100,name:'OKADA YUTAKA',nameJa:'小阪 豊',visits:1,lastVisit:'2025-01-03',totalRolling:5520000,rate:0.00,avgBuyin:5520000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:101,name:'SAKATA KAZUKI',nameJa:'坂田 和樹',visits:3,lastVisit:'2025-08-12',totalRolling:66340000,rate:0.00,avgBuyin:9230000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:102,name:'TOMINAGA YUMA',nameJa:'冨永 裕馬',visits:1,lastVisit:'2025-05-15',totalRolling:32600000,rate:0.00,avgBuyin:5000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:103,name:'TAKADA MASAAKI',nameJa:'高田 正明',visits:3,lastVisit:'2025-08-22',totalRolling:293330000,rate:0.00,avgBuyin:42480000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:4,referral:3,frequency:3},notes:'高額プレイヤー。'},
+  {id:104,name:'TAKADA YUKIE',nameJa:'高田 幸恵',visits:2,lastVisit:'2025-08-18',totalRolling:0,rate:0.00,avgBuyin:12900000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:'女性顧客。'},
+  {id:105,name:'TAKADA KIICHIRO_2',nameJa:'高田 紀一郎(8月)',visits:2,lastVisit:'2025-08-22',totalRolling:154910000,rate:0.00,avgBuyin:28050000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:7,emotion:5,vipMind:7,priceSens:4,loyalty:4,referral:3,frequency:2},notes:''},
+  {id:106,name:'ZHAO MINGLIN',nameJa:'趙 明林',visits:2,lastVisit:'2025-08-07',totalRolling:163590000,rate:0.80,avgBuyin:37440000,selfPay:false,tier:'VIP',
+   traits:{sociability:5,riskAppetite:8,emotion:4,vipMind:7,priceSens:3,loyalty:3,referral:2,frequency:2},notes:'外国人顧客。'},
+  {id:107,name:'TORITANI AYAKA',nameJa:'鳥谷 彩花',visits:1,lastVisit:'2025-07-13',totalRolling:52780000,rate:0.00,avgBuyin:18440000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:108,name:'YOO KANGIL',nameJa:'柳 康吉',visits:1,lastVisit:'2025-07-15',totalRolling:12160000,rate:0.00,avgBuyin:4580000,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:109,name:'YAMADA TOMOHIRO',nameJa:'山田 知広',visits:2,lastVisit:'2025-05-31',totalRolling:31000000,rate:0.00,avgBuyin:9300000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:110,name:'FUNAKI KENTARO',nameJa:'船木 健太郎',visits:2,lastVisit:'2025-06-01',totalRolling:9500000,rate:0.00,avgBuyin:8000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:111,name:'YOKOYAMA HARUNA',nameJa:'横山 春菜',visits:1,lastVisit:'2025-07-05',totalRolling:15470000,rate:0.00,avgBuyin:9270000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:112,name:'MAEKAWA YUICHI',nameJa:'前川 裕一',visits:3,lastVisit:'2026-01-19',totalRolling:57900000,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:113,name:'SHIMODA MASAHI',nameJa:'下田 正史',visits:1,lastVisit:'2025-02-19',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:114,name:'NAKAMURA SHOGO',nameJa:'中村 翔吾',visits:1,lastVisit:'2025-02-19',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:115,name:'MATSUSHITA KAIKI',nameJa:'松下 海希',visits:2,lastVisit:'2025-12-28',totalRolling:10870000,rate:0.00,avgBuyin:10870000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:116,name:'TAKARABE MOTOKI',nameJa:'財部 元気',visits:2,lastVisit:'2025-11-13',totalRolling:5475000,rate:0.00,avgBuyin:5475000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:117,name:'TAKAHASHI YUSUKE',nameJa:'高橋 裕介',visits:1,lastVisit:'2025-10-22',totalRolling:18040000,rate:0.00,avgBuyin:18040000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:118,name:'SUZUKI KOHEI',nameJa:'鈴木 浩平',visits:3,lastVisit:'2025-01-22',totalRolling:48390000,rate:0.85,avgBuyin:1500000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:3},notes:''},
+  {id:119,name:'SHIMZAKI SEIKI',nameJa:'島崎 清希',visits:1,lastVisit:'2025-10-06',totalRolling:0,rate:0.00,avgBuyin:9270000,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:120,name:'OKITA NAOYA',nameJa:'沖田 直也',visits:2,lastVisit:'2026-03-23',totalRolling:69545000,rate:0.00,avgBuyin:9190000,selfPay:false,tier:'Gold',
+   visitHistory:['2025-10-06','2026-03-23'],
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:2,frequency:2},notes:'2026年3月来店。'},
+  // ===== 2026年1月〜3月 新規・更新 =====
+  {id:121,name:'MATSUHIME YASUHIKO',nameJa:'松姫 泰彦',visits:1,lastVisit:'2026-01-02',totalRolling:124520000,rate:0.00,avgBuyin:9350000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:122,name:'FUJITA MASAYA',nameJa:'藤田 真也',visits:2,lastVisit:'2026-01-05',totalRolling:54190000,rate:0.00,avgBuyin:9060000,selfPay:false,tier:'Gold',
+   visitHistory:['2025-12-31','2026-01-05'],
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:''},
+  {id:123,name:'SONODA MASAKAZU',nameJa:'園田 正和',visits:2,lastVisit:'2026-01-07',totalRolling:64730000,rate:0.00,avgBuyin:11665000,selfPay:true,tier:'Gold',
+   visitHistory:['2026-01-05','2026-01-07'],
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:3,referral:3,frequency:2},notes:'お客様負担あり。'},
+  {id:124,name:'YANAGIKAWA TOUICHI',nameJa:'柳川 藤一',visits:1,lastVisit:'2026-01-14',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:125,name:'TAKEUCHI SHOTARO',nameJa:'竹内 翔太郎',visits:1,lastVisit:'2026-01-14',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:126,name:'TOYODA HIRONOBU',nameJa:'豊田 裕信',visits:1,lastVisit:'2026-01-14',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:5,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:127,name:'TAKEI KAORI',nameJa:'武井 香織',visits:1,lastVisit:'2026-01-19',totalRolling:21550000,rate:0.00,avgBuyin:8000000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:128,name:'AIBA EITA',nameJa:'相葉 栄太',visits:1,lastVisit:'2026-01-23',totalRolling:16620000,rate:0.00,avgBuyin:6310000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:129,name:'YUKIMORI FUMIAKI',nameJa:'雪森 文明',visits:1,lastVisit:'2026-01-23',totalRolling:10610000,rate:0.00,avgBuyin:5410000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:130,name:'NAGANUMA NORIOMI',nameJa:'長沼 則臣',visits:1,lastVisit:'2026-02-01',totalRolling:30750000,rate:0.00,avgBuyin:9100000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:131,name:'KOBAYASHI MIKI',nameJa:'小林 美紀',visits:1,lastVisit:'2026-02-01',totalRolling:32050000,rate:0.00,avgBuyin:9100000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:132,name:'IKEMI YUYA',nameJa:'池見 裕也',visits:1,lastVisit:'2026-02-04',totalRolling:14560000,rate:0.00,avgBuyin:4560000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:133,name:'MATSUO NONOA',nameJa:'松尾 乃愛',visits:1,lastVisit:'2026-02-04',totalRolling:14560000,rate:0.00,avgBuyin:4560000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:134,name:'SUGITA RYO',nameJa:'杉田 亮',visits:3,lastVisit:'2026-02-08',totalRolling:62570000,rate:0.00,avgBuyin:11890000,selfPay:false,tier:'Gold',
+   visitHistory:['2026-02-03','2026-02-07','2026-02-08'],
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:4},notes:'短期間で3回来店。リピーター候補。'},
+  {id:135,name:'SUGIMOTO MOMOKA',nameJa:'杉本 桃花',visits:3,lastVisit:'2026-02-08',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   visitHistory:['2026-02-04','2026-02-06','2026-02-08'],
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:4,referral:3,frequency:4},notes:'女性顧客。INSPIRE利用。短期間複数来店。'},
+  {id:136,name:'TAKEUCHI SEIJI',nameJa:'竹内 誠二',visits:1,lastVisit:'2026-02-11',totalRolling:25200000,rate:0.00,avgBuyin:8150000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:137,name:'SATO YU',nameJa:'佐藤 優',visits:1,lastVisit:'2026-02-11',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:138,name:'ITAKA KOICHI',nameJa:'板垣 浩一',visits:1,lastVisit:'2026-02-12',totalRolling:18730000,rate:0.00,avgBuyin:9190000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'INSPIRE利用。'},
+  {id:139,name:'IRAHA HIMENO',nameJa:'伊良波 姫乃',visits:1,lastVisit:'2026-02-12',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。INSPIRE利用。'},
+  {id:140,name:'SUMIDA YUKA',nameJa:'隅田 有香',visits:1,lastVisit:'2026-02-15',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:141,name:'MAEDA YASUHIRO',nameJa:'前田 泰弘',visits:1,lastVisit:'2026-02-18',totalRolling:100860000,rate:0.00,avgBuyin:10600000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'INSPIRE利用。高ローリング。'},
+  {id:142,name:'KIM MIN SOO',nameJa:'金 民秀',visits:1,lastVisit:'2026-02-26',totalRolling:148510000,rate:0.00,avgBuyin:9090000,selfPay:true,tier:'VIP',
+   traits:{sociability:5,riskAppetite:8,emotion:4,vipMind:6,priceSens:3,loyalty:2,referral:2,frequency:1},notes:'外国人顧客。お客様負担。高ローリング。'},
+  {id:143,name:'SAKAI HIROKI',nameJa:'酒井 弘樹',visits:1,lastVisit:'2026-02-24',totalRolling:20750000,rate:0.75,avgBuyin:12150000,selfPay:true,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'お客様負担。コミッション0.75%。'},
+  {id:144,name:'SAKAI RYOSUKE',nameJa:'酒井 亮介',visits:1,lastVisit:'2026-02-24',totalRolling:5890000,rate:0.75,avgBuyin:8990000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'お客様負担。'},
+  {id:145,name:'KINOSHITA ERINA',nameJa:'木下 恵里奈',visits:1,lastVisit:'2026-02-24',totalRolling:0,rate:0.75,avgBuyin:0,selfPay:true,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。お客様負担。'},
+  {id:146,name:'TAKEMAE HIROKAZU',nameJa:'竹前 博和',visits:1,lastVisit:'2026-02-24',totalRolling:34970000,rate:0.75,avgBuyin:9090000,selfPay:true,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'お客様負担。'},
+  {id:147,name:'NATORI SAE',nameJa:'名取 紗恵',visits:1,lastVisit:'2026-02-28',totalRolling:4590000,rate:0.75,avgBuyin:9090000,selfPay:true,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。お客様負担。'},
+  {id:148,name:'YOKOTE TAKESHI',nameJa:'横手 健',visits:1,lastVisit:'2026-02-24',totalRolling:13230000,rate:0.75,avgBuyin:9090000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'お客様負担。'},
+  {id:149,name:'TSUKAMOTO MAYU',nameJa:'塚本 真由',visits:1,lastVisit:'2026-02-26',totalRolling:0,rate:0.75,avgBuyin:0,selfPay:true,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。お客様負担。'},
+  {id:150,name:'UEHIRA RYO',nameJa:'上平 亮',visits:1,lastVisit:'2026-02-26',totalRolling:89650000,rate:0.00,avgBuyin:27170000,selfPay:true,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'お客様負担。高ローリング。'},
+  {id:151,name:'SEKIGUCHI YOHEI',nameJa:'関口 洋平',visits:1,lastVisit:'2026-02-26',totalRolling:60030000,rate:0.75,avgBuyin:9090000,selfPay:true,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'お客様負担。'},
+  {id:152,name:'YAMAURA SHOMA',nameJa:'山浦 翔馬',visits:1,lastVisit:'2026-02-26',totalRolling:56460000,rate:0.75,avgBuyin:10480000,selfPay:true,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'お客様負担。'},
+  {id:153,name:'OKUMURA TAKUYA',nameJa:'奥村 拓也',visits:1,lastVisit:'2026-02-23',totalRolling:37300000,rate:0.00,avgBuyin:9100000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:154,name:'OKUMURA MARIE',nameJa:'奥村 真理恵',visits:1,lastVisit:'2026-02-23',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:155,name:'HOSHINO TARO',nameJa:'星野 太郎',visits:2,lastVisit:'2026-03-09',totalRolling:538320000,rate:0.00,avgBuyin:36680000,selfPay:false,tier:'VVIP',
+   visitHistory:['2025-01-09','2026-03-09'],
+   traits:{sociability:6,riskAppetite:9,emotion:5,vipMind:8,priceSens:2,loyalty:3,referral:3,frequency:2},notes:'超高額ローリング（5.3億₩）。要VIP対応。'},
+  {id:156,name:'YAMAUCHI HIDEKI',nameJa:'山内 英樹',visits:1,lastVisit:'2026-03-11',totalRolling:27750000,rate:0.00,avgBuyin:14490000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:157,name:'HANAOKA HIDEYUKI',nameJa:'花岡 英之',visits:1,lastVisit:'2026-03-11',totalRolling:34880000,rate:0.00,avgBuyin:9060000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:158,name:'IDE HIDEAKI',nameJa:'井出 英明',visits:1,lastVisit:'2026-03-19',totalRolling:10800000,rate:0.00,avgBuyin:13000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:159,name:'SEIKE RYOTA',nameJa:'清家 良太',visits:1,lastVisit:'2026-03-05',totalRolling:34260000,rate:0.00,avgBuyin:10010000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:160,name:'KOIDE TAKESHI',nameJa:'小出 武',visits:1,lastVisit:'2026-03-05',totalRolling:48650000,rate:0.00,avgBuyin:16470000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:161,name:'HASEGAWA MAKOTO_2',nameJa:'長谷川 真',visits:1,lastVisit:'2026-02-12',totalRolling:36550000,rate:0.00,avgBuyin:11410000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:162,name:'KINASHI HIROHISA',nameJa:'木梨 博久',visits:1,lastVisit:'2026-02-12',totalRolling:77720000,rate:0.00,avgBuyin:14850000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'高ローリング。'},
+  {id:163,name:'ASANUMA ONARI',nameJa:'浅沼 大成',visits:2,lastVisit:'2026-05-29',totalRolling:142730000,rate:0.00,avgBuyin:11070000,selfPay:false,tier:'VIP',
+   visitHistory:['2026-02-17','2026-05-29'],
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:3,referral:3,frequency:2},notes:'INSPIRE利用。高ローリング。2024年5月来店実績あり。'},
+  // ===== 2024年5月 初期データ =====
+  {id:164,name:'OKUDA KAZUTO',nameJa:'奥田 和人',visits:1,lastVisit:'2024-05-19',totalRolling:6850000,rate:0.00,avgBuyin:10700000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'初期顧客。'},
+  {id:165,name:'ONISHI AKARI',nameJa:'大西 明里',visits:1,lastVisit:'2024-05-19',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:166,name:'MAEDA YASUHIRO_OLD',nameJa:'前田 泰弘(2024)',visits:2,lastVisit:'2026-02-18',totalRolling:135460000,rate:0.00,avgBuyin:17400000,selfPay:false,tier:'VIP',
+   visitHistory:['2024-05-29','2026-02-18'],
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:3,referral:3,frequency:2},notes:'2024年5月初来店。2026年2月リピート。'},
+  {id:167,name:'OGURA YUICHIRO',nameJa:'小椋 裕一郎',visits:1,lastVisit:'2024-05-29',totalRolling:460000,rate:0.00,avgBuyin:6260000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:168,name:'INJI HIROKI',nameJa:'印字 裕樹',visits:1,lastVisit:'2024-05-30',totalRolling:28880000,rate:0.00,avgBuyin:10320000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'30日ソウルホテル利用。'},
+  {id:169,name:'KATO ERIKA',nameJa:'加藤 恵理香',visits:1,lastVisit:'2024-05-30',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  // ===== 2024年6月 =====
+  {id:170,name:'NAKANISHI HIROAKI',nameJa:'中西 弘旭',visits:1,lastVisit:'2024-06-02',totalRolling:0,rate:0.00,avgBuyin:4330000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:171,name:'NAKAGAKI JO',nameJa:'中垣 諒',visits:1,lastVisit:'2024-06-05',totalRolling:0,rate:0.00,avgBuyin:4310000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:172,name:'YAMAMOTO KOJI',nameJa:'山本 晃司',visits:1,lastVisit:'2024-06-05',totalRolling:0,rate:0.00,avgBuyin:5850000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:173,name:'ADACHI NORIAKI',nameJa:'安達 哲明',visits:1,lastVisit:'2024-06-05',totalRolling:0,rate:0.00,avgBuyin:8310000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:174,name:'KOYAMA ATSUSHI',nameJa:'小山 敦史',visits:1,lastVisit:'2024-06-05',totalRolling:0,rate:0.00,avgBuyin:8630000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:175,name:'SHINOHARA SHUKA',nameJa:'篠原 朱夏',visits:1,lastVisit:'2024-06-06',totalRolling:0,rate:0.00,avgBuyin:30325000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'女性顧客。高額バイイン。'},
+  {id:176,name:'FUJIIKE KEIYO',nameJa:'藤池 継瑛',visits:2,lastVisit:'2024-06-23',totalRolling:0,rate:0.00,avgBuyin:24050000,selfPay:false,tier:'Gold',
+   visitHistory:['2024-06-16','2024-06-23'],
+   traits:{sociability:6,riskAppetite:7,emotion:6,vipMind:6,priceSens:4,loyalty:3,referral:3,frequency:2},notes:'短期間リピート。大きく負けた経験あり。'},
+  {id:177,name:'SAKATA RYO',nameJa:'坂田 亮',visits:1,lastVisit:'2024-06-15',totalRolling:0,rate:0.00,avgBuyin:4310000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:178,name:'KANIE RYUJI',nameJa:'蟹江 竜児',visits:1,lastVisit:'2024-06-15',totalRolling:0,rate:0.00,avgBuyin:4310000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:179,name:'MAKIMO TAKUMA',nameJa:'牧本 拓真',visits:1,lastVisit:'2024-06-27',totalRolling:0,rate:0.00,avgBuyin:8090000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  // ===== 2024年7月 =====
+  {id:180,name:'TACHIBANA YOSHIKAZU',nameJa:'橘 芳和',visits:1,lastVisit:'2024-07-08',totalRolling:5780000,rate:0.00,avgBuyin:4190000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:181,name:'NAKAGAWA SHOTA',nameJa:'中川 翔太',visits:1,lastVisit:'2024-07-15',totalRolling:8400000,rate:0.00,avgBuyin:4250000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:182,name:'NAKAGAWA YUKA',nameJa:'中川 友香',visits:1,lastVisit:'2024-07-15',totalRolling:5700000,rate:0.00,avgBuyin:4250000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:183,name:'TAKENAKA MASAYUKI',nameJa:'竹中 正幸',visits:1,lastVisit:'2024-07-28',totalRolling:35480000,rate:0.00,avgBuyin:12400000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'HAYATT利用。'},
+  {id:184,name:'AKAHOSHI RYOTARO',nameJa:'赤星 亮太郎',visits:1,lastVisit:'2024-07-28',totalRolling:1307800000,rate:0.00,avgBuyin:88700000,selfPay:false,tier:'VVIP',
+   traits:{sociability:6,riskAppetite:10,emotion:6,vipMind:9,priceSens:1,loyalty:2,referral:2,frequency:1},notes:'超高額ローリング13億₩。ART PARADISO DELUXE SUITE利用。要最優先対応。'},
+  {id:185,name:'AKAHOSHI KANA',nameJa:'赤星 香菜',visits:1,lastVisit:'2024-07-28',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'女性顧客。ART PARADISO利用。赤星亮太郎と同伴。'},
+  {id:186,name:'ETO TAKUYA',nameJa:'江藤 卓也',visits:1,lastVisit:'2024-07-28',totalRolling:61700000,rate:0.00,avgBuyin:88700000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:2,frequency:1},notes:'ART PARADISO利用。'},
+  {id:187,name:'OKADA NAOYA',nameJa:'岡田 直也',visits:1,lastVisit:'2024-07-28',totalRolling:7030000,rate:0.00,avgBuyin:4430000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  // ===== 2024年8月 =====
+  {id:188,name:'OKUBO YUKI',nameJa:'大久保 勇志',visits:1,lastVisit:'2024-08-06',totalRolling:2413250000,rate:0.00,avgBuyin:76065000,selfPay:false,tier:'VVIP',
+   traits:{sociability:6,riskAppetite:10,emotion:6,vipMind:9,priceSens:1,loyalty:2,referral:3,frequency:1},notes:'超高額ローリング24億₩。DELUXE King。'},
+  {id:189,name:'OKUBO WAKANA',nameJa:'大久保 若菜',visits:2,lastVisit:'2024-08-29',totalRolling:38870000,rate:0.00,avgBuyin:8495000,selfPay:false,tier:'Silver',
+   visitHistory:['2024-08-06','2024-08-29'],
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:'女性顧客。大久保勇志と同伴。'},
+  {id:190,name:'OKUBO HINANO',nameJa:'大久保 日菜乃',visits:2,lastVisit:'2024-08-29',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   visitHistory:['2024-08-06','2024-08-29'],
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:3,referral:3,frequency:2},notes:'女性顧客。'},
+  {id:191,name:'OKUBO ISSA',nameJa:'大久保 一颯',visits:2,lastVisit:'2024-08-29',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   visitHistory:['2024-08-06','2024-08-29'],
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:3,referral:2,frequency:2},notes:''},
+  {id:192,name:'HARATSUKA YOSHIMITSU',nameJa:'原塚 義光',visits:1,lastVisit:'2024-08-06',totalRolling:47900000,rate:0.00,avgBuyin:14015000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:193,name:'HARATSUKA MIUMI',nameJa:'原塚 美海',visits:1,lastVisit:'2024-08-06',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:194,name:'HARATSUKA EMIHO',nameJa:'原塚 恵美穂',visits:1,lastVisit:'2024-08-06',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:195,name:'HARATSUKA KONAMI',nameJa:'原塚 小波',visits:1,lastVisit:'2024-08-06',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:196,name:'HARATSUKA UMINA',nameJa:'原塚 海菜',visits:1,lastVisit:'2024-08-06',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:197,name:'FUJII AKIHIRO',nameJa:'藤井 あきひろ',visits:1,lastVisit:'2024-08-18',totalRolling:164886000,rate:0.00,avgBuyin:47500000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:2,referral:3,frequency:1},notes:'高額プレイヤー。'},
+  {id:198,name:'ARAI RINA',nameJa:'新井 李奈',visits:1,lastVisit:'2024-08-18',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:199,name:'TAKAHARA MASATO',nameJa:'田原 雅人',visits:1,lastVisit:'2024-08-16',totalRolling:13700000,rate:0.00,avgBuyin:9110000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:200,name:'TSUZAKI KATSUYA',nameJa:'津崎 克也',visits:1,lastVisit:'2024-08-21',totalRolling:39270000,rate:0.00,avgBuyin:13180000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'GRAND PREMIER DELUXE利用。'},
+  {id:201,name:'NAKAO GEN',nameJa:'中尾 元',visits:1,lastVisit:'2024-08-22',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'ソウルホテル利用。'},
+  {id:202,name:'OKUBO YUJI',nameJa:'大久保 裕二',visits:1,lastVisit:'2024-08-29',totalRolling:42270000,rate:0.00,avgBuyin:9080000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'PREMIER DELUXE Twin利用。'},
+  {id:203,name:'KAMIYA YUNA',nameJa:'神谷 結菜',visits:1,lastVisit:'2024-08-29',totalRolling:0,rate:0.00,avgBuyin:1360000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:204,name:'TANAKA CHIHIRO',nameJa:'田中 千尋',visits:1,lastVisit:'2024-08-29',totalRolling:310000,rate:0.00,avgBuyin:1360000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'PREMIER DELUXE Twin利用。'},
+  // ===== 2025年1月 =====
+  {id:205,name:'HORIBIE MAYUMI',nameJa:'堀部 真由美',visits:1,lastVisit:'2025-01-02',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。堀部武元と同伴。'},
+  {id:206,name:'HORIBIE YUTO',nameJa:'堀部 裕斗',visits:1,lastVisit:'2025-01-02',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'堀部武元と同伴。'},
+  {id:207,name:'ODAKA YUTAKA',nameJa:'小阪 豊',visits:1,lastVisit:'2025-01-05',totalRolling:25420000,rate:0.00,avgBuyin:5520000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:208,name:'SAKATA KAZUKI_25',nameJa:'坂田 和樹',visits:1,lastVisit:'2025-01-05',totalRolling:20470000,rate:0.00,avgBuyin:20470000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:209,name:'NAKAOKA SEIYA',nameJa:'中岡 星也',visits:1,lastVisit:'2025-01-03',totalRolling:10250000,rate:0.00,avgBuyin:4800000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:210,name:'KUROSAKA TAKAHIKO',nameJa:'黒阪 隆彦',visits:1,lastVisit:'2025-01-04',totalRolling:0,rate:0.00,avgBuyin:4580000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:211,name:'TOMIZAWA HITOSHI',nameJa:'富澤 仁',visits:1,lastVisit:'2025-01-05',totalRolling:0,rate:0.00,avgBuyin:4580000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'本人予約。'},
+  {id:212,name:'KAJITA YUSUKE',nameJa:'梶田 祐介',visits:1,lastVisit:'2025-01-04',totalRolling:0,rate:0.00,avgBuyin:1370000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'本人予約。'},
+  {id:213,name:'NISHIGAKI KANA',nameJa:'西垣 佳奈',visits:1,lastVisit:'2025-01-07',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。西垣隆也と同伴。'},
+  {id:214,name:'HASEGAWA JUN',nameJa:'長谷川 潤',visits:1,lastVisit:'2025-01-09',totalRolling:17720000,rate:0.00,avgBuyin:11330000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:215,name:'TOMITA YUTO',nameJa:'冨田 勇斗',visits:1,lastVisit:'2025-01-11',totalRolling:0,rate:0.00,avgBuyin:7230000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:216,name:'ABE NORIKO',nameJa:'阿部 法子',visits:1,lastVisit:'2025-01-11',totalRolling:5070000,rate:0.00,avgBuyin:4330000,selfPay:true,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。本人予約。'},
+  {id:217,name:'KIMURA MASASHI',nameJa:'木村 将志',visits:1,lastVisit:'2025-01-13',totalRolling:160000,rate:0.00,avgBuyin:600000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:'本人予約。'},
+  {id:218,name:'TAKEUCHI NAOTO',nameJa:'竹内 直人',visits:1,lastVisit:'2025-01-13',totalRolling:5400000,rate:0.00,avgBuyin:5000000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'GRAND HYATT利用。本人予約。'},
+  {id:219,name:'YAGURA TOKUMASA',nameJa:'矢倉 徳政',visits:1,lastVisit:'2025-01-12',totalRolling:14310000,rate:0.00,avgBuyin:9000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:220,name:'MIYAGAWA SHUNSUKE',nameJa:'宮川 俊介',visits:1,lastVisit:'2025-01-14',totalRolling:8730000,rate:0.00,avgBuyin:4330000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:221,name:'NAGAOKA KIMI',nameJa:'長岡 きみ',visits:1,lastVisit:'2025-01-14',totalRolling:10440000,rate:0.00,avgBuyin:4530000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:222,name:'YOSHIMURA SHOJI',nameJa:'吉村 松治',visits:1,lastVisit:'2025-01-18',totalRolling:11280000,rate:0.00,avgBuyin:4570000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:223,name:'SUZUKI DAICHI',nameJa:'鈴木 大智',visits:1,lastVisit:'2025-01-21',totalRolling:185510000,rate:0.00,avgBuyin:4560000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'DELUXE TERRACE Twin利用。高ローリング。'},
+  {id:224,name:'MIDORIKAWA KIRARA',nameJa:'緑川 綺羅々',visits:1,lastVisit:'2025-01-17',totalRolling:53660000,rate:0.00,avgBuyin:4560000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  // ===== 2025年2月 =====
+  {id:225,name:'GUNJI KAI',nameJa:'郡司 海',visits:1,lastVisit:'2025-02-02',totalRolling:11100000,rate:0.00,avgBuyin:4620000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:226,name:'NAGAO YUJIRO',nameJa:'長尾 裕次郎',visits:1,lastVisit:'2025-02-03',totalRolling:102200000,rate:0.00,avgBuyin:46200000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:2,referral:3,frequency:1},notes:'高額。PREMIER DELUXE Twin利用。'},
+  {id:227,name:'OKUBAYASHI JUN',nameJa:'奥林 潤',visits:1,lastVisit:'2025-02-03',totalRolling:5900000,rate:0.00,avgBuyin:5000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:228,name:'OGIWARA TATSUKI',nameJa:'荻原 龍季',visits:1,lastVisit:'2025-02-07',totalRolling:7250000,rate:0.00,avgBuyin:4650000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:229,name:'FUNAKI YUKI',nameJa:'船木 裕季',visits:1,lastVisit:'2025-02-08',totalRolling:7300000,rate:0.00,avgBuyin:4700000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:230,name:'KAWAUCHI MASAHIRO',nameJa:'川内 正弘',visits:1,lastVisit:'2025-02-08',totalRolling:6800000,rate:0.00,avgBuyin:4700000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:231,name:'HITOTSUYANAGI KAZUKI',nameJa:'一柳 和希',visits:1,lastVisit:'2025-02-10',totalRolling:1580000,rate:0.00,avgBuyin:940000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:232,name:'FUJIEDA YUJI',nameJa:'藤枝 裕二',visits:1,lastVisit:'2025-02-11',totalRolling:940000,rate:0.00,avgBuyin:940000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:233,name:'SHOGURI KAZUHITO',nameJa:'正栗 和人',visits:1,lastVisit:'2025-02-13',totalRolling:34600000,rate:0.00,avgBuyin:15000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'GRAND PREMIER DELUXE TERRACE利用。'},
+  {id:234,name:'SUDA YUJI',nameJa:'須田 裕二',visits:1,lastVisit:'2025-02-10',totalRolling:84290000,rate:0.00,avgBuyin:23900000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:235,name:'FUJINO AKIRA',nameJa:'藤野 明',visits:1,lastVisit:'2025-02-10',totalRolling:14580000,rate:0.00,avgBuyin:4940000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:236,name:'TAI MASAKAZU',nameJa:'田井 正和',visits:1,lastVisit:'2025-02-10',totalRolling:200000,rate:0.00,avgBuyin:3200000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:237,name:'HARA RYUTARO',nameJa:'原 龍太郎',visits:1,lastVisit:'2025-02-10',totalRolling:22990000,rate:0.00,avgBuyin:4700000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:238,name:'UDA YUTO',nameJa:'宇田 裕斗',visits:1,lastVisit:'2025-02-10',totalRolling:104120000,rate:0.00,avgBuyin:18800000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'宇田翔太と関連。'},
+  {id:239,name:'KAWASHIMA RITO',nameJa:'川島 理人',visits:1,lastVisit:'2025-02-11',totalRolling:5710000,rate:0.00,avgBuyin:4710000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'川島新平と関連。'},
+  {id:240,name:'YAMAUCHI RYUTO',nameJa:'山内 隆人',visits:1,lastVisit:'2025-02-12',totalRolling:63280000,rate:0.00,avgBuyin:19280000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:241,name:'NAKAZIMA RYO',nameJa:'中島 亮',visits:1,lastVisit:'2025-02-03',totalRolling:24000000,rate:0.00,avgBuyin:4700000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:242,name:'KURITA YUSHI',nameJa:'栗田 裕志',visits:1,lastVisit:'2025-02-03',totalRolling:32300000,rate:0.00,avgBuyin:4700000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:243,name:'FUJITA TAKURO',nameJa:'藤田 拓郎',visits:1,lastVisit:'2025-02-03',totalRolling:49780000,rate:0.00,avgBuyin:4700000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:244,name:'ONAGI MAYUKO',nameJa:'小薙 真優子',visits:1,lastVisit:'2025-02-07',totalRolling:22230000,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:245,name:'SANO HIKARU',nameJa:'佐野 光',visits:1,lastVisit:'2025-02-07',totalRolling:29800000,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:246,name:'SAGAMORI YUKI',nameJa:'相模 祐希',visits:1,lastVisit:'2025-02-07',totalRolling:21650000,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:247,name:'HORIKAWA FUMIYA',nameJa:'堀川 文也',visits:1,lastVisit:'2025-02-07',totalRolling:29020000,rate:0.00,avgBuyin:9520000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:248,name:'TOKOO SHUNSUKE',nameJa:'床尾 俊介',visits:1,lastVisit:'2025-02-01',totalRolling:103560000,rate:0.00,avgBuyin:46850000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:2,referral:3,frequency:1},notes:'高額プレイヤー。'},
+  {id:249,name:'TOKOO MANA',nameJa:'床尾 真奈',visits:1,lastVisit:'2025-02-01',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。床尾俊介と同伴。'},
+  // ===== 2025年3月 新規 =====
+  {id:250,name:'TAKAMURA REO',nameJa:'高村 玲緒',visits:1,lastVisit:'2025-03-02',totalRolling:13390000,rate:0.00,avgBuyin:7120000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:251,name:'HAMAGUCHI SAYAKA',nameJa:'浜口 さやか',visits:1,lastVisit:'2025-03-08',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:252,name:'SASO KAZUHIRO',nameJa:'佐曽 和弘',visits:1,lastVisit:'2025-03-07',totalRolling:80580000,rate:0.00,avgBuyin:25410000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:253,name:'KOSHIRO AYAKA',nameJa:'小城 彩花',visits:1,lastVisit:'2025-03-07',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:254,name:'KOBAYASHI KANJI',nameJa:'小林 寛治',visits:1,lastVisit:'2025-03-17',totalRolling:173830000,rate:0.00,avgBuyin:39080000,selfPay:true,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:2,referral:3,frequency:1},notes:'お客様負担。高額。'},
+  {id:255,name:'UMEDA RANBU',nameJa:'梅田 蘭武',visits:1,lastVisit:'2025-03-13',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:256,name:'NISHIBAYASHI YUI',nameJa:'西林 結',visits:1,lastVisit:'2025-03-17',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:257,name:'BITO YUSUKE',nameJa:'尾藤 裕介',visits:1,lastVisit:'2025-03-18',totalRolling:25890000,rate:0.00,avgBuyin:4745000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:258,name:'NISHIBAYASHI YUMA',nameJa:'西林 裕馬',visits:1,lastVisit:'2025-03-18',totalRolling:24440000,rate:0.00,avgBuyin:8195000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:259,name:'OOCHI MASAHIRO',nameJa:'大地 正弘',visits:1,lastVisit:'2025-03-20',totalRolling:184150000,rate:0.00,avgBuyin:54860000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:2,referral:3,frequency:1},notes:'高額プレイヤー。'},
+  {id:260,name:'WATANABE KANA',nameJa:'渡辺 佳奈',visits:1,lastVisit:'2025-03-24',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:261,name:'KORI SHUNSUKE',nameJa:'郡 俊介',visits:1,lastVisit:'2025-03-22',totalRolling:27890000,rate:0.00,avgBuyin:5000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:262,name:'OKADA ICHIRO',nameJa:'岡田 一郎',visits:1,lastVisit:'2025-03-26',totalRolling:11080000,rate:0.00,avgBuyin:4780000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:263,name:'HAYASHI NAOHIDE',nameJa:'林 直秀',visits:1,lastVisit:'2025-03-31',totalRolling:47900000,rate:0.00,avgBuyin:9250000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:264,name:'OGA KENYA',nameJa:'大賀 賢也',visits:1,lastVisit:'2025-04-02',totalRolling:0,rate:0.00,avgBuyin:5930000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:265,name:'ISHIBASHI YURI',nameJa:'石橋 裕理',visits:1,lastVisit:'2025-04-02',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  // ===== 2025年4月 新規 =====
+  {id:266,name:'YABUTSUNE KIMITO',nameJa:'薮常 公人',visits:1,lastVisit:'2025-04-05',totalRolling:75600000,rate:0.00,avgBuyin:19340000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:267,name:'MATSUSHITA KAKI',nameJa:'松下 柿',visits:1,lastVisit:'2025-04-06',totalRolling:20050000,rate:0.00,avgBuyin:4880000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:268,name:'UENO KANTA',nameJa:'上野 寛太',visits:1,lastVisit:'2025-04-10',totalRolling:23510000,rate:0.00,avgBuyin:11650000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:269,name:'FUKUO HAYATE',nameJa:'福尾 颯',visits:1,lastVisit:'2025-04-12',totalRolling:14000000,rate:0.00,avgBuyin:4860000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:270,name:'MATSUNO MASAKI',nameJa:'松野 正樹',visits:1,lastVisit:'2025-04-10',totalRolling:9840000,rate:0.00,avgBuyin:4860000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:271,name:'TANAKA KAZUYOSHI',nameJa:'田中 和義',visits:1,lastVisit:'2025-04-11',totalRolling:93190000,rate:0.00,avgBuyin:8370000,selfPay:true,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'本人予約。'},
+  {id:272,name:'MITSUISHI SHOTARO',nameJa:'三石 翔太郎',visits:1,lastVisit:'2025-04-19',totalRolling:20100000,rate:0.95,avgBuyin:7600000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:273,name:'DOBASHI HIROSHI_25',nameJa:'土橋 浩(4月)',visits:1,lastVisit:'2025-04-20',totalRolling:76230000,rate:0.00,avgBuyin:14730000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'INSPIRE来店。'},
+  {id:274,name:'HIRAJO KAZUMA',nameJa:'平城 一馬',visits:1,lastVisit:'2025-04-22',totalRolling:9010000,rate:0.00,avgBuyin:4940000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'お客様負担。'},
+  {id:275,name:'DAIKOKU HIROTO',nameJa:'大黒 裕人',visits:1,lastVisit:'2025-04-22',totalRolling:19440000,rate:0.00,avgBuyin:8290000,selfPay:true,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'お客様負担。'},
+  {id:276,name:'SUZUKI MAKOTO',nameJa:'鈴木 誠',visits:1,lastVisit:'2025-04-22',totalRolling:2640000,rate:0.00,avgBuyin:980000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:'お客様負担。'},
+  {id:277,name:'NAKAO TOMOKI',nameJa:'中尾 智樹',visits:1,lastVisit:'2025-04-22',totalRolling:980000,rate:0.00,avgBuyin:980000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:278,name:'TAKAO KOKI',nameJa:'高尾 光希',visits:1,lastVisit:'2025-04-22',totalRolling:1000000,rate:0.00,avgBuyin:1000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:279,name:'ITONAGA TOMOYA',nameJa:'糸永 智也',visits:1,lastVisit:'2025-04-23',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:280,name:'YANAGIDA RYUHEI',nameJa:'柳田 龍平',visits:1,lastVisit:'2025-04-27',totalRolling:34750000,rate:0.00,avgBuyin:9850000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:281,name:'KURATA NARUMI',nameJa:'倉田 成美',visits:1,lastVisit:'2025-04-27',totalRolling:14020000,rate:0.00,avgBuyin:4920000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:282,name:'MATSUO RYOSEI',nameJa:'松尾 良成',visits:1,lastVisit:'2025-04-28',totalRolling:37350000,rate:0.00,avgBuyin:9850000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  // ===== 2025年5月 新規 =====
+  {id:283,name:'MAEGAWA TOMONORI',nameJa:'前川 友則',visits:1,lastVisit:'2025-05-05',totalRolling:76620000,rate:0.00,avgBuyin:11160000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:284,name:'MATSUZAKI KAZUHIRO',nameJa:'松崎 和浩',visits:1,lastVisit:'2025-05-06',totalRolling:24400000,rate:0.00,avgBuyin:6790000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:285,name:'MATSUZAKI SHUSUKE',nameJa:'松崎 秀介',visits:1,lastVisit:'2025-05-06',totalRolling:34000000,rate:0.00,avgBuyin:9290000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:286,name:'MATSUZAKI YUKI',nameJa:'松崎 裕希',visits:1,lastVisit:'2025-05-06',totalRolling:39540000,rate:0.00,avgBuyin:6980000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:287,name:'ARAI MAYA',nameJa:'新井 麻耶',visits:1,lastVisit:'2025-05-06',totalRolling:243400000,rate:0.00,avgBuyin:2910000,selfPay:false,tier:'VIP',
+   traits:{sociability:7,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:2,referral:3,frequency:1},notes:'女性顧客。超高額ローリング。INSPIRE利用。'},
+  {id:288,name:'HIRATA FUCHI',nameJa:'平田 富治',visits:1,lastVisit:'2025-05-10',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:289,name:'KUWAJIMA TAIJI',nameJa:'桑島 泰治',visits:1,lastVisit:'2025-05-12',totalRolling:168420000,rate:0.00,avgBuyin:16180000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'高額ローリング。'},
+  {id:290,name:'SUMIYA SATOSHI',nameJa:'住谷 聡',visits:1,lastVisit:'2025-05-13',totalRolling:17480000,rate:0.00,avgBuyin:4730000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:291,name:'MINEMATSU NORIFUMI',nameJa:'峰松 紀文',visits:1,lastVisit:'2025-05-15',totalRolling:3380000,rate:0.00,avgBuyin:1710000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:7,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:292,name:'TOMINAGA YUMA_25',nameJa:'冨永 裕馬(5月)',visits:1,lastVisit:'2025-05-16',totalRolling:32600000,rate:0.00,avgBuyin:5000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:293,name:'TAKADA RIONA',nameJa:'高田 莉央奈',visits:1,lastVisit:'2025-05-18',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:true,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性顧客。お客様負担。'},
+  {id:294,name:'TAKADA AIKA',nameJa:'高田 愛佳',visits:1,lastVisit:'2025-05-17',totalRolling:21380000,rate:0.00,avgBuyin:9350000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性顧客。'},
+  {id:295,name:'TOMIZAWA_HITOSHI_25',nameJa:'富澤 仁(5月)',visits:1,lastVisit:'2025-05-24',totalRolling:29920000,rate:0.00,avgBuyin:11640000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:296,name:'SUGIMOTO YUICHI',nameJa:'杉本 裕一',visits:1,lastVisit:'2025-05-24',totalRolling:21790000,rate:0.00,avgBuyin:9440000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:297,name:'SAKUMA RAN',nameJa:'佐久間 蘭',visits:1,lastVisit:'2025-05-25',totalRolling:5820000,rate:0.00,avgBuyin:4720000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:4,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:298,name:'GONDA KAZUKI',nameJa:'権田 一樹',visits:1,lastVisit:'2025-05-26',totalRolling:31070000,rate:0.00,avgBuyin:4720000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:''},
+  {id:299,name:'ISO AKIHIRO',nameJa:'磯 明広',visits:1,lastVisit:'2025-05-26',totalRolling:12320000,rate:0.00,avgBuyin:4720000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:300,name:'MAKI YUJI',nameJa:'牧 裕二',visits:1,lastVisit:'2025-05-02',totalRolling:4600000,rate:0.00,avgBuyin:5000000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:4,priceSens:6,loyalty:2,referral:2,frequency:1},notes:'お客様負担。'},
+  // ===== CSV 2025年10月 新規 =====
+  {id:301,name:'IZUTSU OKA',nameJa:'出石 岡',visits:1,lastVisit:'2025-10-21',totalRolling:108770000,rate:0.00,avgBuyin:50620000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'TEL:07014107506 EMAIL:oz.2018.04.30@gmail.com INSPIRE利用。'},
+  {id:302,name:'MIZUNO YUKA',nameJa:'水野 裕香',visits:1,lastVisit:'2025-10-21',totalRolling:11690000,rate:0.00,avgBuyin:9190000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性。TEL:09018322941 EMAIL:y27.k-16ms@docomo.ne.jp INSPIRE利用。'},
+  {id:303,name:'OKAWA SHINYA',nameJa:'大川 慎也',visits:1,lastVisit:'2025-10-22',totalRolling:14790000,rate:0.00,avgBuyin:4590000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:09025106931 EMAIL:spc.shinya1@icloud.com'},
+  {id:304,name:'MARUYAMA HIROSHI',nameJa:'丸山 浩',visits:1,lastVisit:'2025-10-22',totalRolling:10740000,rate:0.00,avgBuyin:4590000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:305,name:'NAKAYAMA TADASHI',nameJa:'中山 正',visits:1,lastVisit:'2025-10-22',totalRolling:9340000,rate:0.00,avgBuyin:4590000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:''},
+  {id:306,name:'KODAMA KEIICHIRO',nameJa:'児玉 恵一郎',visits:1,lastVisit:'2025-10-26',totalRolling:75920000,rate:0.00,avgBuyin:18320000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'TEL:09035759397 EMAIL:kkrevekk@gmail.com'},
+  {id:307,name:'KATO RYOHEI',nameJa:'加藤 亮平',visits:1,lastVisit:'2025-10-26',totalRolling:25000000,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:09089836969 EMAIL:ryohey0607@gmail.com'},
+  {id:308,name:'OKAMOTO KAZUKI',nameJa:'岡本 和樹',visits:1,lastVisit:'2025-10-26',totalRolling:117210000,rate:0.00,avgBuyin:9160000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'TEL:08060806051 EMAIL:kazuki.okamoto.1128@gmail.com 高ローリング。'},
+  {id:309,name:'OOKAWA HIDEYASU',nameJa:'大川 秀康',visits:2,lastVisit:'2025-11-05',totalRolling:10200000,rate:0.00,avgBuyin:4590000,selfPay:false,tier:'Bronze',
+   visitHistory:['2025-10-29','2025-11-05'],
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:2,frequency:2},notes:'TEL:07089448899 EMAIL:japansign@me.com'},
+  {id:310,name:'GUSHI SOTA',nameJa:'具志 壮太',visits:2,lastVisit:'2025-11-02',totalRolling:40580000,rate:0.00,avgBuyin:18980000,selfPay:false,tier:'Silver',
+   visitHistory:['2025-10-31','2025-11-02'],
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:'TEL:090-8529-9494 EMAIL:osaka.univ.fuuta@gmail.com'},
+  {id:311,name:'KAMISHIMA SHIMPEI',nameJa:'神島 慎平',visits:1,lastVisit:'2025-10-30',totalRolling:6900000,rate:0.00,avgBuyin:10100000,selfPay:true,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:07023129252 EMAIL:sskamishima@biz.nifty.jp お客様負担。'},
+  // ===== CSV 2025年11月 新規 =====
+  {id:312,name:'KOGE YUYA',nameJa:'古閑 裕也',visits:3,lastVisit:'2025-11-30',totalRolling:75120000,rate:0.00,avgBuyin:7503000,selfPay:false,tier:'Gold',
+   visitHistory:['2025-11-08','2025-11-19','2025-11-29'],
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:4,referral:3,frequency:4},notes:'TEL:09066524591 EMAIL:yuya.koge@arinos.co.jp 短期間3回来店。'},
+  {id:313,name:'TAKEDA KOTA',nameJa:'武田 航太',visits:2,lastVisit:'2025-11-19',totalRolling:131870000,rate:0.00,avgBuyin:6890000,selfPay:false,tier:'VIP',
+   visitHistory:['2025-11-11','2025-11-18'],
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:3,referral:3,frequency:2},notes:'TEL:08045614545 EMAIL:12063939kt@gmail.com 高ローリング。'},
+  {id:314,name:'TAKASHIMA HARUKAZU',nameJa:'高島 春和',visits:1,lastVisit:'2025-11-13',totalRolling:10900000,rate:0.00,avgBuyin:5000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:08071910202 EMAIL:harukazu1973@gmail.com'},
+  {id:315,name:'JO HIROTAKA',nameJa:'城 浩隆',visits:1,lastVisit:'2025-11-13',totalRolling:15300000,rate:0.00,avgBuyin:9000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:09032150833 EMAIL:flc0702@gmail.com'},
+  {id:316,name:'GENDA MASANORI',nameJa:'源田 正紀',visits:1,lastVisit:'2025-11-13',totalRolling:149630000,rate:0.00,avgBuyin:6470000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'TEL:070-8569-0987 EMAIL:mzksanpokemon@gmail.com 超高ローリング。'},
+  {id:317,name:'UENO MAHIRO',nameJa:'上野 真尋',visits:1,lastVisit:'2025-11-13',totalRolling:12100000,rate:0.00,avgBuyin:4610000,selfPay:false,tier:'Bronze',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:07084604138 EMAIL:meibogangtian364@gmail.com'},
+  {id:318,name:'FUKE ARYU',nameJa:'福家 阿龍',visits:1,lastVisit:'2025-11-16',totalRolling:140120000,rate:0.00,avgBuyin:20220000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'TEL:09027801295 EMAIL:Adlagon3691@gmail.com 高ローリング。'},
+  {id:319,name:'UEDA YASUO',nameJa:'上田 康夫',visits:1,lastVisit:'2025-11-16',totalRolling:25210000,rate:0.00,avgBuyin:9270000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:09045720230 EMAIL:rabb.25.40@gmail.com'},
+  {id:320,name:'OKANO KOJI',nameJa:'岡野 孝二',visits:1,lastVisit:'2025-11-16',totalRolling:32470000,rate:0.00,avgBuyin:9270000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:09063179460 EMAIL:okano0636@icloud.com'},
+  {id:321,name:'YOTSUJI TAKESHI',nameJa:'四辻 健',visits:1,lastVisit:'2025-11-16',totalRolling:29630000,rate:0.00,avgBuyin:9270000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:09071216323 EMAIL:yotsuji09071216323@gmail.com'},
+  {id:322,name:'SHIGETA YUSUKE',nameJa:'重田 裕介',visits:1,lastVisit:'2025-11-19',totalRolling:129080000,rate:0.00,avgBuyin:9180000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:6,priceSens:4,loyalty:2,referral:3,frequency:1},notes:'TEL:09030138222 EMAIL:shigeta.yuusuke@gmail.com 高ローリング。'},
+  {id:323,name:'YAMASHITA SHINGO',nameJa:'山下 慎吾',visits:1,lastVisit:'2025-11-19',totalRolling:33480000,rate:0.00,avgBuyin:5960000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:09079803388 EMAIL:yamaken.1100@softbank.ne.jp'},
+  {id:324,name:'TAMURA KEISUKE',nameJa:'田村 恵介',visits:1,lastVisit:'2025-11-24',totalRolling:28000000,rate:0.00,avgBuyin:5000000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:08041440901 EMAIL:keisuke.tamura09@gmail.com'},
+  {id:325,name:'KAWAGUCHI MAYUMI',nameJa:'川口 真弓',visits:1,lastVisit:'2025-11-24',totalRolling:10250000,rate:0.00,avgBuyin:5000000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性。TEL:090-9620-1019 EMAIL:mayumi.k.1019@gmail.com'},
+  {id:326,name:'AMAN KEIJIRO',nameJa:'阿万 恵二郎',visits:1,lastVisit:'2025-11-29',totalRolling:25100000,rate:0.00,avgBuyin:4560000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:08033184422 EMAIL:aaa33184422@gmail.com'},
+  {id:327,name:'UMEZAWA YUI',nameJa:'梅澤 結',visits:1,lastVisit:'2025-11-30',totalRolling:28580000,rate:0.00,avgBuyin:9110000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性。TEL:09024779327 EMAIL:tnkniu8262@yahoo.co.jp'},
+  {id:328,name:'SANO HIROMI',nameJa:'佐野 裕美',visits:1,lastVisit:'2025-11-30',totalRolling:26150000,rate:0.00,avgBuyin:9110000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:090-8123-2596 EMAIL:t2111869@icloud.com'},
+  // ===== CSV 2025年12月 新規 =====
+  {id:329,name:'KITABATA DAIKI',nameJa:'北端 大樹',visits:1,lastVisit:'2025-12-02',totalRolling:53060000,rate:0.00,avgBuyin:9160000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:080-1415-6155 EMAIL:kdyki777@gmail.com'},
+  {id:330,name:'MIYAZATO SATOSHI',nameJa:'宮里 聡',visits:1,lastVisit:'2025-12-03',totalRolling:47610000,rate:0.00,avgBuyin:13810000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:08013343443 EMAIL:sea_green0422@yahoo.co.jp 食事10万₩まで。'},
+  {id:331,name:'MORIKAWA ATSUSHI',nameJa:'森川 篤',visits:1,lastVisit:'2025-12-07',totalRolling:255700000,rate:0.00,avgBuyin:18500000,selfPay:false,tier:'VIP',
+   traits:{sociability:6,riskAppetite:8,emotion:5,vipMind:7,priceSens:3,loyalty:2,referral:3,frequency:1},notes:'TEL:09098649009 EMAIL:moriatsu09999@gmail.com ホテルグレードアップ。超高ローリング。'},
+  {id:332,name:'MORIKAWA ERINA',nameJa:'森川 恵里奈',visits:1,lastVisit:'2025-12-07',totalRolling:72710000,rate:0.00,avgBuyin:18500000,selfPay:false,tier:'Gold',
+   traits:{sociability:7,riskAppetite:6,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性。TEL:08047043885 EMAIL:enachibi1205@icloud.com 森川篤と同伴。'},
+  {id:333,name:'SHUTO NAOTO',nameJa:'首藤 直人',visits:1,lastVisit:'2025-12-10',totalRolling:42210000,rate:0.00,avgBuyin:18460000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:080 3158 0424 EMAIL:nao-nao.19950424@i.softbank.jp'},
+  {id:334,name:'KUBOTA MAYU',nameJa:'久保田 真由',visits:1,lastVisit:'2025-12-10',totalRolling:16050000,rate:0.00,avgBuyin:7380000,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性。TEL:08044849675 EMAIL:mayukubota000@gmail.com'},
+  {id:335,name:'WATANABE HIROKI',nameJa:'渡辺 洋樹',visits:1,lastVisit:'2025-12-16',totalRolling:21760000,rate:0.00,avgBuyin:9220000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:2,frequency:1},notes:'TEL:08029058394 EMAIL:sclass0404@icloud.com'},
+  {id:336,name:'MATSUDA KIYOHISA',nameJa:'松田 清久',visits:1,lastVisit:'2025-12-16',totalRolling:29400000,rate:0.00,avgBuyin:9220000,selfPay:false,tier:'Silver',
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:09054847702 EMAIL:kiyohisa.m@icloud.com オーリーバイイン。'},
+  {id:337,name:'SUMITAKU IKUO',nameJa:'住宅 郁夫',visits:2,lastVisit:'2025-12-23',totalRolling:58710000,rate:0.00,avgBuyin:9180000,selfPay:false,tier:'Gold',
+   visitHistory:['2025-12-16','2025-12-22'],
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:3,frequency:2},notes:'TEL:090-4670-1234 EMAIL:ikuo.s.1980@gmail.com 短期間リピート。'},
+  {id:338,name:'OMI MINAKO',nameJa:'近江 美奈子',visits:1,lastVisit:'2025-12-22',totalRolling:28640000,rate:0.00,avgBuyin:5540000,selfPay:false,tier:'Silver',
+   traits:{sociability:7,riskAppetite:5,emotion:6,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'女性。TEL:08027560777 EMAIL:kurukuru0777@icloud.com'},
+  {id:339,name:'NORITAKE SATORU',nameJa:'則武 悟',visits:1,lastVisit:'2025-12-27',totalRolling:62610000,rate:0.00,avgBuyin:9180000,selfPay:false,tier:'Gold',
+   traits:{sociability:6,riskAppetite:6,emotion:5,vipMind:5,priceSens:5,loyalty:2,referral:3,frequency:1},notes:'TEL:09091886388 EMAIL:noritake3106@gmail.com オーリーバイイン。'},
+  {id:340,name:'SATO SUSUMU',nameJa:'佐藤 進',visits:2,lastVisit:'2025-12-29',totalRolling:38000000,rate:0.00,avgBuyin:7000000,selfPay:false,tier:'Silver',
+   visitHistory:['2025-12-26','2025-12-27'],
+   traits:{sociability:6,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:3,referral:2,frequency:2},notes:'TEL:09099058063 EMAIL:sato0707susumu@gmail.com INSPIRE-OCEAN利用。連泊。'},
+  {id:341,name:'NIKADORI SAYAKA',nameJa:'二角 さやか',visits:1,lastVisit:'2025-12-14',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:'Bronze',
+   traits:{sociability:7,riskAppetite:4,emotion:6,vipMind:4,priceSens:6,loyalty:2,referral:3,frequency:1},notes:'女性。中場。TEL:090 4588 5538 EMAIL:nikakurosukiyanennn0530@gmail.com'}
+];
+
+// ==================== 食事サービス上限 ====================
+const MEAL_SERVICE = {
+  'VVIP': { limit: 0, label: 'VIPルーム飲食無料（上限なし）', color: 'var(--gold)' },
+  'VIP':  { limit: 300000, label: '₩300,000まで', color: 'var(--green)' },
+  'Gold': { limit: 200000, label: '₩200,000まで', color: '#f39c12' },
+  'Silver':{ limit: 100000, label: '₩100,000まで', color: 'var(--muted)' },
+  'Bronze':{ limit: 50000, label: '₩50,000まで', color: 'var(--muted)' }
+};
+function getMealBadge(tier){
+  const m=MEAL_SERVICE[tier]||MEAL_SERVICE['Bronze'];
+  return`<span class="badge" style="background:rgba(255,255,255,0.08);color:${m.color}">${m.label}</span>`;
+}
+
+// ==================== ユーティリティ ====================
+function fmt(n){return n.toLocaleString();}
+function fmtY(n){return'¥'+n.toLocaleString();}
+function fmtW(n){return'₩'+n.toLocaleString();}
+function fmtMan(n){
+  if(Math.abs(n)>=100000000)return(n/100000000).toFixed(1)+'億';
+  if(Math.abs(n)>=10000)return fmt(Math.round(n/10000))+'万';
+  return fmt(n);
+}
+function daysSince(d){return Math.floor((TODAY-new Date(d))/(864e5));}
+function statusBadge(d){
+  if(d<=30)return'<span class="badge badge-ok">アクティブ</span>';
+  if(d<=90)return'<span class="badge" style="background:rgba(241,196,15,0.2);color:#f1c40f">注意</span>';
+  if(d<=180)return'<span class="badge badge-alert">離脱リスク</span>';
+  return'<span class="badge" style="background:rgba(231,76,60,0.3);color:#e74c3c">休眠</span>';
+}
+function tierBadge(t){
+  const m={'VVIP':'badge-vvip','VIP':'badge-vip','Gold':'badge-gold','Silver':'badge-silver'};
+  return`<span class="badge ${m[t]||'badge-silver'}">${t}</span>`;
+}
+function flightCost(t){return t==='business'?120000:60000;}
+
+function showTab(id,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ==================== レーダーチャート描画 ====================
+function drawRadar(canvasId,traits,size){
+  const canvas=document.getElementById(canvasId);
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const w=size||280,h=size||280;
+  canvas.width=w;canvas.height=h;
+  const cx=w/2,cy=h/2,r=w/2-40;
+  const labels=['社交性','リスク志向','感情起伏','VIP意識','価格感度','ロイヤルティ','紹介力','プレイ頻度'];
+  const keys=['sociability','riskAppetite','emotion','vipMind','priceSens','loyalty','referral','frequency'];
+  const n=labels.length;
+  const angleStep=2*Math.PI/n;
+
+  ctx.clearRect(0,0,w,h);
+
+  // グリッド
+  for(let lv=2;lv<=10;lv+=2){
+    ctx.beginPath();
+    for(let i=0;i<=n;i++){
+      const a=-Math.PI/2+i*angleStep;
+      const x=cx+r*(lv/10)*Math.cos(a);
+      const y=cy+r*(lv/10)*Math.sin(a);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.stroke();
+  }
+
+  // 軸線
+  for(let i=0;i<n;i++){
+    const a=-Math.PI/2+i*angleStep;
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    ctx.strokeStyle='rgba(255,255,255,0.15)';ctx.stroke();
+  }
+
+  // データ
+  ctx.beginPath();
+  for(let i=0;i<=n;i++){
+    const idx=i%n;
+    const a=-Math.PI/2+idx*angleStep;
+    const v=(traits[keys[idx]]||0)/10;
+    const x=cx+r*v*Math.cos(a);
+    const y=cy+r*v*Math.sin(a);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.fillStyle='rgba(245,166,35,0.25)';ctx.fill();
+  ctx.strokeStyle='#f5a623';ctx.lineWidth=2;ctx.stroke();
+
+  // ドット
+  for(let i=0;i<n;i++){
+    const a=-Math.PI/2+i*angleStep;
+    const v=(traits[keys[i]]||0)/10;
+    ctx.beginPath();
+    ctx.arc(cx+r*v*Math.cos(a),cy+r*v*Math.sin(a),4,0,2*Math.PI);
+    ctx.fillStyle='#f5a623';ctx.fill();
+  }
+
+  // ラベル
+  ctx.font='11px Meiryo,sans-serif';ctx.fillStyle='#ecf0f1';ctx.textAlign='center';
+  for(let i=0;i<n;i++){
+    const a=-Math.PI/2+i*angleStep;
+    const lx=cx+(r+25)*Math.cos(a);
+    const ly=cy+(r+25)*Math.sin(a);
+    ctx.fillText(labels[i]+' ('+traits[keys[i]]+')',lx,ly+4);
+  }
+}
+
+// ==================== リピートスコア計算 ====================
+function calcRepeatScore(c){
+  const days=daysSince(c.lastVisit);
+  const maxRolling=Math.max(...CUSTOMERS.map(x=>x.totalRolling));
+
+  // 価値スコア（0-30）
+  const valueScore=Math.min(30,(c.totalRolling/maxRolling)*30);
+
+  // 離脱緊急度（0-30）：60-180日がスイートスポット
+  let urgencyScore=0;
+  if(days<=30)urgencyScore=5;
+  else if(days<=60)urgencyScore=15;
+  else if(days<=90)urgencyScore=25;
+  else if(days<=180)urgencyScore=30;
+  else if(days<=365)urgencyScore=20;
+  else urgencyScore=10;
+
+  // リピート確率（0-20）：過去の来店頻度ベース
+  const freqScore=Math.min(20,(c.visits/28)*20);
+
+  // 収益ポテンシャル（0-20）
+  const rate=c.rate>0?c.rate:0.85;
+  const revPerVisit=c.avgBuyin*JPY_KRW*rate/100*KRW_JPY;
+  const revScore=Math.min(20,(revPerVisit/1000000)*20);
+
+  return Math.round(valueScore+urgencyScore+freqScore+revScore);
+}
+
+function getRepeatMethod(c){
+  const days=daysSince(c.lastVisit);
+  const methods=[];
+  if(c.tier==='VVIP'||(c.totalRolling>500000000&&days>90)){
+    methods.push({method:'電話（社長直々）',tag:'method-phone'});
+    if(days>180)methods.push({method:'招待状送付',tag:'method-letter'});
+  }else if(days>120){
+    methods.push({method:'電話',tag:'method-phone'});
+    methods.push({method:'LINE/カカオ',tag:'method-line'});
+  }else if(days>60){
+    methods.push({method:'LINE/カカオ',tag:'method-line'});
+  }else{
+    methods.push({method:'メッセージ（軽め）',tag:'method-line'});
+  }
+  return methods;
+}
+
+function getRepeatOffer(c){
+  const days=daysSince(c.lastVisit);
+  // チップ額はティア固定制
+  const chipMap={VVIP:1000000,VIP:500000,Gold:300000,Silver:0,Bronze:0};
+  const chip=chipMap[c.tier]||0;
+  const chipStr=chip>0?`サービスチップ ${fmtW(chip)} + `:'';
+  const rebateStr='負けバック累進制(最大7%・上限100万₩)';
+  if(c.tier==='VVIP'&&days>120){
+    return`${chipStr}${rebateStr}`;
+  }
+  if(c.totalRolling>200000000&&days>90){
+    return`${chipStr}${rebateStr}`;
+  }
+  if(c.visits>=5&&days>60){
+    return`ロイヤルティ特典: ${chipStr}${rebateStr}`;
+  }
+  if(c.selfPay&&days>60){
+    return`自費来店感謝: ${chipStr}${rebateStr}`;
+  }
+  if(c.visits<=2&&days>60){
+    return`2回目来店特典: ${rebateStr}`;
+  }
+  if(days>180){
+    return`カムバック特典: ${chipStr}${rebateStr}`;
+  }
+  return`次回来店特典: ${chipStr}${rebateStr}`;
+}
+
+// ==================== TAB1: プラン損益 ====================
+function renderPlans(){
+  const avgHotel=22000;
+  let cards='',tbl='',loss='';
+  PLANS.forEach(p=>{
+    const fc=flightCost(p.flight),hc=avgHotel*p.nights,tc=fc+hc;
+    const r85=Math.round(p.rolling*0.0085*KRW_JPY),r14=Math.round(p.rolling*0.014*KRW_JPY);
+    const p85=r85-tc,p14=r14-tc,roi=tc>0?((p14/tc)*100).toFixed(0):'N/A';
+    const plKRW=Math.round(p.rolling*BACCARAT_EDGE),plJPY=Math.round(plKRW*KRW_JPY);
+    const lossP=((plJPY/p.buyin)*100).toFixed(1);
+
+    cards+=`<div class="card">
+      <div class="flex-between mb-8"><h3>${p.name}</h3><span style="color:var(--gold);font-weight:700">${fmtY(p.buyin)}</span></div>
+      <div class="text-sm text-muted mb-8">${p.note||'標準プラン'}</div><div class="divider"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.85em">
+        <div>フライト: <strong>${p.flight==='business'?'ビジネス':'エコノミー'}</strong></div>
+        <div>ホテル: <strong>${p.nights}泊</strong></div>
+        <div>ミニマムベット: <strong>${fmtW(p.minBet)}</strong></div>
+        <div>ローリング条件: <strong>${fmtW(p.rolling)}</strong></div>
+      </div><div class="divider"></div>
+      <div class="flex-between text-sm"><span>総コスト:</span><span class="negative">${fmtY(tc)}</span></div>
+      <div class="flex-between text-sm mt-8"><span>収益@1.40%:</span><span class="positive">${fmtY(r14)}</span></div>
+      <div class="flex-between mt-8" style="font-size:1.1em"><span><strong>利益@1.40%:</strong></span><span class="${p14>=0?'positive':'negative'}"><strong>${fmtY(p14)}</strong></span></div>
+      <div class="flex-between text-sm mt-8"><span>ROI:</span><span style="color:var(--gold)">${roi}%</span></div>
+      <div class="divider"></div>
+      <div class="text-sm text-muted">プレイヤー期待損失: ${fmtY(plJPY)}（バイインの${lossP}%）</div>
+    </div>`;
+
+    tbl+=`<tr><td><strong>${p.name}</strong></td><td>${fmtY(p.buyin)}</td><td>${fmtY(fc)}</td><td>${fmtY(hc)}</td><td><strong>${fmtY(tc)}</strong></td><td>${fmtW(p.rolling)}</td><td>${fmtY(r85)}</td><td>${fmtY(r14)}</td><td class="${p85>=0?'positive':'negative'}">${fmtY(p85)}</td><td class="${p14>=0?'positive':'negative'}">${fmtY(p14)}</td><td style="color:var(--gold)">${roi}%</td></tr>`;
+
+    loss+=`<tr><td><strong>${p.name}</strong>（${fmtY(p.buyin)}）</td><td>${fmtW(p.rolling)}</td><td>${fmtW(plKRW)}</td><td>${fmtY(plJPY)}</td><td>${lossP}%</td><td class="${parseFloat(lossP)<50?'positive':'negative'}">${parseFloat(lossP)<50?'余裕あり':'資金消耗リスク'}</td></tr>`;
+  });
+  document.getElementById('planCards').innerHTML=cards;
+  document.getElementById('planTable').innerHTML=tbl;
+  document.getElementById('playerLossTable').innerHTML=loss;
+}
+
+// ==================== TAB2: リピートターゲット ====================
+function filterCustomers(searchId,tierId,statusId){
+  const q=(document.getElementById(searchId)?.value||'').toLowerCase();
+  const tier=document.getElementById(tierId)?.value||'';
+  const status=document.getElementById(statusId)?.value||'';
+  return CUSTOMERS.filter(c=>{
+    if(q&&!(c.name.toLowerCase().includes(q)||(c.nameJa||'').includes(q)))return false;
+    if(tier&&c.tier!==tier)return false;
+    if(status){
+      const d=daysSince(c.lastVisit);
+      if(status==='active'&&d>90)return false;
+      if(status==='risk'&&(d<=90||d>180))return false;
+      if(status==='dormant'&&d<=180)return false;
+    }
+    return true;
+  });
+}
+
+function renderRepeat(){
+  const filtered=filterCustomers('searchRepeat','filterTierRepeat','filterStatusRepeat');
+  const scored=filtered.map(c=>({...c,score:calcRepeatScore(c),days:daysSince(c.lastVisit)})).sort((a,b)=>b.score-a.score);
+  const allScored=CUSTOMERS.map(c=>({...c,score:calcRepeatScore(c)}));
+
+  const critical=allScored.filter(c=>c.score>=60).length;
+  const high=allScored.filter(c=>c.score>=40&&c.score<60).length;
+  const medium=allScored.filter(c=>c.score>=20&&c.score<40).length;
+  const totalPotentialRev=allScored.reduce((s,c)=>{
+    const rate=c.rate>0?c.rate:0.85;
+    return s+Math.round(c.avgBuyin*JPY_KRW*rate/100*KRW_JPY);
+  },0);
+
+  document.getElementById('repeatSummary').innerHTML=`
+    <div class="stat card"><div class="value" style="color:var(--red)">${critical}</div><div class="label">最優先</div></div>
+    <div class="stat card"><div class="value" style="color:var(--gold)">${high}</div><div class="label">高優先</div></div>
+    <div class="stat card"><div class="value" style="color:var(--blue)">${medium}</div><div class="label">中優先</div></div>
+    <div class="stat card"><div class="value">${scored.length}</div><div class="label">総顧客数</div></div>
+    <div class="stat card"><div class="value" style="font-size:1.2em">${fmtMan(totalPotentialRev)}</div><div class="label">1巡回期待収益</div></div>
+    <div class="stat card"><div class="value">${scored.filter(c=>c.days>90).length}</div><div class="label">90日超未来店</div></div>
+  `;
+
+  let tbl='';
+  scored.forEach((c,i)=>{
+    const scClass=c.score>=60?'score-critical':c.score>=40?'score-high':c.score>=20?'score-medium':'score-low';
+    const methods=getRepeatMethod(c);
+    const offer=getRepeatOffer(c);
+    const rate=c.rate>0?c.rate:0.85;
+    const rev=Math.round(c.avgBuyin*JPY_KRW*rate/100*KRW_JPY);
+
+    tbl+=`<tr>
+      <td style="text-align:center">${i+1}</td>
+      <td style="text-align:center"><div class="repeat-score ${scClass}">${c.score}</div></td>
+      <td><strong>${c.nameJa||c.name}</strong><div class="text-sm text-muted">${c.name}</div></td>
+      <td>${tierBadge(c.tier)}</td>
+      <td>${c.lastVisit}</td>
+      <td class="${c.days>180?'negative':c.days>90?'neutral':''}">${c.days}日</td>
+      <td>${c.visits}回</td>
+      <td>${fmtW(c.totalRolling)}</td>
+      <td>${getMealBadge(c.tier)}</td>
+      <td>${methods.map(m=>`<span class="method-tag ${m.tag}">${m.method}</span>`).join('')}</td>
+      <td class="text-sm">${offer}</td>
+      <td class="positive">${fmtY(rev)}</td>
+      <td><button class="btn-sm btn-gold" onclick="showProfile(${c.id})">詳細</button></td>
+    </tr>`;
+  });
+  document.getElementById('repeatTable').innerHTML=tbl;
+}
+
+// ==================== TAB3: 顧客ランキング ====================
+function renderCustomers(){
+  document.getElementById('totalCustomers').textContent=CUSTOMERS.length;
+  const totalR=CUSTOMERS.reduce((s,c)=>s+c.totalRolling,0);
+  const totalV=CUSTOMERS.reduce((s,c)=>s+c.visits,0);
+  const active=CUSTOMERS.filter(c=>daysSince(c.lastVisit)<=90).length;
+  const atRisk=CUSTOMERS.filter(c=>{const d=daysSince(c.lastVisit);return d>90&&d<=180;}).length;
+  const dormant=CUSTOMERS.filter(c=>daysSince(c.lastVisit)>180).length;
+
+  document.getElementById('summaryStats').innerHTML=`
+    <div class="stat card"><div class="value">${CUSTOMERS.length}</div><div class="label">総顧客数</div></div>
+    <div class="stat card"><div class="value">${totalV}</div><div class="label">総来店回数</div></div>
+    <div class="stat card"><div class="value">${fmtW(totalR)}</div><div class="label">総ローリング(₩)</div></div>
+    <div class="stat card"><div class="value" style="color:var(--green)">${active}</div><div class="label">アクティブ(90日)</div></div>
+    <div class="stat card"><div class="value" style="color:#f1c40f">${atRisk}</div><div class="label">離脱リスク</div></div>
+    <div class="stat card"><div class="value" style="color:var(--red)">${dormant}</div><div class="label">休眠(180日+)</div></div>
+  `;
+
+  const filtered=filterCustomers('searchCustomer','filterTierCustomer','filterStatusCustomer');
+  const sorted=[...filtered].sort((a,b)=>b.totalRolling-a.totalRolling);
+  let tbl='';
+  sorted.forEach((c,i)=>{
+    const d=daysSince(c.lastVisit);
+    const rev=c.rate>0?Math.round(c.totalRolling*c.rate/100*KRW_JPY):0;
+    tbl+=`<tr>
+      <td>${i+1}</td>
+      <td><strong>${c.nameJa||c.name}</strong>${c.selfPay?' <span class="text-sm text-muted">(自費)</span>':''}<div class="text-sm text-muted">${c.name}</div></td>
+      <td>${tierBadge(c.tier)}</td><td>${c.visits}</td><td>${c.lastVisit}</td>
+      <td class="${d>180?'negative':d>90?'neutral':''}">${d}日</td>
+      <td>${fmtW(c.totalRolling)}</td>
+      <td>${c.rate>0?c.rate+'%':'<span class="text-muted">未設定</span>'}</td>
+      <td>${rev>0?fmtY(rev):'<span class="text-muted">-</span>'}</td>
+      <td>${getMealBadge(c.tier)}</td>
+      <td>${statusBadge(d)}</td>
+    </tr>`;
+  });
+  document.getElementById('customerTable').innerHTML=tbl;
+
+  const segs={VVIP:CUSTOMERS.filter(c=>c.tier==='VVIP'),VIP:CUSTOMERS.filter(c=>c.tier==='VIP'),Gold:CUSTOMERS.filter(c=>c.tier==='Gold'),Silver:CUSTOMERS.filter(c=>c.tier==='Silver')};
+  let seg='';
+  Object.entries(segs).forEach(([t,cs])=>{
+    const r=cs.reduce((s,c)=>s+c.totalRolling,0);
+    seg+=`<div class="card">
+      <div class="flex-between mb-8">${tierBadge(t)}<span style="font-size:1.2em;font-weight:700">${cs.length}名</span></div>
+      <div class="text-sm">総ローリング: <strong>${fmtW(r)}</strong></div>
+      <div class="text-sm mt-8">平均来店: <strong>${(cs.reduce((s,c)=>s+c.visits,0)/cs.length).toFixed(1)}回</strong></div>
+      <div class="text-sm mt-8">売上シェア: <strong>${totalR>0?((r/totalR)*100).toFixed(1):0}%</strong></div>
+    </div>`;
+  });
+  document.getElementById('segmentCards').innerHTML=seg;
+}
+
+// ==================== TAB4: プロファイル ====================
+function previewPassportPhoto(id){
+  const file=document.getElementById('pf_passportPhoto').files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      // リサイズ（最大幅800px、JPEG品質0.5でサイズ抑制）
+      const maxW=800;
+      let w=img.width,h=img.height;
+      if(w>maxW){h=Math.round(h*(maxW/w));w=maxW;}
+      const canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const dataUrl=canvas.toDataURL('image/jpeg',0.5);
+      // プレビュー表示
+      document.getElementById('passportPhotoPreview').innerHTML=`<img src="${dataUrl}" style="width:100%;height:auto">`;
+      // localStorageに保存
+      const saved=localStorage.getItem('profile_'+id);
+      const data=saved?JSON.parse(saved):{};
+      data.passportPhoto=dataUrl;
+      localStorage.setItem('profile_'+id,JSON.stringify(data));
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function deletePassportPhoto(id){
+  if(!confirm('パスポート写真を削除しますか？'))return;
+  const saved=localStorage.getItem('profile_'+id);
+  const data=saved?JSON.parse(saved):{};
+  delete data.passportPhoto;
+  localStorage.setItem('profile_'+id,JSON.stringify(data));
+  renderProfile();
+}
+
+function addNewCustomer(){
+  const nameJa=document.getElementById('add_nameJa').value.trim();
+  const name=document.getElementById('add_name').value.trim().toUpperCase();
+  if(!nameJa||!name){alert('氏名とPASSPORT NAMEは必須です');return;}
+  const newId=Math.max(...CUSTOMERS.map(c=>c.id))+1;
+  const tier=document.getElementById('add_tier').value;
+  const newC={id:newId,name:name,nameJa:nameJa,visits:0,lastVisit:'',totalRolling:0,rate:0.00,avgBuyin:0,selfPay:false,tier:tier,
+    traits:{sociability:5,riskAppetite:5,emotion:5,vipMind:5,priceSens:5,loyalty:5,referral:5,frequency:1},notes:''};
+  CUSTOMERS.push(newC);
+  // パスポート・連絡先をlocalStorageに保存
+  const profile={
+    passport:document.getElementById('add_passport').value,
+    passportExp:document.getElementById('add_passportExp').value,
+    passportName:name,
+    phone:document.getElementById('add_phone').value,
+    email:document.getElementById('add_email').value,
+    lineId:document.getElementById('add_lineId').value,
+    nationality:document.getElementById('add_nationality').value,
+    game:'バカラ',hobby:'',drink:'',food:'',birthday:'',personality:'',winBehavior:'',lossBehavior:'',family:'',importantDates:'',otherNotes:''
+  };
+  localStorage.setItem('profile_'+newId,JSON.stringify(profile));
+  // 追加した顧客をlocalStorageにも保存（ページリロード後も維持）
+  let added=JSON.parse(localStorage.getItem('br_added_customers')||'[]');
+  added.push(newC);
+  localStorage.setItem('br_added_customers',JSON.stringify(added));
+  // UIリセット
+  document.getElementById('add_nameJa').value='';
+  document.getElementById('add_name').value='';
+  document.getElementById('add_passport').value='';
+  document.getElementById('add_passportExp').value='';
+  document.getElementById('add_phone').value='';
+  document.getElementById('add_email').value='';
+  document.getElementById('add_lineId').value='';
+  document.getElementById('addForm').style.display='none';
+  // 全タブ再レンダリング
+  filterProfileSelect();
+  document.getElementById('profileSelect').value=newId;
+  renderProfile();
+  document.getElementById('totalCustomers').textContent=CUSTOMERS.length;
+  alert(nameJa+'を追加しました（ID:'+newId+'）');
+}
+
+// ページ読み込み時にlocalStorageから追加顧客を復元
+function restoreAddedCustomers(){
+  const added=JSON.parse(localStorage.getItem('br_added_customers')||'[]');
+  added.forEach(c=>{if(!CUSTOMERS.find(x=>x.id===c.id))CUSTOMERS.push(c);});
+}
+
+// 既知のパスポート・連絡先データ（スプレッドシートより）
+const KNOWN_CONTACTS={
+  'OKUDA KAZUTO':{passport:'TT1058969',phone:'',email:'',nationality:'日本'},
+  'ONISHI AKARI':{passport:'TT2828566',phone:'',email:'',nationality:'日本'},
+  'ASANUMA ONARI':{passport:'TT6142502',phone:'',email:'',nationality:'日本'},
+  'MAEDA YASUHIRO':{passport:'TT6072029',phone:'',email:'',nationality:'日本'},
+  'OGURA YUICHIRO':{passport:'MJ3426773',phone:'',email:'',nationality:'日本'},
+  'INJI HIROKI':{passport:'TT1184433',phone:'',email:'',nationality:'日本'},
+  'KATO ERIKA':{passport:'TT2295755',phone:'',email:'',nationality:'日本'},
+  'NAKANISHI HIROAKI':{passport:'TR8093243',phone:'',email:'',nationality:'日本'},
+  'NAKAGAKI JO':{passport:'TT3215411',phone:'',email:'',nationality:'日本'},
+  'YAMAMOTO KOJI':{passport:'TS1461242',phone:'',email:'',nationality:'日本'},
+  'ADACHI NORIAKI':{passport:'TT5375155',phone:'',email:'',nationality:'日本'},
+  'KOYAMA ATSUSHI':{passport:'TT4971795',phone:'',email:'',nationality:'日本'},
+  'SHINOHARA SHUKA':{passport:'TT1793069',phone:'',email:'',nationality:'日本'},
+  'IKEGAMI DAIKI':{passport:'TT3782076',phone:'08062879530',email:'kgjpamjgajga@gmail.com',nationality:'日本'},
+  'FUJIIKE KEIYO':{passport:'TT6280241',phone:'',email:'',nationality:'日本'},
+  'SAKATA RYO':{passport:'TT3491859',phone:'',email:'',nationality:'日本'},
+  'KANIE RYUJI':{passport:'TT3300698',phone:'',email:'',nationality:'日本'},
+  'TOGA KAZUKI':{passport:'TR7573870',phone:'09033135877',email:'togakazuki@gmail.com',nationality:'日本'},
+  'SANO SHOHEI':{passport:'TS3744870',phone:'',email:'',nationality:'日本'},
+  'HORIBIE TAKEMOTO':{passport:'TT2637690',phone:'',email:'',nationality:'日本'},
+  'TAKENAKA MASAYUKI':{passport:'',phone:'',email:'',nationality:'日本'},
+  'AKAHOSHI RYOTARO':{passport:'',phone:'',email:'',nationality:'日本'},
+  'AKAHOSHI KANA':{passport:'',phone:'',email:'',nationality:'日本'},
+  'ETO TAKUYA':{passport:'',phone:'',email:'',nationality:'日本'},
+  'OKADA NAOYA':{passport:'',phone:'',email:'',nationality:'日本'},
+  'ISONO KENJI':{passport:'',phone:'09074779999',email:'08085644321@docomo.ne.jp',nationality:'日本'},
+  'HAYASHI NAOHIDE':{passport:'',phone:'09096435964',email:'naohidehayashi1231@gmail.com',nationality:'日本'},
+  'IDE HIDEAKI':{passport:'',phone:'090-2068-0317',email:'hideaki3438@icloud.com',nationality:'日本'},
+  'KAKINOKI SEIJI':{passport:'',phone:'09068454437',email:'ams-kaki001@docomo.ne.jp',nationality:'日本'},
+  'OTSUKA KEISHI':{passport:'',phone:'070-5354-2151',email:'pandafunoffice@gmail.com',nationality:'日本'},
+  'TANINO SHINYA':{passport:'',phone:'080-5078-8530',email:'splash.hit.888@gmail.com',nationality:'日本'},
+  'NAWA KEISUKE':{passport:'',phone:'08062387878',email:'keke.kana@iCloud.com',nationality:'日本'},
+  'TANAKA SHINICHI':{passport:'',phone:'090-6425-4464',email:'surflanai-333@i.softbank.jp',nationality:'日本'},
+  'HASHIMOTO MARIKO':{passport:'',phone:'09096422114',email:'19.21.14.machimiche@gmail.com',nationality:'日本'},
+  'KATAOKA HITOSHI':{passport:'',phone:'09091828381',email:'kataoka.1011@gmail.com',nationality:'日本'},
+  'MAEKAWA YUICHI':{passport:'',phone:'09084899436',email:'yuichi20100918@gmail.com',nationality:'日本'},
+  'TAKEOKA JUNKI':{passport:'',phone:'09016453519',email:'takejunki0815@gmail.com',nationality:'日本'},
+  'MATSUSHITA KAIKI':{passport:'',phone:'08052461772',email:'ka1k11008@yahoo.co.jp',nationality:'日本'},
+  'HARA MASASHI':{passport:'',phone:'08063929913',email:'masashi.hara.2-20@softbank.ne.jp',nationality:'日本'},
+  'IRIYA TAKURO':{passport:'',phone:'090-2005-9327',email:'iriya.takuro@gmail.com',nationality:'日本'},
+  'FUJIMOTO KOHEI':{passport:'TT6455388',phone:'',email:'',nationality:'日本'},
+  'NAKAMURA KOTA':{passport:'',phone:'',email:'',nationality:'日本'},
+  'KUBOTA TAKU':{passport:'',phone:'',email:'',nationality:'日本'},
+  'SETOGUCHI KIYOSHI':{passport:'',phone:'',email:'',nationality:'日本'},
+  'NAKAZONO YUJI':{passport:'',phone:'',email:'',nationality:'日本'},
+};
+
+// notesフィールドのTEL/EMAIL + KNOWN_CONTACTSを自動でプロファイルに書き込み
+function autoPopulateContacts(){
+  CUSTOMERS.forEach(c=>{
+    const key='profile_'+c.id;
+    const saved=localStorage.getItem(key);
+    const data=saved?JSON.parse(saved):{game:'バカラ',hobby:'',drink:'',food:'',birthday:'',personality:'',winBehavior:'',lossBehavior:'',family:'',importantDates:'',otherNotes:'',passport:'',passportExp:'',passportName:c.name,phone:'',email:'',lineId:'',nationality:'日本'};
+    let changed=false;
+    // notesからTEL/EMAIL抽出
+    if(c.notes){
+      const telMatch=c.notes.match(/TEL:([^\s]+)/);
+      const emailMatch=c.notes.match(/EMAIL:([^\s]+)/);
+      if(telMatch&&!data.phone){data.phone=telMatch[1];changed=true;}
+      if(emailMatch&&!data.email){data.email=emailMatch[1];changed=true;}
+    }
+    // KNOWN_CONTACTSから補完
+    const known=KNOWN_CONTACTS[c.name];
+    if(known){
+      if(known.passport&&!data.passport){data.passport=known.passport;changed=true;}
+      if(known.phone&&!data.phone){data.phone=known.phone;changed=true;}
+      if(known.email&&!data.email){data.email=known.email;changed=true;}
+      if(known.nationality&&!data.nationality){data.nationality=known.nationality;changed=true;}
+    }
+    if(!data.passportName||data.passportName===''){data.passportName=c.name;changed=true;}
+    if(changed)localStorage.setItem(key,JSON.stringify(data));
+  });
+}
+
+function filterProfileSelect(){
+  const q=(document.getElementById('searchProfile')?.value||'').toLowerCase();
+  const tier=document.getElementById('filterTierProfile')?.value||'';
+  const sel=document.getElementById('profileSelect');
+  const filtered=CUSTOMERS.filter(c=>{
+    if(q&&!(c.name.toLowerCase().includes(q)||(c.nameJa||'').includes(q)))return false;
+    if(tier&&c.tier!==tier)return false;
+    return true;
+  });
+  sel.innerHTML=filtered.map(c=>`<option value="${c.id}">${c.nameJa||c.name}（${c.name}）- ${c.tier}</option>`).join('');
+  if(filtered.length>0)renderProfile();
+}
+function renderProfileSelect(){
+  filterProfileSelect();
+}
+
+function renderProfile(){
+  const id=parseInt(document.getElementById('profileSelect').value);
+  const c=CUSTOMERS.find(x=>x.id===id);
+  if(!c)return;
+  const d=daysSince(c.lastVisit);
+  const rate=c.rate>0?c.rate:0.85;
+  const revPerVisit=Math.round(c.avgBuyin*JPY_KRW*rate/100*KRW_JPY);
+  const canvasId='radar_'+c.id;
+
+  const saved=localStorage.getItem('profile_'+c.id);
+  const extra=saved?JSON.parse(saved):{hobby:'',drink:'',food:'',game:'バカラ',birthday:'',personality:'',winBehavior:'',lossBehavior:'',family:'',importantDates:'',otherNotes:''};
+
+  document.getElementById('profileArea').innerHTML=`
+    <div class="card">
+      <div class="flex-between mb-8">
+        <div>
+          <h3 style="font-size:1.3em">${c.nameJa||c.name}</h3>
+          <div class="text-sm text-muted">${c.name}</div>
+        </div>
+        ${tierBadge(c.tier)}
+      </div>
+      <div class="divider"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.9em">
+        <div>来店回数: <strong>${c.visits}回</strong></div>
+        <div>最終来店: <strong>${c.lastVisit}</strong>（${d}日前）</div>
+        <div>累計ローリング: <strong>${fmtW(c.totalRolling)}</strong></div>
+        <div>コミッション: <strong>${c.rate>0?c.rate+'%':'未設定'}</strong></div>
+        <div>平均バイイン: <strong>${fmtW(c.avgBuyin)}</strong></div>
+        <div>期待収益/回: <strong class="positive">${fmtY(revPerVisit)}</strong></div>
+        <div>自費来店: <strong>${c.selfPay?'あり':'なし'}</strong></div>
+        <div>ステータス: ${statusBadge(d)}</div>
+      </div>
+      <div class="divider"></div>
+      ${(extra.passport||extra.phone||extra.passportPhoto)?`<div style="background:rgba(245,166,35,0.08);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px">
+        <div class="text-sm" style="color:var(--gold);font-weight:600;margin-bottom:6px">パスポート・連絡先</div>
+        <div style="display:flex;gap:12px">
+          ${extra.passportPhoto?`<div style="width:120px;flex-shrink:0;border-radius:6px;overflow:hidden;border:1px solid var(--border)"><img src="${extra.passportPhoto}" style="width:100%;height:auto"></div>`:''}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:0.85em;flex:1">
+            ${extra.passport?`<div>パスポート: <strong>${extra.passport}</strong></div>`:''}
+            ${extra.passportExp?`<div>有効期限: <strong>${extra.passportExp}</strong></div>`:''}
+            ${extra.passportName?`<div>PASSPORT NAME: <strong>${extra.passportName}</strong></div>`:''}
+            ${extra.nationality?`<div>国籍: <strong>${extra.nationality}</strong></div>`:''}
+            ${extra.phone?`<div>TEL: <strong>${extra.phone}</strong></div>`:''}
+            ${extra.email?`<div>EMAIL: <strong>${extra.email}</strong></div>`:''}
+            ${extra.lineId?`<div>LINE: <strong>${extra.lineId}</strong></div>`:''}
+          </div>
+        </div>
+      </div>`:'<div class="text-sm text-muted mb-8">パスポート未登録 → 右の編集フォームで追加できます</div>'}
+      <div class="text-sm"><strong>食事サービス:</strong> ${getMealBadge(c.tier)}</div>
+      <div class="divider"></div>
+      <div class="text-sm"><strong>メモ:</strong> ${c.notes||'（なし）'}</div>
+      <div class="divider"></div>
+      <div class="text-sm"><strong>来店履歴:</strong></div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">
+        ${(c.visitHistory||[c.lastVisit]).map((d,i)=>`<span class="badge" style="background:rgba(255,255,255,0.08);font-size:0.75em">${i+1}. ${d}</span>`).join('')}
+      </div>
+      ${!c.visitHistory?'<div class="text-sm text-muted mt-8">※詳細履歴未登録（最終来店日のみ）</div>':''}
+      <div class="divider"></div>
+      <div class="radar-container"><canvas id="${canvasId}"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>顧客詳細情報 <button class="btn-sm btn-blue" onclick="saveProfile(${c.id})" style="float:right">保存</button></h3>
+      <div style="background:rgba(245,166,35,0.1);border:1px solid var(--gold);border-radius:10px;padding:16px;margin-bottom:16px">
+        <div class="text-sm" style="color:var(--gold);font-weight:700;margin-bottom:10px">パスポート・連絡先情報</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="form-group" style="margin-bottom:8px"><label>パスポート番号</label><input id="pf_passport" value="${extra.passport||''}" placeholder="例: TK1234567"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>パスポート有効期限</label><input id="pf_passportExp" value="${extra.passportExp||''}" placeholder="例: 2030/05/15"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>電話番号</label><input id="pf_phone" value="${extra.phone||''}" placeholder="例: 090-1234-5678"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>メールアドレス</label><input id="pf_email" value="${extra.email||''}" placeholder="例: name@example.com"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>LINE ID</label><input id="pf_lineId" value="${extra.lineId||''}" placeholder="例: line_id_123"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>国籍</label><input id="pf_nationality" value="${extra.nationality||'日本'}" placeholder="例: 日本"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:0"><label>パスポート名（ローマ字）</label><input id="pf_passportName" value="${extra.passportName||c.name}" placeholder="PASSPORT NAME"></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:16px;align-items:flex-start">
+        <div style="flex:1">
+          <label>パスポート写真</label>
+          <input type="file" id="pf_passportPhoto" accept="image/*" onchange="previewPassportPhoto(${c.id})" style="font-size:0.8em;padding:8px">
+          <div class="text-sm text-muted mt-8">JPG/PNG（自動リサイズ・ブラウザに保存）</div>
+        </div>
+        <div id="passportPhotoPreview" style="width:160px;min-height:100px;border:1px dashed var(--border);border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--secondary)">
+          ${extra.passportPhoto?`<img src="${extra.passportPhoto}" style="width:100%;height:auto">`:'<span class="text-sm text-muted">写真未登録</span>'}
+        </div>
+      </div>
+      ${extra.passportPhoto?`<button class="btn-sm" style="margin-top:8px;background:rgba(231,76,60,0.3)" onclick="deletePassportPhoto(${c.id})">写真を削除</button>`:''}
+      <div class="form-group"><label>好きなゲーム</label><input id="pf_game" value="${extra.game}"></div>
+      <div class="form-group"><label>趣味</label><input id="pf_hobby" value="${extra.hobby}" placeholder="例: ゴルフ、釣り、車"></div>
+      <div class="form-group"><label>好きなお酒</label><input id="pf_drink" value="${extra.drink}" placeholder="例: ウイスキー、ワイン"></div>
+      <div class="form-group"><label>食事の好み</label><input id="pf_food" value="${extra.food}" placeholder="例: 焼肉、和食、イタリアン"></div>
+      <div class="form-group"><label>誕生日</label><input id="pf_birthday" value="${extra.birthday}" placeholder="例: 1985/08/15"></div>
+      <div class="form-group"><label>性格・接し方</label><textarea id="pf_personality" rows="2" placeholder="例: 褒められると嬉しいタイプ">${extra.personality}</textarea></div>
+      <div class="form-group"><label>勝った時の反応</label><input id="pf_win" value="${extra.winBehavior}" placeholder="例: テンション上がってもう1回やりたがる"></div>
+      <div class="form-group"><label>負けた時の反応</label><input id="pf_loss" value="${extra.lossBehavior}" placeholder="例: 静かになる、1人にしてほしい"></div>
+      <div class="form-group"><label>家族構成</label><input id="pf_family" value="${extra.family}" placeholder="例: 妻+子供2人"></div>
+      <div class="form-group"><label>重要な日（記念日等）</label><input id="pf_dates" value="${extra.importantDates}" placeholder="例: 妻の誕生日 8/15"></div>
+      <div class="form-group"><label>その他メモ</label><textarea id="pf_notes" rows="2">${extra.otherNotes}</textarea></div>
+      <div class="divider"></div>
+      <h3 class="mt-16">特性スコア編集</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" class="mt-8">
+        ${['sociability:社交性','riskAppetite:リスク志向','emotion:感情起伏','vipMind:VIP意識','priceSens:価格感度','loyalty:ロイヤルティ','referral:紹介力','frequency:プレイ頻度'].map(x=>{
+          const[k,l]=x.split(':');
+          return`<div class="form-group" style="margin-bottom:6px"><label>${l} (1-10)</label><input type="number" id="trait_${k}" value="${c.traits[k]}" min="1" max="10" style="padding:6px 10px"></div>`;
+        }).join('')}
+      </div>
+      <button class="btn-gold mt-8" onclick="saveTraits(${c.id})">特性スコアを更新</button>
+    </div>
+  `;
+  setTimeout(()=>drawRadar(canvasId,c.traits,280),50);
+}
+
+function saveProfile(id){
+  const data={
+    passport:document.getElementById('pf_passport').value,
+    passportExp:document.getElementById('pf_passportExp').value,
+    passportName:document.getElementById('pf_passportName').value,
+    phone:document.getElementById('pf_phone').value,
+    email:document.getElementById('pf_email').value,
+    lineId:document.getElementById('pf_lineId').value,
+    nationality:document.getElementById('pf_nationality').value,
+    game:document.getElementById('pf_game').value,
+    hobby:document.getElementById('pf_hobby').value,
+    drink:document.getElementById('pf_drink').value,
+    food:document.getElementById('pf_food').value,
+    birthday:document.getElementById('pf_birthday').value,
+    personality:document.getElementById('pf_personality').value,
+    winBehavior:document.getElementById('pf_win').value,
+    lossBehavior:document.getElementById('pf_loss').value,
+    family:document.getElementById('pf_family').value,
+    importantDates:document.getElementById('pf_dates').value,
+    otherNotes:document.getElementById('pf_notes').value
+  };
+  localStorage.setItem('profile_'+id,JSON.stringify(data));
+  alert('プロファイルを保存しました');
+}
+
+function saveTraits(id){
+  const c=CUSTOMERS.find(x=>x.id===id);
+  if(!c)return;
+  ['sociability','riskAppetite','emotion','vipMind','priceSens','loyalty','referral','frequency'].forEach(k=>{
+    c.traits[k]=parseInt(document.getElementById('trait_'+k).value)||5;
+  });
+  renderProfile();
+  alert('特性スコアを更新しました');
+}
+
+function showProfile(id){
+  document.getElementById('profileSelect').value=id;
+  showTab('profiles',document.querySelectorAll('.tab')[3]);
+  renderProfile();
+}
+
+function closeModal(){document.getElementById('editModal').classList.remove('show');}
+
+// ==================== TAB5: 計算機 ====================
+function calculate(){
+  const buyin=parseInt(document.getElementById('calcBuyin').value)||0;
+  const rolling=parseInt(document.getElementById('calcRolling').value)||0;
+  const rate=parseFloat(document.getElementById('calcRate').value)||0;
+  const fc=parseInt(document.getElementById('calcFlight').value)||0;
+  const hKey=document.getElementById('calcHotel').value;
+  const nights=parseInt(document.getElementById('calcNights').value)||1;
+  const dayType=document.getElementById('calcDayType').value;
+  const cb=parseInt(document.getElementById('calcCashback').value)||0;
+  const name=document.getElementById('calcName').value||'顧客';
+
+  const hcKRW=HOTEL_RATES[hKey]?HOTEL_RATES[hKey][dayType]*nights:0;
+  const hcJPY=Math.round(hcKRW*KRW_JPY);
+  const totalCost=fc+hcJPY+cb;
+  const revKRW=Math.round(rolling*rate/100);
+  const revJPY=Math.round(revKRW*KRW_JPY);
+  const profit=revJPY-totalCost;
+  const roi=totalCost>0?((profit/totalCost)*100).toFixed(1):'N/A';
+  const plKRW=Math.round(rolling*BACCARAT_EDGE);
+  const plJPY=Math.round(plKRW*KRW_JPY);
+  const lossP=buyin>0?((plJPY/buyin)*100).toFixed(1):'N/A';
+  const beRolling=rate>0?Math.round(totalCost/(rate/100)/KRW_JPY):0;
+
+  let suggestion='';
+  if(profit>500000)suggestion='高収益。次回部屋アップグレードの提案を検討。';
+  else if(profit>100000)suggestion='利益あり。標準インセンティブで十分。';
+  else if(profit>0)suggestion='薄利。ローリング増加またはレート引き上げを検討。';
+  else suggestion='赤字。顧客獲得コストとして計上。リピートで回収要。';
+
+  document.getElementById('calcResults').innerHTML=`
+    <h4 style="color:var(--gold);margin-bottom:12px">${name} — 来店損益分析</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div class="text-sm text-muted">コスト内訳</div><div class="divider"></div>
+        <div class="flex-between text-sm mt-8"><span>フライト代:</span><span>${fmtY(fc)}</span></div>
+        <div class="flex-between text-sm mt-8"><span>ホテル代（${nights}泊）:</span><span>${fmtY(hcJPY)}</span></div>
+        <div class="flex-between text-sm mt-8"><span>キャッシュバック:</span><span>${fmtY(cb)}</span></div>
+        <div class="divider"></div>
+        <div class="flex-between"><span><strong>総コスト:</strong></span><span class="negative"><strong>${fmtY(totalCost)}</strong></span></div>
+      </div>
+      <div>
+        <div class="text-sm text-muted">収益</div><div class="divider"></div>
+        <div class="flex-between text-sm mt-8"><span>ローリング:</span><span>${fmtW(rolling)}</span></div>
+        <div class="flex-between text-sm mt-8"><span>コミッション率:</span><span>${rate}%</span></div>
+        <div class="flex-between text-sm mt-8"><span>収益（₩）:</span><span>${fmtW(revKRW)}</span></div>
+        <div class="divider"></div>
+        <div class="flex-between"><span><strong>収益（¥）:</strong></span><span class="positive"><strong>${fmtY(revJPY)}</strong></span></div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="result-box" style="${profit>=0?'':'background:rgba(231,76,60,0.1);border-color:var(--red)'}">
+      <div class="flex-between" style="font-size:1.3em"><span><strong>純利益:</strong></span><span class="${profit>=0?'positive':'negative'}"><strong>${fmtY(profit)}</strong></span></div>
+      <div class="flex-between text-sm mt-8"><span>ROI:</span><span style="color:var(--gold);font-weight:600">${roi}%</span></div>
+      <div class="flex-between text-sm mt-8"><span>損益分岐ローリング:</span><span>${fmtW(beRolling)}</span></div>
+    </div>
+    <div class="divider"></div>
+    <div class="card" style="background:rgba(52,152,219,0.1);border-color:var(--blue)">
+      <div class="text-sm text-muted">プレイヤー期待値（バカラ）</div><div class="divider"></div>
+      <div class="flex-between text-sm mt-8"><span>期待損失（₩）:</span><span class="negative">${fmtW(plKRW)}</span></div>
+      <div class="flex-between text-sm mt-8"><span>期待損失（¥）:</span><span class="negative">${fmtY(plJPY)}</span></div>
+      <div class="flex-between text-sm mt-8"><span>バイイン比:</span><span>${lossP}%</span></div>
+    </div>
+    <div class="divider"></div>
+    <div class="text-sm" style="color:var(--gold)"><strong>提案:</strong> ${suggestion}</div>
+  `;
+}
+
+// ==================== TAB6: LINE営業文 ====================
+function getLineMessageType(c){
+  const days=daysSince(c.lastVisit);
+  if(c.visits<=2&&days>30)return'newreturn';
+  if(days<=14)return'thankyou';
+  if(days>120)return'comeback';
+  if(c.visits>=5&&days>30)return'upsell';
+  return'event';
+}
+function getLineMessageTypeLabel(type){
+  const map={comeback:'カムバック',thankyou:'お礼',upsell:'アップセル',newreturn:'2回目促進',event:'イベント告知'};
+  return map[type]||type;
+}
+function getLineMessageTypeColor(type){
+  const map={comeback:'var(--red)',thankyou:'var(--green)',upsell:'var(--gold)',newreturn:'var(--blue)',event:'#9b59b6'};
+  return map[type]||'var(--muted)';
+}
+
+function generateLineMessage(c){
+  const days=daysSince(c.lastVisit);
+  const type=getLineMessageType(c);
+  const lastName=(c.nameJa||c.name).split(' ')[0];
+  const avgBuyinW=Math.round(c.avgBuyin*JPY_KRW);
+  const meal=MEAL_SERVICE[c.tier]||MEAL_SERVICE['Bronze'];
+
+  // サービスチップ（固定額ティア制）
+  // VVIP: ₩1,000,000 / VIP: ₩500,000 / Gold: ₩300,000 / Silver・Bronze: なし
+  let chipAmount;
+  if(c.tier==='VVIP'){chipAmount=1000000;}
+  else if(c.tier==='VIP'){chipAmount=500000;}
+  else if(c.tier==='Gold'){chipAmount=300000;}
+  else{chipAmount=0;}
+  // 累進式負けバック率（段階表示用）
+  const sabiRate='累進制(0〜200万:0%/200〜500万:3%/500〜1000万:5%/1000万超:7%/上限100万)';
+
+  const chipStr=fmtW(chipAmount);
+  const mealStr=c.tier==='VVIP'?'VIPルーム内のお食事は全て無料でございます':('お食事は'+meal.label+'でサービスさせていただきます');
+
+  // プラン提案（バイイン額に基づく）
+  let planName='';
+  if(c.avgBuyin>=10000000)planName='ブラックプラン（ビジネスクラス+3泊+部屋グレードUP）';
+  else if(c.avgBuyin>=5000000)planName='プラチナプラン（ビジネスクラス+3泊）';
+  else if(c.avgBuyin>=3000000)planName='ゴールドプラン（エコノミー+3泊）';
+  else if(c.avgBuyin>=2000000)planName='プレミアムプラン（エコノミー+2泊）';
+  else if(c.avgBuyin>=1000000)planName='スタンダードプラン（エコノミー+1泊）';
+  else planName='VIP体験プラン（エコノミー+1泊）';
+
+  // 前回来店日のフォーマット
+  const lastDate=c.lastVisit.replace(/-/g,'/');
+
+  let msg='';
+
+  if(type==='comeback'){
+    if(c.tier==='VVIP'||c.tier==='VIP'){
+      msg=`${lastName}様
+
+いつも大変お世話になっております。
+ベットランクツアーズでございます。
+
+ご無沙汰しております。
+前回${lastDate}にお越しいただいてから、お会いできておらず寂しく思っておりました。
+
+これまで${c.visits}回もご利用いただいている${lastName}様に、感謝を込めて特別なご案内をさせていただきます。
+
+━━━━━━━━━━━━━━━
+✨ ${lastName}様だけの特別プラン ✨
+━━━━━━━━━━━━━━━
+
+📋 ${planName}
+
+${chipAmount>0?'🎰 サービスチップ '+chipStr+' 進呈':''}
+💰 負けバック最大7%（累進制・上限100万円）
+🍽️ ${mealStr}
+🚗 空港送迎付き
+🏨 24時間現地サポート
+
+━━━━━━━━━━━━━━━
+
+${lastName}様にまたお会いできることを、スタッフ一同心より楽しみにしております。
+
+ご都合の良い日程がございましたら、お気軽にご連絡くださいませ。
+${lastName}様のスケジュールに合わせて最適なプランをお作りいたします。
+
+ベットランクツアーズ`;
+    } else {
+      msg=`${lastName}様
+
+お世話になっております。
+ベットランクツアーズでございます。
+
+前回${lastDate}にお越しいただいてから、しばらくご無沙汰しておりますが、お変わりございませんか？
+
+${lastName}様へ特別なカムバック特典をご用意いたしました。
+
+━━━━━━━━━━━━━━━
+🎁 ${lastName}様 カムバック特典
+━━━━━━━━━━━━━━━
+
+📋 ${planName}
+
+${chipAmount>0?'🎰 サービスチップ '+chipStr+' 進呈':''}
+💰 負けバック最大7%（累進制・上限100万円）
+🍽️ ${mealStr}
+🚗 空港送迎付き
+🏨 24時間現地サポート
+
+━━━━━━━━━━━━━━━
+
+久しぶりにリフレッシュも兼ねて、韓国でのひとときをお楽しみください。
+ご興味がございましたら、お気軽にご返信くださいませ。
+
+ベットランクツアーズ`;
+    }
+  }
+  else if(type==='thankyou'){
+    msg=`${lastName}様
+
+先日は韓国までお越しいただき、誠にありがとうございました！
+ベットランクツアーズでございます。
+
+ご滞在はいかがでしたでしょうか？
+${lastName}様に楽しんでいただけていれば大変嬉しく思います。
+
+これで${c.visits}回目のご利用となりました。
+いつもご愛顧いただき、心より感謝申し上げます。
+
+次回ご来店の際は、以下の特典をご用意しております。
+
+━━━━━━━━━━━━━━━
+🎁 ${lastName}様 次回来店特典
+━━━━━━━━━━━━━━━
+
+📋 ${planName}
+
+${chipAmount>0?'🎰 サービスチップ '+chipStr+' 進呈':''}
+💰 負けバック最大7%（累進制・上限100万円）
+🍽️ ${mealStr}
+🚗 空港送迎付き
+🏨 24時間現地サポート
+
+━━━━━━━━━━━━━━━
+
+またお会いできる日を楽しみにしております。
+ご予定が決まりましたら、いつでもご連絡くださいませ。
+
+ベットランクツアーズ`;
+  }
+  else if(type==='upsell'){
+    const nextVisitNum=c.visits+1;
+    msg=`${lastName}様
+
+いつもベットランクツアーズをご利用いただき、誠にありがとうございます。
+
+${lastName}様にはこれまで${c.visits}回もご来店いただいており、スタッフ一同大変感謝しております。
+
+日頃のご愛顧に感謝を込めて、${lastName}様だけのロイヤルティ特典をご案内させていただきます。
+
+━━━━━━━━━━━━━━━
+👑 ${lastName}様 ロイヤルティ特典
+　 （ご来店${nextVisitNum}回目特典）
+━━━━━━━━━━━━━━━
+
+📋 ${planName}
+
+${chipAmount>0?'🎰 サービスチップ '+chipStr+' 進呈':''}
+💰 負けバック最大7%（累進制・上限100万円）
+　 （通常より+3%UP！）
+🍽️ ${mealStr}
+🚗 空港送迎付き
+🏨 24時間現地サポート
+⭐ ${nextVisitNum}回目特典: 追加チップ₩500,000
+
+━━━━━━━━━━━━━━━
+
+いつも${lastName}様にはお世話になっており、次回もさらにお楽しみいただけるよう、万全のサポートをお約束いたします。
+
+ご来韓のご予定はいかがでしょうか？
+お気軽にご連絡くださいませ。
+
+ベットランクツアーズ`;
+  }
+  else if(type==='newreturn'){
+    msg=`${lastName}様
+
+先日はベットランクツアーズをご利用いただき、誠にありがとうございました！
+
+${lastDate}にお越しいただいた初めてのご来店、いかがでしたでしょうか？
+
+韓国カジノの雰囲気を少しでもお楽しみいただけていれば幸いです。
+
+2回目のお客様限定で、特別な特典をご用意しておりますのでご案内させていただきます。
+
+━━━━━━━━━━━━━━━
+🎁 2回目来店限定・特別特典
+━━━━━━━━━━━━━━━
+
+📋 ${planName}
+
+${chipAmount>0?'🎰 サービスチップ '+chipStr+' 進呈':''}
+💰 負けバック累進制（最大7%・上限100万円）
+🍽️ ${mealStr}
+🚗 空港送迎付き
+🏨 24時間現地サポート
+✈️ 前回と同じプランでOK
+
+━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━
+
+「もう一回やってみたい」
+そんなお気持ちがございましたら、ぜひお気軽にご連絡ください。
+
+前回の経験を活かして、さらに楽しんでいただけるはずです！
+${lastName}様のまたのお越しをお待ちしております。
+
+ベットランクツアーズ`;
+  }
+  else{
+    msg=`${lastName}様
+
+お世話になっております。
+ベットランクツアーズでございます。
+
+${c.visits>0?`いつもご利用いただきありがとうございます。\nこれまで${c.visits}回ご来店いただいた${lastName}様に、`:''}GW期間の特別イベントをご案内いたします！
+
+━━━━━━━━━━━━━━━
+🎊 GW特別キャンペーン
+　 5月2日（土）〜 5月6日（水）
+━━━━━━━━━━━━━━━
+
+📋 ${planName}
+
+${chipAmount>0?'🎰 サービスチップ '+chipStr+' 進呈':''}
+💰 期間限定 負けバック累進制 + 特別上限200万円！
+　 （${lastName}様: 特別累進レート適用）
+🍽️ ${mealStr}
+🚗 空港送迎付き
+🏨 24時間現地サポート
+🎁 期間中プレイヤー全員参加の抽選会
+
+━━━━━━━━━━━━━━━
+
+GW限定の特別レートでのご案内です。
+この機会にぜひ韓国でのひとときをお楽しみくださいませ！
+
+お席に限りがございますので、ご参加ご検討の方はお早めにご連絡ください。
+
+ベットランクツアーズ`;
+  }
+
+  return{msg,type};
+}
+
+function copyLineMessage(btn,id){
+  const el=document.getElementById('linemsg_'+id);
+  if(!el)return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    btn.textContent='コピー済み!';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='コピー';btn.classList.remove('copied');},2000);
+  });
+}
+
+function renderLineMessages(){
+  const filtered=filterCustomers('searchLine','filterTierLine','');
+  const typeFilter=document.getElementById('filterTypeLine')?.value||'';
+
+  const withMsg=filtered.map(c=>{
+    const gen=generateLineMessage(c);
+    return{...c,lineMsg:gen.msg,msgType:gen.type,days:daysSince(c.lastVisit),score:calcRepeatScore(c)};
+  }).filter(c=>!typeFilter||c.msgType===typeFilter).sort((a,b)=>b.score-a.score);
+
+  let html='';
+  withMsg.forEach(c=>{
+    const typeLabel=getLineMessageTypeLabel(c.msgType);
+    const typeColor=getLineMessageTypeColor(c.msgType);
+    html+=`
+    <div class="card mb-16">
+      <div class="flex-between mb-8">
+        <div>
+          <strong style="font-size:1.1em">${c.nameJa||c.name}</strong>
+          ${tierBadge(c.tier)}
+          <span class="msg-type-tag" style="background:${typeColor}22;color:${typeColor}">${typeLabel}</span>
+          ${getMealBadge(c.tier)}
+        </div>
+        <div class="text-right text-sm">
+          <div>最終来店: ${c.lastVisit}（${c.days}日前）</div>
+          <div>来店${c.visits}回 | 優先度スコア: ${c.score}</div>
+        </div>
+      </div>
+      <div class="line-msg-box" id="linemsg_${c.id}">
+        <button class="copy-btn" onclick="copyLineMessage(this,${c.id})">コピー</button>
+${c.lineMsg}</div>
+    </div>`;
+  });
+
+  if(withMsg.length===0)html='<p class="text-muted">該当する顧客がありません。</p>';
+
+  document.getElementById('lineMessageList').innerHTML=html;
+}
+
+// ==================== TAB7: キャンペーン ====================
+function renderCampaigns(){
+  const sorted=[...CUSTOMERS].sort((a,b)=>b.totalRolling-a.totalRolling);
+  // 負けサビ・サービスチップ中心のキャンペーン
+  const campaigns=[
+    {title:'VVIP カムバック — 負けバック累進制 + サービスチップ',type:'離脱防止',priority:'最優先',
+     targets:sorted.filter(c=>(c.tier==='VVIP'||c.tier==='VIP')&&daysSince(c.lastVisit)>120).slice(0,8),
+     offer:'負けバック累進制（200万超3%/500万超5%/1000万超7%・上限100万₩）+ サービスチップ ₩1,000,000進呈',
+     method:'社長/ディレクターから直接電話',timing:'今週中に実施',roi:'300-500%',
+     cost:'負けバック累進制: 期待コスト = 平均負け額の約3-5%（旧10%から大幅削減）\nサービスチップ3%: バイインの約3%',
+     reason:'高価値顧客は「負けても取り戻せる安心感」を最も重視。負けサビとサービスチップは直接プレイ資金に繋がるため、ホテルや飛行機のアップグレードより効果が高い。'},
+    {title:'常連ロイヤルティ — 負けサビ率アップ + チップボーナス',type:'リテンション',priority:'高',
+     targets:sorted.filter(c=>c.visits>=5&&daysSince(c.lastVisit)<=180).slice(0,10),
+     offer:'負けバック累進制適用 + サービスチップ ₩500,000進呈\n来店5回達成: +₩100,000ボーナス / 10回達成: +₩200,000ボーナス',
+     method:'LINE/カカオトーク → 未反応3日後に電話',timing:'2週間以内',roi:'200-400%',
+     cost:'負けサビ+3%: 期待コスト ≒ バイインの0.035%追加\nサービスチップ1.5%: バイインの1.5%',
+     reason:'来店回数に応じた段階的チップボーナスは「次も来よう」という動機を直接作る。負けサビ率アップはロイヤルティの証。'},
+    {title:'自費来店客 特別還元',type:'アップセル',priority:'高',
+     targets:sorted.filter(c=>c.selfPay),
+     offer:'サービスチップ ₩500,000進呈 + 負けバック累進制(最大7%・上限100万₩) + ローリング条件達成で追加 ₩200,000',
+     method:'個別招待状 + 電話フォロー',timing:'次の空き枠',roi:'500%+',
+     cost:'サービスチップ2.5% + 条件付き追加チップ',
+     reason:'自費で来る=プレイ欲が強い顧客。チップ還元でプレイ資金を増やせば、ローリングも自然に増える。渡航費を会社が負担するよりコスパが良い。'},
+    {title:'2回目来店促進 — お試しチップ',type:'コンバージョン',priority:'中',
+     targets:sorted.filter(c=>c.visits<=2&&daysSince(c.lastVisit)>60).slice(0,10),
+     offer:'2回目来店特典: サービスチップ ₩500,000進呈 + 負けバック累進制(最大7%・上限100万)\nローリング条件達成で追加 ₩300,000チップ',
+     method:'LINE/カカオトーク（期限2週間）',timing:'1週間以内に一斉送信',roi:'100-200%',
+     cost:'サービスチップ ₩500,000（約5.5万円）+ 条件付き₩300,000',
+     reason:'初回→2回目が最重要コンバージョン。サービスチップは「タダで遊べる」感覚を作り、来店ハードルを大幅に下げる。2回来た客の60%以上がリピーターになる。'},
+    {title:'大負けリカバリー — 緊急負けサビ',type:'離脱防止',priority:'高',
+     targets:sorted.filter(c=>c.totalRolling>100000000).slice(0,8),
+     offer:'負けバック累進制適用 + 次回サービスチップ₩500,000\n「取り戻しチャンス」として案内',
+     method:'電話（共感的なトーン。「次回は良い流れになりますよ」）',timing:'大負け後3-5日以内',roi:'200-300%',
+     cost:'負けバック累進制: コスト = シェアの最大5.7%\nサービスチップ₩500,000（約5.5万円）',
+     reason:'大負け直後が離脱リスク最大。「負けサビで一部戻ってくる」+「チップで再チャレンジ」の組み合わせが最強の引き戻し策。電話のトーンが重要。'},
+    {title:'GW特別 — 期間限定サビ率UP + ボーナスチップ',type:'イベント',priority:'中',
+     targets:sorted.filter(c=>daysSince(c.lastVisit)<=365).slice(0,20),
+     offer:'GW期間中（5/2-5/6）限定: 全プレイヤー負けサビ+5%上乗せ\n期間中バイイン100万円以上 → サービスチップ₩500,000\n期間中バイイン300万円以上 → サービスチップ₩2,000,000',
+     method:'一斉LINE配信 + VIP以上は個別電話フォロー',timing:'4月15日までに案内送付',roi:'150-250%',
+     cost:'負けサビ+5%: 期間限定のため総コスト限定的\nチップ: バイイン額に応じた段階制',
+     reason:'期間限定の負けサビ率UPは「今行かないと損」という心理を作る。GWは休みが取れるため来店ハードルが低い。'},
+    {title:'紹介ボーナス — 紹介者にチップ還元',type:'新規獲得',priority:'中',
+     targets:sorted.filter(c=>c.visits>=3).slice(0,15),
+     offer:'友人紹介で紹介者にサービスチップ₩300,000進呈\n紹介された新規客: サービスチップ₩100,000 + 負けバック累進制(最大7%・上限100万₩)\n紹介客がリピートした場合: 追加で紹介者に₩200,000',
+     method:'常連客へのパーソナルメッセージ',timing:'常時実施（2週間以内にローンチ）',roi:'400%+',
+     cost:'紹介成功1件: チップ₩300,000（約3.3万円）+ 新規客チップ₩100,000',
+     reason:'チップで還元すれば紹介者もプレイ資金が増えてWin-Win。現金CBよりチップの方が「もう1回遊ぼう」に繋がりやすい。リピートボーナスは質の高い紹介を促進。'}
+  ];
+
+  let html='';
+  const prColors={'最優先':'var(--red)','高':'var(--gold)','中':'var(--blue)'};
+  campaigns.forEach((c,i)=>{
+    html+=`<div class="campaign-card">
+      <div class="flex-between mb-8">
+        <h4>キャンペーン${i+1}: ${c.title}</h4>
+        <div><span class="badge" style="background:rgba(255,255,255,0.1);color:${prColors[c.priority]||'white'}">${c.priority}</span> <span class="badge" style="background:rgba(255,255,255,0.1);color:var(--muted)">${c.type}</span></div>
+      </div>
+      <div class="grid grid-2" style="gap:12px;font-size:0.9em">
+        <div><div class="text-muted text-sm">オファー内容</div><div class="mt-8">${c.offer}</div></div>
+        <div><div class="text-muted text-sm">営業方法 & タイミング</div><div class="mt-8"><strong>方法:</strong> ${c.method}</div><div class="mt-8"><strong>実施時期:</strong> ${c.timing}</div></div>
+      </div><div class="divider"></div>
+      <div class="grid grid-3" style="gap:12px;font-size:0.85em">
+        <div><div class="text-muted text-sm">期待ROI</div><div class="positive mt-8" style="font-size:1.2em">${c.roi}</div></div>
+        <div><div class="text-muted text-sm">コスト/人</div><div class="mt-8">${c.cost}</div></div>
+        <div><div class="text-muted text-sm">対象人数</div><div class="mt-8" style="font-size:1.2em;color:var(--gold)">${c.targets.length}名</div></div>
+      </div><div class="divider"></div>
+      <div class="text-sm"><div class="text-muted">根拠</div><div class="mt-8" style="color:#bdc3c7">${c.reason}</div></div>
+      <div class="divider"></div>
+      <div class="text-sm"><div class="text-muted">対象顧客</div>
+        <div class="mt-8" style="display:flex;flex-wrap:wrap;gap:6px">
+          ${c.targets.map(t=>`<span class="badge" style="background:rgba(255,255,255,0.08)">${t.nameJa||t.name}（${t.visits}回/${daysSince(t.lastVisit)}日）</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('campaignList').innerHTML=html;
+}
+
+// ==================== TAB7: アラート ====================
+function renderAlerts(){
+  const sorted=[...CUSTOMERS].sort((a,b)=>b.totalRolling-a.totalRolling);
+  let html='';
+
+  // 最優先: VVIP離脱リスク
+  const critical=sorted.filter(c=>(c.tier==='VVIP'||c.totalRolling>200000000)&&daysSince(c.lastVisit)>90);
+  if(critical.length){
+    html+='<div class="card mb-16"><h3 style="color:var(--red)">最優先 — 高価値顧客の離脱リスク</h3>';
+    critical.forEach(c=>{
+      const d=daysSince(c.lastVisit);
+      const rate=c.rate>0?c.rate:0.85;
+      const rev=Math.round(c.avgBuyin*JPY_KRW*rate/100*KRW_JPY);
+      const chipW=Math.round(c.avgBuyin*JPY_KRW*(d>180?0.03:0.02));
+      let method=d>300?`社長直電 → 負けバック累進制(最大7%) + サービスチップ${fmtW(chipW)}提示`:d>180?`電話 → 負けバック累進制(最大7%・上限100万) + サービスチップ${fmtW(chipW)}提示`:`LINE → 負けバック累進制(最大7%・上限100万) + サービスチップ${fmtW(Math.round(chipW*0.7))}`;
+      html+=`<div class="alert-box">
+        <div class="flex-between">
+          <div><strong style="font-size:1.1em">${c.nameJa||c.name}</strong> ${tierBadge(c.tier)}
+            <div class="text-sm text-muted mt-8">最終来店: ${c.lastVisit}（${d}日前）</div></div>
+          <div class="text-right"><div class="text-sm">累計ローリング: <strong>${fmtW(c.totalRolling)}</strong></div>
+            <div class="text-sm">来店あたり期待収益: <strong class="positive">${fmtY(rev)}</strong></div></div>
+        </div><div class="divider"></div>
+        <div class="text-sm"><strong>推奨アクション:</strong> ${method}</div>
+      </div>`;
+    });
+    html+='</div>';
+  }
+
+  // コミッション未設定
+  const noRate=sorted.filter(c=>c.rate===0&&c.totalRolling>50000000);
+  if(noRate.length){
+    html+='<div class="card mb-16"><h3 style="color:var(--blue)">情報 — コミッション率未設定（高額顧客）</h3>';
+    html+='<p class="text-sm text-muted mb-8">コミッション率を設定することで即座に収益が発生します。</p>';
+    noRate.forEach(c=>{
+      const sr=c.totalRolling>500000000?1.50:c.totalRolling>200000000?1.20:c.totalRolling>100000000?1.00:0.85;
+      const pr=Math.round(c.totalRolling*sr/100*KRW_JPY);
+      html+=`<div style="border-left:3px solid var(--blue);padding:10px 16px;margin:8px 0;background:rgba(52,152,219,0.05);border-radius:0 8px 8px 0">
+        <div class="flex-between"><span><strong>${c.nameJa||c.name}</strong> — ローリング: ${fmtW(c.totalRolling)}</span>
+        <span>推奨レート: <strong style="color:var(--gold)">${sr}%</strong> = 見込収益: <strong class="positive">${fmtY(pr)}</strong></span></div>
+      </div>`;
+    });
+    html+='</div>';
+  }
+
+  // アクティブ顧客
+  const active=sorted.filter(c=>daysSince(c.lastVisit)<=60);
+  if(active.length){
+    html+='<div class="card mb-16"><h3 style="color:var(--green)">アクティブ — 直近来店顧客</h3>';
+    active.forEach(c=>{
+      html+=`<div style="border-left:3px solid var(--green);padding:10px 16px;margin:8px 0;background:rgba(39,174,96,0.05);border-radius:0 8px 8px 0">
+        <div class="flex-between"><span><strong>${c.nameJa||c.name}</strong> ${tierBadge(c.tier)} — ${daysSince(c.lastVisit)}日前来店</span>
+        <span class="text-sm">アクション: お礼メッセージ送信 → 2週間後にフォロー</span></div>
+      </div>`;
+    });
+    html+='</div>';
+  }
+
+  document.getElementById('alertList').innerHTML=html||'<p class="text-muted">現在アラートはありません。</p>';
+}
+
+// ==================== 初期化 ====================
+function init(){
+  restoreAddedCustomers();
+  autoPopulateContacts();
+  renderPlans();
+  renderRepeat();
+  renderCustomers();
+  renderProfileSelect();
+  renderLineMessages();
+  renderCampaigns();
+  renderAlerts();
+}
+init();
+</script>
+</body>
+</html>
