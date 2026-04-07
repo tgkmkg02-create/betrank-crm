@@ -3971,51 +3971,39 @@ function drawTierBarChart(){
   var w=canvas.width,h=canvas.height;
   var barH=28,gap=12,left=70,right=40,top=10;
   var chartW=w-left-right;
-
-  ctx.clearRect(0,0,w,h);
-
   var textColor=isDark?'#9ca3af':'#555';
   var barColor='#1a6b5a';
   var barBg=isDark?'rgba(255,255,255,0.04)':'rgba(0,0,0,0.03)';
+  var duration=600,start=null;
 
-  tiers.forEach(function(t,i){
-    var y=top+i*(barH+gap);
-    var bw=maxCount>0?(counts[i]/maxCount)*chartW:0;
-
-    // bg track
-    ctx.fillStyle=barBg;
-    ctx.beginPath();
-    ctx.roundRect(left,y,chartW,barH,4);
-    ctx.fill();
-
-    // bar
-    if(bw>0){
-      ctx.fillStyle=barColor;
-      ctx.beginPath();
-      ctx.roundRect(left,y,bw,barH,4);
-      ctx.fill();
-    }
-
-    // label
-    ctx.fillStyle=textColor;
-    ctx.font='12px Inter,sans-serif';
-    ctx.textAlign='right';
-    ctx.textBaseline='middle';
-    ctx.fillText(t,left-10,y+barH/2);
-
-    // count — draw inside bar if bar is very wide
-    if(bw>chartW*0.85){
-      ctx.fillStyle='#fff';
-      ctx.font='bold 12px Inter,sans-serif';
-      ctx.textAlign='right';
-      ctx.fillText(String(counts[i]),left+bw-8,y+barH/2);
-    } else {
-      ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';
-      ctx.font='bold 12px Inter,sans-serif';
-      ctx.textAlign='left';
-      ctx.fillText(String(counts[i]),left+bw+8,y+barH/2);
-    }
-  });
+  function frame(ts){
+    if(!start)start=ts;
+    var progress=Math.min((ts-start)/duration,1);
+    var ease=1-Math.pow(1-progress,3); // easeOutCubic
+    ctx.clearRect(0,0,w,h);
+    tiers.forEach(function(t,i){
+      var y=top+i*(barH+gap);
+      var fullW=maxCount>0?(counts[i]/maxCount)*chartW:0;
+      var bw=fullW*ease;
+      ctx.fillStyle=barBg;
+      ctx.beginPath();ctx.roundRect(left,y,chartW,barH,4);ctx.fill();
+      if(bw>0){
+        ctx.fillStyle=barColor;ctx.beginPath();ctx.roundRect(left,y,bw,barH,4);ctx.fill();
+      }
+      ctx.fillStyle=textColor;ctx.font='12px Inter,sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';
+      ctx.fillText(t,left-10,y+barH/2);
+      var displayCount=Math.round(counts[i]*ease);
+      if(fullW>chartW*0.85&&progress>0.3){
+        ctx.fillStyle='#fff';ctx.font='bold 12px Inter,sans-serif';ctx.textAlign='right';
+        ctx.fillText(String(displayCount),left+bw-8,y+barH/2);
+      } else if(progress>0.3) {
+        ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';ctx.font='bold 12px Inter,sans-serif';ctx.textAlign='left';
+        ctx.fillText(String(displayCount),left+bw+8,y+barH/2);
+      }
+    });
+    if(progress<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 }
 
 function drawVisitLineChart(){
@@ -4061,65 +4049,58 @@ function drawVisitLineChart(){
   var dotColor='#1a6b5a';
   var fillColor=isDark?'rgba(26,107,90,0.2)':'rgba(26,107,90,0.1)';
 
-  // Grid lines
-  for(var g=0;g<=4;g++){
-    var gy=padT+chartH-(g/4)*chartH;
+  var baseY=padT+chartH;
+  var targetPoints=visitCounts.map(function(v,i){
+    return{x:padL+i*(chartW/(visitCounts.length-1||1)),y:padT+chartH-(v/maxV)*chartH};
+  });
+  var duration=700,start=null;
+
+  function frame(ts){
+    if(!start)start=ts;
+    var progress=Math.min((ts-start)/duration,1);
+    var ease=1-Math.pow(1-progress,3);
+    ctx.clearRect(0,0,w,h);
+
+    // Grid
+    for(var g=0;g<=4;g++){
+      var gy=padT+chartH-(g/4)*chartH;
+      ctx.beginPath();ctx.moveTo(padL,gy);ctx.lineTo(padL+chartW,gy);
+      ctx.strokeStyle=gridLine;ctx.lineWidth=1;ctx.stroke();
+      ctx.fillStyle=textColor;ctx.font='11px Inter,sans-serif';ctx.textAlign='right';ctx.textBaseline='middle';
+      ctx.fillText(String(Math.round(maxV*g/4)),padL-8,gy);
+    }
+
+    // Animated points
+    var pts=targetPoints.map(function(p){return{x:p.x,y:baseY+(p.y-baseY)*ease};});
+
+    // Fill area
+    ctx.beginPath();ctx.moveTo(pts[0].x,baseY);
+    pts.forEach(function(p){ctx.lineTo(p.x,p.y);});
+    ctx.lineTo(pts[pts.length-1].x,baseY);ctx.closePath();
+    ctx.fillStyle=fillColor;ctx.fill();
+
+    // Line
     ctx.beginPath();
-    ctx.moveTo(padL,gy);
-    ctx.lineTo(padL+chartW,gy);
-    ctx.strokeStyle=gridLine;
-    ctx.lineWidth=1;
-    ctx.stroke();
-    ctx.fillStyle=textColor;
-    ctx.font='11px Inter,sans-serif';
-    ctx.textAlign='right';
-    ctx.textBaseline='middle';
-    ctx.fillText(String(Math.round(maxV*g/4)),padL-8,gy);
+    pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+    ctx.strokeStyle=lineColor;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
+
+    // Dots, labels, month labels
+    pts.forEach(function(p,i){
+      ctx.beginPath();ctx.arc(p.x,p.y,4,0,2*Math.PI);ctx.fillStyle=dotColor;ctx.fill();
+      if(progress>0.4){
+        var alpha=Math.min((progress-0.4)/0.3,1);
+        ctx.globalAlpha=alpha;
+        ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';ctx.font='bold 11px Inter,sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+        ctx.fillText(String(visitCounts[i]),p.x,p.y-8);
+        ctx.globalAlpha=1;
+      }
+      ctx.fillStyle=textColor;ctx.font='11px Inter,sans-serif';ctx.textBaseline='top';
+      ctx.fillText(String(months[i].month+1)+'月',p.x,padT+chartH+8);
+    });
+
+    if(progress<1)requestAnimationFrame(frame);
   }
-
-  // Points
-  var points=visitCounts.map(function(v,i){
-    return{
-      x:padL+i*(chartW/(visitCounts.length-1||1)),
-      y:padT+chartH-(v/maxV)*chartH
-    };
-  });
-
-  // Fill area
-  ctx.beginPath();
-  ctx.moveTo(points[0].x,padT+chartH);
-  points.forEach(function(p){ctx.lineTo(p.x,p.y);});
-  ctx.lineTo(points[points.length-1].x,padT+chartH);
-  ctx.closePath();
-  ctx.fillStyle=fillColor;
-  ctx.fill();
-
-  // Line
-  ctx.beginPath();
-  points.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
-  ctx.strokeStyle=lineColor;
-  ctx.lineWidth=2.5;
-  ctx.lineJoin='round';
-  ctx.stroke();
-
-  // Dots and labels
-  points.forEach(function(p,i){
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,4,0,2*Math.PI);
-    ctx.fillStyle=dotColor;
-    ctx.fill();
-    ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';
-    ctx.font='bold 11px Inter,sans-serif';
-    ctx.textAlign='center';
-    ctx.textBaseline='bottom';
-    ctx.fillText(String(visitCounts[i]),p.x,p.y-8);
-
-    // Month label
-    ctx.fillStyle=textColor;
-    ctx.font='11px Inter,sans-serif';
-    ctx.textBaseline='top';
-    ctx.fillText(String(months[i].month+1)+'月',p.x,padT+chartH+8);
-  });
+  requestAnimationFrame(frame);
 }
 
 function drawRollingDonutChart(){
@@ -4151,28 +4132,52 @@ function drawRollingDonutChart(){
     return;
   }
 
-  var startAngle=-Math.PI/2;
-  tiers.forEach(function(t,i){
-    if(rollings[i]===0)return;
-    var sliceAngle=(rollings[i]/totalRolling)*2*Math.PI;
-    ctx.beginPath();
-    ctx.arc(cx,cy,outerR,startAngle,startAngle+sliceAngle);
-    ctx.arc(cx,cy,innerR,startAngle+sliceAngle,startAngle,true);
-    ctx.closePath();
-    ctx.fillStyle=colors[i];
-    ctx.fill();
-    startAngle+=sliceAngle;
-  });
+  var sliceAngles=tiers.map(function(t,i){return(rollings[i]/totalRolling)*2*Math.PI;});
+  var duration=800,startTs=null;
 
-  // Center text
-  ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';
-  ctx.font='bold 14px Inter,sans-serif';
-  ctx.textAlign='center';
-  ctx.textBaseline='middle';
-  ctx.fillText(fmtW(totalRolling),cx,cy-6);
-  ctx.fillStyle=isDark?'#6b7280':'#999';
-  ctx.font='11px Inter,sans-serif';
-  ctx.fillText('総ローリング',cx,cy+12);
+  function frame(ts){
+    if(!startTs)startTs=ts;
+    var progress=Math.min((ts-startTs)/duration,1);
+    var ease=1-Math.pow(1-progress,3);
+    var sweepTotal=ease*2*Math.PI;
+
+    ctx.clearRect(0,0,size,size);
+
+    var angle=-Math.PI/2;
+    var drawn=0;
+    tiers.forEach(function(t,i){
+      if(rollings[i]===0)return;
+      var full=sliceAngles[i];
+      var remaining=sweepTotal-drawn;
+      if(remaining<=0)return;
+      var draw=Math.min(full,remaining);
+      ctx.beginPath();
+      ctx.arc(cx,cy,outerR,angle,angle+draw);
+      ctx.arc(cx,cy,innerR,angle+draw,angle,true);
+      ctx.closePath();
+      ctx.fillStyle=colors[i];
+      ctx.fill();
+      angle+=draw;
+      drawn+=draw;
+    });
+
+    // Center text (fade in)
+    var textAlpha=progress>0.5?Math.min((progress-0.5)/0.3,1):0;
+    if(textAlpha>0){
+      ctx.globalAlpha=textAlpha;
+      ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';
+      ctx.font='bold 14px Inter,sans-serif';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(fmtW(totalRolling),cx,cy-6);
+      ctx.fillStyle=isDark?'#6b7280':'#999';
+      ctx.font='11px Inter,sans-serif';
+      ctx.fillText('総ローリング',cx,cy+12);
+      ctx.globalAlpha=1;
+    }
+
+    if(progress<1)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 
   // Legend
   var legendEl=document.getElementById('donutLegend');
