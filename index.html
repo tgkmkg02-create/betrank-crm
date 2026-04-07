@@ -416,8 +416,41 @@
     --muted: #6b7280;
     --text-faint: #4b5563;
   }
-  body.dark ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); }
+  body.dark ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.12); }
   body.dark ::-webkit-scrollbar-thumb:hover { background:rgba(255,255,255,0.25); }
+  body.dark .topbar { background:var(--bg-secondary); border-bottom-color:var(--border); }
+  body.dark .topbar-title { color:var(--text-primary); }
+  body.dark .modal-overlay { background:rgba(0,0,0,0.6); }
+  body.dark .lang-dropdown-menu { background:var(--bg-secondary); border-color:var(--border); box-shadow:0 8px 24px rgba(0,0,0,0.4); }
+  body.dark .lang-dropdown-menu a { color:var(--text-secondary); }
+  body.dark .lang-dropdown-menu a:hover { background:var(--bg-hover); color:var(--text-primary); }
+  body.dark .lang-dropdown-menu a.active { color:var(--accent); }
+  body.dark .user-dropdown-menu { background:var(--bg-secondary); border-color:var(--border); box-shadow:0 8px 24px rgba(0,0,0,0.4); }
+  body.dark .user-dropdown-menu .user-name { color:var(--text-primary); border-bottom-color:var(--border); }
+  body.dark .user-dropdown-menu .menu-item { color:var(--text-secondary); }
+  body.dark .user-dropdown-menu .menu-item:hover { background:var(--bg-hover); color:var(--text-primary); }
+
+  /* ========== TABLE READABILITY ========== */
+  tbody tr:nth-child(even) { background:var(--bg-tertiary); }
+  body.dark tbody tr:nth-child(even) { background:rgba(255,255,255,0.02); }
+  th { position:sticky; top:0; z-index:1; background:var(--bg-secondary); }
+  body.dark th { background:var(--bg-secondary); }
+
+  /* ========== SEARCH ICON IN FILTER INPUTS ========== */
+  input[type="text"][placeholder*="検索"] {
+    padding-left:36px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:12px center;
+    background-size:16px;
+  }
+  body.dark input[type="text"][placeholder*="検索"] {
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  }
+
+  /* ========== STAT CARD HOVER ========== */
+  .card.stat:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.06); }
+  body.dark .card.stat:hover { box-shadow:0 4px 12px rgba(0,0,0,0.2); }
 
   /* ========== TOPBAR ENHANCED ========== */
   .topbar-right { display:flex; align-items:center; gap:10px; }
@@ -747,7 +780,14 @@
       <div class="dash-chart-wrap"><canvas id="visitLineChart"></canvas></div>
     </div>
   </div>
-  <div class="card">
+  <div class="card mt-16">
+    <h3>ローリング分布（ティア別）</h3>
+    <div style="display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;padding:16px 0">
+      <canvas id="rollingDonutChart" width="240" height="240"></canvas>
+      <div id="donutLegend"></div>
+    </div>
+  </div>
+  <div class="card mt-16">
     <h3>トップ10顧客</h3>
     <table>
       <thead><tr>
@@ -3182,7 +3222,7 @@ function renderAlerts(){
       const rev=Math.round(c.avgBuyin*JPY_KRW*rate/100*KRW_JPY);
       const chipW=Math.round(c.avgBuyin*JPY_KRW*(d>180?0.03:0.02));
       let method=d>300?`社長直電 → 負けバック累進制(最大7%) + サービスチップ${fmtW(chipW)}提示`:d>180?`電話 → 負けバック累進制(最大7%・上限100万) + サービスチップ${fmtW(chipW)}提示`:`LINE → 負けバック累進制(最大7%・上限100万) + サービスチップ${fmtW(Math.round(chipW*0.7))}`;
-      html+=`<div class="alert-box">
+      html+=`<div class="alert-box" style="border-left:3px solid var(--red)">
         <div class="flex-between">
           <div><strong style="font-size:1.1em">${c.nameJa||c.name}</strong> ${tierBadge(c.tier)}
             <div class="text-sm text-muted mt-8">最終来店: ${c.lastVisit}（${d}日前）</div></div>
@@ -3799,9 +3839,9 @@ function renderDashboard(){
 
   document.getElementById('dashSummaryCards').innerHTML=
     '<div class="card stat stat-accent"><div class="value">'+totalCustomers+'</div><div class="label">総顧客数</div></div>'+
-    '<div class="card stat stat-accent"><div class="value" style="color:var(--accent)">'+vvipVip+'</div><div class="label">VIP/VVIP数</div></div>'+
-    '<div class="card stat stat-accent"><div class="value" style="color:var(--blue)">'+recentVisits+'</div><div class="label">今月来店数</div></div>'+
-    '<div class="card stat stat-accent"><div class="value" style="font-size:1.2em">'+fmtW(totalRolling)+'</div><div class="label">累計ローリング</div></div>';
+    '<div class="card stat"><div class="value" style="color:var(--accent)">'+vvipVip+'</div><div class="label">VIP/VVIP数</div></div>'+
+    '<div class="card stat"><div class="value" style="color:var(--blue)">'+recentVisits+'</div><div class="label">今月来店数</div></div>'+
+    '<div class="card stat"><div class="value" style="font-size:1.2em">'+fmtW(totalRolling)+'</div><div class="label">累計ローリング</div></div>';
 
   // Top 10 table
   var top10=[].concat(CUSTOMERS).sort(function(a,b){return b.totalRolling-a.totalRolling;}).slice(0,10);
@@ -3820,6 +3860,7 @@ function renderDashboard(){
   setTimeout(function(){
     drawTierBarChart();
     drawVisitLineChart();
+    drawRollingDonutChart();
   },50);
 }
 
@@ -3887,11 +3928,18 @@ function drawTierBarChart(){
     ctx.textBaseline='middle';
     ctx.fillText(t,left-10,y+barH/2);
 
-    // count
-    ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';
-    ctx.font='bold 12px Inter,sans-serif';
-    ctx.textAlign='left';
-    ctx.fillText(String(counts[i]),left+bw+8,y+barH/2);
+    // count — draw inside bar if bar is very wide
+    if(bw>chartW*0.85){
+      ctx.fillStyle='#fff';
+      ctx.font='bold 12px Inter,sans-serif';
+      ctx.textAlign='right';
+      ctx.fillText(String(counts[i]),left+bw-8,y+barH/2);
+    } else {
+      ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';
+      ctx.font='bold 12px Inter,sans-serif';
+      ctx.textAlign='left';
+      ctx.fillText(String(counts[i]),left+bw+8,y+barH/2);
+    }
   });
 }
 
@@ -3997,6 +4045,74 @@ function drawVisitLineChart(){
     ctx.textBaseline='top';
     ctx.fillText(String(months[i].month+1)+'月',p.x,padT+chartH+8);
   });
+}
+
+function drawRollingDonutChart(){
+  var canvas=document.getElementById('rollingDonutChart');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var isDark=document.body.classList.contains('dark');
+
+  var tiers=['VVIP','VIP','Gold','Silver','Bronze'];
+  var colors=['#6d28d9','#1a6b5a','#92700c','#64748b','#8b5a2b'];
+  var rollings=tiers.map(function(t){
+    return CUSTOMERS.filter(function(c){return c.tier===t;}).reduce(function(s,c){return s+c.totalRolling;},0);
+  });
+  var totalRolling=rollings.reduce(function(s,v){return s+v;},0);
+
+  var size=240;
+  canvas.width=size;
+  canvas.height=size;
+  var cx=size/2,cy=size/2,outerR=size/2-10,innerR=outerR*0.6;
+
+  ctx.clearRect(0,0,size,size);
+
+  if(totalRolling===0){
+    ctx.fillStyle=isDark?'#6b7280':'#999';
+    ctx.font='13px Inter,sans-serif';
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText('データなし',cx,cy);
+    return;
+  }
+
+  var startAngle=-Math.PI/2;
+  tiers.forEach(function(t,i){
+    if(rollings[i]===0)return;
+    var sliceAngle=(rollings[i]/totalRolling)*2*Math.PI;
+    ctx.beginPath();
+    ctx.arc(cx,cy,outerR,startAngle,startAngle+sliceAngle);
+    ctx.arc(cx,cy,innerR,startAngle+sliceAngle,startAngle,true);
+    ctx.closePath();
+    ctx.fillStyle=colors[i];
+    ctx.fill();
+    startAngle+=sliceAngle;
+  });
+
+  // Center text
+  ctx.fillStyle=isDark?'#e8e6e3':'#1a1a1a';
+  ctx.font='bold 14px Inter,sans-serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(fmtW(totalRolling),cx,cy-6);
+  ctx.fillStyle=isDark?'#6b7280':'#999';
+  ctx.font='11px Inter,sans-serif';
+  ctx.fillText('総ローリング',cx,cy+12);
+
+  // Legend
+  var legendEl=document.getElementById('donutLegend');
+  if(!legendEl)return;
+  var legendHtml='';
+  tiers.forEach(function(t,i){
+    var pct=totalRolling>0?((rollings[i]/totalRolling)*100).toFixed(1):'0.0';
+    legendHtml+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:0.82em">';
+    legendHtml+='<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:'+colors[i]+';flex-shrink:0"></span>';
+    legendHtml+='<span style="min-width:50px;font-weight:600;color:'+(isDark?'#e8e6e3':'#1a1a1a')+'">'+t+'</span>';
+    legendHtml+='<span style="color:'+(isDark?'#9ca3af':'#555')+'">'+pct+'%</span>';
+    legendHtml+='<span style="color:'+(isDark?'#6b7280':'#999')+'">'+fmtW(rollings[i])+'</span>';
+    legendHtml+='</div>';
+  });
+  legendEl.innerHTML=legendHtml;
 }
 
 // ==================== 初期化 ====================
