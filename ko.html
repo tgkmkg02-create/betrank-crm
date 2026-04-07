@@ -677,7 +677,7 @@
       </div>
       <div style="text-align:left;margin-bottom:20px">
         <label style="color:rgba(232,230,227,0.6)">パスワード確認</label>
-        <input type="password" id="newPass2" placeholder="もう一度입력" onkeydown="if(event.key==='Enter')doSetPassword()" style="text-align:left;letter-spacing:normal;margin-bottom:0">
+        <input type="password" id="newPass2" placeholder="もう一度入力" onkeydown="if(event.key==='Enter')doSetPassword()" style="text-align:left;letter-spacing:normal;margin-bottom:0">
       </div>
       <button onclick="doSetPassword()">設定する</button>
       <div class="login-error" id="pwChangeError"></div>
@@ -921,7 +921,7 @@
   <h2 style="color:var(--text-primary);margin-bottom:20px">롤링 & 기대값 계산機</h2>
   <div class="grid grid-2">
     <div class="card">
-      <h3>입력パラメータ</h3>
+      <h3>入力パラメータ</h3>
       <div class="form-group"><label>고객名（任意）</label><input type="text" id="calcName" placeholder="例: SANO SHOHEI"></div>
       <div class="form-group"><label>바이인額（円）</label><input type="number" id="calcBuyin" value="5000000" step="100000"></div>
       <div class="form-group"><label>予想롤링（₩）</label><input type="number" id="calcRolling" value="150000000" step="1000000"></div>
@@ -941,14 +941,14 @@
           <option value="customer_pays">고객 부담</option>
         </select>
       </div>
-      <div class="form-group"><label>숙박수</label><input type="number" id="calcNights" value="2" min="1" max="14"></div>
-      <div class="form-group"><label>요일タイプ</label>
-        <select id="calcDayType"><option value="weekday">평일（日〜木）</option><option value="weekend">주말（金）</option><option value="weekend2">주말（土・祝）</option><option value="peak">피크기</option></select>
+      <div class="form-group"><label>泊数</label><input type="number" id="calcNights" value="2" min="1" max="14"></div>
+      <div class="form-group"><label>曜日タイプ</label>
+        <select id="calcDayType"><option value="weekday">평일（日〜木）</option><option value="weekend">주말（金）</option><option value="weekend2">주말（土・祝）</option><option value="peak">ピーク期</option></select>
       </div>
       <div class="form-group"><label>キャッシュバック額（円）</label><input type="number" id="calcCashback" value="0" step="10000"></div>
       <button onclick="calculate()">손익계산を실행</button>
     </div>
-    <div class="card"><h3>계산결과</h3><div id="calcResults"><p class="text-muted">パラメータを입력して「손익계산を실행」をクリック</p></div></div>
+    <div class="card"><h3>계산결과</h3><div id="calcResults"><p class="text-muted">パラメータを入力して「손익계산を실행」をクリック</p></div></div>
   </div>
 </div>
 
@@ -976,7 +976,7 @@
 <!-- TAB 7: 캠페인 제안 -->
 <div id="campaigns" class="tab-content">
   <h2 style="color:var(--text-primary);margin-bottom:20px">리피트캠페인 제안</h2>
-  <div class="card mb-16"><h3>캠페인戦略概要</h3><p class="text-sm text-muted">고객データ分析に基づき、리피트率向上と売上最大化のための캠페인を自動제안します。</p></div>
+  <div class="card mb-16"><h3>캠페인戦略概要</h3><p class="text-sm text-muted">고객データ分析に基づき、리피트率向上と売上最大化のための캠페인を自動提案します。</p></div>
   <div id="campaignList"></div>
 </div>
 
@@ -1188,7 +1188,7 @@ async function doLogin(){
   var email=document.getElementById('loginEmail').value.trim().toLowerCase();
   var pass=document.getElementById('loginPass').value;
   if(!email||!pass){
-    showLoginError('이메일とパスワードを입력してください');
+    showLoginError('이메일とパスワードを入力してください');
     return;
   }
   var emailHash=await sha256(email);
@@ -1242,7 +1242,7 @@ async function doSetPassword(){
   succEl.style.display='none';
 
   if(!pw1||!pw2){
-    errEl.textContent='全ての項目を입력してください';
+    errEl.textContent='全ての項目を入力してください';
     errEl.style.display='block';
     return;
   }
@@ -1315,12 +1315,12 @@ const HOTEL_RATES={
 };
 
 const PLANS=[
-  {name:'VIP体験',buyin:770000,flight:'economy',nights:1,minBet:300000,rolling:20000000,note:'初回・평일限定'},
-  {name:'스탠다드',buyin:1000000,flight:'economy',nights:1,minBet:300000,rolling:30000000,note:''},
-  {name:'프리미엄',buyin:2000000,flight:'economy',nights:2,minBet:300000,rolling:75000000,note:''},
-  {name:'골드',buyin:3000000,flight:'economy',nights:3,minBet:300000,rolling:100000000,note:''},
-  {name:'플래티넘',buyin:5000000,flight:'business',nights:3,minBet:500000,rolling:150000000,note:'비즈니스クラス'},
-  {name:'블랙',buyin:10000000,flight:'business',nights:3,minBet:1000000,rolling:300000000,note:'비즈니스+部屋グレードUP'}
+  {name:'VIP体験',buyin:770000,flight:'economy',flightMax:30000,nights:1,minBet:300000,rolling:20000000,note:'初回・평일限定'},
+  {name:'스탠다드',buyin:1000000,flight:'economy',flightMax:40000,nights:1,minBet:300000,rolling:30000000,note:''},
+  {name:'프리미엄',buyin:2000000,flight:'economy',flightMax:60000,nights:2,minBet:300000,rolling:75000000,note:''},
+  {name:'골드',buyin:3000000,flight:'economy',flightMax:60000,nights:3,minBet:300000,rolling:100000000,note:''},
+  {name:'플래티넘',buyin:5000000,flight:'business',flightMax:120000,nights:3,minBet:500000,rolling:150000000,note:'비즈니스クラス'},
+  {name:'블랙',buyin:10000000,flight:'business',flightMax:120000,nights:3,minBet:1000000,rolling:300000000,note:'비즈니스+部屋グレードUP'}
 ];
 
 // ==================== 고객データ ====================
@@ -2292,7 +2292,7 @@ function renderPlans(){
   const avgHotel=22000;
   let cards='',tbl='',loss='';
   PLANS.forEach(p=>{
-    const fc=flightCost(p.flight),hc=avgHotel*p.nights,tc=fc+hc;
+    const fc=p.flightMax||flightCost(p.flight),hc=avgHotel*p.nights,tc=fc+hc;
     const r85=Math.round(p.rolling*0.0085*KRW_JPY),r14=Math.round(p.rolling*0.014*KRW_JPY);
     const p85=r85-tc,p14=r14-tc,roi=tc>0?((p14/tc)*100).toFixed(0):'N/A';
     const plKRW=Math.round(p.rolling*BACCARAT_EDGE),plJPY=Math.round(plKRW*KRW_JPY);
@@ -2853,7 +2853,7 @@ function calculate(){
   const beRolling=rate>0?Math.round(totalCost/(rate/100)/KRW_JPY):0;
 
   let suggestion='';
-  if(profit>500000)suggestion='高수익。次回部屋アップグレードの제안を検討。';
+  if(profit>500000)suggestion='高수익。次回部屋アップグレードの提案を検討。';
   else if(profit>100000)suggestion='이익あり。標準インセンティブで十分。';
   else if(profit>0)suggestion='薄利。롤링増加またはレート引き上げを検討。';
   else suggestion='赤字。고객獲得コストとして計上。리피트で回収要。';
@@ -2892,7 +2892,7 @@ function calculate(){
       <div class="flex-between text-sm mt-8"><span>바이인比:</span><span>${lossP}%</span></div>
     </div>
     <div class="divider"></div>
-    <div class="text-sm" style="color:var(--accent)"><strong>제안:</strong> ${suggestion}</div>
+    <div class="text-sm" style="color:var(--accent)"><strong>提案:</strong> ${suggestion}</div>
   `;
   logActivity('계산실행',name+' - 롤링'+fmtW(rolling)+' / 이익'+fmtY(profit));
 }
@@ -2935,7 +2935,7 @@ function generateLineMessage(c){
   const chipStr=fmtW(chipAmount);
   const mealStr=c.tier==='VVIP'?'VIPルーム内のお食事は全て無料でございます':('お食事は'+meal.label+'でサービスさせていただきます');
 
-  // 플랜제안（바이인額に基づく）
+  // 플랜提案（바이인額に基づく）
   let planName='';
   if(c.avgBuyin>=10000000)planName='블랙플랜（비즈니스クラス+3泊+部屋グレードUP）';
   else if(c.avgBuyin>=5000000)planName='플래티넘플랜（비즈니스クラス+3泊）';
@@ -3610,7 +3610,7 @@ async function doAddUser(){
     return;
   }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    errEl.textContent='有効な이메일を입력してください';
+    errEl.textContent='有効な이메일を入力してください';
     errEl.style.display='block';
     return;
   }

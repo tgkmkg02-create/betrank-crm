@@ -1315,12 +1315,12 @@ const HOTEL_RATES={
 };
 
 const PLANS=[
-  {name:'VIP体験',buyin:770000,flight:'economy',nights:1,minBet:300000,rolling:20000000,note:'初回・平日限定'},
-  {name:'スタンダード',buyin:1000000,flight:'economy',nights:1,minBet:300000,rolling:30000000,note:''},
-  {name:'プレミアム',buyin:2000000,flight:'economy',nights:2,minBet:300000,rolling:75000000,note:''},
-  {name:'ゴールド',buyin:3000000,flight:'economy',nights:3,minBet:300000,rolling:100000000,note:''},
-  {name:'プラチナ',buyin:5000000,flight:'business',nights:3,minBet:500000,rolling:150000000,note:'ビジネスクラス'},
-  {name:'ブラック',buyin:10000000,flight:'business',nights:3,minBet:1000000,rolling:300000000,note:'ビジネス+部屋グレードUP'}
+  {name:'VIP体験',buyin:770000,flight:'economy',flightMax:30000,nights:1,minBet:300000,rolling:20000000,note:'初回・平日限定'},
+  {name:'スタンダード',buyin:1000000,flight:'economy',flightMax:40000,nights:1,minBet:300000,rolling:30000000,note:''},
+  {name:'プレミアム',buyin:2000000,flight:'economy',flightMax:60000,nights:2,minBet:300000,rolling:75000000,note:''},
+  {name:'ゴールド',buyin:3000000,flight:'economy',flightMax:60000,nights:3,minBet:300000,rolling:100000000,note:''},
+  {name:'プラチナ',buyin:5000000,flight:'business',flightMax:120000,nights:3,minBet:500000,rolling:150000000,note:'ビジネスクラス'},
+  {name:'ブラック',buyin:10000000,flight:'business',flightMax:120000,nights:3,minBet:1000000,rolling:300000000,note:'ビジネス+部屋グレードUP'}
 ];
 
 // ==================== 顧客データ ====================
@@ -2292,7 +2292,7 @@ function renderPlans(){
   const avgHotel=22000;
   let cards='',tbl='',loss='';
   PLANS.forEach(p=>{
-    const fc=flightCost(p.flight),hc=avgHotel*p.nights,tc=fc+hc;
+    const fc=p.flightMax||flightCost(p.flight),hc=avgHotel*p.nights,tc=fc+hc;
     const r85=Math.round(p.rolling*0.0085*KRW_JPY),r14=Math.round(p.rolling*0.014*KRW_JPY);
     const p85=r85-tc,p14=r14-tc,roi=tc>0?((p14/tc)*100).toFixed(0):'N/A';
     const plKRW=Math.round(p.rolling*BACCARAT_EDGE),plJPY=Math.round(plKRW*KRW_JPY);
