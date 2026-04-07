@@ -1018,6 +1018,15 @@
   </div>
 </div>
 
+<!-- ACCESS DENIED SCREEN (reusable, never destroys other tab content) -->
+<div id="accessDeniedScreen" class="tab-content">
+  <div class="access-denied">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <h3>アクセス権限がありません</h3>
+    <p>この機能へのアクセスが制限されています。管理者にお問い合わせください。</p>
+  </div>
+</div>
+
 <!-- MODAL: プロファイル編集 -->
 <div class="modal-overlay" id="editModal">
   <div class="modal">
@@ -1071,7 +1080,7 @@ const TAB_PERM_MAP={
 
 function initUserStore(){
   var existing=localStorage.getItem('br_users');
-  if(existing)return JSON.parse(existing);
+  if(existing){var parsed=safeParse(existing,null);if(parsed)return parsed;}
   var store={
     users:[{
       id:'usr_001',
@@ -2032,6 +2041,7 @@ function getMealBadge(tier){
 
 // ==================== ユーティリティ ====================
 function esc(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function safeParse(str,fallback){try{return str?JSON.parse(str):fallback;}catch(e){return fallback;}}
 function fmt(n){return n.toLocaleString();}
 function fmtY(n){return'¥'+n.toLocaleString();}
 function fmtW(n){return'₩'+n.toLocaleString();}
@@ -2040,7 +2050,7 @@ function fmtMan(n){
   if(Math.abs(n)>=10000)return fmt(Math.round(n/10000))+'万';
   return fmt(n);
 }
-function daysSince(d){return Math.floor((TODAY-new Date(d))/(864e5));}
+function daysSince(d){if(!d)return 9999;var t=new Date(d);if(isNaN(t))return 9999;return Math.floor((TODAY-t)/(864e5));}
 function statusBadge(d){
   if(d<=30)return'<span class="badge badge-ok">アクティブ</span>';
   if(d<=90)return'<span class="badge" style="background:rgba(241,196,15,0.2);color:#f1c40f">注意</span>';
@@ -2058,11 +2068,8 @@ function showTab(id,el){
   if(permKey&&!hasPermission(permKey)){
     document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active');});
     document.querySelectorAll('.sidebar-nav .tab').forEach(function(t){t.classList.remove('active');});
-    var target=document.getElementById(id);
-    if(target){
-      target.classList.add('active');
-      target.innerHTML='<div class="access-denied"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><h3>アクセス権限がありません</h3><p>この機能へのアクセスが制限されています。管理者にお問い合わせください。</p></div>';
-    }
+    var denied=document.getElementById('accessDeniedScreen');
+    if(denied)denied.classList.add('active');
     el.classList.add('active');
     document.getElementById('topbarTitle').textContent='アクセス制限';
     return;
@@ -2369,7 +2376,7 @@ function renderCustomers(){
     seg+=`<div class="card">
       <div class="flex-between mb-8">${tierBadge(t)}<span style="font-size:1.2em;font-weight:700">${cs.length}名</span></div>
       <div class="text-sm">総ローリング: <strong>${fmtW(r)}</strong></div>
-      <div class="text-sm mt-8">平均来店: <strong>${(cs.reduce((s,c)=>s+c.visits,0)/cs.length).toFixed(1)}回</strong></div>
+      <div class="text-sm mt-8">平均来店: <strong>${cs.length>0?(cs.reduce((s,c)=>s+c.visits,0)/cs.length).toFixed(1):'0.0'}回</strong></div>
       <div class="text-sm mt-8">売上シェア: <strong>${totalR>0?((r/totalR)*100).toFixed(1):0}%</strong></div>
     </div>`;
   });
@@ -2396,7 +2403,7 @@ function previewPassportPhoto(id){
       document.getElementById('passportPhotoPreview').innerHTML=`<img src="${dataUrl}" style="width:100%;height:auto">`;
       // localStorageに保存
       const saved=localStorage.getItem('profile_'+id);
-      const data=saved?JSON.parse(saved):{};
+      const data=safeParse(saved,{});
       data.passportPhoto=dataUrl;
       localStorage.setItem('profile_'+id,JSON.stringify(data));
     };
@@ -2408,7 +2415,7 @@ function previewPassportPhoto(id){
 function deletePassportPhoto(id){
   if(!confirm('パスポート写真を削除しますか？'))return;
   const saved=localStorage.getItem('profile_'+id);
-  const data=saved?JSON.parse(saved):{};
+  const data=safeParse(saved,{});
   delete data.passportPhoto;
   localStorage.setItem('profile_'+id,JSON.stringify(data));
   renderProfile();
@@ -2436,7 +2443,7 @@ function addNewCustomer(){
   };
   localStorage.setItem('profile_'+newId,JSON.stringify(profile));
   // 追加した顧客をlocalStorageにも保存（ページリロード後も維持）
-  let added=JSON.parse(localStorage.getItem('br_added_customers')||'[]');
+  let added=safeParse(localStorage.getItem('br_added_customers'),[]);
   added.push(newC);
   localStorage.setItem('br_added_customers',JSON.stringify(added));
   // UIリセット
@@ -2459,7 +2466,7 @@ function addNewCustomer(){
 
 // ページ読み込み時にlocalStorageから追加顧客を復元
 function restoreAddedCustomers(){
-  const added=JSON.parse(localStorage.getItem('br_added_customers')||'[]');
+  const added=safeParse(localStorage.getItem('br_added_customers'),[]);
   added.forEach(c=>{if(!CUSTOMERS.find(x=>x.id===c.id))CUSTOMERS.push(c);});
 }
 
@@ -2517,7 +2524,7 @@ function autoPopulateContacts(){
   CUSTOMERS.forEach(c=>{
     const key='profile_'+c.id;
     const saved=localStorage.getItem(key);
-    const data=saved?JSON.parse(saved):{game:'バカラ',hobby:'',drink:'',food:'',birthday:'',personality:'',winBehavior:'',lossBehavior:'',family:'',importantDates:'',otherNotes:'',passport:'',passportExp:'',passportName:c.name,phone:'',email:'',lineId:'',nationality:'日本'};
+    const data=safeParse(saved,{game:'バカラ',hobby:'',drink:'',food:'',birthday:'',personality:'',winBehavior:'',lossBehavior:'',family:'',importantDates:'',otherNotes:'',passport:'',passportExp:'',passportName:c.name,phone:'',email:'',lineId:'',nationality:'日本'});
     let changed=false;
     // notesからTEL/EMAIL抽出
     if(c.notes){
@@ -2565,7 +2572,7 @@ function renderProfile(){
   const canvasId='radar_'+c.id;
 
   const saved=localStorage.getItem('profile_'+c.id);
-  const extra=saved?JSON.parse(saved):{hobby:'',drink:'',food:'',game:'バカラ',birthday:'',personality:'',winBehavior:'',lossBehavior:'',family:'',importantDates:'',otherNotes:''};
+  const extra=safeParse(saved,{hobby:'',drink:'',food:'',game:'バカラ',birthday:'',personality:'',winBehavior:'',lossBehavior:'',family:'',importantDates:'',otherNotes:''});
 
   document.getElementById('profileArea').innerHTML=`
     <div class="card">
@@ -2666,7 +2673,8 @@ function renderProfile(){
 }
 
 function saveProfile(id){
-  const data={
+  const existing=safeParse(localStorage.getItem('profile_'+id),{});
+  const data=Object.assign({},existing,{
     passport:document.getElementById('pf_passport').value,
     passportExp:document.getElementById('pf_passportExp').value,
     passportName:document.getElementById('pf_passportName').value,
@@ -2685,7 +2693,7 @@ function saveProfile(id){
     family:document.getElementById('pf_family').value,
     importantDates:document.getElementById('pf_dates').value,
     otherNotes:document.getElementById('pf_notes').value
-  };
+  });
   localStorage.setItem('profile_'+id,JSON.stringify(data));
   const pc=CUSTOMERS.find(function(x){return x.id===id;});
   logActivity('プロファイル編集',(pc?pc.nameJa||pc.name:'ID:'+id)+'のプロファイルを更新');
@@ -3040,7 +3048,7 @@ function copyLineMessage(btn,id){
     btn.textContent='コピー済み!';
     btn.classList.add('copied');
     setTimeout(()=>{btn.textContent='コピー';btn.classList.remove('copied');},2000);
-  });
+  }).catch(()=>{window.prompt('コピーしてください:',el.textContent);});
 }
 
 function renderLineMessages(){
@@ -3419,9 +3427,7 @@ function renderUserListTable(){
 }
 
 function copyTempPw(pw){
-  navigator.clipboard.writeText(pw).then(function(){
-    // Brief visual feedback handled by caller if needed
-  });
+  navigator.clipboard.writeText(pw).catch(function(){window.prompt('コピーしてください:',pw);});
 }
 
 function maskEmail(emailHash){
@@ -3568,7 +3574,7 @@ function copyNewUserTempPw(){
         btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>コピーしました';
         setTimeout(function(){btn.innerHTML=origHtml;},2000);
       }
-    });
+    }).catch(function(){window.prompt('コピーしてください:',el.textContent);});
   }
 }
 
@@ -3717,7 +3723,7 @@ function copyResetTempPw(){
         btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>コピーしました';
         setTimeout(function(){btn.innerHTML=origHtml;},2000);
       }
-    });
+    }).catch(function(){window.prompt('コピーしてください:',el.textContent);});
   }
 }
 
@@ -3729,7 +3735,7 @@ document.addEventListener('click',function(){
 
 // ==================== ACTIVITY LOG ====================
 function logActivity(action,detail){
-  const logs=JSON.parse(localStorage.getItem('br_activity_log')||'[]');
+  const logs=safeParse(localStorage.getItem('br_activity_log'),[]);
   logs.unshift({
     timestamp:new Date().toISOString(),
     action:action,
@@ -3754,7 +3760,7 @@ function getActivityBadgeClass(action){
   return'activity-badge-edit';
 }
 function renderActivityLog(){
-  const logs=JSON.parse(localStorage.getItem('br_activity_log')||'[]');
+  const logs=safeParse(localStorage.getItem('br_activity_log'),[]);
   const list=document.getElementById('activityLogList');
   if(!list)return;
   if(logs.length===0){
@@ -4012,7 +4018,7 @@ function init(){
   renderActivityLog();
   if(canManageUsers())renderUserAccounts();
 }
-init();
+if(sessionStorage.getItem('br_auth')==='1'&&sessionStorage.getItem('br_current_user')){init();}
 </script>
 </body>
 </html>
