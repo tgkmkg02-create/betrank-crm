@@ -214,7 +214,7 @@
   .stat { text-align:center; padding:18px 15px; }
   .stat .value {
     font-size:1.7em; font-weight:700; color:var(--text-primary);
-    letter-spacing:-0.02em;
+    letter-spacing:-0.02em; word-break:break-all;
   }
   .stat .label {
     font-size:0.72em; color:var(--muted); margin-top:6px;
@@ -724,7 +724,7 @@
     </div>
   </div>
   <div class="sidebar-footer">
-    <div class="info">顧客数: <span id="totalCustomers">0</span></div>
+    <div class="info">ロール: <span id="sidebarRole">管理者</span></div>
     <div class="info">2026年4月5日</div>
   </div>
 </nav>
@@ -849,6 +849,13 @@
 <div id="customers" class="tab-content">
   <h2 style="color:var(--text-primary);margin-bottom:20px">顧客ポートフォリオ</h2>
   <div class="grid grid-6 mb-16" id="summaryStats"></div>
+  <div class="card mb-16" style="padding:16px 22px">
+    <div class="flex-between mb-8">
+      <h3 style="margin-bottom:0">ステータス分布</h3>
+      <div id="statusBarLegend" style="display:flex;gap:16px;font-size:0.78em"></div>
+    </div>
+    <div id="statusBar" style="height:12px;border-radius:6px;overflow:hidden;display:flex;background:var(--bg-tertiary)"></div>
+  </div>
   <div class="card mb-16" style="padding:14px 20px">
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
       <input type="text" id="searchCustomer" placeholder="名前で検索..." oninput="renderCustomers()" style="max-width:250px">
@@ -876,7 +883,7 @@
   <h2 style="color:var(--text-primary);margin-bottom:8px">顧客プロファイル & レーダーチャート</h2>
   <p class="text-sm text-muted mb-16">各顧客の性格・嗜好を可視化。クリックで詳細編集可能。</p>
   <div class="card mb-16" style="border-color:var(--green)">
-    <div class="flex-between"><h3 style="color:var(--green)">新規顧客を追加</h3><button class="btn-sm btn-gold" onclick="document.getElementById('addForm').style.display=document.getElementById('addForm').style.display==='none'?'block':'none'">+ 新規追加</button></div>
+    <div class="flex-between"><h3>新規顧客を追加</h3><button class="btn-sm btn-gold" onclick="document.getElementById('addForm').style.display=document.getElementById('addForm').style.display==='none'?'block':'none'">+ 新規追加</button></div>
     <div id="addForm" style="display:none;margin-top:16px">
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
         <div class="form-group"><label>氏名（日本語）*</label><input id="add_nameJa" placeholder="例: 山田 太郎"></div>
@@ -2142,6 +2149,12 @@ function drawRadar(canvasId,traits,size){
   const axisColor=isDark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)';
   const labelColor=isDark?'#9ca3af':'#555';
 
+  // 背景円
+  ctx.beginPath();
+  ctx.arc(cx,cy,r+10,0,2*Math.PI);
+  ctx.fillStyle=isDark?'rgba(30,30,40,0.6)':'rgba(255,255,255,0.7)';
+  ctx.fill();
+
   // グリッド
   for(let lv=2;lv<=10;lv+=2){
     ctx.beginPath();
@@ -2172,7 +2185,7 @@ function drawRadar(canvasId,traits,size){
     const y=cy+r*v*Math.sin(a);
     i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
   }
-  ctx.fillStyle='rgba(26,107,90,0.15)';ctx.fill();
+  ctx.fillStyle='rgba(26,107,90,0.2)';ctx.fill();
   ctx.strokeStyle='#1a6b5a';ctx.lineWidth=2;ctx.stroke();
 
   // ドット
@@ -2180,7 +2193,7 @@ function drawRadar(canvasId,traits,size){
     const a=-Math.PI/2+i*angleStep;
     const v=(traits[keys[i]]||0)/10;
     ctx.beginPath();
-    ctx.arc(cx+r*v*Math.cos(a),cy+r*v*Math.sin(a),4,0,2*Math.PI);
+    ctx.arc(cx+r*v*Math.cos(a),cy+r*v*Math.sin(a),5,0,2*Math.PI);
     ctx.fillStyle='#1a6b5a';ctx.fill();
   }
 
@@ -2373,7 +2386,6 @@ function renderRepeat(){
 
 // ==================== TAB3: 顧客ランキング ====================
 function renderCustomers(){
-  document.getElementById('totalCustomers').textContent=CUSTOMERS.length;
   const totalR=CUSTOMERS.reduce((s,c)=>s+c.totalRolling,0);
   const totalV=CUSTOMERS.reduce((s,c)=>s+c.visits,0);
   const active=CUSTOMERS.filter(c=>daysSince(c.lastVisit)<=90).length;
@@ -2388,6 +2400,18 @@ function renderCustomers(){
     <div class="stat card"><div class="value" style="color:#f1c40f">${atRisk}</div><div class="label">離脱リスク</div></div>
     <div class="stat card"><div class="value" style="color:var(--red)">${dormant}</div><div class="label">休眠(180日+)</div></div>
   `;
+
+  var sbTotal=CUSTOMERS.length;
+  if(sbTotal>0){
+    document.getElementById('statusBar').innerHTML=
+      '<div style="width:'+(active/sbTotal*100)+'%;background:var(--green);height:100%"></div>'+
+      '<div style="width:'+(atRisk/sbTotal*100)+'%;background:var(--gold);height:100%"></div>'+
+      '<div style="width:'+(dormant/sbTotal*100)+'%;background:var(--red);height:100%"></div>';
+    document.getElementById('statusBarLegend').innerHTML=
+      '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--green);margin-right:4px;vertical-align:middle"></span>アクティブ '+active+'</span>'+
+      '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--gold);margin-right:4px;vertical-align:middle"></span>リスク '+atRisk+'</span>'+
+      '<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--red);margin-right:4px;vertical-align:middle"></span>休眠 '+dormant+'</span>';
+  }
 
   const filtered=filterCustomers('searchCustomer','filterTierCustomer','filterStatusCustomer');
   const sorted=[...filtered].sort((a,b)=>b.totalRolling-a.totalRolling);
@@ -2499,7 +2523,6 @@ function addNewCustomer(){
   filterProfileSelect();
   document.getElementById('profileSelect').value=newId;
   renderProfile();
-  document.getElementById('totalCustomers').textContent=CUSTOMERS.length;
   logActivity('顧客追加',nameJa+'（'+name+'）を新規追加');
   alert(nameJa+'を追加しました（ID:'+newId+'）');
 }
@@ -2634,6 +2657,12 @@ function renderProfile(){
         <div>自費来店: <strong>${c.selfPay?'あり':'なし'}</strong></div>
         <div>ステータス: ${statusBadge(d)}</div>
       </div>
+      ${(extra.phone||extra.email||extra.lineId)?`
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        ${extra.phone?`<a href="tel:${esc(extra.phone)}" style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:20px;font-size:0.78em;font-weight:600;text-decoration:none;background:var(--accent-subtle);color:var(--accent);border:1px solid var(--accent-border)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>TEL</a>`:''}
+        ${extra.email?`<a href="mailto:${esc(extra.email)}" style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:20px;font-size:0.78em;font-weight:600;text-decoration:none;background:var(--blue-subtle);color:var(--blue);border:1px solid var(--blue-border)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>MAIL</a>`:''}
+        ${extra.lineId?`<span style="display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:20px;font-size:0.78em;font-weight:600;background:var(--green-subtle);color:var(--green);border:1px solid var(--green-border)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>LINE: ${esc(extra.lineId)}</span>`:''}
+      </div>`:''}
       <div class="divider"></div>
       ${(extra.passport||extra.phone||extra.passportPhoto)?`<div style="background:rgba(26,107,90,0.05);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px">
         <div class="text-sm" style="color:var(--accent);font-weight:600;margin-bottom:6px">パスポート・連絡先</div>
@@ -3215,7 +3244,7 @@ function renderAlerts(){
   // 最優先: VVIP離脱リスク
   const critical=sorted.filter(c=>(c.tier==='VVIP'||c.totalRolling>200000000)&&daysSince(c.lastVisit)>90);
   if(critical.length){
-    html+='<div class="card mb-16"><h3 style="color:var(--red)">最優先 — 高価値顧客の離脱リスク</h3>';
+    html+='<div class="card mb-16"><h3>最優先 — 高価値顧客の離脱リスク</h3>';
     critical.forEach(c=>{
       const d=daysSince(c.lastVisit);
       const rate=c.rate>0?c.rate:0.85;
@@ -3238,7 +3267,7 @@ function renderAlerts(){
   // コミッション未設定
   const noRate=sorted.filter(c=>c.rate===0&&c.totalRolling>50000000);
   if(noRate.length){
-    html+='<div class="card mb-16"><h3 style="color:var(--blue)">情報 — コミッション率未設定（高額顧客）</h3>';
+    html+='<div class="card mb-16"><h3>情報 — コミッション率未設定（高額顧客）</h3>';
     html+='<p class="text-sm text-muted mb-8">コミッション率を設定することで即座に収益が発生します。</p>';
     noRate.forEach(c=>{
       const sr=c.totalRolling>500000000?1.50:c.totalRolling>200000000?1.20:c.totalRolling>100000000?1.00:0.85;
@@ -3254,7 +3283,7 @@ function renderAlerts(){
   // アクティブ顧客
   const active=sorted.filter(c=>daysSince(c.lastVisit)<=60);
   if(active.length){
-    html+='<div class="card mb-16"><h3 style="color:var(--green)">アクティブ — 直近来店顧客</h3>';
+    html+='<div class="card mb-16"><h3>アクティブ — 直近来店顧客</h3>';
     active.forEach(c=>{
       html+=`<div style="border-left:3px solid var(--green);padding:10px 16px;margin:8px 0;background:rgba(15,123,95,0.04);border-radius:0 8px 8px 0">
         <div class="flex-between"><span><strong>${c.nameJa||c.name}</strong> ${tierBadge(c.tier)} — ${daysSince(c.lastVisit)}日前来店</span>
@@ -3324,6 +3353,8 @@ function updateUserUI(){
   if(dropdownName){
     dropdownName.innerHTML=esc(name)+'<div class="user-dropdown-role">'+(ROLE_LABELS[role]||role)+'</div>';
   }
+  var sidebarRole=document.getElementById('sidebarRole');
+  if(sidebarRole) sidebarRole.textContent=ROLE_LABELS[role]||role;
 }
 function toggleUserDropdown(e){
   e.stopPropagation();
@@ -3837,11 +3868,15 @@ function renderDashboard(){
   }).length;
   const totalRolling=CUSTOMERS.reduce(function(s,c){return s+c.totalRolling;},0);
 
+  var rollingDisplay = totalRolling >= 100000000
+    ? '\u20a9' + (totalRolling / 100000000).toFixed(1) + '\u5104'
+    : fmtW(totalRolling);
+
   document.getElementById('dashSummaryCards').innerHTML=
     '<div class="card stat stat-accent"><div class="value">'+totalCustomers+'</div><div class="label">総顧客数</div></div>'+
     '<div class="card stat"><div class="value" style="color:var(--accent)">'+vvipVip+'</div><div class="label">VIP/VVIP数</div></div>'+
     '<div class="card stat"><div class="value" style="color:var(--blue)">'+recentVisits+'</div><div class="label">今月来店数</div></div>'+
-    '<div class="card stat"><div class="value" style="font-size:1.2em">'+fmtW(totalRolling)+'</div><div class="label">累計ローリング</div></div>';
+    '<div class="card stat"><div class="value" style="font-size:1.2em">'+rollingDisplay+'</div><div class="label">累計ローリング</div></div>';
 
   // Top 10 table
   var top10=[].concat(CUSTOMERS).sort(function(a,b){return b.totalRolling-a.totalRolling;}).slice(0,10);
