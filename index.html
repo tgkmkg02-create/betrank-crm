@@ -2593,13 +2593,13 @@ function renderProfile(){
         <div style="display:flex;gap:12px">
           ${extra.passportPhoto?`<div style="width:120px;flex-shrink:0;border-radius:6px;overflow:hidden;border:1px solid var(--border)"><img src="${extra.passportPhoto}" style="width:100%;height:auto"></div>`:''}
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:0.85em;flex:1">
-            ${extra.passport?`<div>パスポート: <strong>${extra.passport}</strong></div>`:''}
-            ${extra.passportExp?`<div>有効期限: <strong>${extra.passportExp}</strong></div>`:''}
-            ${extra.passportName?`<div>PASSPORT NAME: <strong>${extra.passportName}</strong></div>`:''}
-            ${extra.nationality?`<div>国籍: <strong>${extra.nationality}</strong></div>`:''}
-            ${extra.phone?`<div>TEL: <strong>${extra.phone}</strong></div>`:''}
-            ${extra.email?`<div>EMAIL: <strong>${extra.email}</strong></div>`:''}
-            ${extra.lineId?`<div>LINE: <strong>${extra.lineId}</strong></div>`:''}
+            ${extra.passport?`<div>パスポート: <strong>${esc(extra.passport)}</strong></div>`:''}
+            ${extra.passportExp?`<div>有効期限: <strong>${esc(extra.passportExp)}</strong></div>`:''}
+            ${extra.passportName?`<div>PASSPORT NAME: <strong>${esc(extra.passportName)}</strong></div>`:''}
+            ${extra.nationality?`<div>国籍: <strong>${esc(extra.nationality)}</strong></div>`:''}
+            ${extra.phone?`<div>TEL: <strong>${esc(extra.phone)}</strong></div>`:''}
+            ${extra.email?`<div>EMAIL: <strong>${esc(extra.email)}</strong></div>`:''}
+            ${extra.lineId?`<div>LINE: <strong>${esc(extra.lineId)}</strong></div>`:''}
           </div>
         </div>
       </div>`:'<div class="text-sm text-muted mb-8">パスポート未登録 → 右の編集フォームで追加できます</div>'}
@@ -2620,12 +2620,12 @@ function renderProfile(){
       <div style="background:rgba(26,107,90,0.06);border:1px solid var(--accent);border-radius:10px;padding:16px;margin-bottom:16px">
         <div class="text-sm" style="color:var(--accent);font-weight:700;margin-bottom:10px">パスポート・連絡先情報</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div class="form-group" style="margin-bottom:8px"><label>パスポート番号</label><input id="pf_passport" value="${extra.passport||''}" placeholder="例: TK1234567"></div>
-          <div class="form-group" style="margin-bottom:8px"><label>パスポート有効期限</label><input id="pf_passportExp" value="${extra.passportExp||''}" placeholder="例: 2030/05/15"></div>
-          <div class="form-group" style="margin-bottom:8px"><label>電話番号</label><input id="pf_phone" value="${extra.phone||''}" placeholder="例: 090-1234-5678"></div>
-          <div class="form-group" style="margin-bottom:8px"><label>メールアドレス</label><input id="pf_email" value="${extra.email||''}" placeholder="例: name@example.com"></div>
-          <div class="form-group" style="margin-bottom:8px"><label>LINE ID</label><input id="pf_lineId" value="${extra.lineId||''}" placeholder="例: line_id_123"></div>
-          <div class="form-group" style="margin-bottom:8px"><label>国籍</label><input id="pf_nationality" value="${extra.nationality||'日本'}" placeholder="例: 日本"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>パスポート番号</label><input id="pf_passport" value="${esc(extra.passport||'')}" placeholder="例: TK1234567"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>パスポート有効期限</label><input id="pf_passportExp" value="${esc(extra.passportExp||'')}" placeholder="例: 2030/05/15"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>電話番号</label><input id="pf_phone" value="${esc(extra.phone||'')}" placeholder="例: 090-1234-5678"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>メールアドレス</label><input id="pf_email" value="${esc(extra.email||'')}" placeholder="例: name@example.com"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>LINE ID</label><input id="pf_lineId" value="${esc(extra.lineId||'')}" placeholder="例: line_id_123"></div>
+          <div class="form-group" style="margin-bottom:8px"><label>国籍</label><input id="pf_nationality" value="${esc(extra.nationality||'日本')}" placeholder="例: 日本"></div>
         </div>
         <div class="form-group" style="margin-bottom:0"><label>パスポート名（ローマ字）</label><input id="pf_passportName" value="${extra.passportName||c.name}" placeholder="PASSPORT NAME"></div>
       </div>
@@ -2645,12 +2645,12 @@ function renderProfile(){
       <div class="form-group"><label>好きなお酒</label><input id="pf_drink" value="${extra.drink}" placeholder="例: ウイスキー、ワイン"></div>
       <div class="form-group"><label>食事の好み</label><input id="pf_food" value="${extra.food}" placeholder="例: 焼肉、和食、イタリアン"></div>
       <div class="form-group"><label>誕生日</label><input id="pf_birthday" value="${extra.birthday}" placeholder="例: 1985/08/15"></div>
-      <div class="form-group"><label>性格・接し方</label><textarea id="pf_personality" rows="2" placeholder="例: 褒められると嬉しいタイプ">${extra.personality}</textarea></div>
+      <div class="form-group"><label>性格・接し方</label><textarea id="pf_personality" rows="2" placeholder="例: 褒められると嬉しいタイプ">${esc(extra.personality)}</textarea></div>
       <div class="form-group"><label>勝った時の反応</label><input id="pf_win" value="${extra.winBehavior}" placeholder="例: テンション上がってもう1回やりたがる"></div>
       <div class="form-group"><label>負けた時の反応</label><input id="pf_loss" value="${extra.lossBehavior}" placeholder="例: 静かになる、1人にしてほしい"></div>
       <div class="form-group"><label>家族構成</label><input id="pf_family" value="${extra.family}" placeholder="例: 妻+子供2人"></div>
       <div class="form-group"><label>重要な日（記念日等）</label><input id="pf_dates" value="${extra.importantDates}" placeholder="例: 妻の誕生日 8/15"></div>
-      <div class="form-group"><label>その他メモ</label><textarea id="pf_notes" rows="2">${extra.otherNotes}</textarea></div>
+      <div class="form-group"><label>その他メモ</label><textarea id="pf_notes" rows="2">${esc(extra.otherNotes)}</textarea></div>
       <div class="divider"></div>
       <h3 class="mt-16">特性スコア編集</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" class="mt-8">
@@ -3274,7 +3274,7 @@ function updateUserUI(){
   if(avatarBtn)avatarBtn.textContent=getUserInitial();
   var dropdownName=document.getElementById('userDropdownName');
   if(dropdownName){
-    dropdownName.innerHTML=name+'<div class="user-dropdown-role">'+(ROLE_LABELS[role]||role)+'</div>';
+    dropdownName.innerHTML=esc(name)+'<div class="user-dropdown-role">'+(ROLE_LABELS[role]||role)+'</div>';
   }
 }
 function toggleUserDropdown(e){
@@ -3545,7 +3545,7 @@ async function doAddUser(){
     '<div style="text-align:center;margin-bottom:16px">'+
     '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'+
     '<div style="font-size:0.95em;font-weight:600;color:var(--text-primary);margin-top:12px">ユーザーを追加しました</div>'+
-    '<div style="font-size:0.82em;color:var(--muted);margin-top:4px">'+name+' ('+email+')</div>'+
+    '<div style="font-size:0.82em;color:var(--muted);margin-top:4px">'+esc(name)+' ('+esc(email)+')</div>'+
     '</div>'+
     '<div class="temp-pw-box">'+
     '<div class="pw-label">仮パスワード</div>'+
@@ -3771,7 +3771,7 @@ function renderActivityLog(){
     html+='<div class="activity-item">';
     html+='<span class="activity-time">'+timeStr+'</span>';
     html+='<span class="activity-badge '+getActivityBadgeClass(log.action)+'">'+log.action+'</span>';
-    html+='<span class="activity-detail">'+log.detail+'</span>';
+    html+='<span class="activity-detail">'+esc(log.detail)+'</span>';
     html+='</div>';
   });
   list.innerHTML=html;
