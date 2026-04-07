@@ -1119,7 +1119,7 @@ async function sha256(text){
   return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
 }
 
-window._pendingPwChangeUserId=null;
+var _pendingPwChangeUserId=null;
 
 async function doLogin(){
   var email=document.getElementById('loginEmail').value.trim().toLowerCase();
@@ -1144,7 +1144,7 @@ async function doLogin(){
   }
   // If must change password, show password change screen
   if(user.mustChangePassword){
-    window._pendingPwChangeUserId=user.id;
+    _pendingPwChangeUserId=user.id;
     document.querySelector('#loginScreen > .login-box').style.display='none';
     document.getElementById('passwordChangeScreen').style.display='block';
     document.getElementById('pwChangeError').style.display='none';
@@ -1194,7 +1194,7 @@ async function doSetPassword(){
     return;
   }
 
-  var userId=window._pendingPwChangeUserId;
+  var userId=_pendingPwChangeUserId;
   if(!userId){
     errEl.textContent='エラーが発生しました。もう一度ログインしてください。';
     errEl.style.display='block';
@@ -3398,11 +3398,8 @@ function renderUserListTable(){
 
     // Initial password column
     var pwCol='';
-    if(u.mustChangePassword&&u.tempPassword){
-      pwCol='<span class="temp-pw-inline">'+u.tempPassword+'</span> '+
-        '<button class="temp-pw-inline-copy" onclick="copyTempPw(\''+u.tempPassword+'\')" title="コピー">'+
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'+
-        '</button>';
+    if(u.mustChangePassword){
+      pwCol='<span style="font-size:0.78em;color:var(--gold)">未設定</span>';
     } else {
       pwCol='<span style="font-size:0.78em;color:var(--muted)">設定済み</span>';
     }
@@ -3450,9 +3447,11 @@ function relativeTime(isoStr){
 // ==================== ADD USER MODAL ====================
 function generateTempPassword(){
   var chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  var arr=new Uint32Array(8);
+  crypto.getRandomValues(arr);
   var pw='';
   for(var i=0;i<8;i++){
-    pw+=chars.charAt(Math.floor(Math.random()*chars.length));
+    pw+=chars.charAt(arr[i]%chars.length);
   }
   return pw;
 }
@@ -3522,14 +3521,12 @@ async function doAddUser(){
   var newId=generateUserId();
   var newUser={
     id:newId,
-    email:email,
     emailHash:emailHash,
     passHash:passHash,
     name:name,
     role:role,
     status:'active',
     mustChangePassword:true,
-    tempPassword:tempPw,
     createdAt:new Date().toISOString(),
     lastLogin:null,
     accessPermissions:perms
@@ -3689,7 +3686,7 @@ async function resetUserPassword(userId){
   var newHash=await sha256(tempPw);
   user.passHash=newHash;
   user.mustChangePassword=true;
-  user.tempPassword=tempPw;
+  delete user.tempPassword;
   saveUserStore(store);
 
   var resultEl=document.getElementById('resetPwResult');
