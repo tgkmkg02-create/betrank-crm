@@ -2262,8 +2262,8 @@ function getRepeatMethod(c){
 function getRepeatOffer(c){
   const days=daysSince(c.lastVisit);
   // チップ額はティア固定制
-  const chipMap={VVIP:1000000,VIP:500000,Gold:300000,Silver:0,Bronze:0};
-  const chip=chipMap[c.tier]||0;
+  // バイイン2% + 上限₩500,000（リピーター＋200万円以上のみ）
+  const chip=(c.visits>=2&&c.avgBuyin>=2000000)?Math.min(Math.round(c.avgBuyin*JPY_KRW*0.02),500000):0;
   const chipStr=chip>0?`サービスチップ ${fmtW(chip)} + `:'';
   const rebateStr='負けバック累進制(最大7%・上限100万₩)';
   if(c.tier==='VVIP'&&days>120){
@@ -2922,13 +2922,11 @@ function generateLineMessage(c){
   const avgBuyinW=Math.round(c.avgBuyin*JPY_KRW);
   const meal=MEAL_SERVICE[c.tier]||MEAL_SERVICE['Bronze'];
 
-  // サービスチップ（固定額ティア制）
-  // VVIP: ₩1,000,000 / VIP: ₩500,000 / Gold: ₩300,000 / Silver・Bronze: なし
-  let chipAmount;
-  if(c.tier==='VVIP'){chipAmount=1000000;}
-  else if(c.tier==='VIP'){chipAmount=500000;}
-  else if(c.tier==='Gold'){chipAmount=300000;}
-  else{chipAmount=0;}
+  // サービスチップ（バイイン2% + 上限₩500,000 / 初回・200万円未満はなし）
+  let chipAmount=0;
+  if(c.visits>=2 && c.avgBuyin>=2000000){
+    chipAmount=Math.min(Math.round(c.avgBuyin*JPY_KRW*0.02),500000);
+  }
   // 累進式負けバック率（段階表示用）
   const sabiRate='累進制(0〜200万:0%/200〜500万:3%/500〜1000万:5%/1000万超:7%/上限100万)';
 

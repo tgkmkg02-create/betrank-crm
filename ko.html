@@ -798,7 +798,7 @@
     <h3>トップ10고객</h3>
     <table>
       <thead><tr>
-        <th>#</th><th>성명</th><th>랭크</th><th>방문횟수</th><th>누적롤링</th><th>최종방문</th>
+        <th>#</th><th>성명</th><th>랭크</th><th>방문回数</th><th>누적롤링</th><th>최종방문</th>
       </tr></thead>
       <tbody id="dashTop10Table"></tbody>
     </table>
@@ -845,7 +845,7 @@
   <div class="card">
     <table>
       <thead><tr>
-        <th>優先度</th><th>スコア</th><th>성명</th><th>랭크</th><th>최종방문</th><th>経過日数</th><th>방문횟수</th><th>누적롤링</th><th>식사 서비스</th><th>推奨영업方法</th><th>推奨오퍼</th><th>期待수익/回</th><th>アクション</th>
+        <th>優先度</th><th>スコア</th><th>성명</th><th>랭크</th><th>최종방문</th><th>経過日数</th><th>방문回数</th><th>누적롤링</th><th>식사 서비스</th><th>推奨영업方法</th><th>推奨오퍼</th><th>期待수익/回</th><th>アクション</th>
       </tr></thead>
       <tbody id="repeatTable"></tbody>
     </table>
@@ -874,7 +874,7 @@
     <h3>고객一覧（롤링額順）</h3>
     <table>
       <thead><tr>
-        <th>#</th><th>성명</th><th>랭크</th><th>방문횟수</th><th>최종방문</th><th>経過日数</th><th>누적롤링</th><th>커미션%</th><th>누적수익</th><th>식사 서비스</th><th>상태</th>
+        <th>#</th><th>성명</th><th>랭크</th><th>방문回数</th><th>최종방문</th><th>経過日数</th><th>누적롤링</th><th>커미션%</th><th>누적수익</th><th>식사 서비스</th><th>상태</th>
       </tr></thead>
       <tbody id="customerTable"></tbody>
     </table>
@@ -918,7 +918,7 @@
 
 <!-- TAB 5: 롤링 계산기 -->
 <div id="calculator" class="tab-content">
-  <h2 style="color:var(--text-primary);margin-bottom:20px">롤링 & 기대값 계산機</h2>
+  <h2 style="color:var(--text-primary);margin-bottom:20px">롤링 & 期待値 계산機</h2>
   <div class="grid grid-2">
     <div class="card">
       <h3>入力パラメータ</h3>
@@ -1363,7 +1363,7 @@ const CUSTOMERS=[
    notes:'安定したVIP고객。'},
   {id:12,name:'FUJIMOTO KOHEI',nameJa:'藤本 康平',visits:15,lastVisit:'2025-09-22',totalRolling:134830000,rate:0.00,avgBuyin:14000000,selfPay:false,tier:'Gold',
    traits:{sociability:8,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:9,referral:7,frequency:9},
-   notes:'방문횟수15回。最頻グループの一人。中額安定型。'},
+   notes:'방문回数15回。最頻グループの一人。中額安定型。'},
   {id:13,name:'HORIBIE TAKEMOTO',nameJa:'堀部 武元',visits:10,lastVisit:'2025-12-12',totalRolling:63410000,rate:1.40,avgBuyin:9210000,selfPay:false,tier:'Gold',
    traits:{sociability:8,riskAppetite:5,emotion:4,vipMind:5,priceSens:6,loyalty:8,referral:6,frequency:8},
    notes:'堅実なリピーター。커미션1.40%確定済み。'},
@@ -1372,13 +1372,13 @@ const CUSTOMERS=[
    notes:'커미션1.40%。成長余地あり。'},
   {id:15,name:'OTSUKA KEISHI',nameJa:'大塚 圭司',visits:11,lastVisit:'2026-01-13',totalRolling:134210000,rate:0.00,avgBuyin:10000000,selfPay:false,tier:'VIP',
    traits:{sociability:7,riskAppetite:6,emotion:5,vipMind:6,priceSens:5,loyalty:7,referral:5,frequency:7},
-   notes:'中額プレイヤー。방문횟수多い。'},
+   notes:'中額プレイヤー。방문回数多い。'},
   {id:16,name:'TAKADA KIICHIRO',nameJa:'高田 紀一郎',visits:9,lastVisit:'2026-01-18',totalRolling:387935000,rate:0.00,avgBuyin:57030000,selfPay:false,tier:'VIP',
    traits:{sociability:7,riskAppetite:8,emotion:6,vipMind:7,priceSens:4,loyalty:6,referral:4,frequency:5},
    notes:'高額プレイヤー。커미션미설정。'},
   {id:17,name:'MIYAJIMA SHUNICHI',nameJa:'宮島 俊一',visits:3,lastVisit:'2025-08-03',totalRolling:557320000,rate:0.00,avgBuyin:129120000,selfPay:false,tier:'VIP',
    traits:{sociability:5,riskAppetite:9,emotion:6,vipMind:9,priceSens:2,loyalty:4,referral:3,frequency:2},
-   notes:'超高額だが방문횟수少ない。アプローチ次第で大化け。'},
+   notes:'超高額だが방문回数少ない。アプローチ次第で大化け。'},
   {id:18,name:'FUJIMOTO HIROYUKI',nameJa:'藤本 裕之',visits:6,lastVisit:'2025-09-23',totalRolling:134830000,rate:0.00,avgBuyin:55140000,selfPay:false,tier:'VIP',
    traits:{sociability:6,riskAppetite:7,emotion:5,vipMind:7,priceSens:4,loyalty:5,referral:4,frequency:4},
    notes:''},
@@ -2262,8 +2262,8 @@ function getRepeatMethod(c){
 function getRepeatOffer(c){
   const days=daysSince(c.lastVisit);
   // チップ額はティア固定制
-  const chipMap={VVIP:1000000,VIP:500000,Gold:300000,Silver:0,Bronze:0};
-  const chip=chipMap[c.tier]||0;
+  // 바이인2% + 상한₩500,000（リピーター＋200万円以上のみ）
+  const chip=(c.visits>=2&&c.avgBuyin>=2000000)?Math.min(Math.round(c.avgBuyin*JPY_KRW*0.02),500000):0;
   const chipStr=chip>0?`서비스칩 ${fmtW(chip)} + `:'';
   const rebateStr='로스리베이트누진제(最大7%・상한100万₩)';
   if(c.tier==='VVIP'&&days>120){
@@ -2434,7 +2434,7 @@ function renderCustomers(){
 
   document.getElementById('summaryStats').innerHTML=`
     <div class="stat card"><div class="value">${CUSTOMERS.length}</div><div class="label">総고객数</div></div>
-    <div class="stat card"><div class="value">${totalV}</div><div class="label">総방문횟수</div></div>
+    <div class="stat card"><div class="value">${totalV}</div><div class="label">総방문回数</div></div>
     <div class="stat card"><div class="value">${fmtW(totalR)}</div><div class="label">総롤링(₩)</div></div>
     <div class="stat card"><div class="value" style="color:var(--green)">${active}</div><div class="label">액티브(90日)</div></div>
     <div class="stat card"><div class="value" style="color:#f1c40f">${atRisk}</div><div class="label">이탈리스크</div></div>
@@ -2688,7 +2688,7 @@ function renderProfile(){
       </div>
       <div class="divider"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.9em">
-        <div>방문횟수: <strong>${c.visits}回</strong></div>
+        <div>방문回数: <strong>${c.visits}回</strong></div>
         <div>최종방문: <strong>${c.lastVisit}</strong>（${d}日前）</div>
         <div>누적롤링: <strong>${fmtW(c.totalRolling)}</strong></div>
         <div>커미션: <strong>${c.rate>0?c.rate+'%':'미설정'}</strong></div>
@@ -2886,7 +2886,7 @@ function calculate(){
     </div>
     <div class="divider"></div>
     <div class="card" style="background:rgba(52,152,219,0.1);border-color:var(--blue)">
-      <div class="text-sm text-muted">プレイヤー기대값（バカラ）</div><div class="divider"></div>
+      <div class="text-sm text-muted">プレイヤー期待値（バカラ）</div><div class="divider"></div>
       <div class="flex-between text-sm mt-8"><span>期待損失（₩）:</span><span class="negative">${fmtW(plKRW)}</span></div>
       <div class="flex-between text-sm mt-8"><span>期待損失（¥）:</span><span class="negative">${fmtY(plJPY)}</span></div>
       <div class="flex-between text-sm mt-8"><span>바이인比:</span><span>${lossP}%</span></div>
@@ -2922,13 +2922,11 @@ function generateLineMessage(c){
   const avgBuyinW=Math.round(c.avgBuyin*JPY_KRW);
   const meal=MEAL_SERVICE[c.tier]||MEAL_SERVICE['Bronze'];
 
-  // 서비스칩（固定額ティア制）
-  // VVIP: ₩1,000,000 / VIP: ₩500,000 / Gold: ₩300,000 / Silver・Bronze: なし
-  let chipAmount;
-  if(c.tier==='VVIP'){chipAmount=1000000;}
-  else if(c.tier==='VIP'){chipAmount=500000;}
-  else if(c.tier==='Gold'){chipAmount=300000;}
-  else{chipAmount=0;}
+  // 서비스칩（바이인2% + 상한₩500,000 / 初回・200万円未満はなし）
+  let chipAmount=0;
+  if(c.visits>=2 && c.avgBuyin>=2000000){
+    chipAmount=Math.min(Math.round(c.avgBuyin*JPY_KRW*0.02),500000);
+  }
   // 累進式로스리베이트率（段階表示用）
   const sabiRate='누진제(0〜200万:0%/200〜500万:3%/500〜1000万:5%/1000万超:7%/상한100万)';
 
@@ -3214,7 +3212,7 @@ function renderCampaigns(){
      offer:'로스리베이트누진제適用 + 서비스칩 ₩500,000증정\n방문5回達成: +₩100,000ボーナス / 10回達成: +₩200,000ボーナス',
      method:'LINE/カカオトーク → 未反応3日後に電話',timing:'2週間以内',roi:'200-400%',
      cost:'負けサビ+3%: 期待コスト ≒ 바이인の0.035%추가\n서비스칩1.5%: 바이인の1.5%',
-     reason:'방문횟수に応じた段階的チップボーナスは「次も来よう」という動機を直接作る。負けサビ率アップは로열티の証。'},
+     reason:'방문回数に応じた段階的チップボーナスは「次も来よう」という動機を直接作る。負けサビ率アップは로열티の証。'},
     {title:'자비방문客 特別還元',type:'アップセル',priority:'高',
      targets:sorted.filter(c=>c.selfPay),
      offer:'서비스칩 ₩500,000증정 + 로스리베이트누진제(最大7%・상한100万₩) + 롤링조건達成で추가 ₩200,000',
