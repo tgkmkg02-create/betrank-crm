@@ -807,10 +807,10 @@
 
 <!-- TAB 1: 플랜 손익분석 -->
 <div id="profitability" class="tab-content">
-  <h2 style="color:var(--text-primary);margin-bottom:20px">플랜別 손익分析</h2>
+  <h2 style="color:var(--text-primary);margin-bottom:20px">플랜別 損益分析</h2>
   <div class="grid grid-3 mb-16" id="planCards"></div>
   <div class="card mt-16">
-    <h3>플랜比較表 — 손익分岐点 & 期待이익</h3>
+    <h3>플랜比較表 — 損益分岐点 & 期待이익</h3>
     <table>
       <thead><tr>
         <th>플랜</th><th>바이인</th><th>항공代</th><th>호텔代</th><th>총비용</th><th>조건롤링</th><th>수익@0.85%</th><th>수익@1.40%</th><th>이익@0.85%</th><th>이익@1.40%</th><th>ROI</th>
@@ -946,9 +946,9 @@
         <select id="calcDayType"><option value="weekday">평일（日〜木）</option><option value="weekend">주말（金）</option><option value="weekend2">주말（土・祝）</option><option value="peak">ピーク期</option></select>
       </div>
       <div class="form-group"><label>キャッシュバック額（円）</label><input type="number" id="calcCashback" value="0" step="10000"></div>
-      <button onclick="calculate()">손익계산を실행</button>
+      <button onclick="calculate()">損益계산を실행</button>
     </div>
-    <div class="card"><h3>계산결과</h3><div id="calcResults"><p class="text-muted">パラメータを入力して「손익계산を실행」をクリック</p></div></div>
+    <div class="card"><h3>계산결과</h3><div id="calcResults"><p class="text-muted">パラメータを入力して「損益계산を실행」をクリック</p></div></div>
   </div>
 </div>
 
@@ -2263,7 +2263,7 @@ function getRepeatOffer(c){
   const days=daysSince(c.lastVisit);
   // チップ額はティア固定制
   // 바이인2% + 상한₩500,000（リピーター＋200万円以上のみ）
-  const chip=(c.visits>=2&&c.avgBuyin>=2000000)?Math.min(Math.round(c.avgBuyin*JPY_KRW*0.02),500000):0;
+  const chip=(c.visits>=2&&c.avgBuyin>=2000000)?Math.min(Math.round(c.avgBuyin*JPY_KRW*0.02),300000):0;
   const chipStr=chip>0?`서비스칩 ${fmtW(chip)} + `:'';
   const rebateStr='로스리베이트누진제(最大7%・상한100万₩)';
   if(c.tier==='VVIP'&&days>120){
@@ -2287,7 +2287,7 @@ function getRepeatOffer(c){
   return`次回방문特典: ${chipStr}${rebateStr}`;
 }
 
-// ==================== TAB1: 플랜손익 ====================
+// ==================== TAB1: 플랜損益 ====================
 function renderPlans(){
   const avgHotel=22000;
   let cards='',tbl='',loss='';
@@ -2859,7 +2859,7 @@ function calculate(){
   else suggestion='赤字。고객獲得コストとして計上。리피트で回収要。';
 
   document.getElementById('calcResults').innerHTML=`
-    <h4 style="color:var(--accent);margin-bottom:12px">${name} — 방문손익分析</h4>
+    <h4 style="color:var(--accent);margin-bottom:12px">${name} — 방문損益分析</h4>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
       <div>
         <div class="text-sm text-muted">コスト内訳</div><div class="divider"></div>
@@ -2882,7 +2882,7 @@ function calculate(){
     <div class="result-box" style="${profit>=0?'':'background:rgba(196,49,75,0.06);border-color:var(--red)'}">
       <div class="flex-between" style="font-size:1.3em"><span><strong>純이익:</strong></span><span class="${profit>=0?'positive':'negative'}"><strong>${fmtY(profit)}</strong></span></div>
       <div class="flex-between text-sm mt-8"><span>ROI:</span><span style="color:var(--accent);font-weight:600">${roi}%</span></div>
-      <div class="flex-between text-sm mt-8"><span>손익分岐롤링:</span><span>${fmtW(beRolling)}</span></div>
+      <div class="flex-between text-sm mt-8"><span>損益分岐롤링:</span><span>${fmtW(beRolling)}</span></div>
     </div>
     <div class="divider"></div>
     <div class="card" style="background:rgba(52,152,219,0.1);border-color:var(--blue)">
@@ -2925,7 +2925,7 @@ function generateLineMessage(c){
   // 서비스칩（바이인2% + 상한₩500,000 / 初回・200万円未満はなし）
   let chipAmount=0;
   if(c.visits>=2 && c.avgBuyin>=2000000){
-    chipAmount=Math.min(Math.round(c.avgBuyin*JPY_KRW*0.02),500000);
+    chipAmount=Math.min(Math.round(c.avgBuyin*JPY_KRW*0.02),300000);
   }
   // 累進式로스리베이트率（段階表示用）
   const sabiRate='누진제(0〜200万:0%/200〜500万:3%/500〜1000万:5%/1000万超:7%/상한100万)';
