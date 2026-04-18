@@ -125,6 +125,7 @@
   .msg-type-tag { display:inline-block; padding:2px 10px; border-radius:6px; font-size:0.7em; font-weight:600; margin-left:8px; }
   @media(max-width:768px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} .tabs{flex-wrap:wrap;} .tab{padding:10px 16px;font-size:0.85em;} }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -152,6 +153,8 @@
       <a href="index.html" style="color:var(--gold);text-decoration:none;font-size:0.8em;padding:2px 8px;border:1px solid var(--gold);border-radius:4px">🇯🇵 日本語</a>
       <a href="ko.html" style="color:var(--muted);text-decoration:none;font-size:0.8em;padding:2px 8px;border:1px solid var(--border);border-radius:4px">🇰🇷 한국어</a>
       <a href="exchange.html" style="color:var(--muted);text-decoration:none;font-size:0.8em;padding:2px 8px;border:1px solid var(--border);border-radius:4px">💱 換金</a>
+      <a href="survey.html" style="color:var(--muted);text-decoration:none;font-size:0.8em;padding:2px 8px;border:1px solid var(--border);border-radius:4px">📋 アンケート</a>
+      <a href="survey-results.html" style="color:var(--muted);text-decoration:none;font-size:0.8em;padding:2px 8px;border:1px solid var(--border);border-radius:4px">📊 結果</a>
     </div>
     <div style="color:var(--gold);font-size:0.9em">2026年4月5日</div>
     <div class="text-sm text-muted">登録顧客数: <span id="totalCustomers">0</span>名</div>
@@ -167,6 +170,7 @@
   <div class="tab" onclick="showTab('linemsg',this)">LINE営業文</div>
   <div class="tab" onclick="showTab('campaigns',this)">キャンペーン提案</div>
   <div class="tab" onclick="showTab('alerts',this)">アラート・アクション</div>
+  <div class="tab" onclick="showTab('incentive',this)">営業インセンティブ</div>
 </div>
 
 <!-- TAB 1: プラン損益分析 -->
@@ -341,6 +345,195 @@
 <div id="alerts" class="tab-content">
   <h2 style="color:var(--gold);margin-bottom:20px">アラート & 推奨アクション</h2>
   <div id="alertList"></div>
+</div>
+
+<!-- TAB 9: 営業インセンティブ -->
+<div id="incentive" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:20px">営業インセンティブ評価</h2>
+
+  <!-- KPI サマリー -->
+  <div class="grid grid-4 mb-16">
+    <div class="card stat">
+      <div class="label">1〜4月 テレベット利益合計</div>
+      <div class="value" style="color:var(--green)">¥3,709,680</div>
+    </div>
+    <div class="card stat">
+      <div class="label">月平均（2〜4月）</div>
+      <div class="value">¥1,236,560</div>
+    </div>
+    <div class="card stat">
+      <div class="label">5月〜 予測（控えめ）</div>
+      <div class="value" style="color:var(--blue)">¥3,036,560</div>
+    </div>
+    <div class="card stat">
+      <div class="label">年間テレベット利益予測</div>
+      <div class="value" style="color:var(--gold)">¥28,001,960</div>
+    </div>
+  </div>
+
+  <!-- グラフ -->
+  <div class="grid grid-2 mb-16">
+    <div class="card">
+      <h3>月次営業利益推移 & 将来推定</h3>
+      <p class="text-sm text-muted mb-8">実線 = 実績 / 点線 = 推定（5月〜）｜4月は暫定値</p>
+      <canvas id="profitChart" height="280"></canvas>
+    </div>
+    <div class="card">
+      <h3>テレベット利益 内訳推移</h3>
+      <p class="text-sm text-muted mb-8">長岡さん実績 vs 新スタッフ3名（5月〜、控えめ推定）</p>
+      <canvas id="telebetChart" height="280"></canvas>
+    </div>
+  </div>
+
+  <!-- 累積利益グラフ -->
+  <div class="card mb-16">
+    <h3>累積純利益推移（2026年）</h3>
+    <p class="text-sm text-muted mb-8">韓国現地 + テレベット + エージェント — 全経費控除後</p>
+    <canvas id="cumulativeChart" height="200"></canvas>
+  </div>
+
+  <!-- インセンティブ評価基準 -->
+  <div class="card mb-16">
+    <h3>インセンティブ評価基準</h3>
+    <p class="text-sm text-muted mb-16">5つの評価軸で営業スタッフを毎月評価。合計100点満点。</p>
+    <table>
+      <thead>
+        <tr>
+          <th>評価項目</th>
+          <th>配点</th>
+          <th>S（100%）</th>
+          <th>A（80%）</th>
+          <th>B（60%）</th>
+          <th>C（40%）</th>
+          <th>D（20%）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--gold)">テレベット誘導数</strong><br><span class="text-sm text-muted">新規プレイヤーをテレベットに誘導した件数</span></td>
+          <td style="text-align:center"><strong>25点</strong></td>
+          <td>10件以上</td>
+          <td>7〜9件</td>
+          <td>4〜6件</td>
+          <td>2〜3件</td>
+          <td>0〜1件</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--gold)">売上・ローリング額</strong><br><span class="text-sm text-muted">担当顧客のバイイン総額 / ローリング実績</span></td>
+          <td style="text-align:center"><strong>25点</strong></td>
+          <td>₱5,000万+</td>
+          <td>₱3,000〜5,000万</td>
+          <td>₱1,500〜3,000万</td>
+          <td>₱500〜1,500万</td>
+          <td>₱500万未満</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--gold)">リピート次回アポ獲得</strong><br><span class="text-sm text-muted">既存顧客から次回ツアー/テレベットの予約を獲得</span></td>
+          <td style="text-align:center"><strong>20点</strong></td>
+          <td>5件以上</td>
+          <td>4件</td>
+          <td>3件</td>
+          <td>2件</td>
+          <td>0〜1件</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--gold)">新規顧客獲得</strong><br><span class="text-sm text-muted">新しい顧客を連れてきた件数</span></td>
+          <td style="text-align:center"><strong>10点</strong></td>
+          <td>4件以上</td>
+          <td>3件</td>
+          <td>2件</td>
+          <td>1件</td>
+          <td>0件</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--gold)">顧客アンケート評価</strong><br><span class="text-sm text-muted">満足度スコア（10点）+ 個人名評価（10点）</span></td>
+          <td style="text-align:center"><strong>20点</strong></td>
+          <td>平均4.5以上</td>
+          <td>平均4.0〜4.4</td>
+          <td>平均3.5〜3.9</td>
+          <td>平均3.0〜3.4</td>
+          <td>3.0未満</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- インセンティブ報酬テーブル -->
+  <div class="grid grid-2 mb-16">
+    <div class="card">
+      <h3>インセンティブ支給条件（チーム歩合制）</h3>
+      <p class="text-sm text-muted mb-16">現地純利益に対して<strong style="color:var(--gold)">チーム全体で2%</strong>を3等分。リーダーはノルマ条件あり。</p>
+      <table class="mb-16">
+        <thead><tr><th>条件</th><th>ケビン・チェリン</th><th>チョイ（リーダー）</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="positive">純利益 ≧ チョイのノルマ<br><span class="text-sm text-muted">（例: ¥500万）</span></td>
+            <td class="positive"><strong>2% ÷ 3 = 0.67%</strong></td>
+            <td class="positive"><strong>2% ÷ 3 = 0.67%</strong></td>
+          </tr>
+          <tr>
+            <td class="neutral">純利益 ¥400万〜ノルマ未満</td>
+            <td class="positive"><strong>2% ÷ 3 = 0.67%</strong></td>
+            <td class="negative"><strong>なし（ノルマ未達）</strong></td>
+          </tr>
+          <tr>
+            <td class="negative">純利益 ¥400万未満</td>
+            <td class="negative"><strong>なし</strong></td>
+            <td class="negative"><strong>なし</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card" style="background:rgba(245,166,35,0.05);border-color:var(--gold);margin-bottom:16px">
+        <h3>シミュレーション早見表</h3>
+        <table>
+          <thead><tr><th>純利益</th><th>チーム2%</th><th>1人あたり</th><th>チョイ（ノルマ¥500万時）</th></tr></thead>
+          <tbody>
+            <tr><td>¥400万</td><td>¥80,000</td><td>¥26,667</td><td class="negative">¥0（ノルマ未達）</td></tr>
+            <tr><td>¥500万</td><td>¥100,000</td><td>¥33,333</td><td class="positive">¥33,333</td></tr>
+            <tr><td>¥600万</td><td>¥120,000</td><td>¥40,000</td><td class="positive">¥40,000</td></tr>
+            <tr><td>¥800万</td><td>¥160,000</td><td>¥53,333</td><td class="positive">¥53,333</td></tr>
+            <tr><td>¥1,000万</td><td>¥200,000</td><td>¥66,667</td><td class="positive">¥66,667</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3>チーム歩合シミュレーター</h3>
+      <p class="text-sm text-muted mb-8" style="color:var(--gold)">当月の利益を入力 → 全員のインセンティブを一括計算</p>
+      <div class="grid grid-3" style="gap:10px">
+        <div class="form-group">
+          <label>当月 現地純利益（¥）</label>
+          <input type="number" id="incNetProfit" min="0" value="5000000">
+        </div>
+        <div class="form-group">
+          <label>チーム歩合率（%）</label>
+          <input type="number" id="incRate" min="0" max="10" step="0.5" value="2">
+        </div>
+        <div class="form-group">
+          <label>チョイのノルマ（¥）</label>
+          <input type="number" id="incNorma" min="0" value="5000000">
+        </div>
+      </div>
+      <button onclick="calcIncentive()" style="width:100%;margin-top:8px">計算</button>
+      <div id="incResult" class="result-box mt-16" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- 長岡さん実績参考 -->
+  <div class="card mb-16">
+    <h3>参考：長岡きみ テレベット実績（2〜4月）</h3>
+    <p class="text-sm text-muted mb-8">現在唯一のテレベット営業担当。5月から新スタッフ3名追加。</p>
+    <table>
+      <thead><tr><th>月</th><th>W/L利益(円)</th><th>R/C利益(円)</th><th>合計利益(円)</th><th>ローリング額</th><th>備考</th></tr></thead>
+      <tbody>
+        <tr><td>1月</td><td>—</td><td>—</td><td class="text-muted">¥0</td><td>—</td><td class="text-muted">テレベット未稼働</td></tr>
+        <tr><td>2月</td><td>¥1,439,277</td><td>¥608</td><td class="positive">¥1,439,885</td><td>₱20,746,000</td><td>稼働開始月</td></tr>
+        <tr><td>3月</td><td>¥0</td><td>¥1,430,228</td><td class="positive">¥1,430,228</td><td>₱37,473,000</td><td>ローリング中心</td></tr>
+        <tr><td>4月</td><td>¥0</td><td>¥839,567</td><td class="neutral">¥839,567</td><td>₱21,264,000</td><td style="color:var(--red)">暫定値</td></tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
 
 <!-- MODAL: プロファイル編集 -->
@@ -2341,6 +2534,183 @@ function renderAlerts(){
   document.getElementById('alertList').innerHTML=html||'<p class="text-muted">現在アラートはありません。</p>';
 }
 
+// ==================== 営業インセンティブ ====================
+function renderIncentiveCharts(){
+  const months=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+
+  // Actual data
+  const koreaActual=[2201735, 6870646, 5991161, 379141];
+  const telebetActual=[0, 1439885, 1430228, 839567];
+  const netActual=[-2685515, 2175815, 2570419, -3506615];
+
+  // Projections (May-Dec)
+  // Korea: avg of Feb-Mar (good months) = 6,430,903
+  const koreaAvg=6430903;
+  // Telebet: Nagaoka avg=1,236,560, new staff 50% each=618,280, ramp-up
+  const nagaokaAvg=1236560;
+  const newStaffRate=0.50;
+  const newStaff1=nagaokaAvg*newStaffRate;
+  // Ramp-up: 60%,70%,80%,90%,100%,100%,100%,100%
+  const ramp=[0.6,0.7,0.8,0.9,1.0,1.0,1.0,1.0];
+
+  const koreaProj=[], telebetProj=[], netProj=[];
+  // Average monthly expenses (from actual data): ~6.5M
+  const avgExpenses=6500000;
+
+  for(let i=0;i<8;i++){
+    const k=koreaAvg;
+    const t=nagaokaAvg + (newStaff1*3*ramp[i]);
+    const n=k+t-avgExpenses;
+    koreaProj.push(Math.round(k));
+    telebetProj.push(Math.round(t));
+    netProj.push(Math.round(n));
+  }
+
+  const koreaFull=[...koreaActual,...koreaProj];
+  const telebetFull=[...telebetActual,...telebetProj];
+  const netFull=[...netActual,...netProj];
+
+  // Chart 1: Monthly P&L
+  const ctx1=document.getElementById('profitChart');
+  if(ctx1){
+    new Chart(ctx1,{
+      type:'line',
+      data:{
+        labels:months,
+        datasets:[
+          {label:'韓国利益',data:koreaFull,borderColor:'#3498db',backgroundColor:'rgba(52,152,219,0.1)',fill:false,tension:0.3,
+           segment:{borderDash:ctx=>ctx.p0DataIndex>=3?[6,3]:undefined}},
+          {label:'テレベット利益',data:telebetFull,borderColor:'#27ae60',backgroundColor:'rgba(39,174,96,0.1)',fill:false,tension:0.3,
+           segment:{borderDash:ctx=>ctx.p0DataIndex>=3?[6,3]:undefined}},
+          {label:'純利益',data:netFull,borderColor:'#f5a623',backgroundColor:'rgba(245,166,35,0.1)',fill:true,tension:0.3,
+           segment:{borderDash:ctx=>ctx.p0DataIndex>=3?[6,3]:undefined}}
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{
+          legend:{labels:{color:'#ecf0f1',font:{size:11}}},
+          annotation:{annotations:{line1:{type:'line',xMin:3.5,xMax:3.5,borderColor:'rgba(231,76,60,0.5)',borderDash:[4,4],label:{content:'← 実績 | 推定 →',display:true,color:'#e74c3c',font:{size:10}}}}}
+        },
+        scales:{
+          x:{ticks:{color:'#95a5a6'},grid:{color:'rgba(44,62,80,0.3)'}},
+          y:{ticks:{color:'#95a5a6',callback:v=>'¥'+(v/10000).toFixed(0)+'万'},grid:{color:'rgba(44,62,80,0.3)'}}
+        }
+      }
+    });
+  }
+
+  // Chart 2: Telebet breakdown
+  const nagaokaData=[0,1439885,1430228,839567,...Array(8).fill(nagaokaAvg)];
+  const newStaffData=[0,0,0,0,...ramp.map(r=>Math.round(newStaff1*3*r))];
+  const ctx2=document.getElementById('telebetChart');
+  if(ctx2){
+    new Chart(ctx2,{
+      type:'bar',
+      data:{
+        labels:months,
+        datasets:[
+          {label:'長岡きみ',data:nagaokaData,backgroundColor:'rgba(245,166,35,0.7)',borderColor:'#f5a623',borderWidth:1},
+          {label:'新スタッフ3名',data:newStaffData,backgroundColor:'rgba(52,152,219,0.7)',borderColor:'#3498db',borderWidth:1}
+        ]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{labels:{color:'#ecf0f1',font:{size:11}}}},
+        scales:{
+          x:{stacked:true,ticks:{color:'#95a5a6'},grid:{color:'rgba(44,62,80,0.3)'}},
+          y:{stacked:true,ticks:{color:'#95a5a6',callback:v=>'¥'+(v/10000).toFixed(0)+'万'},grid:{color:'rgba(44,62,80,0.3)'}}
+        }
+      }
+    });
+  }
+
+  // Chart 3: Cumulative net profit
+  const cumulative=[];
+  let sum=0;
+  netFull.forEach(v=>{sum+=v;cumulative.push(sum);});
+  const ctx3=document.getElementById('cumulativeChart');
+  if(ctx3){
+    new Chart(ctx3,{
+      type:'line',
+      data:{
+        labels:months,
+        datasets:[{
+          label:'累積純利益',data:cumulative,
+          borderColor:'#f5a623',backgroundColor:cumulative.map(v=>v>=0?'rgba(39,174,96,0.3)':'rgba(231,76,60,0.3)'),
+          fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:cumulative.map(v=>v>=0?'#27ae60':'#e74c3c'),
+          segment:{borderDash:ctx=>ctx.p0DataIndex>=3?[6,3]:undefined}
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{labels:{color:'#ecf0f1',font:{size:11}}}},
+        scales:{
+          x:{ticks:{color:'#95a5a6'},grid:{color:'rgba(44,62,80,0.3)'}},
+          y:{ticks:{color:'#95a5a6',callback:v=>'¥'+(v/10000).toFixed(0)+'万'},grid:{color:'rgba(44,62,80,0.3)'}}
+        }
+      }
+    });
+  }
+}
+
+function calcIncentive(){
+  const netProfit=parseInt(document.getElementById('incNetProfit').value)||0;
+  const rate=parseFloat(document.getElementById('incRate').value)||0;
+  const norma=parseInt(document.getElementById('incNorma').value)||0;
+  const gate=4000000;
+
+  const teamPool=netProfit>=gate?Math.round(netProfit*rate/100):0;
+  const perPerson=teamPool>0?Math.round(teamPool/3):0;
+  const choiGets=netProfit>=norma?perPerson:0;
+  const choiNormaOk=netProfit>=norma;
+
+  document.getElementById('incResult').style.display='block';
+  document.getElementById('incResult').innerHTML=`
+    <div style="margin-bottom:16px">
+      <div class="flex-between mb-8">
+        <h3 style="color:var(--gold)">計算結果</h3>
+        <span class="text-sm text-muted">純利益: <strong style="color:var(--gold);font-size:1.2em">¥${netProfit.toLocaleString()}</strong></span>
+      </div>
+      ${netProfit<gate?`<div style="background:rgba(231,76,60,0.15);padding:12px;border-radius:8px;border:1px solid var(--red);text-align:center">
+        <strong class="negative">ゲート未達（¥400万未満）— チーム全員インセンティブなし</strong>
+      </div>`:`
+      <div style="background:rgba(39,174,96,0.1);padding:10px;border-radius:8px;margin-bottom:12px;text-align:center">
+        チーム歩合: ¥${netProfit.toLocaleString()} × ${rate}% = <strong style="color:var(--green);font-size:1.1em">¥${teamPool.toLocaleString()}</strong>
+      </div>
+      <table>
+        <thead><tr><th>スタッフ</th><th>役割</th><th>条件</th><th>インセンティブ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--accent)">チョイ</strong></td>
+            <td><span class="badge badge-vvip">リーダー</span></td>
+            <td>${choiNormaOk?
+              `<span class="positive">ノルマ達成（¥${norma.toLocaleString()}）</span>`:
+              `<span class="negative">ノルマ未達（¥${norma.toLocaleString()}）</span>`
+            }</td>
+            <td style="text-align:right;font-size:1.2em;font-weight:700;color:${choiGets>0?'var(--green)':'var(--red)'}">¥${choiGets.toLocaleString()}</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--blue)">ケビン</strong></td>
+            <td><span class="badge badge-vip">メンバー</span></td>
+            <td><span class="positive">ゲート達成</span></td>
+            <td style="text-align:right;font-size:1.2em;font-weight:700;color:var(--green)">¥${perPerson.toLocaleString()}</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--green)">チェリン</strong></td>
+            <td><span class="badge badge-vip">メンバー</span></td>
+            <td><span class="positive">ゲート達成</span></td>
+            <td style="text-align:right;font-size:1.2em;font-weight:700;color:var(--green)">¥${perPerson.toLocaleString()}</td>
+          </tr>
+          <tr style="border-top:2px solid var(--gold)">
+            <td colspan="3"><strong>合計支給額</strong></td>
+            <td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--gold)">¥${(choiGets+perPerson*2).toLocaleString()}</td>
+          </tr>
+        </tbody>
+      </table>`}
+    </div>`;
+}
+
 // ==================== 初期化 ====================
 function init(){
   restoreAddedCustomers();
@@ -2352,6 +2722,7 @@ function init(){
   renderLineMessages();
   renderCampaigns();
   renderAlerts();
+  renderIncentiveCharts();
 }
 init();
 </script>

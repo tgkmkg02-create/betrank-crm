@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Betrnk Tours VIP 体験アンケート</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Segoe UI','Meiryo','Hiragino Kaku Gothic Pro',sans-serif;
+    background:#1a1a2e; color:#ecf0f1; min-height:100vh;
+    display:flex; justify-content:center; padding:30px 16px;
+  }
+  .survey-container { max-width:640px; width:100%; }
+  .survey-header {
+    background:linear-gradient(135deg,#1e2a3a,#0a0a1a);
+    border:1px solid #f5a623; border-radius:16px;
+    padding:40px 30px; text-align:center; margin-bottom:24px;
+    position:relative; overflow:hidden;
+  }
+  .survey-header::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:4px;
+    background:linear-gradient(90deg,#e94560,#f5a623,#e94560);
+  }
+  .survey-header h1 { color:#f5a623; font-size:1.6em; margin-bottom:8px; }
+  .survey-header p { color:#95a5a6; font-size:0.9em; line-height:1.6; }
+  .section {
+    background:#1e2a3a; border:1px solid #2c3e50; border-radius:12px;
+    padding:24px; margin-bottom:16px;
+  }
+  .section-title {
+    color:#f5a623; font-size:1.1em; font-weight:700;
+    margin-bottom:6px; display:flex; align-items:center; gap:8px;
+  }
+  .section-desc { color:#95a5a6; font-size:0.82em; margin-bottom:16px; }
+  .question { margin-bottom:20px; }
+  .question:last-child { margin-bottom:0; }
+  .q-label {
+    color:#ecf0f1; font-weight:600; font-size:0.95em;
+    margin-bottom:8px; display:block;
+  }
+  .q-label .required { color:#e94560; margin-left:4px; }
+  .q-sub { color:#95a5a6; font-size:0.8em; margin-bottom:8px; }
+  input[type="text"], textarea {
+    background:#16213e; border:1px solid #2c3e50; color:#ecf0f1;
+    padding:12px 16px; border-radius:8px; font-size:0.95em;
+    width:100%; font-family:inherit; transition:border-color 0.2s;
+  }
+  input[type="text"]:focus, textarea:focus {
+    outline:none; border-color:#f5a623;
+  }
+  textarea { resize:vertical; min-height:80px; }
+  .radio-group { display:flex; flex-direction:column; gap:8px; }
+  .radio-option {
+    display:flex; align-items:center; gap:10px;
+    padding:10px 14px; border-radius:8px; cursor:pointer;
+    transition:background 0.15s;
+  }
+  .radio-option:hover { background:rgba(255,255,255,0.04); }
+  .radio-option input[type="radio"] {
+    appearance:none; -webkit-appearance:none; width:20px; height:20px;
+    border:2px solid #2c3e50; border-radius:50%; cursor:pointer;
+    position:relative; flex-shrink:0;
+  }
+  .radio-option input[type="radio"]:checked {
+    border-color:#f5a623; background:#f5a623;
+    box-shadow:inset 0 0 0 4px #1e2a3a;
+  }
+  .radio-option label { cursor:pointer; font-size:0.92em; }
+  .scale-group {
+    display:flex; align-items:center; gap:0;
+    justify-content:space-between; padding:8px 0;
+  }
+  .scale-labels {
+    display:flex; justify-content:space-between;
+    margin-bottom:4px; padding:0 8px;
+  }
+  .scale-labels span { color:#95a5a6; font-size:0.75em; }
+  .scale-option {
+    flex:1; display:flex; flex-direction:column;
+    align-items:center; gap:6px; cursor:pointer; padding:8px 4px;
+    border-radius:8px; transition:background 0.15s;
+  }
+  .scale-option:hover { background:rgba(255,255,255,0.04); }
+  .scale-option input[type="radio"] {
+    appearance:none; -webkit-appearance:none; width:28px; height:28px;
+    border:2px solid #2c3e50; border-radius:50%; cursor:pointer;
+    transition:all 0.15s;
+  }
+  .scale-option input[type="radio"]:checked {
+    border-color:#f5a623; background:#f5a623;
+    box-shadow:inset 0 0 0 5px #1e2a3a;
+  }
+  .scale-option span { color:#95a5a6; font-size:0.85em; font-weight:600; }
+  .staff-card {
+    background:rgba(245,166,35,0.05); border:1px solid rgba(245,166,35,0.2);
+    border-radius:10px; padding:16px; margin-bottom:12px;
+  }
+  .staff-card:last-child { margin-bottom:0; }
+  .staff-name {
+    color:#f5a623; font-weight:700; font-size:1em;
+    margin-bottom:12px; padding-bottom:8px;
+    border-bottom:1px solid rgba(245,166,35,0.15);
+  }
+  .staff-eval { margin-bottom:14px; }
+  .staff-eval:last-child { margin-bottom:0; }
+  .staff-eval .eval-label {
+    color:#ecf0f1; font-size:0.85em; font-weight:600; margin-bottom:6px;
+  }
+  .btn-submit {
+    background:linear-gradient(135deg,#e94560,#c0392b);
+    color:#fff; border:none; padding:16px 40px; border-radius:10px;
+    cursor:pointer; font-weight:700; font-size:1.05em;
+    width:100%; transition:transform 0.1s; margin-top:8px;
+  }
+  .btn-submit:hover { transform:scale(1.01); }
+  .btn-submit:active { transform:scale(0.99); }
+  .btn-clear {
+    background:transparent; color:#95a5a6; border:1px solid #2c3e50;
+    padding:10px 20px; border-radius:8px; cursor:pointer;
+    font-size:0.85em; width:100%; margin-top:8px;
+  }
+  .btn-clear:hover { border-color:#95a5a6; }
+  .page { display:none; }
+  .page.active { display:block; }
+  .page-nav {
+    display:flex; gap:12px; justify-content:space-between;
+    margin-top:20px;
+  }
+  .btn-nav {
+    background:linear-gradient(135deg,#3498db,#2980b9);
+    color:#fff; border:none; padding:12px 32px; border-radius:8px;
+    cursor:pointer; font-weight:600; font-size:0.95em;
+  }
+  .btn-back {
+    background:transparent; color:#95a5a6; border:1px solid #2c3e50;
+    padding:12px 32px; border-radius:8px; cursor:pointer; font-size:0.95em;
+  }
+  .btn-back:hover { border-color:#95a5a6; }
+  .progress-bar {
+    display:flex; gap:6px; margin-bottom:24px; padding:0 4px;
+  }
+  .progress-step {
+    flex:1; height:4px; border-radius:2px; background:#2c3e50;
+    transition:background 0.3s;
+  }
+  .progress-step.done { background:#f5a623; }
+  .progress-step.current { background:#e94560; }
+  .success-screen {
+    display:none; text-align:center; padding:60px 30px;
+    background:#1e2a3a; border:1px solid #27ae60; border-radius:16px;
+  }
+  .success-screen h2 { color:#27ae60; font-size:1.5em; margin-bottom:12px; }
+  .success-screen p { color:#95a5a6; line-height:1.7; }
+  .checkmark {
+    width:80px; height:80px; border-radius:50%;
+    background:rgba(39,174,96,0.15); border:3px solid #27ae60;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 20px; font-size:2.5em; color:#27ae60;
+  }
+  .footer-note {
+    text-align:center; color:#95a5a6; font-size:0.75em;
+    margin-top:20px; line-height:1.5;
+  }
+  @media(max-width:480px){
+    .scale-option input[type="radio"]{ width:24px; height:24px; }
+    .scale-option span { font-size:0.75em; }
+    body { padding:16px 10px; }
+    .section { padding:18px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hidden Netlify Form (detected at build time) -->
+<form name="betrank-survey" netlify netlify-honeypot="bot-field" hidden>
+  <input name="bot-field">
+  <input name="q_name"><input name="q_date"><input name="q_casino">
+  <input name="q_overall"><input name="q_flight"><input name="q_hotel">
+  <input name="q_casino_exp"><input name="q_again">
+  <input name="q_choi_comm"><input name="q_choi_polite"><input name="q_choi_solve"><input name="q_choi_total">
+  <input name="q_kevin_comm"><input name="q_kevin_polite"><input name="q_kevin_solve"><input name="q_kevin_total">
+  <input name="q_cherin_comm"><input name="q_cherin_polite"><input name="q_cherin_solve"><input name="q_cherin_total">
+  <input name="q_good"><input name="q_improve"><input name="q_message">
+</form>
+
+<div class="survey-container">
+
+  <!-- Header -->
+  <div class="survey-header">
+    <h1>Betrnk Tours</h1>
+    <p>VIP 体験アンケート<br>
+    <span style="font-size:0.85em">この度はベットランクツアーズをご利用いただき誠にありがとうございます。<br>
+    今後のサービス向上のため、ぜひご意見をお聞かせください。</span></p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar">
+    <div class="progress-step current" id="prog1"></div>
+    <div class="progress-step" id="prog2"></div>
+    <div class="progress-step" id="prog3"></div>
+    <div class="progress-step" id="prog4"></div>
+  </div>
+
+  <!-- ========== PAGE 1: 基本情報 ========== -->
+  <div class="page active" id="page1">
+    <div class="section">
+      <div class="section-title">基本情報</div>
+      <div class="section-desc">お客様の情報をご入力ください</div>
+
+      <div class="question">
+        <span class="q-label">氏名もしくはLINEの登録名<span class="required">*</span></span>
+        <input type="text" id="q_name" placeholder="回答を入力">
+      </div>
+
+      <div class="question">
+        <span class="q-label">ご利用日<span class="required">*</span></span>
+        <input type="text" id="q_date" placeholder="例: 2026年4月15日">
+      </div>
+
+      <div class="question">
+        <span class="q-label">ご利用カジノ<span class="required">*</span></span>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" name="q_casino" id="c1" value="Paradise City">
+            <label for="c1">Paradise City</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="q_casino" id="c2" value="Inspire">
+            <label for="c2">Inspire</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="q_casino" id="c3" value="Solaire">
+            <label for="c3">Solaire</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="q_casino" id="c4" value="テレベット">
+            <label for="c4">テレベット</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="q_casino" id="c5" value="その他">
+            <label for="c5">その他</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav" style="justify-content:flex-end">
+      <button class="btn-nav" onclick="goPage(2)">次へ</button>
+    </div>
+  </div>
+
+  <!-- ========== PAGE 2: サービス全体の評価 ========== -->
+  <div class="page" id="page2">
+    <div class="section">
+      <div class="section-title">サービス全体の評価</div>
+      <div class="section-desc">ベットランクツアーズのサービス全体についてお聞かせください</div>
+
+      <div class="question">
+        <span class="q-label">ツアー全体の満足度<span class="required">*</span></span>
+        <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+        <div class="scale-group">
+          <label class="scale-option"><input type="radio" name="q_overall" value="1"><span>1</span></label>
+          <label class="scale-option"><input type="radio" name="q_overall" value="2"><span>2</span></label>
+          <label class="scale-option"><input type="radio" name="q_overall" value="3"><span>3</span></label>
+          <label class="scale-option"><input type="radio" name="q_overall" value="4"><span>4</span></label>
+          <label class="scale-option"><input type="radio" name="q_overall" value="5"><span>5</span></label>
+        </div>
+      </div>
+
+      <div class="question">
+        <span class="q-label">フライト・移動の手配<span class="required">*</span></span>
+        <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+        <div class="scale-group">
+          <label class="scale-option"><input type="radio" name="q_flight" value="1"><span>1</span></label>
+          <label class="scale-option"><input type="radio" name="q_flight" value="2"><span>2</span></label>
+          <label class="scale-option"><input type="radio" name="q_flight" value="3"><span>3</span></label>
+          <label class="scale-option"><input type="radio" name="q_flight" value="4"><span>4</span></label>
+          <label class="scale-option"><input type="radio" name="q_flight" value="5"><span>5</span></label>
+        </div>
+      </div>
+
+      <div class="question">
+        <span class="q-label">ホテル・宿泊<span class="required">*</span></span>
+        <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+        <div class="scale-group">
+          <label class="scale-option"><input type="radio" name="q_hotel" value="1"><span>1</span></label>
+          <label class="scale-option"><input type="radio" name="q_hotel" value="2"><span>2</span></label>
+          <label class="scale-option"><input type="radio" name="q_hotel" value="3"><span>3</span></label>
+          <label class="scale-option"><input type="radio" name="q_hotel" value="4"><span>4</span></label>
+          <label class="scale-option"><input type="radio" name="q_hotel" value="5"><span>5</span></label>
+        </div>
+      </div>
+
+      <div class="question">
+        <span class="q-label">カジノでの体験<span class="required">*</span></span>
+        <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+        <div class="scale-group">
+          <label class="scale-option"><input type="radio" name="q_casino_exp" value="1"><span>1</span></label>
+          <label class="scale-option"><input type="radio" name="q_casino_exp" value="2"><span>2</span></label>
+          <label class="scale-option"><input type="radio" name="q_casino_exp" value="3"><span>3</span></label>
+          <label class="scale-option"><input type="radio" name="q_casino_exp" value="4"><span>4</span></label>
+          <label class="scale-option"><input type="radio" name="q_casino_exp" value="5"><span>5</span></label>
+        </div>
+      </div>
+
+      <div class="question">
+        <span class="q-label">また利用したいと思いますか？<span class="required">*</span></span>
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" name="q_again" id="a1" value="ぜひ利用したい">
+            <label for="a1">ぜひ利用したい</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="q_again" id="a2" value="機会があれば利用したい">
+            <label for="a2">機会があれば利用したい</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="q_again" id="a3" value="どちらとも言えない">
+            <label for="a3">どちらとも言えない</label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" name="q_again" id="a4" value="あまり利用したくない">
+            <label for="a4">あまり利用したくない</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <button class="btn-back" onclick="goPage(1)">戻る</button>
+      <button class="btn-nav" onclick="goPage(3)">次へ</button>
+    </div>
+  </div>
+
+  <!-- ========== PAGE 3: 担当スタッフの評価 ========== -->
+  <div class="page" id="page3">
+    <div class="section">
+      <div class="section-title">担当スタッフの評価</div>
+      <div class="section-desc">担当してくれたスタッフの対応について教えてください。該当するスタッフのみ評価してください。</div>
+
+      <!-- チョイ -->
+      <div class="staff-card">
+        <div class="staff-name">チョイ</div>
+        <div class="staff-eval">
+          <div class="eval-label">コミュニケーション — 説明はわかりやすかったですか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_choi_comm" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_comm" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_comm" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_comm" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_comm" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">対応の丁寧さ — 礼儀正しく親切でしたか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_choi_polite" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_polite" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_polite" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_polite" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_polite" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">問題解決力 — トラブルや要望への対応は適切でしたか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_choi_solve" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_solve" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_solve" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_solve" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_solve" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">チョイの総合評価</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_choi_total" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_total" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_total" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_total" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_choi_total" value="5"><span>5</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ケビン -->
+      <div class="staff-card">
+        <div class="staff-name">ケビン</div>
+        <div class="staff-eval">
+          <div class="eval-label">コミュニケーション — 説明はわかりやすかったですか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_kevin_comm" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_comm" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_comm" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_comm" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_comm" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">対応の丁寧さ — 礼儀正しく親切でしたか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_kevin_polite" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_polite" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_polite" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_polite" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_polite" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">問題解決力 — トラブルや要望への対応は適切でしたか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_kevin_solve" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_solve" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_solve" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_solve" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_solve" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">ケビンの総合評価</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_kevin_total" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_total" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_total" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_total" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_kevin_total" value="5"><span>5</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- チェリン -->
+      <div class="staff-card">
+        <div class="staff-name">チェリン</div>
+        <div class="staff-eval">
+          <div class="eval-label">コミュニケーション — 説明はわかりやすかったですか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_cherin_comm" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_comm" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_comm" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_comm" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_comm" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">対応の丁寧さ — 礼儀正しく親切でしたか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_cherin_polite" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_polite" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_polite" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_polite" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_polite" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">問題解決力 — トラブルや要望への対応は適切でしたか？</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_cherin_solve" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_solve" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_solve" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_solve" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_solve" value="5"><span>5</span></label>
+          </div>
+        </div>
+        <div class="staff-eval">
+          <div class="eval-label">チェリンの総合評価</div>
+          <div class="scale-labels"><span>不満</span><span>大変満足</span></div>
+          <div class="scale-group">
+            <label class="scale-option"><input type="radio" name="q_cherin_total" value="1"><span>1</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_total" value="2"><span>2</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_total" value="3"><span>3</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_total" value="4"><span>4</span></label>
+            <label class="scale-option"><input type="radio" name="q_cherin_total" value="5"><span>5</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <button class="btn-back" onclick="goPage(2)">戻る</button>
+      <button class="btn-nav" onclick="goPage(4)">次へ</button>
+    </div>
+  </div>
+
+  <!-- ========== PAGE 4: 自由記述 ========== -->
+  <div class="page" id="page4">
+    <div class="section">
+      <div class="section-title">ご意見・ご要望</div>
+      <div class="section-desc">今後のサービス改善に向けて、率直なご意見をお聞かせください</div>
+
+      <div class="question">
+        <span class="q-label">特に良かった点</span>
+        <textarea id="q_good" placeholder="回答を入力"></textarea>
+      </div>
+
+      <div class="question">
+        <span class="q-label">改善してほしい点</span>
+        <textarea id="q_improve" placeholder="回答を入力"></textarea>
+      </div>
+
+      <div class="question">
+        <span class="q-label">スタッフへのメッセージやその他ご意見</span>
+        <textarea id="q_message" placeholder="回答を入力"></textarea>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <button class="btn-back" onclick="goPage(3)">戻る</button>
+      <button class="btn-submit" onclick="submitSurvey()">送信</button>
+    </div>
+    <button class="btn-clear" onclick="clearForm()">フォームをクリア</button>
+  </div>
+
+  <!-- Success Screen -->
+  <div class="success-screen" id="successScreen">
+    <div class="checkmark">&#10003;</div>
+    <h2>回答を送信しました</h2>
+    <p>貴重なご意見をいただきありがとうございます。<br>
+    今後のサービス向上に活用させていただきます。</p>
+    <button class="btn-nav" style="margin-top:24px" onclick="resetForm()">新しい回答を送信</button>
+  </div>
+
+  <div class="footer-note">
+    Betrnk Tours VIP 体験アンケート<br>
+    このフォームのパスワードは送信しないでください。
+  </div>
+</div>
+
+<script>
+let currentPage=1;
+const totalPages=4;
+
+function goPage(n){
+  if(n<1||n>totalPages)return;
+  document.getElementById('page'+currentPage).classList.remove('active');
+  document.getElementById('page'+n).classList.add('active');
+  currentPage=n;
+  updateProgress();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(){
+  for(let i=1;i<=totalPages;i++){
+    const el=document.getElementById('prog'+i);
+    el.classList.remove('done','current');
+    if(i<currentPage) el.classList.add('done');
+    else if(i===currentPage) el.classList.add('current');
+  }
+}
+
+function getVal(name){
+  const el=document.querySelector('input[name="'+name+'"]:checked');
+  return el?el.value:'';
+}
+
+function submitSurvey(){
+  const name=document.getElementById('q_name').value;
+  if(!name){alert('氏名を入力してください');goPage(1);return;}
+
+  const fields={
+    'form-name':'betrank-survey',
+    q_name:name,
+    q_date:document.getElementById('q_date').value,
+    q_casino:getVal('q_casino'),
+    q_overall:getVal('q_overall'),
+    q_flight:getVal('q_flight'),
+    q_hotel:getVal('q_hotel'),
+    q_casino_exp:getVal('q_casino_exp'),
+    q_again:getVal('q_again'),
+    q_choi_comm:getVal('q_choi_comm'),q_choi_polite:getVal('q_choi_polite'),q_choi_solve:getVal('q_choi_solve'),q_choi_total:getVal('q_choi_total'),
+    q_kevin_comm:getVal('q_kevin_comm'),q_kevin_polite:getVal('q_kevin_polite'),q_kevin_solve:getVal('q_kevin_solve'),q_kevin_total:getVal('q_kevin_total'),
+    q_cherin_comm:getVal('q_cherin_comm'),q_cherin_polite:getVal('q_cherin_polite'),q_cherin_solve:getVal('q_cherin_solve'),q_cherin_total:getVal('q_cherin_total'),
+    q_good:document.getElementById('q_good').value,
+    q_improve:document.getElementById('q_improve').value,
+    q_message:document.getElementById('q_message').value
+  };
+
+  // Save to localStorage (backup + offline)
+  const data={...fields,timestamp:new Date().toISOString()};
+  const responses=JSON.parse(localStorage.getItem('betrank_survey_responses')||'[]');
+  responses.push(data);
+  localStorage.setItem('betrank_survey_responses',JSON.stringify(responses));
+
+  // Submit to Netlify Forms
+  const body=new URLSearchParams(fields).toString();
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
+    .then(()=>console.log('Netlify form submitted'))
+    .catch(err=>console.log('Netlify submit failed (offline mode):',err));
+
+  // Show success
+  for(let i=1;i<=totalPages;i++) document.getElementById('page'+i).classList.remove('active');
+  document.querySelector('.progress-bar').style.display='none';
+  document.getElementById('successScreen').style.display='block';
+}
+
+function clearForm(){
+  document.querySelectorAll('input[type="text"],textarea').forEach(el=>el.value='');
+  document.querySelectorAll('input[type="radio"]').forEach(el=>el.checked=false);
+}
+
+function resetForm(){
+  clearForm();
+  document.getElementById('successScreen').style.display='none';
+  document.querySelector('.progress-bar').style.display='flex';
+  goPage(1);
+}
+</script>
+
+</body>
+</html>

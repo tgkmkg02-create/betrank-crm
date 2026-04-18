@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アンケート結果 - Betrnk Tours</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root{--primary:#1a1a2e;--secondary:#16213e;--accent:#e94560;--gold:#f5a623;--green:#27ae60;--red:#e74c3c;--blue:#3498db;--text:#ecf0f1;--muted:#95a5a6;--card:#1e2a3a;--border:#2c3e50;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI','Meiryo',sans-serif;background:var(--primary);color:var(--text);min-height:100vh;}
+  .header{background:linear-gradient(135deg,var(--secondary),#0a0a1a);padding:20px 30px;border-bottom:2px solid var(--accent);display:flex;justify-content:space-between;align-items:center;}
+  .header h1{font-size:1.4em;color:var(--gold);}
+  .header .sub{color:var(--muted);font-size:0.8em;}
+  .header a{color:var(--muted);text-decoration:none;font-size:0.8em;padding:4px 12px;border:1px solid var(--border);border-radius:4px;}
+  .header a:hover{border-color:var(--gold);color:var(--gold);}
+  .container{max-width:1200px;margin:0 auto;padding:24px;}
+  .grid{display:grid;gap:16px;}.grid-2{grid-template-columns:repeat(auto-fit,minmax(400px,1fr));}
+  .grid-3{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));}
+  .grid-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+  .card{background:var(--card);border-radius:12px;padding:20px;border:1px solid var(--border);}
+  .card h3{color:var(--gold);margin-bottom:12px;font-size:1em;}
+  .stat{text-align:center;padding:12px;}
+  .stat .value{font-size:1.8em;font-weight:700;color:var(--gold);}
+  .stat .label{font-size:0.78em;color:var(--muted);margin-top:4px;}
+  .mb-16{margin-bottom:16px;}
+  table{width:100%;border-collapse:collapse;font-size:0.85em;}
+  th{background:rgba(233,69,96,0.15);color:var(--gold);padding:10px 8px;text-align:left;font-weight:600;border-bottom:2px solid var(--accent);}
+  td{padding:8px;border-bottom:1px solid var(--border);}
+  tr:hover{background:rgba(255,255,255,0.03);}
+  .positive{color:var(--green);font-weight:600;}
+  .negative{color:var(--red);font-weight:600;}
+  .neutral{color:var(--blue);}
+  select,input[type="file"]{background:var(--secondary);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:0.9em;}
+  select:focus{outline:none;border-color:var(--gold);}
+  button{background:linear-gradient(135deg,var(--accent),#c0392b);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.9em;}
+  button:hover{transform:scale(1.02);}
+  .btn-gold{background:linear-gradient(135deg,var(--gold),#e67e22);}
+  .btn-blue{background:linear-gradient(135deg,var(--blue),#2980b9);}
+  .btn-sm{padding:6px 14px;font-size:0.8em;}
+  .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px;}
+  .staff-score-bar{display:flex;align-items:center;gap:8px;margin:6px 0;}
+  .bar-bg{flex:1;height:20px;background:var(--secondary);border-radius:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:10px;transition:width 0.4s;}
+  .star{color:var(--gold);font-size:1.1em;}
+  .empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+  .empty-state h3{color:var(--gold);margin-bottom:8px;}
+  .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.75em;font-weight:600;}
+  .response-card{background:rgba(245,166,35,0.03);border:1px solid rgba(245,166,35,0.15);border-radius:10px;padding:16px;margin-bottom:10px;}
+  .flex-between{display:flex;justify-content:space-between;align-items:center;}
+  .text-sm{font-size:0.8em;}.text-muted{color:var(--muted);}
+  @media(max-width:768px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}.controls{flex-direction:column;align-items:stretch;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>アンケート結果ダッシュボード</h1>
+    <div class="sub">Betrnk Tours VIP 体験アンケート — 月別集計</div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <a href="index.html">CRMに戻る</a>
+    <a href="survey.html">アンケート</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Controls -->
+  <div class="controls">
+    <div>
+      <label style="color:var(--muted);font-size:0.8em;margin-right:6px">月を選択:</label>
+      <select id="monthFilter" onchange="renderAll()">
+        <option value="all">全期間</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-blue btn-sm" onclick="document.getElementById('csvUpload').click()">CSV取り込み</button>
+      <input type="file" id="csvUpload" accept=".csv" style="display:none" onchange="importCSV(this)">
+      <button class="btn-gold btn-sm" onclick="exportCSV()">CSVエクスポート</button>
+      <button class="btn-sm" style="background:linear-gradient(135deg,var(--green),#219a52)" onclick="loadSampleData()">サンプルデータ</button>
+    </div>
+  </div>
+
+  <!-- KPI Summary -->
+  <div class="grid grid-4 mb-16" id="kpiCards">
+    <div class="card stat"><div class="label">回答数</div><div class="value" id="kpiCount">0</div></div>
+    <div class="card stat"><div class="label">全体満足度（平均）</div><div class="value" id="kpiOverall">—</div></div>
+    <div class="card stat"><div class="label">再利用意向「ぜひ」</div><div class="value" id="kpiRepeat">—</div></div>
+    <div class="card stat"><div class="label">スタッフ評価（平均）</div><div class="value" id="kpiStaff">—</div></div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-2 mb-16">
+    <div class="card">
+      <h3>スタッフ別 総合評価スコア</h3>
+      <canvas id="staffChart" height="250"></canvas>
+    </div>
+    <div class="card">
+      <h3>サービス項目別 満足度</h3>
+      <canvas id="serviceChart" height="250"></canvas>
+    </div>
+  </div>
+
+  <!-- Staff Detail -->
+  <div class="grid grid-3 mb-16" id="staffCards"></div>
+
+  <!-- Response List -->
+  <div class="card mb-16">
+    <div class="flex-between mb-16">
+      <h3>回答一覧</h3>
+      <span class="text-sm text-muted" id="responseCountLabel"></span>
+    </div>
+    <div id="responseList"></div>
+  </div>
+
+</div>
+
+<script>
+function getResponses(){
+  return JSON.parse(localStorage.getItem('betrank_survey_responses')||'[]');
+}
+
+function getFilteredResponses(){
+  const month=document.getElementById('monthFilter').value;
+  const all=getResponses();
+  if(month==='all') return all;
+  return all.filter(r=>{
+    const d=r.q_date||r.timestamp||'';
+    return d.includes(month);
+  });
+}
+
+function populateMonths(){
+  const sel=document.getElementById('monthFilter');
+  const months=new Set();
+  getResponses().forEach(r=>{
+    const d=r.q_date||r.timestamp||'';
+    // Extract year-month patterns
+    let m=d.match(/(\d{4})[年\-\/](\d{1,2})/);
+    if(m) months.add(m[1]+'年'+m[2].padStart(2,'0')+'月');
+  });
+  const sorted=[...months].sort().reverse();
+  sel.innerHTML='<option value="all">全期間</option>';
+  sorted.forEach(m=>{
+    const val=m.replace('年','-').replace('月','');
+    sel.innerHTML+=`<option value="${val}">${m}</option>`;
+  });
+}
+
+function avg(arr){
+  const nums=arr.filter(v=>v&&!isNaN(v)).map(Number);
+  return nums.length?nums.reduce((a,b)=>a+b,0)/nums.length:0;
+}
+
+function stars(score){
+  const full=Math.floor(score);
+  const half=score-full>=0.5;
+  let s='';
+  for(let i=0;i<full;i++) s+='&#9733;';
+  if(half) s+='&#9734;';
+  return `<span class="star">${s}</span> <strong>${score.toFixed(1)}</strong>`;
+}
+
+function renderKPI(data){
+  document.getElementById('kpiCount').textContent=data.length;
+  const overalls=data.map(r=>r.q_overall).filter(v=>v);
+  document.getElementById('kpiOverall').textContent=overalls.length?avg(overalls).toFixed(1):'—';
+
+  const agains=data.filter(r=>r.q_again==='ぜひ利用したい').length;
+  document.getElementById('kpiRepeat').textContent=data.length?(Math.round(agains/data.length*100)+'%'):'—';
+
+  const staffScores=[];
+  ['choi','kevin','cherin'].forEach(s=>{
+    data.forEach(r=>{
+      const t=r['q_'+s+'_total'];
+      if(t) staffScores.push(Number(t));
+    });
+  });
+  document.getElementById('kpiStaff').textContent=staffScores.length?avg(staffScores).toFixed(1):'—';
+}
+
+let chartStaff=null, chartService=null;
+
+function renderCharts(data){
+  if(chartStaff){chartStaff.destroy();}
+  if(chartService){chartService.destroy();}
+
+  const staffNames=['チョイ','ケビン','チェリン'];
+  const staffKeys=['choi','kevin','cherin'];
+  const evalTypes=[{key:'comm',label:'コミュニケーション'},{key:'polite',label:'丁寧さ'},{key:'solve',label:'問題解決力'},{key:'total',label:'総合'}];
+
+  // Staff chart
+  const staffAvgs=staffKeys.map(s=>{
+    const scores=data.map(r=>r['q_'+s+'_total']).filter(v=>v).map(Number);
+    return scores.length?avg(scores):0;
+  });
+
+  const ctx1=document.getElementById('staffChart');
+  chartStaff=new Chart(ctx1,{
+    type:'bar',
+    data:{
+      labels:staffNames,
+      datasets:[{
+        label:'総合評価（平均）',
+        data:staffAvgs,
+        backgroundColor:['rgba(233,69,96,0.7)','rgba(52,152,219,0.7)','rgba(39,174,96,0.7)'],
+        borderColor:['#e94560','#3498db','#27ae60'],
+        borderWidth:2,borderRadius:6
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{min:0,max:5,ticks:{color:'#95a5a6',stepSize:1},grid:{color:'rgba(44,62,80,0.3)'}},
+        x:{ticks:{color:'#ecf0f1',font:{size:13,weight:'bold'}},grid:{display:false}}
+      }
+    }
+  });
+
+  // Service chart
+  const serviceLabels=['ツアー全体','フライト','ホテル','カジノ体験'];
+  const serviceKeys=['q_overall','q_flight','q_hotel','q_casino_exp'];
+  const serviceAvgs=serviceKeys.map(k=>{
+    const vals=data.map(r=>r[k]).filter(v=>v).map(Number);
+    return vals.length?avg(vals):0;
+  });
+
+  const ctx2=document.getElementById('serviceChart');
+  chartService=new Chart(ctx2,{
+    type:'radar',
+    data:{
+      labels:serviceLabels,
+      datasets:[{
+        label:'満足度',data:serviceAvgs,
+        backgroundColor:'rgba(245,166,35,0.2)',
+        borderColor:'#f5a623',borderWidth:2,
+        pointBackgroundColor:'#f5a623',pointRadius:5
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false}},
+      scales:{
+        r:{
+          min:0,max:5,
+          ticks:{stepSize:1,color:'#95a5a6',backdropColor:'transparent'},
+          grid:{color:'rgba(44,62,80,0.5)'},
+          pointLabels:{color:'#ecf0f1',font:{size:12}}
+        }
+      }
+    }
+  });
+}
+
+function renderStaffCards(data){
+  const html=[];
+  const staff=[
+    {key:'choi',name:'チョイ',color:'#e94560'},
+    {key:'kevin',name:'ケビン',color:'#3498db'},
+    {key:'cherin',name:'チェリン',color:'#27ae60'}
+  ];
+  const evals=[{key:'comm',label:'コミュニケーション'},{key:'polite',label:'対応の丁寧さ'},{key:'solve',label:'問題解決力'},{key:'total',label:'総合評価'}];
+
+  staff.forEach(s=>{
+    let card=`<div class="card"><h3 style="border-left:4px solid ${s.color};padding-left:10px">${s.name}</h3>`;
+    let totalAvg=0,totalCount=0;
+    evals.forEach(e=>{
+      const vals=data.map(r=>r['q_'+s.key+'_'+e.key]).filter(v=>v).map(Number);
+      const a=vals.length?avg(vals):0;
+      if(e.key==='total'){totalAvg=a;totalCount=vals.length;}
+      const pct=(a/5*100).toFixed(0);
+      card+=`<div class="staff-score-bar">
+        <span class="text-sm" style="width:110px">${e.label}</span>
+        <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${s.color}"></div></div>
+        <span class="text-sm" style="width:30px;text-align:right"><strong>${a.toFixed(1)}</strong></span>
+      </div>`;
+    });
+    card+=`<div style="text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <div class="text-sm text-muted">${totalCount}件の回答</div>
+      <div style="font-size:1.4em;color:${s.color};font-weight:700">${stars(totalAvg)}</div>
+      <div class="text-sm text-muted mt-8">→ CRMインセンティブ用: 満足度 <strong>${avg(data.map(r=>r['q_'+s.key+'_comm']).filter(v=>v).concat(data.map(r=>r['q_'+s.key+'_polite']).filter(v=>v)).concat(data.map(r=>r['q_'+s.key+'_solve']).filter(v=>v)).map(Number)).toFixed(1)}</strong> / 個人評価 <strong>${totalAvg.toFixed(1)}</strong></div>
+    </div>`;
+    card+='</div>';
+    html.push(card);
+  });
+  document.getElementById('staffCards').innerHTML=html.join('');
+}
+
+function renderResponses(data){
+  if(!data.length){
+    document.getElementById('responseList').innerHTML='<div class="empty-state"><h3>まだ回答がありません</h3><p>アンケートの回答が送信されるとここに表示されます。<br>テスト用にサンプルデータを読み込むこともできます。</p></div>';
+    document.getElementById('responseCountLabel').textContent='';
+    return;
+  }
+  document.getElementById('responseCountLabel').textContent=data.length+'件の回答';
+
+  const sorted=[...data].sort((a,b)=>(b.timestamp||'').localeCompare(a.timestamp||''));
+  let html='';
+  sorted.forEach((r,i)=>{
+    const staffEvals=[];
+    ['チョイ','ケビン','チェリン'].forEach((name,idx)=>{
+      const key=['choi','kevin','cherin'][idx];
+      const t=r['q_'+key+'_total'];
+      if(t) staffEvals.push(`${name}: ${'★'.repeat(Number(t))}${'☆'.repeat(5-Number(t))}`);
+    });
+
+    html+=`<div class="response-card">
+      <div class="flex-between">
+        <strong>${r.q_name||'名前なし'}</strong>
+        <span class="text-sm text-muted">${r.q_date||r.timestamp?.split('T')[0]||''} | ${r.q_casino||''}</span>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:16px;flex-wrap:wrap">
+        <span class="text-sm">全体: ${'★'.repeat(Number(r.q_overall||0))}</span>
+        <span class="text-sm">再利用: ${r.q_again||'—'}</span>
+        ${staffEvals.map(s=>`<span class="text-sm">${s}</span>`).join('')}
+      </div>
+      ${r.q_good?`<div class="text-sm" style="margin-top:6px;color:var(--green)">良い点: ${r.q_good}</div>`:''}
+      ${r.q_improve?`<div class="text-sm" style="margin-top:4px;color:var(--red)">改善点: ${r.q_improve}</div>`:''}
+      ${r.q_message?`<div class="text-sm" style="margin-top:4px">メッセージ: ${r.q_message}</div>`:''}
+    </div>`;
+  });
+  document.getElementById('responseList').innerHTML=html;
+}
+
+function renderAll(){
+  const data=getFilteredResponses();
+  renderKPI(data);
+  renderCharts(data);
+  renderStaffCards(data);
+  renderResponses(data);
+}
+
+function exportCSV(){
+  const data=getResponses();
+  if(!data.length){alert('エクスポートするデータがありません');return;}
+  const keys=Object.keys(data[0]);
+  let csv=keys.join(',')+'\n';
+  data.forEach(r=>{
+    csv+=keys.map(k=>{
+      let v=(r[k]||'').toString().replace(/"/g,'""');
+      return v.includes(',')?`"${v}"`:v;
+    }).join(',')+'\n';
+  });
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='betrank_survey_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+}
+
+function importCSV(input){
+  const file=input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const lines=e.target.result.split('\n').filter(l=>l.trim());
+    if(lines.length<2){alert('CSVデータが空です');return;}
+    const headers=lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,''));
+    const existing=getResponses();
+    for(let i=1;i<lines.length;i++){
+      const vals=lines[i].split(',').map(v=>v.trim().replace(/^"|"$/g,''));
+      const obj={};
+      headers.forEach((h,idx)=>obj[h]=vals[idx]||'');
+      if(!obj.timestamp) obj.timestamp=new Date().toISOString();
+      existing.push(obj);
+    }
+    localStorage.setItem('betrank_survey_responses',JSON.stringify(existing));
+    populateMonths();
+    renderAll();
+    alert(lines.length-1+'件のデータを取り込みました');
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+
+function loadSampleData(){
+  if(!confirm('サンプルデータを追加しますか？'))return;
+  const samples=[
+    {timestamp:'2026-04-10T10:00:00Z','form-name':'betrank-survey',q_name:'田中太郎',q_date:'2026年4月10日',q_casino:'Paradise City',q_overall:'5',q_flight:'4',q_hotel:'5',q_casino_exp:'5',q_again:'ぜひ利用したい',q_choi_comm:'5',q_choi_polite:'5',q_choi_solve:'4',q_choi_total:'5',q_kevin_comm:'',q_kevin_polite:'',q_kevin_solve:'',q_kevin_total:'',q_cherin_comm:'4',q_cherin_polite:'5',q_cherin_solve:'4',q_cherin_total:'4',q_good:'スタッフの対応が素晴らしかった',q_improve:'',q_message:'チョイさんありがとう！'},
+    {timestamp:'2026-04-12T14:00:00Z','form-name':'betrank-survey',q_name:'鈴木一郎',q_date:'2026年4月12日',q_casino:'Inspire',q_overall:'4',q_flight:'4',q_hotel:'4',q_casino_exp:'5',q_again:'ぜひ利用したい',q_choi_comm:'',q_choi_polite:'',q_choi_solve:'',q_choi_total:'',q_kevin_comm:'4',q_kevin_polite:'5',q_kevin_solve:'4',q_kevin_total:'4',q_cherin_comm:'',q_cherin_polite:'',q_cherin_solve:'',q_cherin_total:'',q_good:'カジノの雰囲気が最高',q_improve:'フライトの時間をもう少し選べると嬉しい',q_message:''},
+    {timestamp:'2026-04-15T09:00:00Z','form-name':'betrank-survey',q_name:'佐藤花子',q_date:'2026年4月15日',q_casino:'テレベット',q_overall:'4',q_flight:'',q_hotel:'',q_casino_exp:'4',q_again:'機会があれば利用したい',q_choi_comm:'4',q_choi_polite:'4',q_choi_solve:'3',q_choi_total:'4',q_kevin_comm:'3',q_kevin_polite:'4',q_kevin_solve:'3',q_kevin_total:'3',q_cherin_comm:'5',q_cherin_polite:'5',q_cherin_solve:'5',q_cherin_total:'5',q_good:'チェリンさんの対応が丁寧',q_improve:'説明がもう少し詳しいと助かる',q_message:''},
+    {timestamp:'2026-03-05T11:00:00Z','form-name':'betrank-survey',q_name:'山田次郎',q_date:'2026年3月5日',q_casino:'Paradise City',q_overall:'5',q_flight:'5',q_hotel:'5',q_casino_exp:'4',q_again:'ぜひ利用したい',q_choi_comm:'5',q_choi_polite:'5',q_choi_solve:'5',q_choi_total:'5',q_kevin_comm:'4',q_kevin_polite:'4',q_kevin_solve:'4',q_kevin_total:'4',q_cherin_comm:'',q_cherin_polite:'',q_cherin_solve:'',q_cherin_total:'',q_good:'全て完璧でした',q_improve:'',q_message:'また必ず利用します'},
+    {timestamp:'2026-03-18T16:00:00Z','form-name':'betrank-survey',q_name:'高橋美咲',q_date:'2026年3月18日',q_casino:'Inspire',q_overall:'3',q_flight:'3',q_hotel:'4',q_casino_exp:'4',q_again:'機会があれば利用したい',q_choi_comm:'',q_choi_polite:'',q_choi_solve:'',q_choi_total:'',q_kevin_comm:'',q_kevin_polite:'',q_kevin_solve:'',q_kevin_total:'',q_cherin_comm:'4',q_cherin_polite:'4',q_cherin_solve:'3',q_cherin_total:'4',q_good:'ホテルが綺麗',q_improve:'空港からの移動がもう少しスムーズだと良い',q_message:'チェリンさんお世話になりました'}
+  ];
+  const existing=getResponses();
+  samples.forEach(s=>existing.push(s));
+  localStorage.setItem('betrank_survey_responses',JSON.stringify(existing));
+  populateMonths();
+  renderAll();
+}
+
+// Init
+populateMonths();
+renderAll();
+</script>
+</body>
+</html>
