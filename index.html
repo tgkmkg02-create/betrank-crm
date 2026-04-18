@@ -1241,6 +1241,29 @@
       <button onclick="calcTelebet()" style="width:100%;background:var(--green);color:#fff;margin-top:8px">計算</button>
       <div id="tbResult" style="display:none;margin-top:16px;padding:20px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius)"></div>
     </div>
+
+    <div class="card mb-16">
+      <h3>テレベット顧客担当管理</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">どのスタッフがどの顧客を担当しているか管理</p>
+      <div class="grid grid-3" style="gap:10px;margin-bottom:12px">
+        <div class="form-group"><label>顧客名</label><input type="text" id="tbCustName" placeholder="例: 田中太郎" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>担当スタッフ</label><select id="tbCustStaff" style="background:var(--bg-input)"><option>チョイ</option><option>ケビン</option><option>チェリン</option><option>長岡きみ</option></select></div>
+        <div class="form-group"><label>メモ</label><input type="text" id="tbCustMemo" placeholder="例: VIP、週2回プレイ" style="background:var(--bg-input)"></div>
+      </div>
+      <button onclick="addTbCustomer()" style="background:var(--accent);margin-bottom:16px">顧客を追加</button>
+      <div style="margin-bottom:12px">
+        <label style="color:var(--muted);font-size:0.8em">フィルター:</label>
+        <select id="tbCustFilter" onchange="renderTbCustomers()" style="background:var(--bg-input);width:auto;display:inline-block;padding:6px 12px;font-size:0.85em">
+          <option value="all">全員</option>
+          <option value="チョイ">チョイ</option>
+          <option value="ケビン">ケビン</option>
+          <option value="チェリン">チェリン</option>
+          <option value="長岡きみ">長岡きみ</option>
+        </select>
+        <span id="tbCustCount" style="color:var(--muted);font-size:0.82em;margin-left:12px"></span>
+      </div>
+      <div id="tbCustList"></div>
+    </div>
   </div>
 </div>
 
@@ -4420,6 +4443,62 @@ function calcTask(){
   el.innerHTML='<h3 style="color:var(--accent);margin-bottom:12px">'+staff+'</h3><table>'+(tg>0?'<tr><td>Telegram誘導（'+tg+'件×¥1,000）</td><td style="text-align:right">¥'+a.toLocaleString()+'</td></tr>':'')+(first>0?'<tr><td>初回プレイ誘導（'+first+'件×¥3,000）</td><td style="text-align:right">¥'+b.toLocaleString()+'</td></tr>':'')+(rep>0?'<tr><td>リピート予約（'+rep+'件×¥2,000）</td><td style="text-align:right">¥'+c.toLocaleString()+'</td></tr>':'')+'<tr style="border-top:2px solid var(--accent)"><td><strong>合計インセンティブ</strong></td><td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--green)">¥'+total.toLocaleString()+'</td></tr></table>';
 }
 
+// ==================== テレベット顧客管理 ====================
+function getTbCustomers(){return JSON.parse(localStorage.getItem('tb_customers')||'[]');}
+function saveTbCustomers(list){localStorage.setItem('tb_customers',JSON.stringify(list));}
+
+function addTbCustomer(){
+  var name=document.getElementById('tbCustName').value.trim();
+  if(!name){alert('顧客名を入力してください');return;}
+  var staff=document.getElementById('tbCustStaff').value;
+  var memo=document.getElementById('tbCustMemo').value.trim();
+  var list=getTbCustomers();
+  list.push({name:name,staff:staff,memo:memo,date:new Date().toISOString().split('T')[0]});
+  saveTbCustomers(list);
+  document.getElementById('tbCustName').value='';
+  document.getElementById('tbCustMemo').value='';
+  renderTbCustomers();
+}
+
+function deleteTbCustomer(idx){
+  var list=getTbCustomers();
+  list.splice(idx,1);
+  saveTbCustomers(list);
+  renderTbCustomers();
+}
+
+function renderTbCustomers(){
+  var list=getTbCustomers();
+  var filter=document.getElementById('tbCustFilter').value;
+  var filtered=filter==='all'?list:list.filter(function(c){return c.staff===filter;});
+  var el=document.getElementById('tbCustList');
+  var countEl=document.getElementById('tbCustCount');
+
+  // Count by staff
+  var counts={};
+  list.forEach(function(c){counts[c.staff]=(counts[c.staff]||0)+1;});
+  countEl.textContent='合計 '+list.length+'名'+(filter!=='all'?' / '+filter+': '+filtered.length+'名':'');
+
+  if(!filtered.length){el.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px">顧客データなし</p>';return;}
+
+  var staffColors={'チョイ':'var(--accent)','ケビン':'var(--blue)','チェリン':'var(--green)','長岡きみ':'var(--gold)'};
+  var html='<table><thead><tr><th>顧客名</th><th>担当</th><th>メモ</th><th>登録日</th><th></th></tr></thead><tbody>';
+  filtered.forEach(function(c){
+    var origIdx=list.indexOf(c);
+    html+='<tr><td><strong>'+c.name+'</strong></td><td style="color:'+(staffColors[c.staff]||'var(--muted)')+';font-weight:600">'+c.staff+'</td><td style="color:var(--muted);font-size:0.85em">'+(c.memo||'—')+'</td><td style="color:var(--muted);font-size:0.85em">'+(c.date||'')+'</td><td><button onclick="deleteTbCustomer('+origIdx+')" style="background:transparent;border:1px solid var(--red);color:var(--red);padding:2px 8px;font-size:0.75em;border-radius:4px">削除</button></td></tr>';
+  });
+  html+='</tbody></table>';
+
+  // Staff summary
+  html+='<div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap">';
+  ['チョイ','ケビン','チェリン','長岡きみ'].forEach(function(s){
+    var cnt=counts[s]||0;
+    html+='<div style="background:var(--bg-tertiary);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center"><div style="color:'+(staffColors[s]||'var(--muted)')+';font-weight:700;font-size:0.85em">'+s+'</div><div style="font-size:1.4em;font-weight:700">'+cnt+'名</div></div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
 function init(){
   initUserStore();
   restoreDarkMode();
@@ -4436,6 +4515,7 @@ function init(){
   renderCampaigns();
   renderAlerts();
   renderActivityLog();
+  renderTbCustomers();
   if(canManageUsers())renderUserAccounts();
 }
 if(sessionStorage.getItem('br_auth')==='1'&&sessionStorage.getItem('br_current_user')){init();}
