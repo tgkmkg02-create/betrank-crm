@@ -1124,12 +1124,6 @@
             <td style="color:var(--green);font-weight:700">¥2,000 / 件</td>
             <td style="color:var(--muted)">なし</td>
           </tr>
-          <tr>
-            <td><strong style="color:var(--accent)">新規顧客紹介</strong></td>
-            <td>新しい顧客を紹介し、実際に来場・プレイ</td>
-            <td style="color:var(--green);font-weight:700">¥5,000 / 件</td>
-            <td style="color:var(--muted)">なし</td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -1137,25 +1131,25 @@
     <div class="card mb-16">
       <h3>月間シミュレーション例</h3>
       <table>
-        <thead><tr><th>スタッフ</th><th>Telegram誘導</th><th>初回プレイ</th><th>リピート予約</th><th>新規紹介</th><th>合計</th></tr></thead>
+        <thead><tr><th>スタッフ</th><th>Telegram誘導</th><th>初回プレイ</th><th>リピート予約</th><th>合計</th></tr></thead>
         <tbody>
           <tr>
             <td><strong style="color:var(--accent)">チョイ</strong></td>
-            <td>10件 = ¥10,000</td><td>3件 = ¥9,000</td><td>2件 = ¥4,000</td><td>1件 = ¥5,000</td>
-            <td style="color:var(--green);font-weight:700">¥28,000</td>
+            <td>10件 = ¥10,000</td><td>3件 = ¥9,000</td><td>2件 = ¥4,000</td>
+            <td style="color:var(--green);font-weight:700">¥23,000</td>
           </tr>
           <tr>
             <td><strong style="color:var(--blue)">ケビン</strong></td>
-            <td>8件 = ¥8,000</td><td>2件 = ¥6,000</td><td>1件 = ¥2,000</td><td>0件</td>
+            <td>8件 = ¥8,000</td><td>2件 = ¥6,000</td><td>1件 = ¥2,000</td>
             <td style="color:var(--green);font-weight:700">¥16,000</td>
           </tr>
           <tr>
             <td><strong style="color:var(--green)">チェリン</strong></td>
-            <td>12件 = ¥12,000</td><td>4件 = ¥12,000</td><td>3件 = ¥6,000</td><td>0件</td>
+            <td>12件 = ¥12,000</td><td>4件 = ¥12,000</td><td>3件 = ¥6,000</td>
             <td style="color:var(--green);font-weight:700">¥30,000</td>
           </tr>
         </tbody>
-        <tfoot><tr style="border-top:2px solid var(--accent)"><td colspan="5"><strong>合計コスト</strong></td><td style="color:var(--accent);font-weight:700">¥74,000</td></tr></tfoot>
+        <tfoot><tr style="border-top:2px solid var(--accent)"><td colspan="4"><strong>合計コスト</strong></td><td style="color:var(--accent);font-weight:700">¥69,000</td></tr></tfoot>
       </table>
       <p style="color:var(--muted);font-size:0.82em;margin-top:12px">月間コスト目安: ¥5万〜10万。歩合制（月¥15万〜）より低コストで、テレベット拡大に直結。</p>
     </div>
@@ -1167,7 +1161,6 @@
         <div class="form-group"><label>Telegram誘導（件）</label><input type="number" id="taskTg" min="0" max="20" value="0"></div>
         <div class="form-group"><label>初回プレイ誘導（件）</label><input type="number" id="taskFirst" min="0" value="0"></div>
         <div class="form-group"><label>リピート予約（件）</label><input type="number" id="taskRepeat" min="0" value="0"></div>
-        <div class="form-group"><label>新規顧客紹介（件）</label><input type="number" id="taskNew" min="0" value="0"></div>
       </div>
       <button onclick="calcTask()" style="width:100%;margin-top:8px;background:var(--accent)">計算</button>
       <div id="taskResult" style="display:none;margin-top:16px;padding:20px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius)"></div>
@@ -4420,12 +4413,11 @@ function calcTask(){
   var tg=Math.min(parseInt(document.getElementById('taskTg').value)||0,20);
   var first=parseInt(document.getElementById('taskFirst').value)||0;
   var rep=parseInt(document.getElementById('taskRepeat').value)||0;
-  var nw=parseInt(document.getElementById('taskNew').value)||0;
-  var a=tg*1000,b=first*3000,c=rep*2000,e=nw*5000;
-  var total=a+b+c+e;
+  var a=tg*1000,b=first*3000,c=rep*2000;
+  var total=a+b+c;
   var el=document.getElementById('taskResult');
   el.style.display='block';
-  el.innerHTML='<h3 style="color:var(--accent);margin-bottom:12px">'+staff+'</h3><table>'+(tg>0?'<tr><td>Telegram誘導（'+tg+'件×¥1,000）</td><td style="text-align:right">¥'+a.toLocaleString()+'</td></tr>':'')+(first>0?'<tr><td>初回プレイ誘導（'+first+'件×¥3,000）</td><td style="text-align:right">¥'+b.toLocaleString()+'</td></tr>':'')+(rep>0?'<tr><td>リピート予約（'+rep+'件×¥2,000）</td><td style="text-align:right">¥'+c.toLocaleString()+'</td></tr>':'')+(nw>0?'<tr><td>新規顧客紹介（'+nw+'件×¥5,000）</td><td style="text-align:right">¥'+e.toLocaleString()+'</td></tr>':'')+'<tr style="border-top:2px solid var(--accent)"><td><strong>合計インセンティブ</strong></td><td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--green)">¥'+total.toLocaleString()+'</td></tr></table>';
+  el.innerHTML='<h3 style="color:var(--accent);margin-bottom:12px">'+staff+'</h3><table>'+(tg>0?'<tr><td>Telegram誘導（'+tg+'件×¥1,000）</td><td style="text-align:right">¥'+a.toLocaleString()+'</td></tr>':'')+(first>0?'<tr><td>初回プレイ誘導（'+first+'件×¥3,000）</td><td style="text-align:right">¥'+b.toLocaleString()+'</td></tr>':'')+(rep>0?'<tr><td>リピート予約（'+rep+'件×¥2,000）</td><td style="text-align:right">¥'+c.toLocaleString()+'</td></tr>':'')+'<tr style="border-top:2px solid var(--accent)"><td><strong>合計インセンティブ</strong></td><td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--green)">¥'+total.toLocaleString()+'</td></tr></table>';
 }
 
 function init(){
