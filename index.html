@@ -1094,121 +1094,166 @@
 
 <!-- TAB: 現地インセンティブ -->
 <div id="incentive" class="tab-content">
-  <div class="topbar"><div class="topbar-title">現地営業インセンティブ</div></div>
+  <div class="topbar"><div class="topbar-title">現地スタッフ インセンティブ（タスクベース）</div></div>
   <div style="padding:28px 32px;max-width:1600px;margin:0 auto">
-    <div style="border-left:3px solid var(--accent);padding-left:12px;margin-bottom:12px"><span style="color:var(--accent);font-weight:700">現地（韓国）利益</span></div>
-    <div class="grid grid-4 mb-16">
-      <div class="card stat"><div class="label">1〜4月 現地利益合計</div><div class="value" style="color:var(--accent)">¥15,442,683</div></div>
-      <div class="card stat"><div class="label">月平均</div><div class="value">¥3,860,671</div></div>
-      <div class="card stat"><div class="label">最高月（2月）</div><div class="value" style="color:var(--green)">¥6,870,646</div></div>
-      <div class="card stat"><div class="label">エージェント利益（4月）</div><div class="value" style="color:var(--red)">-¥152,540</div></div>
+    <div class="card mb-16" style="border-left:3px solid var(--accent)">
+      <h3>方針：テレベット拡大に集中</h3>
+      <p style="color:var(--muted);font-size:0.9em;line-height:1.7">現地スタッフ（チョイ・ケビン・チェリン）の歩合制を廃止し、<strong style="color:var(--accent)">テレベット拡大に直結するタスク</strong>に対してインセンティブを支給。シンプルで明確な成果報酬。</p>
     </div>
+
     <div class="card mb-16">
-      <h3>チーム歩合制（チョイ・ケビン・チェリン）</h3>
-      <p class="text-sm" style="color:var(--muted);margin-bottom:16px">合計純利益（現地＋テレベット）に対してチーム全体で<strong style="color:var(--accent)">2%</strong>を3等分。リーダーはノルマ達成でボーナス。</p>
+      <h3>タスクベース インセンティブ一覧</h3>
       <table>
-        <thead><tr><th>仕組み</th><th>条件</th><th>内容</th></tr></thead>
+        <thead><tr><th>タスク</th><th>内容</th><th>インセンティブ</th><th>上限</th></tr></thead>
         <tbody>
-          <tr><td><strong style="color:var(--blue)">チーム歩合</strong></td><td>合計純利益 ≧ ¥400万</td><td style="color:var(--green)"><strong>2% ÷ 3人 = 0.67%/人</strong><br><span class="text-sm" style="color:var(--muted)">全員平等に支給</span></td></tr>
-          <tr><td><strong style="color:var(--gold)">リーダーボーナス</strong></td><td>合計純利益 ≧ ¥500万（ノルマ）</td><td style="color:var(--green)"><strong>チョイのみ +0.5%</strong><br><span class="text-sm" style="color:var(--muted)">ノルマ達成報酬</span></td></tr>
-          <tr><td><strong style="color:var(--red)">ゲート未達</strong></td><td>合計純利益 &lt; ¥400万</td><td style="color:var(--red)"><strong>全員インセンティブなし</strong></td></tr>
+          <tr>
+            <td><strong style="color:var(--accent)">Telegramインストール誘導</strong></td>
+            <td>お客様にTelegramをインストールさせ、テレベットチャンネルに登録</td>
+            <td style="color:var(--green);font-weight:700">¥1,000 / 件</td>
+            <td style="color:var(--muted)">月20件まで</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--accent)">テレベット初回プレイ誘導</strong></td>
+            <td>Telegram登録済みの顧客が実際にテレベットで初プレイ</td>
+            <td style="color:var(--green);font-weight:700">¥3,000 / 件</td>
+            <td style="color:var(--muted)">なし</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--accent)">テレベットリピート予約</strong></td>
+            <td>既存テレベット顧客から次回の予約を獲得</td>
+            <td style="color:var(--green);font-weight:700">¥2,000 / 件</td>
+            <td style="color:var(--muted)">なし</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--accent)">アンケート回収</strong></td>
+            <td>顧客からアンケートを回収（完了ベース）</td>
+            <td style="color:var(--green);font-weight:700">¥500 / 件</td>
+            <td style="color:var(--muted)">なし</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--accent)">新規顧客紹介</strong></td>
+            <td>新しい顧客を紹介し、実際に来場・プレイ</td>
+            <td style="color:var(--green);font-weight:700">¥5,000 / 件</td>
+            <td style="color:var(--muted)">なし</td>
+          </tr>
         </tbody>
       </table>
     </div>
+
     <div class="card mb-16">
-      <h3>早見表</h3>
+      <h3>月間シミュレーション例</h3>
       <table>
-        <thead><tr><th>合計純利益</th><th>チーム2%</th><th>ケビン</th><th>チェリン</th><th>チョイ（基本+ボーナス）</th></tr></thead>
+        <thead><tr><th>スタッフ</th><th>Telegram誘導</th><th>初回プレイ</th><th>リピート予約</th><th>アンケート</th><th>新規紹介</th><th>合計</th></tr></thead>
         <tbody>
-          <tr><td>¥300万</td><td colspan="4" style="text-align:center;color:var(--red)">ゲート未達 — 全員 ¥0</td></tr>
-          <tr><td>¥400万</td><td>¥80,000</td><td style="color:var(--green)">¥26,667</td><td style="color:var(--green)">¥26,667</td><td style="color:var(--muted)">¥26,667（ボーナスなし）</td></tr>
-          <tr><td>¥500万</td><td>¥100,000</td><td style="color:var(--green)">¥33,333</td><td style="color:var(--green)">¥33,333</td><td style="color:var(--green)">¥58,333 <span style="color:var(--gold)">(+¥25,000)</span></td></tr>
-          <tr><td>¥600万</td><td>¥120,000</td><td style="color:var(--green)">¥40,000</td><td style="color:var(--green)">¥40,000</td><td style="color:var(--green)">¥70,000 <span style="color:var(--gold)">(+¥30,000)</span></td></tr>
-          <tr><td>¥800万</td><td>¥160,000</td><td style="color:var(--green)">¥53,333</td><td style="color:var(--green)">¥53,333</td><td style="color:var(--green)">¥93,333 <span style="color:var(--gold)">(+¥40,000)</span></td></tr>
-          <tr><td>¥1,000万</td><td>¥200,000</td><td style="color:var(--green)">¥66,667</td><td style="color:var(--green)">¥66,667</td><td style="color:var(--green)">¥116,667 <span style="color:var(--gold)">(+¥50,000)</span></td></tr>
+          <tr>
+            <td><strong style="color:var(--accent)">チョイ</strong></td>
+            <td>10件 = ¥10,000</td><td>3件 = ¥9,000</td><td>2件 = ¥4,000</td><td>5件 = ¥2,500</td><td>1件 = ¥5,000</td>
+            <td style="color:var(--green);font-weight:700">¥30,500</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--blue)">ケビン</strong></td>
+            <td>8件 = ¥8,000</td><td>2件 = ¥6,000</td><td>1件 = ¥2,000</td><td>3件 = ¥1,500</td><td>0件</td>
+            <td style="color:var(--green);font-weight:700">¥17,500</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--green)">チェリン</strong></td>
+            <td>12件 = ¥12,000</td><td>4件 = ¥12,000</td><td>3件 = ¥6,000</td><td>8件 = ¥4,000</td><td>0件</td>
+            <td style="color:var(--green);font-weight:700">¥34,000</td>
+          </tr>
         </tbody>
+        <tfoot><tr style="border-top:2px solid var(--accent)"><td colspan="6"><strong>合計コスト</strong></td><td style="color:var(--accent);font-weight:700">¥82,000</td></tr></tfoot>
       </table>
+      <p style="color:var(--muted);font-size:0.82em;margin-top:12px">月間コスト目安: ¥5万〜10万。歩合制（月¥15万〜）より低コストで、テレベット拡大に直結。</p>
     </div>
+
     <div class="card mb-16">
-      <h3>チーム歩合シミュレーター</h3>
-      <div class="grid grid-2" style="gap:10px">
-        <div class="form-group"><label>当月 現地純利益（¥）</label><input type="number" id="incOnsiteProfit2" min="0" value="3000000"></div>
-        <div class="form-group"><label>当月 テレベット純利益（¥）</label><input type="number" id="incTelebetProfit" min="0" value="2000000"></div>
-        <div class="form-group"><label>チーム歩合率（%）</label><input type="number" id="incRate" min="0" max="10" step="0.5" value="2"></div>
-        <div class="form-group"><label>チョイのノルマ（¥）</label><input type="number" id="incNorma" min="0" value="5000000"></div>
+      <h3>スタッフ月次計算</h3>
+      <div class="grid grid-3" style="gap:10px">
+        <div class="form-group"><label>スタッフ名</label><select id="taskStaff" style="background:var(--bg-input)"><option>チョイ</option><option>ケビン</option><option>チェリン</option></select></div>
+        <div class="form-group"><label>Telegram誘導（件）</label><input type="number" id="taskTg" min="0" max="20" value="0"></div>
+        <div class="form-group"><label>初回プレイ誘導（件）</label><input type="number" id="taskFirst" min="0" value="0"></div>
+        <div class="form-group"><label>リピート予約（件）</label><input type="number" id="taskRepeat" min="0" value="0"></div>
+        <div class="form-group"><label>アンケート回収（件）</label><input type="number" id="taskSurvey" min="0" value="0"></div>
+        <div class="form-group"><label>新規顧客紹介（件）</label><input type="number" id="taskNew" min="0" value="0"></div>
       </div>
-      <button onclick="calcIncentive()" style="width:100%;margin-top:8px;background:var(--accent)">計算</button>
-      <div id="incResult" style="display:none;margin-top:16px;padding:20px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius)"></div>
+      <button onclick="calcTask()" style="width:100%;margin-top:8px;background:var(--accent)">計算</button>
+      <div id="taskResult" style="display:none;margin-top:16px;padding:20px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius)"></div>
     </div>
   </div>
 </div>
 
 <!-- TAB: テレベット歩合 -->
 <div id="telebetTab" class="tab-content">
-  <div class="topbar"><div class="topbar-title">テレベット営業インセンティブ</div></div>
+  <div class="topbar"><div class="topbar-title">テレベット営業インセンティブ（純利益ベース）</div></div>
   <div style="padding:28px 32px;max-width:1600px;margin:0 auto">
     <div class="grid grid-4 mb-16">
       <div class="card stat"><div class="label">テレベット累計利益（2〜4月）</div><div class="value" style="color:var(--green)">¥3,709,680</div></div>
-      <div class="card stat"><div class="label">月平均利益</div><div class="value">¥1,236,560</div></div>
-      <div class="card stat"><div class="label">累計ローリング額</div><div class="value" style="color:var(--blue)">₱79.5M</div></div>
+      <div class="card stat"><div class="label">月間固定経費</div><div class="value" style="color:var(--red)">¥581,152</div></div>
+      <div class="card stat"><div class="label">累計純利益</div><div class="value" style="color:var(--green)">¥1,966,456</div></div>
       <div class="card stat"><div class="label">担当</div><div class="value" style="font-size:1em">長岡きみ</div></div>
     </div>
+
     <div class="card mb-16">
-      <h3>月次実績</h3>
+      <h3>月間経費内訳</h3>
       <table>
-        <thead><tr><th>月</th><th>W/L利益</th><th>R/C利益</th><th>合計(円)</th><th>ローリング額</th><th>費用</th><th>純利益</th></tr></thead>
+        <thead><tr><th>経費項目</th><th>計算</th><th>月額</th></tr></thead>
         <tbody>
-          <tr><td>1月</td><td colspan="6" style="text-align:center;color:var(--muted)">未稼働</td></tr>
-          <tr><td>2月</td><td>¥1,439,277</td><td>¥608</td><td style="color:var(--green)">¥1,439,885</td><td>₱20,746,000</td><td>¥50,000</td><td style="color:var(--green)">¥1,389,885</td></tr>
-          <tr><td>3月</td><td>¥0</td><td>¥1,430,228</td><td style="color:var(--green)">¥1,430,228</td><td>₱37,473,000</td><td>¥50,000</td><td style="color:var(--green)">¥1,380,228</td></tr>
-          <tr><td>4月</td><td>¥0</td><td>¥839,567</td><td style="color:var(--blue)">¥839,567</td><td>₱21,264,000</td><td>¥21,896</td><td style="color:var(--blue)">¥817,671</td></tr>
+          <tr><td>スタッフ給料</td><td>8万ペソ × 2人 × 2.6322</td><td>¥421,152</td></tr>
+          <tr><td>運転手+ガソリン</td><td>¥6,000 × 20日</td><td>¥120,000</td></tr>
+          <tr><td>販促費等</td><td></td><td>~¥35,000</td></tr>
+          <tr><td>サーバー費用</td><td></td><td>~¥5,000</td></tr>
         </tbody>
-        <tfoot><tr style="border-top:2px solid var(--green)"><td><strong>合計</strong></td><td></td><td></td><td style="color:var(--green)"><strong>¥3,709,680</strong></td><td><strong>₱79,483,000</strong></td><td>¥121,896</td><td style="color:var(--green)"><strong>¥3,587,784</strong></td></tr></tfoot>
+        <tfoot><tr style="border-top:2px solid var(--red)"><td colspan="2"><strong>合計固定経費</strong></td><td style="color:var(--red);font-weight:700">¥581,152</td></tr></tfoot>
       </table>
     </div>
+
     <div class="card mb-16">
-      <h3>歩合制（段階制）</h3>
-      <table class="mb-16">
-        <thead><tr><th>テレベット月間利益</th><th>歩合率</th><th>計算</th></tr></thead>
+      <h3>月次実績（経費控除後）</h3>
+      <table>
+        <thead><tr><th>月</th><th>テレベット利益</th><th>経費</th><th>純利益</th><th>長岡さん歩合</th><th>会社に残る</th></tr></thead>
         <tbody>
-          <tr><td>¥100万まで</td><td><strong>12%</strong></td><td style="color:var(--muted)">利益 × 12%</td></tr>
-          <tr><td>¥100万〜200万の部分</td><td style="color:var(--blue)"><strong>15%</strong></td><td style="color:var(--muted)">超過分 × 15%</td></tr>
-          <tr><td>¥200万以上の部分</td><td style="color:var(--green)"><strong>18%</strong></td><td style="color:var(--muted)">超過分 × 18%</td></tr>
+          <tr><td>1月</td><td colspan="5" style="text-align:center;color:var(--muted)">未稼働</td></tr>
+          <tr><td>2月</td><td>¥1,439,885</td><td style="color:var(--red)">-¥581,152</td><td style="color:var(--green)">¥858,733</td><td>¥128,810</td><td style="color:var(--green);font-weight:600">¥729,923</td></tr>
+          <tr><td>3月</td><td>¥1,430,228</td><td style="color:var(--red)">-¥581,152</td><td style="color:var(--green)">¥849,076</td><td>¥127,361</td><td style="color:var(--green);font-weight:600">¥721,715</td></tr>
+          <tr><td>4月</td><td>¥839,567</td><td style="color:var(--red)">-¥581,152</td><td style="color:var(--blue)">¥258,415</td><td>¥38,762</td><td style="color:var(--blue);font-weight:600">¥219,653</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card mb-16">
+      <h3>歩合制（純利益ベース・段階制）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">テレベット利益から全経費（¥581,152）を引いた<strong style="color:var(--accent)">純利益</strong>に対して歩合を計算</p>
+      <table class="mb-16">
+        <thead><tr><th>純利益</th><th>歩合率</th><th>計算</th></tr></thead>
+        <tbody>
+          <tr><td>¥100万まで</td><td style="font-weight:700">15%</td><td style="color:var(--muted)">純利益 × 15%</td></tr>
+          <tr><td>¥100万〜200万の部分</td><td style="color:var(--blue);font-weight:700">18%</td><td style="color:var(--muted)">超過分 × 18%</td></tr>
+          <tr><td>¥200万以上の部分</td><td style="color:var(--green);font-weight:700">22%</td><td style="color:var(--muted)">超過分 × 22%</td></tr>
         </tbody>
       </table>
       <h3>早見表</h3>
       <table>
-        <thead><tr><th>利益</th><th>歩合額</th><th>実質率</th></tr></thead>
+        <thead><tr><th>テレベット利益</th><th>経費</th><th>純利益</th><th>歩合額</th><th>会社残り</th></tr></thead>
         <tbody>
-          <tr><td>¥80万</td><td><strong>¥96,000</strong></td><td>12%</td></tr>
-          <tr><td>¥120万</td><td><strong>¥150,000</strong></td><td>12.5%</td></tr>
-          <tr><td>¥150万</td><td><strong>¥195,000</strong></td><td>13%</td></tr>
-          <tr><td>¥200万</td><td style="color:var(--blue)"><strong>¥270,000</strong></td><td>13.5%</td></tr>
-          <tr><td>¥300万</td><td style="color:var(--green)"><strong>¥450,000</strong></td><td>15%</td></tr>
+          <tr><td>¥60万</td><td>¥58万</td><td>¥2万</td><td>¥3,000</td><td style="color:var(--green)">¥17,000</td></tr>
+          <tr><td>¥80万</td><td>¥58万</td><td>¥22万</td><td>¥33,000</td><td style="color:var(--green)">¥187,000</td></tr>
+          <tr><td>¥100万</td><td>¥58万</td><td>¥42万</td><td>¥63,000</td><td style="color:var(--green)">¥357,000</td></tr>
+          <tr><td>¥120万</td><td>¥58万</td><td>¥62万</td><td>¥93,000</td><td style="color:var(--green)">¥527,000</td></tr>
+          <tr><td>¥140万</td><td>¥58万</td><td>¥82万</td><td>¥123,000</td><td style="color:var(--green)">¥697,000</td></tr>
+          <tr><td>¥200万</td><td>¥58万</td><td>¥142万</td><td>¥223,600</td><td style="color:var(--green)">¥1,196,400</td></tr>
+          <tr><td>¥300万</td><td>¥58万</td><td>¥242万</td><td>¥409,600</td><td style="color:var(--green)">¥2,010,400</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="grid grid-2 mb-16">
-      <div class="card">
-        <h3>テレベット歩合シミュレーター</h3>
-        <div class="form-group"><label>担当者</label><select id="tbStaff" style="background:var(--bg-input)"><option value="長岡きみ">長岡きみ</option></select></div>
+
+    <div class="card mb-16">
+      <h3>テレベット歩合シミュレーター</h3>
+      <div class="grid grid-2" style="gap:10px">
         <div class="form-group"><label>当月テレベット利益（¥）</label><input type="number" id="tbProfit" min="0" value="1200000"></div>
-        <button onclick="calcTelebet()" style="width:100%;background:var(--green);color:#fff">計算</button>
-        <div id="tbResult" style="display:none;margin-top:16px;padding:20px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius)"></div>
+        <div class="form-group"><label>月間経費（¥）</label><input type="number" id="tbExpense" min="0" value="581152"></div>
       </div>
-      <div class="card">
-        <h3>リピート・新規ボーナス</h3>
-        <table class="mb-16">
-          <thead><tr><th>実績</th><th>ボーナス</th></tr></thead>
-          <tbody>
-            <tr><td>テレベット新規誘導</td><td style="color:var(--green)">¥5,000 / 件</td></tr>
-            <tr><td>リピート予約獲得</td><td style="color:var(--green)">¥3,000 / 件</td></tr>
-            <tr><td>月間5件以上達成</td><td style="color:var(--green)">追加 ¥10,000</td></tr>
-          </tbody>
-        </table>
-        <div class="form-group"><label>新規誘導数</label><input type="number" id="tbNewCount" min="0" value="0"></div>
-        <div class="form-group"><label>リピート予約数</label><input type="number" id="tbRepeatCount" min="0" value="0"></div>
-      </div>
+      <button onclick="calcTelebet()" style="width:100%;background:var(--green);color:#fff;margin-top:8px">計算</button>
+      <div id="tbResult" style="display:none;margin-top:16px;padding:20px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius)"></div>
     </div>
   </div>
 </div>
@@ -4363,20 +4408,32 @@ function calcIncentive(){
 }
 
 function calcTelebet(){
-  var staff=document.getElementById('tbStaff').value;
-  var profit=parseInt(document.getElementById('tbProfit').value)||0;
-  var nc=parseInt(document.getElementById('tbNewCount').value)||0;
-  var rc=parseInt(document.getElementById('tbRepeatCount').value)||0;
+  var gross=parseInt(document.getElementById('tbProfit').value)||0;
+  var expense=parseInt(document.getElementById('tbExpense').value)||0;
+  var net=Math.max(gross-expense,0);
   var comm=0;
-  if(profit<=1000000) comm=Math.round(profit*0.12);
-  else if(profit<=2000000) comm=Math.round(1000000*0.12+(profit-1000000)*0.15);
-  else comm=Math.round(1000000*0.12+1000000*0.15+(profit-2000000)*0.18);
-  var rate=profit>0?(comm/profit*100):0;
-  var nb=nc*5000,rb=rc*3000,eb=(nc+rc)>=5?10000:0;
-  var total=comm+nb+rb+eb;
+  if(net<=1000000) comm=Math.round(net*0.15);
+  else if(net<=2000000) comm=Math.round(1000000*0.15+(net-1000000)*0.18);
+  else comm=Math.round(1000000*0.15+1000000*0.18+(net-2000000)*0.22);
+  var rate=net>0?(comm/net*100):0;
+  var remain=net-comm;
   var el=document.getElementById('tbResult');
   el.style.display='block';
-  el.innerHTML='<div style="display:flex;justify-content:space-between;margin-bottom:8px"><h3 style="color:var(--green)">'+staff+'</h3><span style="color:var(--muted);font-size:0.85em">実質歩合率: '+rate.toFixed(1)+'%</span></div><table><tr><td>テレベット利益</td><td style="text-align:right">¥'+profit.toLocaleString()+'</td></tr><tr><td>利益歩合（'+rate.toFixed(1)+'%）</td><td style="text-align:right;color:var(--green);font-weight:600">¥'+comm.toLocaleString()+'</td></tr>'+(nc>0?'<tr><td>新規誘導（'+nc+'件×¥5,000）</td><td style="text-align:right">¥'+nb.toLocaleString()+'</td></tr>':'')+(rc>0?'<tr><td>リピート予約（'+rc+'件×¥3,000）</td><td style="text-align:right">¥'+rb.toLocaleString()+'</td></tr>':'')+(eb>0?'<tr><td>5件以上達成ボーナス</td><td style="text-align:right">¥'+eb.toLocaleString()+'</td></tr>':'')+'<tr style="border-top:2px solid var(--green)"><td><strong>合計</strong></td><td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--green)">¥'+total.toLocaleString()+'</td></tr></table>';
+  el.innerHTML='<h3 style="color:var(--green);margin-bottom:12px">長岡きみ — 歩合計算結果</h3><table><tr><td>テレベット利益</td><td style="text-align:right">¥'+gross.toLocaleString()+'</td></tr><tr><td>経費</td><td style="text-align:right;color:var(--red)">-¥'+expense.toLocaleString()+'</td></tr><tr style="border-top:1px solid var(--border)"><td><strong>純利益</strong></td><td style="text-align:right;font-weight:700">¥'+net.toLocaleString()+'</td></tr><tr><td>歩合（実質'+rate.toFixed(1)+'%）</td><td style="text-align:right;color:var(--green);font-weight:700;font-size:1.2em">¥'+comm.toLocaleString()+'</td></tr><tr style="border-top:2px solid var(--accent)"><td><strong>会社に残る</strong></td><td style="text-align:right;font-weight:700;color:var(--accent);font-size:1.1em">¥'+remain.toLocaleString()+'</td></tr></table>';
+}
+
+function calcTask(){
+  var staff=document.getElementById('taskStaff').value;
+  var tg=Math.min(parseInt(document.getElementById('taskTg').value)||0,20);
+  var first=parseInt(document.getElementById('taskFirst').value)||0;
+  var rep=parseInt(document.getElementById('taskRepeat').value)||0;
+  var survey=parseInt(document.getElementById('taskSurvey').value)||0;
+  var nw=parseInt(document.getElementById('taskNew').value)||0;
+  var a=tg*1000,b=first*3000,c=rep*2000,d=survey*500,e=nw*5000;
+  var total=a+b+c+d+e;
+  var el=document.getElementById('taskResult');
+  el.style.display='block';
+  el.innerHTML='<h3 style="color:var(--accent);margin-bottom:12px">'+staff+'</h3><table>'+(tg>0?'<tr><td>Telegram誘導（'+tg+'件×¥1,000）</td><td style="text-align:right">¥'+a.toLocaleString()+'</td></tr>':'')+(first>0?'<tr><td>初回プレイ誘導（'+first+'件×¥3,000）</td><td style="text-align:right">¥'+b.toLocaleString()+'</td></tr>':'')+(rep>0?'<tr><td>リピート予約（'+rep+'件×¥2,000）</td><td style="text-align:right">¥'+c.toLocaleString()+'</td></tr>':'')+(survey>0?'<tr><td>アンケート回収（'+survey+'件×¥500）</td><td style="text-align:right">¥'+d.toLocaleString()+'</td></tr>':'')+(nw>0?'<tr><td>新規顧客紹介（'+nw+'件×¥5,000）</td><td style="text-align:right">¥'+e.toLocaleString()+'</td></tr>':'')+'<tr style="border-top:2px solid var(--accent)"><td><strong>合計インセンティブ</strong></td><td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--green)">¥'+total.toLocaleString()+'</td></tr></table>';
 }
 
 function init(){
