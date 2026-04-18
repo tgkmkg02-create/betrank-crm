@@ -351,31 +351,58 @@
 <div id="incentive" class="tab-content">
   <h2 style="color:var(--gold);margin-bottom:20px">営業インセンティブ評価</h2>
 
-  <!-- KPI サマリー -->
+  <!-- 現地（韓国）KPI -->
+  <div style="border-left:3px solid var(--accent);padding-left:12px;margin-bottom:12px">
+    <span style="color:var(--accent);font-weight:700">現地（韓国）利益</span>
+  </div>
   <div class="grid grid-4 mb-16">
     <div class="card stat">
-      <div class="label">1〜4月 テレベット利益合計</div>
+      <div class="label">1〜4月 現地利益合計</div>
+      <div class="value" style="color:var(--accent)">¥15,442,683</div>
+    </div>
+    <div class="card stat">
+      <div class="label">月平均</div>
+      <div class="value">¥3,860,671</div>
+    </div>
+    <div class="card stat">
+      <div class="label">最高月（2月）</div>
+      <div class="value" style="color:var(--green)">¥6,870,646</div>
+    </div>
+    <div class="card stat">
+      <div class="label">エージェント利益（4月）</div>
+      <div class="value" style="color:var(--red)">-¥152,540</div>
+    </div>
+  </div>
+
+  <!-- テレベット KPI -->
+  <div style="border-left:3px solid var(--green);padding-left:12px;margin-bottom:12px">
+    <span style="color:var(--green);font-weight:700">テレベット利益</span>
+    <a href="telebet-incentive.html" class="text-sm" style="color:var(--muted);margin-left:12px">→ 詳細ページ</a>
+  </div>
+  <div class="grid grid-4 mb-16">
+    <div class="card stat">
+      <div class="label">2〜4月 テレベット利益合計</div>
       <div class="value" style="color:var(--green)">¥3,709,680</div>
     </div>
     <div class="card stat">
-      <div class="label">月平均（2〜4月）</div>
+      <div class="label">月平均</div>
       <div class="value">¥1,236,560</div>
     </div>
     <div class="card stat">
-      <div class="label">5月〜 予測（控えめ）</div>
-      <div class="value" style="color:var(--blue)">¥3,036,560</div>
+      <div class="label">担当</div>
+      <div class="value" style="font-size:1em">長岡きみ</div>
     </div>
     <div class="card stat">
-      <div class="label">年間テレベット利益予測</div>
-      <div class="value" style="color:var(--gold)">¥28,001,960</div>
+      <div class="label">歩合率</div>
+      <div class="value" style="font-size:1em;color:var(--green)">12〜18%</div>
     </div>
   </div>
 
   <!-- グラフ -->
   <div class="grid grid-2 mb-16">
     <div class="card">
-      <h3>月次営業利益推移 & 将来推定</h3>
-      <p class="text-sm text-muted mb-8">実線 = 実績 / 点線 = 推定（5月〜）｜4月は暫定値</p>
+      <h3>現地 vs テレベット 利益推移</h3>
+      <p class="text-sm text-muted mb-8">4月は暫定値 ｜ 点線 = 推定（5月〜）</p>
       <canvas id="profitChart" height="280"></canvas>
     </div>
     <div class="card">
@@ -527,19 +554,35 @@
     </div>
   </div>
 
-  <!-- 長岡さん実績参考 -->
-  <div class="card mb-16">
-    <h3>参考：長岡きみ テレベット実績（2〜4月）</h3>
-    <p class="text-sm text-muted mb-8">現在唯一のテレベット営業担当。5月から新スタッフ3名追加。</p>
-    <table>
-      <thead><tr><th>月</th><th>W/L利益(円)</th><th>R/C利益(円)</th><th>合計利益(円)</th><th>ローリング額</th><th>備考</th></tr></thead>
-      <tbody>
-        <tr><td>1月</td><td>—</td><td>—</td><td class="text-muted">¥0</td><td>—</td><td class="text-muted">テレベット未稼働</td></tr>
-        <tr><td>2月</td><td>¥1,439,277</td><td>¥608</td><td class="positive">¥1,439,885</td><td>₱20,746,000</td><td>稼働開始月</td></tr>
-        <tr><td>3月</td><td>¥0</td><td>¥1,430,228</td><td class="positive">¥1,430,228</td><td>₱37,473,000</td><td>ローリング中心</td></tr>
-        <tr><td>4月</td><td>¥0</td><td>¥839,567</td><td class="neutral">¥839,567</td><td>₱21,264,000</td><td style="color:var(--red)">暫定値</td></tr>
-      </tbody>
-    </table>
+  <!-- 月次実績テーブル -->
+  <div class="grid grid-2 mb-16">
+    <div class="card">
+      <h3 style="border-left:3px solid var(--accent);padding-left:10px">現地（韓国）月次利益</h3>
+      <table>
+        <thead><tr><th>月</th><th>W/L利益</th><th>R/C利益</th><th>その他</th><th>合計</th></tr></thead>
+        <tbody>
+          <tr><td>1月</td><td>¥2,148,535</td><td>¥0</td><td>¥53,200</td><td class="positive">¥2,201,735</td></tr>
+          <tr><td>2月</td><td>¥6,055,657</td><td>¥804,059</td><td>¥10,930</td><td class="positive">¥6,870,646</td></tr>
+          <tr><td>3月</td><td>¥5,975,255</td><td>¥15,906</td><td>¥0</td><td class="positive">¥5,991,161</td></tr>
+          <tr><td>4月</td><td>¥368,621</td><td>¥0</td><td>¥10,520</td><td class="neutral">¥379,141</td></tr>
+        </tbody>
+        <tfoot><tr style="border-top:2px solid var(--accent)"><td><strong>合計</strong></td><td></td><td></td><td></td><td class="positive"><strong>¥15,442,683</strong></td></tr></tfoot>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="border-left:3px solid var(--green);padding-left:10px">テレベット月次利益</h3>
+      <p class="text-sm text-muted mb-8">担当: 長岡きみ ｜ 歩合: 12〜18%</p>
+      <table>
+        <thead><tr><th>月</th><th>W/L利益</th><th>R/C利益</th><th>合計</th></tr></thead>
+        <tbody>
+          <tr><td>1月</td><td colspan="3" class="text-muted" style="text-align:center">未稼働</td></tr>
+          <tr><td>2月</td><td>¥1,439,277</td><td>¥608</td><td class="positive">¥1,439,885</td></tr>
+          <tr><td>3月</td><td>¥0</td><td>¥1,430,228</td><td class="positive">¥1,430,228</td></tr>
+          <tr><td>4月</td><td>¥0</td><td>¥839,567</td><td class="neutral">¥839,567</td></tr>
+        </tbody>
+        <tfoot><tr style="border-top:2px solid var(--green)"><td><strong>合計</strong></td><td></td><td></td><td class="positive"><strong>¥3,709,680</strong></td></tr></tfoot>
+      </table>
+    </div>
   </div>
 
 </div>
