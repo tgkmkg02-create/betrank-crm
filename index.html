@@ -171,6 +171,10 @@
   <div class="tab" onclick="showTab('campaigns',this)">キャンペーン提案</div>
   <div class="tab" onclick="showTab('alerts',this)">アラート・アクション</div>
   <div class="tab" onclick="showTab('incentive',this)">営業インセンティブ</div>
+  <div class="tab" onclick="showTab('telebetTab',this)" style="color:var(--green)">テレベット歩合</div>
+  <div class="tab" onclick="showTab('surveyResultsTab',this)">アンケート結果</div>
+  <div class="tab" onclick="showTab('fundTab',this)">資金管理</div>
+  <div class="tab" onclick="showTab('casinoReportTab',this)">カジノレポート</div>
 </div>
 
 <!-- TAB 1: プラン損益分析 -->
@@ -585,6 +589,107 @@
     </div>
   </div>
 
+</div>
+
+<!-- TAB: テレベット歩合 -->
+<div id="telebetTab" class="tab-content">
+  <h2 style="color:var(--green);margin-bottom:20px">テレベット営業インセンティブ</h2>
+  <div class="grid grid-4 mb-16">
+    <div class="card stat"><div class="label">テレベット累計利益（2〜4月）</div><div class="value" style="color:var(--green)">¥3,709,680</div></div>
+    <div class="card stat"><div class="label">月平均利益</div><div class="value">¥1,236,560</div></div>
+    <div class="card stat"><div class="label">累計ローリング額</div><div class="value" style="color:var(--blue)">₱79,483,000</div></div>
+    <div class="card stat"><div class="label">担当</div><div class="value" style="font-size:1.2em">長岡きみ</div></div>
+  </div>
+  <div class="card mb-16">
+    <h3>テレベット月次実績</h3>
+    <p class="text-sm text-muted mb-8">4月は暫定値</p>
+    <table>
+      <thead><tr><th>月</th><th>W/L利益</th><th>R/C利益</th><th>合計利益(円)</th><th>ローリング額</th><th>費用</th><th>純利益</th></tr></thead>
+      <tbody>
+        <tr><td>1月</td><td class="text-muted">—</td><td class="text-muted">—</td><td class="text-muted">¥0</td><td class="text-muted">—</td><td class="text-muted">—</td><td class="text-muted">¥0</td></tr>
+        <tr><td>2月</td><td>¥1,439,277</td><td>¥608</td><td class="positive">¥1,439,885</td><td>₱20,746,000</td><td>¥50,000</td><td class="positive">¥1,389,885</td></tr>
+        <tr><td>3月</td><td>¥0</td><td>¥1,430,228</td><td class="positive">¥1,430,228</td><td>₱37,473,000</td><td>¥50,000</td><td class="positive">¥1,380,228</td></tr>
+        <tr><td>4月</td><td>¥0</td><td>¥839,567</td><td class="neutral">¥839,567</td><td>₱21,264,000</td><td>¥21,896</td><td class="neutral">¥817,671</td></tr>
+      </tbody>
+      <tfoot><tr style="border-top:2px solid var(--green)"><td><strong>合計</strong></td><td></td><td></td><td class="positive"><strong>¥3,709,680</strong></td><td><strong>₱79,483,000</strong></td><td>¥121,896</td><td class="positive"><strong>¥3,587,784</strong></td></tr></tfoot>
+    </table>
+  </div>
+  <div class="grid grid-2 mb-16">
+    <div class="card"><h3>テレベット利益推移</h3><canvas id="telebetProfitChart2" height="250"></canvas></div>
+    <div class="card"><h3>ローリング額推移</h3><canvas id="rollingChart2" height="250"></canvas></div>
+  </div>
+  <div class="card mb-16">
+    <h3>テレベット歩合制（段階制）</h3>
+    <p class="text-sm text-muted mb-16">テレベット利益に対する個人歩合。現地チーム歩合とは別管理。</p>
+    <table class="mb-16">
+      <thead><tr><th>テレベット月間利益</th><th>歩合率</th><th>計算方法</th></tr></thead>
+      <tbody>
+        <tr><td>¥100万まで</td><td style="font-size:1.1em"><strong>12%</strong></td><td class="text-sm text-muted">利益 × 12%</td></tr>
+        <tr><td>¥100万〜200万の部分</td><td class="neutral" style="font-size:1.1em"><strong>15%</strong></td><td class="text-sm text-muted">超過分 × 15%</td></tr>
+        <tr><td class="positive">¥200万以上の部分</td><td class="positive" style="font-size:1.1em"><strong>18%</strong></td><td class="text-sm text-muted">超過分 × 18%</td></tr>
+      </tbody>
+    </table>
+    <h3>早見表</h3>
+    <table>
+      <thead><tr><th>利益</th><th>歩合額</th><th>実質率</th></tr></thead>
+      <tbody>
+        <tr><td>¥80万</td><td><strong>¥96,000</strong></td><td>12%</td></tr>
+        <tr><td>¥120万</td><td><strong>¥150,000</strong></td><td>12.5%</td></tr>
+        <tr><td>¥150万</td><td><strong>¥195,000</strong></td><td>13%</td></tr>
+        <tr><td>¥200万</td><td class="neutral"><strong>¥270,000</strong></td><td>13.5%</td></tr>
+        <tr><td>¥300万</td><td class="positive"><strong>¥450,000</strong></td><td>15%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="grid grid-2 mb-16">
+    <div class="card">
+      <h3>テレベット歩合シミュレーター</h3>
+      <div class="form-group"><label>担当者</label><select id="tbStaff"><option value="長岡きみ">長岡きみ（現担当）</option><option value="スタッフA">スタッフA（5月〜）</option><option value="スタッフB">スタッフB（5月〜）</option><option value="スタッフC">スタッフC（5月〜）</option></select></div>
+      <div class="form-group"><label>当月テレベット利益（¥）</label><input type="number" id="tbProfit" min="0" value="1200000"></div>
+      <div class="form-group"><label>当月ローリング額（₱）</label><input type="number" id="tbRolling" min="0" value="30000000"></div>
+      <button onclick="calcTelebet()" style="width:100%">計算</button>
+      <div id="tbResult" class="result-box mt-16" style="display:none"></div>
+    </div>
+    <div class="card">
+      <h3>リピート・新規顧客ボーナス</h3>
+      <p class="text-sm text-muted mb-16">テレベットへの誘導実績に応じた追加ボーナス</p>
+      <table>
+        <thead><tr><th>実績</th><th>ボーナス</th></tr></thead>
+        <tbody>
+          <tr><td>テレベット新規誘導 1件</td><td class="positive">¥5,000 / 件</td></tr>
+          <tr><td>リピート予約獲得 1件</td><td class="positive">¥3,000 / 件</td></tr>
+          <tr><td>月間テレベット誘導 5件以上</td><td class="positive">追加ボーナス ¥10,000</td></tr>
+        </tbody>
+      </table>
+      <div class="divider"></div>
+      <div class="form-group"><label>新規誘導数</label><input type="number" id="tbNewCount" min="0" value="0"></div>
+      <div class="form-group"><label>リピート予約数</label><input type="number" id="tbRepeatCount" min="0" value="0"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: アンケート結果 -->
+<div id="surveyResultsTab" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:20px">アンケート結果ダッシュボード</h2>
+  <div style="border-radius:12px;overflow:hidden;height:calc(100vh - 160px)">
+    <iframe src="survey-results.html" style="width:100%;height:100%;border:none"></iframe>
+  </div>
+</div>
+
+<!-- TAB: 資金管理 -->
+<div id="fundTab" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:20px">資金管理表 <span class="text-sm text-muted">（別会社共有 — Vercel）</span></h2>
+  <div style="border-radius:12px;overflow:hidden;height:calc(100vh - 160px)">
+    <iframe src="https://betrnk-fund.vercel.app" style="width:100%;height:100%;border:none"></iframe>
+  </div>
+</div>
+
+<!-- TAB: カジノレポート -->
+<div id="casinoReportTab" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:20px">カジノレポートシステム <span class="text-sm text-muted">（Railway）</span></h2>
+  <div style="border-radius:12px;overflow:hidden;height:calc(100vh - 160px)">
+    <iframe src="https://casino-report-system-production.up.railway.app" style="width:100%;height:100%;border:none"></iframe>
+  </div>
 </div>
 
 <!-- MODAL: プロファイル編集 -->
@@ -2777,7 +2882,45 @@ function init(){
   renderCampaigns();
   renderAlerts();
   renderIncentiveCharts();
+  renderTelebetCharts();
 }
+
+function renderTelebetCharts(){
+  const m4=['1月','2月','3月','4月'];
+  const pd=[0,1439885,1430228,839567];
+  const rd=[0,20746000,37473000,21264000];
+  const c1=document.getElementById('telebetProfitChart2');
+  if(c1) new Chart(c1,{type:'bar',data:{labels:m4,datasets:[{label:'テレベット利益(¥)',data:pd,backgroundColor:['rgba(149,165,166,0.3)','rgba(39,174,96,0.7)','rgba(39,174,96,0.7)','rgba(52,152,219,0.7)'],borderColor:['#95a5a6','#27ae60','#27ae60','#3498db'],borderWidth:2,borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{color:'#95a5a6',callback:v=>'¥'+(v/10000).toFixed(0)+'万'},grid:{color:'rgba(44,62,80,0.3)'}},x:{ticks:{color:'#ecf0f1'},grid:{display:false}}}}});
+  const c2=document.getElementById('rollingChart2');
+  if(c2) new Chart(c2,{type:'line',data:{labels:m4,datasets:[{label:'ローリング額(₱)',data:rd,borderColor:'#f5a623',backgroundColor:'rgba(245,166,35,0.1)',fill:true,tension:0.3,pointRadius:5,pointBackgroundColor:'#f5a623'}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{color:'#95a5a6',callback:v=>'₱'+(v/1000000).toFixed(0)+'M'},grid:{color:'rgba(44,62,80,0.3)'}},x:{ticks:{color:'#ecf0f1'},grid:{display:false}}}}});
+}
+
+function calcTelebet(){
+  const staff=document.getElementById('tbStaff').value;
+  const profit=parseInt(document.getElementById('tbProfit').value)||0;
+  const newCount=parseInt(document.getElementById('tbNewCount').value)||0;
+  const repeatCount=parseInt(document.getElementById('tbRepeatCount').value)||0;
+  let commission=0;
+  if(profit<=1000000) commission=Math.round(profit*0.12);
+  else if(profit<=2000000) commission=Math.round(1000000*0.12+(profit-1000000)*0.15);
+  else commission=Math.round(1000000*0.12+1000000*0.15+(profit-2000000)*0.18);
+  const rate=profit>0?(commission/profit*100):0;
+  const newBonus=newCount*5000,repeatBonus=repeatCount*3000;
+  const extraBonus=(newCount+repeatCount)>=5?10000:0;
+  const total=commission+newBonus+repeatBonus+extraBonus;
+  document.getElementById('tbResult').style.display='block';
+  document.getElementById('tbResult').innerHTML=`
+    <div class="flex-between mb-8"><h3 style="color:var(--green)">${staff}</h3><span class="text-sm text-muted">実質歩合率: ${rate.toFixed(1)}%</span></div>
+    <table>
+      <tr><td>テレベット利益</td><td class="text-right">¥${profit.toLocaleString()}</td></tr>
+      <tr><td>利益歩合（実質${rate.toFixed(1)}%）</td><td class="text-right"><strong class="positive">¥${commission.toLocaleString()}</strong></td></tr>
+      ${newCount>0?`<tr><td>新規誘導（${newCount}件×¥5,000）</td><td class="text-right">¥${newBonus.toLocaleString()}</td></tr>`:''}
+      ${repeatCount>0?`<tr><td>リピート予約（${repeatCount}件×¥3,000）</td><td class="text-right">¥${repeatBonus.toLocaleString()}</td></tr>`:''}
+      ${extraBonus>0?`<tr><td>5件以上達成ボーナス</td><td class="text-right">¥${extraBonus.toLocaleString()}</td></tr>`:''}
+      <tr style="border-top:2px solid var(--green)"><td><strong>合計インセンティブ</strong></td><td class="text-right" style="font-size:1.3em;font-weight:700;color:var(--green)">¥${total.toLocaleString()}</td></tr>
+    </table>`;
+}
+
 init();
 </script>
 </body>
