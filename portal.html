@@ -7,169 +7,187 @@
 <style>
   :root{--primary:#1a1a2e;--secondary:#16213e;--accent:#e94560;--gold:#f5a623;--green:#27ae60;--blue:#3498db;--text:#ecf0f1;--muted:#95a5a6;--card:#1e2a3a;--border:#2c3e50;}
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'Segoe UI','Meiryo','Hiragino Kaku Gothic Pro',sans-serif;background:var(--primary);color:var(--text);min-height:100vh;}
-  .portal-header{
+  body{font-family:'Segoe UI','Meiryo',sans-serif;background:var(--primary);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+
+  /* Top bar */
+  .top-bar{
     background:linear-gradient(135deg,#0a0a1a,var(--secondary));
-    padding:40px 30px 30px;text-align:center;
-    border-bottom:2px solid var(--accent);position:relative;overflow:hidden;
+    padding:10px 20px;border-bottom:2px solid var(--accent);
+    display:flex;justify-content:space-between;align-items:center;flex-shrink:0;
+    position:relative;
   }
-  .portal-header::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent));}
-  .portal-header h1{color:var(--gold);font-size:2em;margin-bottom:4px;letter-spacing:2px;}
-  .portal-header .sub{color:var(--muted);font-size:0.9em;}
-  .portal-header .date{color:var(--gold);font-size:0.85em;margin-top:8px;}
-  .container{max-width:1100px;margin:0 auto;padding:30px 20px;}
-  .section-title{color:var(--gold);font-size:1.1em;font-weight:700;margin-bottom:16px;padding-left:12px;border-left:3px solid var(--accent);}
-  .grid{display:grid;gap:16px;margin-bottom:32px;}
-  .grid-3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
-  .grid-2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr));}
-  .tool-card{
-    background:var(--card);border:1px solid var(--border);border-radius:14px;
-    padding:24px;cursor:pointer;transition:all 0.2s;text-decoration:none;color:var(--text);
-    display:flex;flex-direction:column;position:relative;overflow:hidden;
+  .top-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--gold),var(--accent));}
+  .top-bar h1{color:var(--gold);font-size:1.2em;letter-spacing:1px;}
+  .top-bar .date{color:var(--muted);font-size:0.8em;}
+
+  /* Main layout */
+  .main{display:flex;flex:1;overflow:hidden;}
+
+  /* Sidebar */
+  .sidebar{
+    width:220px;background:var(--secondary);border-right:1px solid var(--border);
+    overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column;
   }
-  .tool-card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.3);}
-  .tool-card::after{
-    content:'→';position:absolute;top:20px;right:20px;
-    color:var(--muted);font-size:1.2em;transition:all 0.2s;
+  .sidebar-section{padding:12px 14px 4px;color:var(--muted);font-size:0.7em;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .sidebar-item{
+    display:flex;align-items:center;gap:10px;padding:10px 14px;
+    cursor:pointer;transition:all 0.15s;border-left:3px solid transparent;
+    text-decoration:none;color:var(--text);font-size:0.85em;
   }
-  .tool-card:hover::after{color:var(--gold);right:16px;}
-  .tool-icon{font-size:2em;margin-bottom:12px;}
-  .tool-card h3{color:var(--gold);font-size:1.05em;margin-bottom:6px;}
-  .tool-card p{color:var(--muted);font-size:0.82em;line-height:1.5;flex:1;}
-  .tool-tag{
-    display:inline-block;padding:2px 10px;border-radius:10px;
-    font-size:0.7em;font-weight:600;margin-top:10px;
+  .sidebar-item:hover{background:rgba(255,255,255,0.05);border-left-color:var(--border);}
+  .sidebar-item.active{background:rgba(245,166,35,0.1);border-left-color:var(--gold);color:var(--gold);}
+  .sidebar-item .icon{font-size:1.2em;width:24px;text-align:center;}
+  .sidebar-item .label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sidebar-item .ext{font-size:0.65em;color:var(--muted);margin-left:auto;}
+
+  /* Content area */
+  .content{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+  .content-header{
+    background:var(--card);padding:8px 16px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:12px;flex-shrink:0;
   }
-  .tag-internal{background:rgba(52,152,219,0.2);color:var(--blue);}
-  .tag-customer{background:rgba(39,174,96,0.2);color:var(--green);}
-  .tag-external{background:rgba(155,89,182,0.2);color:#9b59b6;}
-  .quick-links{
-    display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
-    padding:20px;background:var(--secondary);border-top:1px solid var(--border);
+  .content-header .title{color:var(--gold);font-weight:700;font-size:0.95em;}
+  .content-header .url{color:var(--muted);font-size:0.75em;flex:1;}
+  .content-header button{
+    background:var(--secondary);border:1px solid var(--border);color:var(--muted);
+    padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.75em;
   }
-  .quick-link{
-    color:var(--muted);text-decoration:none;font-size:0.8em;
-    padding:6px 16px;border:1px solid var(--border);border-radius:20px;
-    transition:all 0.15s;
+  .content-header button:hover{border-color:var(--gold);color:var(--gold);}
+  .content-frame{flex:1;}
+  .content-frame iframe{width:100%;height:100%;border:none;background:#fff;}
+
+  /* Welcome screen */
+  .welcome{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:40px;
   }
-  .quick-link:hover{border-color:var(--gold);color:var(--gold);}
-  .status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
-  .dot-live{background:var(--green);}
-  .dot-local{background:var(--blue);}
+  .welcome h2{color:var(--gold);font-size:1.8em;margin-bottom:8px;}
+  .welcome p{color:var(--muted);font-size:0.95em;margin-bottom:30px;}
+  .welcome-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;max-width:700px;width:100%;}
+  .welcome-card{
+    background:var(--card);border:1px solid var(--border);border-radius:10px;
+    padding:16px;cursor:pointer;transition:all 0.15s;text-align:center;
+  }
+  .welcome-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .welcome-card .wicon{font-size:1.8em;margin-bottom:6px;}
+  .welcome-card .wlabel{color:var(--gold);font-size:0.85em;font-weight:600;}
+
+  /* Mobile */
   @media(max-width:768px){
-    .grid-3{grid-template-columns:1fr;}
-    .grid-2{grid-template-columns:1fr;}
-    .portal-header h1{font-size:1.5em;}
+    .sidebar{width:56px;}
+    .sidebar-section{display:none;}
+    .sidebar-item .label,.sidebar-item .ext{display:none;}
+    .sidebar-item{justify-content:center;padding:12px 0;}
+    .sidebar-item .icon{width:auto;}
   }
 </style>
 </head>
 <body>
 
-<div class="portal-header">
+<!-- Top Bar -->
+<div class="top-bar">
   <h1>BETRANK TOURS</h1>
-  <div class="sub">Management Portal — 管理ポータル</div>
-  <div class="date" id="currentDate"></div>
+  <span class="date" id="currentDate"></span>
 </div>
 
-<div class="container">
+<!-- Main -->
+<div class="main">
 
-  <!-- 営業・顧客管理 -->
-  <div class="section-title">営業・顧客管理</div>
-  <div class="grid grid-3">
-    <a href="index.html" class="tool-card">
-      <div class="tool-icon">👥</div>
-      <h3>CRM — 顧客管理</h3>
-      <p>顧客ランキング、プロファイル、リピートターゲット、LINE営業文、キャンペーン提案、アラート管理</p>
-      <span class="tool-tag tag-internal"><span class="status-dot dot-live"></span>9タブ構成</span>
-    </a>
-    <a href="index.html" onclick="setTimeout(()=>{document.querySelector('[onclick*=incentive]')?.click()},500)" class="tool-card">
-      <div class="tool-icon">📊</div>
-      <h3>現地営業インセンティブ</h3>
-      <p>チョイ・ケビン・チェリンのチーム歩合、リーダーボーナス、利益推定グラフ</p>
-      <span class="tool-tag tag-internal"><span class="status-dot dot-live"></span>CRM内タブ</span>
-    </a>
-    <a href="telebet-incentive.html" class="tool-card">
-      <div class="tool-icon">📱</div>
-      <h3>テレベット営業インセンティブ</h3>
-      <p>テレベット専用の個人歩合、ローリング実績、新規誘導・リピートボーナス</p>
-      <span class="tool-tag tag-internal"><span class="status-dot dot-live"></span>テレベット専用</span>
-    </a>
-    <a href="index.html" onclick="setTimeout(()=>{document.querySelector('[onclick*=profitability]')?.click()},500)" class="tool-card">
-      <div class="tool-icon">💰</div>
-      <h3>プラン損益分析</h3>
-      <p>プラン別の損益分岐点、期待利益、ローリング計算、ROI分析</p>
-      <span class="tool-tag tag-internal"><span class="status-dot dot-live"></span>CRM内タブ</span>
-    </a>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-section">営業・管理</div>
+    <div class="sidebar-item active" onclick="loadTool('index.html','CRM — 顧客管理',this)">
+      <span class="icon">👥</span><span class="label">CRM</span>
+    </div>
+    <div class="sidebar-item" onclick="loadTool('telebet-incentive.html','テレベット営業インセンティブ',this)">
+      <span class="icon">📱</span><span class="label">テレベット歩合</span>
+    </div>
+    <div class="sidebar-item" onclick="loadTool('exchange.html','換金ツール',this)">
+      <span class="icon">💱</span><span class="label">換金</span>
+    </div>
+
+    <div class="sidebar-section">アンケート</div>
+    <div class="sidebar-item" onclick="loadTool('survey.html','VIP体験アンケート',this)">
+      <span class="icon">📋</span><span class="label">アンケート</span>
+    </div>
+    <div class="sidebar-item" onclick="loadTool('survey-results.html','アンケート結果',this)">
+      <span class="icon">📈</span><span class="label">結果ダッシュボード</span>
+    </div>
+
+    <div class="sidebar-section">外部システム</div>
+    <div class="sidebar-item" onclick="loadExternal('https://betrnk-fund.vercel.app','資金管理表',this)">
+      <span class="icon">🏦</span><span class="label">資金管理</span><span class="ext">↗</span>
+    </div>
+    <div class="sidebar-item" onclick="loadExternal('https://casino-report-system-production.up.railway.app','カジノレポート',this)">
+      <span class="icon">🎰</span><span class="label">カジノレポート</span><span class="ext">↗</span>
+    </div>
   </div>
 
-  <!-- アンケート -->
-  <div class="section-title">顧客アンケート</div>
-  <div class="grid grid-2">
-    <a href="survey.html" class="tool-card">
-      <div class="tool-icon">📋</div>
-      <h3>VIP体験アンケート</h3>
-      <p>お客様に共有するアンケートフォーム。サービス全体の評価 + チョイ・ケビン・チェリンの個人評価。4ページ構成。</p>
-      <span class="tool-tag tag-customer"><span class="status-dot dot-live"></span>お客様向け公開ページ</span>
-    </a>
-    <a href="survey-results.html" class="tool-card">
-      <div class="tool-icon">📈</div>
-      <h3>アンケート結果ダッシュボード</h3>
-      <p>月別フィルター、スタッフ別スコア集計、サービス項目レーダーチャート、回答一覧、CSV取り込み/エクスポート</p>
-      <span class="tool-tag tag-internal"><span class="status-dot dot-live"></span>管理者向け</span>
-    </a>
+  <!-- Content -->
+  <div class="content" id="contentArea">
+    <div class="welcome" id="welcomeScreen">
+      <h2>管理ポータル</h2>
+      <p>左のメニューからツールを選択、またはクイックアクセス</p>
+      <div class="welcome-grid">
+        <div class="welcome-card" onclick="document.querySelectorAll('.sidebar-item')[0].click()">
+          <div class="wicon">👥</div><div class="wlabel">CRM</div>
+        </div>
+        <div class="welcome-card" onclick="document.querySelectorAll('.sidebar-item')[1].click()">
+          <div class="wicon">📱</div><div class="wlabel">テレベット歩合</div>
+        </div>
+        <div class="welcome-card" onclick="document.querySelectorAll('.sidebar-item')[5].click()">
+          <div class="wicon">🏦</div><div class="wlabel">資金管理</div>
+        </div>
+        <div class="welcome-card" onclick="document.querySelectorAll('.sidebar-item')[6].click()">
+          <div class="wicon">🎰</div><div class="wlabel">カジノレポート</div>
+        </div>
+        <div class="welcome-card" onclick="document.querySelectorAll('.sidebar-item')[3].click()">
+          <div class="wicon">📋</div><div class="wlabel">アンケート</div>
+        </div>
+        <div class="welcome-card" onclick="document.querySelectorAll('.sidebar-item')[2].click()">
+          <div class="wicon">💱</div><div class="wlabel">換金</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- パートナー共有システム -->
-  <div class="section-title">パートナー共有</div>
-  <div class="grid grid-3">
-    <a href="https://betrnk-fund.vercel.app" target="_blank" class="tool-card">
-      <div class="tool-icon">🏦</div>
-      <h3>資金管理表</h3>
-      <p>別会社共有の資金管理。KRW入出金記録、残高管理、CSV出力。別会社も同じURLでアクセス中。</p>
-      <span class="tool-tag tag-external"><span class="status-dot dot-live"></span>Vercel（別会社共有）</span>
-    </a>
-  </div>
-
-  <!-- 業務ツール -->
-  <div class="section-title">業務ツール</div>
-  <div class="grid grid-3">
-    <a href="exchange.html" class="tool-card">
-      <div class="tool-icon">💱</div>
-      <h3>換金ツール</h3>
-      <p>日本円 ⇄ 韓国ウォン、フィリピンペソの為替計算</p>
-      <span class="tool-tag tag-internal"><span class="status-dot dot-live"></span>ツール</span>
-    </a>
-    <a href="https://casino-report-system-production.up.railway.app" target="_blank" class="tool-card">
-      <div class="tool-icon">🎰</div>
-      <h3>カジノレポートシステム</h3>
-      <p>FINISHレポート解析、ゲーム結果（WIN/LOSE/シェア）、ローリング管理、経費管理、Telegram連携、月次集計、スタッフ管理</p>
-      <span class="tool-tag tag-external"><span class="status-dot dot-live"></span>Railway（外部）</span>
-    </a>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeI-vVz6cB5OvptRp15TQcPJDnCqmHkvQ_jdsGrc0rEDaPJTw/viewform" target="_blank" class="tool-card">
-      <div class="tool-icon">📝</div>
-      <h3>Googleフォーム（旧アンケート）</h3>
-      <p>既存のGoogleフォーム版アンケート。新しいsurvey.htmlに移行中。</p>
-      <span class="tool-tag tag-external"><span class="status-dot dot-local"></span>Google Forms</span>
-    </a>
-  </div>
-
-</div>
-
-<div class="quick-links">
-  <a href="index.html" class="quick-link">CRM</a>
-  <a href="telebet-incentive.html" class="quick-link">テレベット歩合</a>
-  <a href="survey.html" class="quick-link">アンケート</a>
-  <a href="survey-results.html" class="quick-link">結果</a>
-  <a href="exchange.html" class="quick-link">換金</a>
-  <a href="https://betrnk-fund.vercel.app" target="_blank" class="quick-link">資金管理 ↗</a>
-  <a href="https://casino-report-system-production.up.railway.app" target="_blank" class="quick-link">カジノレポート ↗</a>
-  <a href="https://github.com/tgkmkg02-create/betrank-crm" target="_blank" class="quick-link">GitHub ↗</a>
 </div>
 
 <script>
 const d=new Date();
 const months=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
 document.getElementById('currentDate').textContent=d.getFullYear()+'年'+months[d.getMonth()]+d.getDate()+'日';
+
+function setActive(el){
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function loadTool(url,title,el){
+  setActive(el);
+  document.getElementById('contentArea').innerHTML=`
+    <div class="content-header">
+      <span class="title">${title}</span>
+      <span class="url">${url}</span>
+      <button onclick="window.open('${url}','_blank')">別タブで開く</button>
+    </div>
+    <div class="content-frame">
+      <iframe src="${url}"></iframe>
+    </div>`;
+}
+
+function loadExternal(url,title,el){
+  setActive(el);
+  document.getElementById('contentArea').innerHTML=`
+    <div class="content-header">
+      <span class="title">${title}</span>
+      <span class="url">${url}</span>
+      <button onclick="window.open('${url}','_blank')">別タブで開く</button>
+    </div>
+    <div class="content-frame">
+      <iframe src="${url}"></iframe>
+    </div>`;
+}
 </script>
 </body>
 </html>
