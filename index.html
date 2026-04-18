@@ -462,37 +462,39 @@
   <div class="grid grid-2 mb-16">
     <div class="card">
       <h3>インセンティブ支給条件（チーム歩合制）</h3>
-      <p class="text-sm text-muted mb-16">現地純利益に対して<strong style="color:var(--gold)">チーム全体で2%</strong>を3等分。リーダーはノルマ条件あり。</p>
+      <p class="text-sm text-muted mb-16">合計純利益（現地＋テレベット）に対して<strong style="color:var(--gold)">チーム全体で2%</strong>を3等分。リーダーはノルマ達成でボーナス。</p>
       <table class="mb-16">
-        <thead><tr><th>条件</th><th>ケビン・チェリン</th><th>チョイ（リーダー）</th></tr></thead>
+        <thead><tr><th>仕組み</th><th>条件</th><th>内容</th></tr></thead>
         <tbody>
           <tr>
-            <td class="positive">純利益 ≧ チョイのノルマ<br><span class="text-sm text-muted">（例: ¥500万）</span></td>
-            <td class="positive"><strong>2% ÷ 3 = 0.67%</strong></td>
-            <td class="positive"><strong>2% ÷ 3 = 0.67%</strong></td>
+            <td><strong style="color:var(--blue)">チーム歩合</strong></td>
+            <td>合計純利益 ≧ ¥400万</td>
+            <td class="positive"><strong>2% ÷ 3人 = 0.67%/人</strong><br><span class="text-sm text-muted">全員平等に支給</span></td>
           </tr>
           <tr>
-            <td class="neutral">純利益 ¥400万〜ノルマ未満</td>
-            <td class="positive"><strong>2% ÷ 3 = 0.67%</strong></td>
-            <td class="negative"><strong>なし（ノルマ未達）</strong></td>
+            <td><strong style="color:var(--gold)">リーダーボーナス</strong></td>
+            <td>合計純利益 ≧ ¥500万（ノルマ）</td>
+            <td class="positive"><strong>チョイのみ +0.5%</strong><br><span class="text-sm text-muted">ノルマ達成報酬として加算</span></td>
           </tr>
           <tr>
-            <td class="negative">純利益 ¥400万未満</td>
-            <td class="negative"><strong>なし</strong></td>
-            <td class="negative"><strong>なし</strong></td>
+            <td><strong style="color:var(--red)">ゲート未達</strong></td>
+            <td>合計純利益 &lt; ¥400万</td>
+            <td class="negative"><strong>全員インセンティブなし</strong></td>
           </tr>
         </tbody>
       </table>
       <div class="card" style="background:rgba(245,166,35,0.05);border-color:var(--gold);margin-bottom:16px">
         <h3>シミュレーション早見表</h3>
+        <p class="text-sm text-muted mb-8">合計純利益 = 現地利益 + テレベット利益</p>
         <table>
-          <thead><tr><th>純利益</th><th>チーム2%</th><th>1人あたり</th><th>チョイ（ノルマ¥500万時）</th></tr></thead>
+          <thead><tr><th>合計純利益</th><th>チーム2%</th><th>ケビン</th><th>チェリン</th><th>チョイ（基本+ボーナス）</th></tr></thead>
           <tbody>
-            <tr><td>¥400万</td><td>¥80,000</td><td>¥26,667</td><td class="negative">¥0（ノルマ未達）</td></tr>
-            <tr><td>¥500万</td><td>¥100,000</td><td>¥33,333</td><td class="positive">¥33,333</td></tr>
-            <tr><td>¥600万</td><td>¥120,000</td><td>¥40,000</td><td class="positive">¥40,000</td></tr>
-            <tr><td>¥800万</td><td>¥160,000</td><td>¥53,333</td><td class="positive">¥53,333</td></tr>
-            <tr><td>¥1,000万</td><td>¥200,000</td><td>¥66,667</td><td class="positive">¥66,667</td></tr>
+            <tr><td>¥300万</td><td colspan="4" class="negative" style="text-align:center">ゲート未達 — 全員 ¥0</td></tr>
+            <tr><td>¥400万</td><td>¥80,000</td><td class="positive">¥26,667</td><td class="positive">¥26,667</td><td class="neutral">¥26,667<span class="text-sm text-muted">（ボーナスなし）</span></td></tr>
+            <tr><td>¥500万</td><td>¥100,000</td><td class="positive">¥33,333</td><td class="positive">¥33,333</td><td class="positive">¥58,333<span class="text-sm" style="color:var(--gold)"> (+¥25,000)</span></td></tr>
+            <tr><td>¥600万</td><td>¥120,000</td><td class="positive">¥40,000</td><td class="positive">¥40,000</td><td class="positive">¥70,000<span class="text-sm" style="color:var(--gold)"> (+¥30,000)</span></td></tr>
+            <tr><td>¥800万</td><td>¥160,000</td><td class="positive">¥53,333</td><td class="positive">¥53,333</td><td class="positive">¥93,333<span class="text-sm" style="color:var(--gold)"> (+¥40,000)</span></td></tr>
+            <tr><td>¥1,000万</td><td>¥200,000</td><td class="positive">¥66,667</td><td class="positive">¥66,667</td><td class="positive">¥116,667<span class="text-sm" style="color:var(--gold)"> (+¥50,000)</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -500,11 +502,17 @@
     <div class="card">
       <h3>チーム歩合シミュレーター</h3>
       <p class="text-sm text-muted mb-8" style="color:var(--gold)">当月の利益を入力 → 全員のインセンティブを一括計算</p>
-      <div class="grid grid-3" style="gap:10px">
+      <div class="grid grid-2" style="gap:10px">
         <div class="form-group">
           <label>当月 現地純利益（¥）</label>
-          <input type="number" id="incNetProfit" min="0" value="5000000">
+          <input type="number" id="incOnsiteProfit2" min="0" value="3000000">
         </div>
+        <div class="form-group">
+          <label>当月 テレベット純利益（¥）</label>
+          <input type="number" id="incTelebetProfit" min="0" value="2000000">
+        </div>
+      </div>
+      <div class="grid grid-2" style="gap:10px">
         <div class="form-group">
           <label>チーム歩合率（%）</label>
           <input type="number" id="incRate" min="0" max="10" step="0.5" value="2">
@@ -2655,14 +2663,17 @@ function renderIncentiveCharts(){
 }
 
 function calcIncentive(){
-  const netProfit=parseInt(document.getElementById('incNetProfit').value)||0;
+  const onsiteProfit=parseInt(document.getElementById('incOnsiteProfit2').value)||0;
+  const telebetProfit=parseInt(document.getElementById('incTelebetProfit').value)||0;
+  const netProfit=onsiteProfit+telebetProfit;
   const rate=parseFloat(document.getElementById('incRate').value)||0;
   const norma=parseInt(document.getElementById('incNorma').value)||0;
   const gate=4000000;
 
   const teamPool=netProfit>=gate?Math.round(netProfit*rate/100):0;
   const perPerson=teamPool>0?Math.round(teamPool/3):0;
-  const choiGets=netProfit>=norma?perPerson:0;
+  const choiBonus=netProfit>=norma?Math.round(netProfit*0.5/100):0;
+  const choiGets=perPerson+choiBonus;
   const choiNormaOk=netProfit>=norma;
 
   document.getElementById('incResult').style.display='block';
@@ -2670,7 +2681,7 @@ function calcIncentive(){
     <div style="margin-bottom:16px">
       <div class="flex-between mb-8">
         <h3 style="color:var(--gold)">計算結果</h3>
-        <span class="text-sm text-muted">純利益: <strong style="color:var(--gold);font-size:1.2em">¥${netProfit.toLocaleString()}</strong></span>
+        <span class="text-sm text-muted">現地: ¥${onsiteProfit.toLocaleString()} + テレベット: ¥${telebetProfit.toLocaleString()} = <strong style="color:var(--gold);font-size:1.1em">合計 ¥${netProfit.toLocaleString()}</strong></span>
       </div>
       ${netProfit<gate?`<div style="background:rgba(231,76,60,0.15);padding:12px;border-radius:8px;border:1px solid var(--red);text-align:center">
         <strong class="negative">ゲート未達（¥400万未満）— チーム全員インセンティブなし</strong>
@@ -2685,10 +2696,10 @@ function calcIncentive(){
             <td><strong style="color:var(--accent)">チョイ</strong></td>
             <td><span class="badge badge-vvip">リーダー</span></td>
             <td>${choiNormaOk?
-              `<span class="positive">ノルマ達成（¥${norma.toLocaleString()}）</span>`:
-              `<span class="negative">ノルマ未達（¥${norma.toLocaleString()}）</span>`
+              `<span class="positive">ノルマ達成 → +0.5%ボーナス</span>`:
+              `<span class="neutral">ノルマ未達（¥${norma.toLocaleString()}）</span>`
             }</td>
-            <td style="text-align:right;font-size:1.2em;font-weight:700;color:${choiGets>0?'var(--green)':'var(--red)'}">¥${choiGets.toLocaleString()}</td>
+            <td style="text-align:right;font-size:1.2em;font-weight:700;color:var(--green)">¥${choiGets.toLocaleString()}${choiBonus>0?`<div class="text-sm" style="color:var(--gold)">基本¥${perPerson.toLocaleString()} + ボーナス¥${choiBonus.toLocaleString()}</div>`:''}</td>
           </tr>
           <tr>
             <td><strong style="color:var(--blue)">ケビン</strong></td>
@@ -2704,7 +2715,7 @@ function calcIncentive(){
           </tr>
           <tr style="border-top:2px solid var(--gold)">
             <td colspan="3"><strong>合計支給額</strong></td>
-            <td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--gold)">¥${(choiGets+perPerson*2).toLocaleString()}</td>
+            <td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--gold)">¥${(choiGets+perPerson*2).toLocaleString()}<div class="text-sm text-muted">（利益の${((choiGets+perPerson*2)/netProfit*100).toFixed(1)}%）</div></td>
           </tr>
         </tbody>
       </table>`}
