@@ -1181,19 +1181,40 @@
     </div>
 
     <div class="card mb-16">
-      <h3>シミュレーター</h3>
-      <div class="form-group"><label>スタッフ名</label><input type="text" id="jpStaff" placeholder="日本チーム担当者名" style="background:var(--bg-input)"></div>
-      <p style="color:var(--accent);font-weight:700;margin:16px 0 8px">予約獲得件数（プラン別）</p>
-      <div class="grid grid-3" style="gap:10px">
-        <div class="form-group"><label>77万円プラン</label><input type="number" id="jpBook77" min="0" value="0"></div>
-        <div class="form-group"><label>100万円プラン</label><input type="number" id="jpBook100" min="0" value="0"></div>
-        <div class="form-group"><label>200万円プラン</label><input type="number" id="jpBook200" min="0" value="0"></div>
-        <div class="form-group"><label>300万円プラン</label><input type="number" id="jpBook300" min="0" value="0"></div>
-        <div class="form-group"><label>500万円プラン</label><input type="number" id="jpBook500" min="0" value="0"></div>
-        <div class="form-group"><label>1000万円プラン</label><input type="number" id="jpBook1000" min="0" value="0"></div>
+      <h3>予約記録 — 新規追加</h3>
+      <div class="grid grid-4" style="gap:10px">
+        <div class="form-group"><label>予約日</label><input type="date" id="bkDate" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>担当スタッフ</label><select id="bkStaff" style="background:var(--bg-input)"><option>長岡きみ</option><option>長岡ゆみ</option><option>チョイ</option><option>ケビン</option><option>チェリン</option></select></div>
+        <div class="form-group"><label>顧客名</label><input type="text" id="bkCustomer" placeholder="例: 田中太郎" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>プラン</label><select id="bkPlan" style="background:var(--bg-input)"><option value="77">77万円プラン</option><option value="100">100万円プラン</option><option value="200">200万円プラン</option><option value="300">300万円プラン</option><option value="500">500万円プラン</option><option value="1000">1000万円プラン</option></select></div>
       </div>
-      <button onclick="calcJpBooking()" style="width:100%;margin-top:8px;background:var(--accent)">計算</button>
-      <div id="jpResult" style="display:none;margin-top:16px;padding:20px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius)"></div>
+      <div class="form-group"><label>メモ（任意）</label><input type="text" id="bkMemo" placeholder="例: 初回、リピート、VIPなど" style="background:var(--bg-input)"></div>
+      <button onclick="addBooking()" style="width:100%;background:var(--accent)">予約を追加</button>
+    </div>
+
+    <div class="card mb-16">
+      <h3>月次サマリー（スタッフ別歩合）</h3>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
+        <label style="color:var(--muted);font-size:0.85em">月:</label>
+        <select id="bkMonthFilter" onchange="renderBookings()" style="background:var(--bg-input);width:auto;padding:8px 14px">
+          <option value="all">全期間</option>
+        </select>
+        <label style="color:var(--muted);font-size:0.85em;margin-left:12px">スタッフ:</label>
+        <select id="bkStaffFilter" onchange="renderBookings()" style="background:var(--bg-input);width:auto;padding:8px 14px">
+          <option value="all">全員</option>
+          <option>長岡きみ</option>
+          <option>長岡ゆみ</option>
+          <option>チョイ</option>
+          <option>ケビン</option>
+          <option>チェリン</option>
+        </select>
+      </div>
+      <div id="bkSummary"></div>
+    </div>
+
+    <div class="card mb-16">
+      <h3>予約一覧</h3>
+      <div id="bkList"></div>
     </div>
   </div>
 </div>
@@ -4483,29 +4504,98 @@ function calcEval(){
   el.innerHTML=html;
 }
 
-function calcJpBooking(){
-  var staff=document.getElementById('jpStaff').value;
-  var b77=parseInt(document.getElementById('jpBook77').value)||0;
-  var b100=parseInt(document.getElementById('jpBook100').value)||0;
-  var b200=parseInt(document.getElementById('jpBook200').value)||0;
-  var b300=parseInt(document.getElementById('jpBook300').value)||0;
-  var b500=parseInt(document.getElementById('jpBook500').value)||0;
-  var b1000=parseInt(document.getElementById('jpBook1000').value)||0;
-  var c77=b77*2000,c100=b100*3000,c200=b200*5000,c300=b300*6000,c500=b500*8000,c1000=b1000*10000;
-  var total=c77+c100+c200+c300+c500+c1000;
-  var count=b77+b100+b200+b300+b500+b1000;
-  var el=document.getElementById('jpResult');
-  el.style.display='block';
-  var html='<h3 style="color:var(--accent);margin-bottom:12px">'+staff+' — 予約歩合計算</h3><table style="margin-bottom:16px">';
-  if(b77>0) html+='<tr><td>77万円プラン（'+b77+'件×¥2,000）</td><td style="text-align:right">¥'+c77.toLocaleString()+'</td></tr>';
-  if(b100>0) html+='<tr><td>100万円プラン（'+b100+'件×¥3,000）</td><td style="text-align:right">¥'+c100.toLocaleString()+'</td></tr>';
-  if(b200>0) html+='<tr><td>200万円プラン（'+b200+'件×¥5,000）</td><td style="text-align:right">¥'+c200.toLocaleString()+'</td></tr>';
-  if(b300>0) html+='<tr><td>300万円プラン（'+b300+'件×¥6,000）</td><td style="text-align:right">¥'+c300.toLocaleString()+'</td></tr>';
-  if(b500>0) html+='<tr><td>500万円プラン（'+b500+'件×¥8,000）</td><td style="text-align:right">¥'+c500.toLocaleString()+'</td></tr>';
-  if(b1000>0) html+='<tr><td>1000万円プラン（'+b1000+'件×¥10,000）</td><td style="text-align:right">¥'+c1000.toLocaleString()+'</td></tr>';
-  html+='<tr style="border-top:1px solid var(--border)"><td>合計件数</td><td style="text-align:right">'+count+'件</td></tr></table>';
-  html+='<div style="display:flex;justify-content:space-between;padding:16px;background:rgba(39,123,95,0.08);border:1px solid var(--green);border-radius:8px"><span style="font-weight:700">予約歩合合計</span><span style="font-size:1.4em;font-weight:700;color:var(--green)">¥'+total.toLocaleString()+'</span></div>';
-  el.innerHTML=html;
+// ==================== 予約記録 ====================
+var PLAN_RATES={77:2000,100:3000,200:5000,300:6000,500:8000,1000:10000};
+var STAFF_COLORS={'長岡きみ':'var(--gold)','長岡ゆみ':'var(--purple)','チョイ':'var(--accent)','ケビン':'var(--blue)','チェリン':'var(--green)'};
+
+function getBookings(){return JSON.parse(localStorage.getItem('bookings')||'[]');}
+function saveBookings(list){localStorage.setItem('bookings',JSON.stringify(list));}
+
+function addBooking(){
+  var date=document.getElementById('bkDate').value;
+  var staff=document.getElementById('bkStaff').value;
+  var customer=document.getElementById('bkCustomer').value.trim();
+  var plan=parseInt(document.getElementById('bkPlan').value);
+  var memo=document.getElementById('bkMemo').value.trim();
+  if(!date){alert('予約日を入力してください');return;}
+  if(!customer){alert('顧客名を入力してください');return;}
+  var list=getBookings();
+  list.push({date:date,staff:staff,customer:customer,plan:plan,commission:PLAN_RATES[plan],memo:memo});
+  saveBookings(list);
+  document.getElementById('bkCustomer').value='';
+  document.getElementById('bkMemo').value='';
+  populateBkMonths();
+  renderBookings();
+}
+
+function deleteBooking(idx){
+  if(!confirm('この予約を削除しますか？'))return;
+  var list=getBookings();
+  list.splice(idx,1);
+  saveBookings(list);
+  renderBookings();
+}
+
+function populateBkMonths(){
+  var sel=document.getElementById('bkMonthFilter');
+  if(!sel)return;
+  var prev=sel.value;
+  var months=new Set();
+  getBookings().forEach(function(b){if(b.date)months.add(b.date.substring(0,7));});
+  var sorted=Array.from(months).sort().reverse();
+  sel.innerHTML='<option value="all">全期間</option>';
+  sorted.forEach(function(m){
+    var label=m.replace('-','年')+'月';
+    sel.innerHTML+='<option value="'+m+'">'+label+'</option>';
+  });
+  if(prev&&[].concat(['all'],sorted).indexOf(prev)>=0) sel.value=prev;
+}
+
+function renderBookings(){
+  var list=getBookings();
+  var monthFilter=document.getElementById('bkMonthFilter').value;
+  var staffFilter=document.getElementById('bkStaffFilter').value;
+  var filtered=list.filter(function(b){
+    if(monthFilter!=='all'&&(!b.date||!b.date.startsWith(monthFilter)))return false;
+    if(staffFilter!=='all'&&b.staff!==staffFilter)return false;
+    return true;
+  });
+
+  // Summary by staff
+  var summary={};
+  ['長岡きみ','長岡ゆみ','チョイ','ケビン','チェリン'].forEach(function(s){summary[s]={count:0,commission:0,plans:{}};});
+  filtered.forEach(function(b){
+    if(!summary[b.staff])summary[b.staff]={count:0,commission:0,plans:{}};
+    summary[b.staff].count++;
+    summary[b.staff].commission+=b.commission;
+    summary[b.staff].plans[b.plan]=(summary[b.staff].plans[b.plan]||0)+1;
+  });
+
+  var sumHtml='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">';
+  Object.keys(summary).forEach(function(s){
+    var data=summary[s];
+    if(staffFilter!=='all'&&s!==staffFilter)return;
+    var color=STAFF_COLORS[s]||'var(--muted)';
+    sumHtml+='<div style="background:var(--bg-tertiary);border:1px solid var(--border);border-radius:8px;padding:14px;border-left:3px solid '+color+'"><div style="font-weight:700;color:'+color+';margin-bottom:6px">'+s+'</div><div style="font-size:0.8em;color:var(--muted)">件数: <strong style="color:var(--text-primary)">'+data.count+'件</strong></div><div style="font-size:1.4em;font-weight:700;color:var(--green);margin-top:6px">¥'+data.commission.toLocaleString()+'</div></div>';
+  });
+  sumHtml+='</div>';
+
+  var totalComm=filtered.reduce(function(a,b){return a+b.commission;},0);
+  sumHtml+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:14px;background:rgba(39,123,95,0.08);border:1px solid var(--green);border-radius:8px"><span style="font-weight:700">合計歩合（全員）</span><span style="font-size:1.3em;font-weight:700;color:var(--green)">¥'+totalComm.toLocaleString()+'（'+filtered.length+'件）</span></div>';
+  document.getElementById('bkSummary').innerHTML=sumHtml;
+
+  // List
+  var listEl=document.getElementById('bkList');
+  if(!filtered.length){listEl.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px">予約データなし</p>';return;}
+  var sorted=[].concat(filtered).sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  var html='<table><thead><tr><th>予約日</th><th>担当</th><th>顧客</th><th>プラン</th><th style="text-align:right">歩合</th><th>メモ</th><th></th></tr></thead><tbody>';
+  sorted.forEach(function(b){
+    var origIdx=list.indexOf(b);
+    var color=STAFF_COLORS[b.staff]||'var(--muted)';
+    html+='<tr><td>'+b.date+'</td><td style="color:'+color+';font-weight:600">'+b.staff+'</td><td><strong>'+b.customer+'</strong></td><td>'+b.plan+'万円</td><td style="text-align:right;color:var(--green);font-weight:600">¥'+b.commission.toLocaleString()+'</td><td style="color:var(--muted);font-size:0.85em">'+(b.memo||'—')+'</td><td><button onclick="deleteBooking('+origIdx+')" style="background:transparent;border:1px solid var(--red);color:var(--red);padding:2px 8px;font-size:0.75em;border-radius:4px">削除</button></td></tr>';
+  });
+  html+='</tbody></table>';
+  listEl.innerHTML=html;
 }
 
 // ==================== テレベット顧客管理 ====================
@@ -4581,6 +4671,8 @@ function init(){
   renderAlerts();
   renderActivityLog();
   renderTbCustomers();
+  populateBkMonths();
+  renderBookings();
   if(canManageUsers())renderUserAccounts();
 }
 if(sessionStorage.getItem('br_auth')==='1'&&sessionStorage.getItem('br_current_user')){init();}
