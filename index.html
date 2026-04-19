@@ -1315,6 +1315,55 @@
       </div>
       <div id="tbCustList"></div>
     </div>
+
+    <div class="card mb-16" style="border-left:3px solid var(--green)">
+      <h3>テレベット スタッフ歩合ボーナス</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">スタッフのテレベット貢献に応じた固定ボーナス</p>
+      <table>
+        <thead><tr><th>アクション</th><th>歩合</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:var(--accent)">Telegram導入</strong></td><td style="color:var(--green);font-weight:700">¥1,000 / 件</td><td style="color:var(--muted)">お客様にTelegramをインストール・登録させた</td></tr>
+          <tr><td><strong style="color:var(--blue)">初回入金</strong></td><td style="color:var(--green);font-weight:700">¥3,000 / 件</td><td style="color:var(--muted)">お客様がテレベットで初めて入金した</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card mb-16">
+      <h3>歩合記録 — 新規追加</h3>
+      <div class="grid grid-4" style="gap:10px">
+        <div class="form-group"><label>日付</label><input type="date" id="tbAcDate" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>担当スタッフ</label><select id="tbAcStaff" style="background:var(--bg-input)"><option>長岡きみ</option><option>長岡ゆみ</option><option>チョイ</option><option>ケビン</option><option>チェリン</option></select></div>
+        <div class="form-group"><label>顧客名</label><input type="text" id="tbAcCustomer" placeholder="例: 田中太郎" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>アクション</label><select id="tbAcType" style="background:var(--bg-input)"><option value="telegram">Telegram導入 (¥1,000)</option><option value="deposit">初回入金 (¥3,000)</option></select></div>
+      </div>
+      <div class="form-group"><label>メモ（任意）</label><input type="text" id="tbAcMemo" placeholder="例: VIP、友人紹介など" style="background:var(--bg-input)"></div>
+      <button onclick="addTbAction()" style="width:100%;background:var(--green);color:#fff">記録を追加</button>
+    </div>
+
+    <div class="card mb-16">
+      <h3>月次サマリー（スタッフ別歩合）</h3>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
+        <label style="color:var(--muted);font-size:0.85em">月:</label>
+        <select id="tbAcMonthFilter" onchange="renderTbActions()" style="background:var(--bg-input);width:auto;padding:8px 14px">
+          <option value="all">全期間</option>
+        </select>
+        <label style="color:var(--muted);font-size:0.85em;margin-left:12px">スタッフ:</label>
+        <select id="tbAcStaffFilter" onchange="renderTbActions()" style="background:var(--bg-input);width:auto;padding:8px 14px">
+          <option value="all">全員</option>
+          <option>長岡きみ</option>
+          <option>長岡ゆみ</option>
+          <option>チョイ</option>
+          <option>ケビン</option>
+          <option>チェリン</option>
+        </select>
+      </div>
+      <div id="tbAcSummary"></div>
+    </div>
+
+    <div class="card mb-16">
+      <h3>歩合記録一覧</h3>
+      <div id="tbAcList"></div>
+    </div>
   </div>
 </div>
 
@@ -4504,6 +4553,95 @@ function calcEval(){
   el.innerHTML=html;
 }
 
+// ==================== テレベット歩合記録 ====================
+var TB_ACTION_RATES={telegram:1000,deposit:3000};
+var TB_ACTION_LABELS={telegram:'Telegram導入',deposit:'初回入金'};
+
+function getTbActions(){return JSON.parse(localStorage.getItem('tb_actions')||'[]');}
+function saveTbActions(list){localStorage.setItem('tb_actions',JSON.stringify(list));}
+
+function addTbAction(){
+  var date=document.getElementById('tbAcDate').value;
+  var staff=document.getElementById('tbAcStaff').value;
+  var customer=document.getElementById('tbAcCustomer').value.trim();
+  var type=document.getElementById('tbAcType').value;
+  var memo=document.getElementById('tbAcMemo').value.trim();
+  if(!date){alert('日付を入力してください');return;}
+  if(!customer){alert('顧客名を入力してください');return;}
+  var list=getTbActions();
+  list.push({date:date,staff:staff,customer:customer,type:type,amount:TB_ACTION_RATES[type],memo:memo});
+  saveTbActions(list);
+  document.getElementById('tbAcCustomer').value='';
+  document.getElementById('tbAcMemo').value='';
+  populateTbAcMonths();
+  renderTbActions();
+}
+
+function deleteTbAction(idx){
+  if(!confirm('この記録を削除しますか？'))return;
+  var list=getTbActions();
+  list.splice(idx,1);
+  saveTbActions(list);
+  renderTbActions();
+}
+
+function populateTbAcMonths(){
+  var sel=document.getElementById('tbAcMonthFilter');
+  if(!sel)return;
+  var prev=sel.value;
+  var months=new Set();
+  getTbActions().forEach(function(a){if(a.date)months.add(a.date.substring(0,7));});
+  var sorted=Array.from(months).sort().reverse();
+  sel.innerHTML='<option value="all">全期間</option>';
+  sorted.forEach(function(m){sel.innerHTML+='<option value="'+m+'">'+m.replace('-','年')+'月</option>';});
+  if(prev&&[].concat(['all'],sorted).indexOf(prev)>=0) sel.value=prev;
+}
+
+function renderTbActions(){
+  var list=getTbActions();
+  var monthFilter=document.getElementById('tbAcMonthFilter').value;
+  var staffFilter=document.getElementById('tbAcStaffFilter').value;
+  var filtered=list.filter(function(a){
+    if(monthFilter!=='all'&&(!a.date||!a.date.startsWith(monthFilter)))return false;
+    if(staffFilter!=='all'&&a.staff!==staffFilter)return false;
+    return true;
+  });
+
+  var summary={};
+  ['長岡きみ','長岡ゆみ','チョイ','ケビン','チェリン'].forEach(function(s){summary[s]={telegram:0,deposit:0,amount:0};});
+  filtered.forEach(function(a){
+    if(!summary[a.staff])summary[a.staff]={telegram:0,deposit:0,amount:0};
+    summary[a.staff][a.type]++;
+    summary[a.staff].amount+=a.amount;
+  });
+
+  var sumHtml='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">';
+  Object.keys(summary).forEach(function(s){
+    var d=summary[s];
+    if(staffFilter!=='all'&&s!==staffFilter)return;
+    var color=STAFF_COLORS[s]||'var(--muted)';
+    sumHtml+='<div style="background:var(--bg-tertiary);border:1px solid var(--border);border-radius:8px;padding:14px;border-left:3px solid '+color+'"><div style="font-weight:700;color:'+color+';margin-bottom:6px">'+s+'</div><div style="font-size:0.78em;color:var(--muted)">Telegram: <strong style="color:var(--text-primary)">'+d.telegram+'件</strong> / 初回入金: <strong style="color:var(--text-primary)">'+d.deposit+'件</strong></div><div style="font-size:1.4em;font-weight:700;color:var(--green);margin-top:6px">¥'+d.amount.toLocaleString()+'</div></div>';
+  });
+  sumHtml+='</div>';
+
+  var total=filtered.reduce(function(a,b){return a+b.amount;},0);
+  sumHtml+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding:14px;background:rgba(39,123,95,0.08);border:1px solid var(--green);border-radius:8px"><span style="font-weight:700">合計歩合（全員）</span><span style="font-size:1.3em;font-weight:700;color:var(--green)">¥'+total.toLocaleString()+'（'+filtered.length+'件）</span></div>';
+  document.getElementById('tbAcSummary').innerHTML=sumHtml;
+
+  var listEl=document.getElementById('tbAcList');
+  if(!filtered.length){listEl.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px">記録なし</p>';return;}
+  var sorted=[].concat(filtered).sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  var html='<table><thead><tr><th>日付</th><th>担当</th><th>顧客</th><th>アクション</th><th style="text-align:right">歩合</th><th>メモ</th><th></th></tr></thead><tbody>';
+  sorted.forEach(function(a){
+    var origIdx=list.indexOf(a);
+    var color=STAFF_COLORS[a.staff]||'var(--muted)';
+    var actionColor=a.type==='telegram'?'var(--accent)':'var(--blue)';
+    html+='<tr><td>'+a.date+'</td><td style="color:'+color+';font-weight:600">'+a.staff+'</td><td><strong>'+a.customer+'</strong></td><td style="color:'+actionColor+';font-weight:600">'+TB_ACTION_LABELS[a.type]+'</td><td style="text-align:right;color:var(--green);font-weight:600">¥'+a.amount.toLocaleString()+'</td><td style="color:var(--muted);font-size:0.85em">'+(a.memo||'—')+'</td><td><button onclick="deleteTbAction('+origIdx+')" style="background:transparent;border:1px solid var(--red);color:var(--red);padding:2px 8px;font-size:0.75em;border-radius:4px">削除</button></td></tr>';
+  });
+  html+='</tbody></table>';
+  listEl.innerHTML=html;
+}
+
 // ==================== 予約記録 ====================
 var PLAN_RATES={77:2000,100:3000,200:5000,300:6000,500:8000,1000:10000};
 var STAFF_COLORS={'長岡きみ':'var(--gold)','長岡ゆみ':'var(--purple)','チョイ':'var(--accent)','ケビン':'var(--blue)','チェリン':'var(--green)'};
@@ -4673,6 +4811,8 @@ function init(){
   renderTbCustomers();
   populateBkMonths();
   renderBookings();
+  populateTbAcMonths();
+  renderTbActions();
   if(canManageUsers())renderUserAccounts();
 }
 if(sessionStorage.getItem('br_auth')==='1'&&sessionStorage.getItem('br_current_user')){init();}
