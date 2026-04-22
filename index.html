@@ -748,6 +748,9 @@
     <div class="tab" onclick="showTab('orgChartTab',this)">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="5" rx="1"/><path d="M12 7v4"/><path d="M6 16H4a1 1 0 0 0-1 1v3"/><rect x="3" y="16" width="6" height="6" rx="1"/><rect x="15" y="16" width="6" height="6" rx="1"/><path d="M12 11v5"/><path d="M12 11h6a1 1 0 0 1 1 1v4"/></svg></span><span>組織図</span>
     </div>
+    <div class="tab" onclick="showTab('cashflowSimTab',this)">
+      <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><span>売上シミュレーション</span>
+    </div>
     <div style="padding:12px 14px 4px;color:rgba(232,230,227,0.3);font-size:0.65em;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:8px">外部システム</div>
     <div class="tab" onclick="window.open('survey.html','_blank')">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>アンケート送信 ↗</span>
@@ -1531,6 +1534,72 @@
       <h3>月次インセンティブ合計</h3>
       <div id="totIncResult"></div>
     </div>
+  </div>
+</div>
+
+<!-- TAB: 売上シミュレーション -->
+<div id="cashflowSimTab" class="tab-content">
+  <div class="topbar"><div class="topbar-title">売上シミュレーション — 月次キャッシュフロー</div></div>
+  <div style="padding:28px 32px;max-width:1600px;margin:0 auto">
+
+    <div class="card mb-16" style="border-left:3px solid var(--accent)">
+      <h3>月次売上のシミュレーション</h3>
+      <p style="color:var(--muted);font-size:0.9em;line-height:1.7">
+        予想売上を入力 → インセンティブ合計、スタッフ別支給、会社負担を自動計算<br>
+        プリセットボタンで典型的な月のシナリオも確認可能
+      </p>
+    </div>
+
+    <!-- プリセット -->
+    <div class="card mb-16">
+      <h3>プリセットシナリオ</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button onclick="loadPreset('normal')" style="background:var(--blue);padding:12px 20px;font-size:0.9em">📊 通常月</button>
+        <button onclick="loadPreset('good')" style="background:var(--green);padding:12px 20px;font-size:0.9em">🚀 好調月</button>
+        <button onclick="loadPreset('bad')" style="background:var(--red);padding:12px 20px;font-size:0.9em">📉 不調月</button>
+        <button onclick="loadPreset('reset')" style="background:var(--muted);padding:12px 20px;font-size:0.9em">🔄 リセット</button>
+      </div>
+    </div>
+
+    <!-- 入力エリア -->
+    <div class="grid grid-2 mb-16">
+      <div class="card">
+        <h3>韓国予約件数（プラン別）</h3>
+        <div class="grid grid-2" style="gap:10px">
+          <div class="form-group"><label>77万円プラン</label><input type="number" id="simBk77" min="0" value="0"></div>
+          <div class="form-group"><label>100万円プラン</label><input type="number" id="simBk100" min="0" value="0"></div>
+          <div class="form-group"><label>200万円プラン</label><input type="number" id="simBk200" min="0" value="0"></div>
+          <div class="form-group"><label>300万円プラン</label><input type="number" id="simBk300" min="0" value="0"></div>
+          <div class="form-group"><label>500万円プラン</label><input type="number" id="simBk500" min="0" value="0"></div>
+          <div class="form-group"><label>1000万円プラン</label><input type="number" id="simBk1000" min="0" value="0"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>テレベット・特別ボーナス</h3>
+        <div class="form-group"><label>テレベット売上（¥）</label><input type="number" id="simTbProfit" min="0" value="0"></div>
+        <div class="form-group"><label>テレベット担当</label><select id="simTbRole" style="background:var(--bg-input)"><option value="leader">長岡きみ（12/15/18%）</option><option value="staff">部下スタッフ（10/12/15%）</option></select></div>
+        <div class="grid grid-2" style="gap:10px">
+          <div class="form-group"><label>Telegram誘導（件）</label><input type="number" id="simTg" min="0" value="0"></div>
+          <div class="form-group"><label>初回入金（件）</label><input type="number" id="simFd" min="0" value="0"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 評価ランク -->
+    <div class="card mb-16">
+      <h3>月次評価ランク（5名）</h3>
+      <div class="grid grid-4" style="gap:10px">
+        <div class="form-group"><label>チョイ</label><select id="simEvChoi" style="background:var(--bg-input)"><option value="none">評価なし</option><option value="S">S ¥30K</option><option value="A">A ¥18K</option><option value="B">B ¥8K</option><option value="C">C ¥0</option></select></div>
+        <div class="form-group"><label>ケビン</label><select id="simEvKevin" style="background:var(--bg-input)"><option value="none">評価なし</option><option value="S">S ¥30K</option><option value="A">A ¥18K</option><option value="B">B ¥8K</option><option value="C">C ¥0</option></select></div>
+        <div class="form-group"><label>チェリン</label><select id="simEvCherin" style="background:var(--bg-input)"><option value="none">評価なし</option><option value="S">S ¥30K</option><option value="A">A ¥18K</option><option value="B">B ¥8K</option><option value="C">C ¥0</option></select></div>
+        <div class="form-group"><label>長岡ゆみ</label><select id="simEvYumi" style="background:var(--bg-input)"><option value="none">評価なし</option><option value="S">S ¥30K</option><option value="A">A ¥18K</option><option value="B">B ¥8K</option><option value="C">C ¥0</option></select></div>
+      </div>
+    </div>
+
+    <button onclick="calcCashflow()" style="width:100%;background:var(--accent);padding:14px;font-size:1em;margin-bottom:20px">💰 シミュレーション計算</button>
+
+    <div id="simResult"></div>
   </div>
 </div>
 
@@ -5024,6 +5093,142 @@ function renderTbActions(){
   });
   html+='</tbody></table>';
   listEl.innerHTML=html;
+}
+
+// ==================== 売上シミュレーション ====================
+function loadPreset(type){
+  var presets={
+    normal:{bk77:2,bk100:1,bk200:0,bk300:1,bk500:1,bk1000:0,tb:1200000,role:'leader',tg:10,fd:5,evChoi:'A',evKevin:'A',evCherin:'B',evYumi:'A'},
+    good:{bk77:0,bk100:3,bk200:0,bk300:2,bk500:1,bk1000:1,tb:2000000,role:'leader',tg:20,fd:10,evChoi:'S',evKevin:'A',evCherin:'A',evYumi:'S'},
+    bad:{bk77:3,bk100:0,bk200:1,bk300:0,bk500:0,bk1000:0,tb:600000,role:'leader',tg:5,fd:2,evChoi:'B',evKevin:'B',evCherin:'C',evYumi:'B'},
+    reset:{bk77:0,bk100:0,bk200:0,bk300:0,bk500:0,bk1000:0,tb:0,role:'leader',tg:0,fd:0,evChoi:'none',evKevin:'none',evCherin:'none',evYumi:'none'}
+  };
+  var p=presets[type];
+  document.getElementById('simBk77').value=p.bk77;
+  document.getElementById('simBk100').value=p.bk100;
+  document.getElementById('simBk200').value=p.bk200;
+  document.getElementById('simBk300').value=p.bk300;
+  document.getElementById('simBk500').value=p.bk500;
+  document.getElementById('simBk1000').value=p.bk1000;
+  document.getElementById('simTbProfit').value=p.tb;
+  document.getElementById('simTbRole').value=p.role;
+  document.getElementById('simTg').value=p.tg;
+  document.getElementById('simFd').value=p.fd;
+  document.getElementById('simEvChoi').value=p.evChoi;
+  document.getElementById('simEvKevin').value=p.evKevin;
+  document.getElementById('simEvCherin').value=p.evCherin;
+  document.getElementById('simEvYumi').value=p.evYumi;
+  if(type!=='reset')calcCashflow();
+}
+
+function calcCashflow(){
+  var PLAN_AMOUNTS={77:770000,100:1000000,200:2000000,300:3000000,500:5000000,1000:10000000};
+  var BONUS={S:30000,A:18000,B:8000,C:0,none:0};
+  var bk77=parseInt(document.getElementById('simBk77').value)||0;
+  var bk100=parseInt(document.getElementById('simBk100').value)||0;
+  var bk200=parseInt(document.getElementById('simBk200').value)||0;
+  var bk300=parseInt(document.getElementById('simBk300').value)||0;
+  var bk500=parseInt(document.getElementById('simBk500').value)||0;
+  var bk1000=parseInt(document.getElementById('simBk1000').value)||0;
+  var tb=parseInt(document.getElementById('simTbProfit').value)||0;
+  var role=document.getElementById('simTbRole').value;
+  var tg=parseInt(document.getElementById('simTg').value)||0;
+  var fd=parseInt(document.getElementById('simFd').value)||0;
+  var evChoi=document.getElementById('simEvChoi').value;
+  var evKevin=document.getElementById('simEvKevin').value;
+  var evCherin=document.getElementById('simEvCherin').value;
+  var evYumi=document.getElementById('simEvYumi').value;
+
+  // Korean revenue
+  var krRev=bk77*PLAN_AMOUNTS[77]+bk100*PLAN_AMOUNTS[100]+bk200*PLAN_AMOUNTS[200]+bk300*PLAN_AMOUNTS[300]+bk500*PLAN_AMOUNTS[500]+bk1000*PLAN_AMOUNTS[1000];
+  var totalBookings=bk77+bk100+bk200+bk300+bk500+bk1000;
+  var totalRev=krRev+tb;
+
+  // Booking commission (goes to Japan team - 長岡ゆみ)
+  var bkComm=bk77*PLAN_RATES[77]+bk100*PLAN_RATES[100]+bk200*PLAN_RATES[200]+bk300*PLAN_RATES[300]+bk500*PLAN_RATES[500]+bk1000*PLAN_RATES[1000];
+
+  // Telebet commission
+  var tbComm=calcTelebetCommission(tb,role);
+  var tbRoleName=role==='leader'?'長岡きみ':'部下スタッフ';
+
+  // Telegram/deposit bonuses
+  var tgBonus=tg*1000;
+  var fdBonus=fd*3000;
+  var tgFdTotal=tgBonus+fdBonus;
+
+  // Evaluation bonuses
+  var evTotal=BONUS[evChoi]+BONUS[evKevin]+BONUS[evCherin]+BONUS[evYumi];
+
+  var totalIncentive=bkComm+tbComm+tgFdTotal+evTotal;
+  var incentiveRate=totalRev>0?(totalIncentive/totalRev*100):0;
+
+  // Build result HTML
+  var html='';
+
+  // Revenue summary
+  html+='<div class="card mb-16"><h3 style="color:var(--blue)">📈 売上サマリー</h3>';
+  html+='<table><tbody>';
+  if(totalBookings>0){
+    html+='<tr><td>韓国予約（'+totalBookings+'件）</td><td style="text-align:right;font-weight:700">¥'+krRev.toLocaleString()+'</td></tr>';
+    if(bk77>0) html+='<tr><td style="padding-left:24px;color:var(--muted);font-size:0.85em">　└ 77万円プラン × '+bk77+'件</td><td style="text-align:right;color:var(--muted)">¥'+(bk77*PLAN_AMOUNTS[77]).toLocaleString()+'</td></tr>';
+    if(bk100>0) html+='<tr><td style="padding-left:24px;color:var(--muted);font-size:0.85em">　└ 100万円プラン × '+bk100+'件</td><td style="text-align:right;color:var(--muted)">¥'+(bk100*PLAN_AMOUNTS[100]).toLocaleString()+'</td></tr>';
+    if(bk200>0) html+='<tr><td style="padding-left:24px;color:var(--muted);font-size:0.85em">　└ 200万円プラン × '+bk200+'件</td><td style="text-align:right;color:var(--muted)">¥'+(bk200*PLAN_AMOUNTS[200]).toLocaleString()+'</td></tr>';
+    if(bk300>0) html+='<tr><td style="padding-left:24px;color:var(--muted);font-size:0.85em">　└ 300万円プラン × '+bk300+'件</td><td style="text-align:right;color:var(--muted)">¥'+(bk300*PLAN_AMOUNTS[300]).toLocaleString()+'</td></tr>';
+    if(bk500>0) html+='<tr><td style="padding-left:24px;color:var(--muted);font-size:0.85em">　└ 500万円プラン × '+bk500+'件</td><td style="text-align:right;color:var(--muted)">¥'+(bk500*PLAN_AMOUNTS[500]).toLocaleString()+'</td></tr>';
+    if(bk1000>0) html+='<tr><td style="padding-left:24px;color:var(--muted);font-size:0.85em">　└ 1000万円プラン × '+bk1000+'件</td><td style="text-align:right;color:var(--muted)">¥'+(bk1000*PLAN_AMOUNTS[1000]).toLocaleString()+'</td></tr>';
+  }
+  if(tb>0) html+='<tr><td>テレベット売上</td><td style="text-align:right;font-weight:700">¥'+tb.toLocaleString()+'</td></tr>';
+  html+='<tr style="border-top:2px solid var(--blue)"><td><strong>合計売上</strong></td><td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--blue)">¥'+totalRev.toLocaleString()+'</td></tr>';
+  html+='</tbody></table></div>';
+
+  // Incentives breakdown
+  html+='<div class="card mb-16"><h3 style="color:var(--red)">💸 インセンティブ支出内訳</h3>';
+  html+='<table><thead><tr><th>項目</th><th>対象者</th><th>計算</th><th style="text-align:right">金額</th></tr></thead><tbody>';
+  if(bkComm>0) html+='<tr><td>予約歩合（0.3%）</td><td style="color:var(--gold);font-weight:600">長岡ゆみ</td><td style="color:var(--muted);font-size:0.85em">'+totalBookings+'件の予約</td><td style="text-align:right;font-weight:700">¥'+bkComm.toLocaleString()+'</td></tr>';
+  if(tbComm>0){
+    var effRate=tb>0?(tbComm/tb*100).toFixed(1):0;
+    html+='<tr><td>テレベット歩合</td><td style="color:'+(role==='leader'?'var(--gold)':'var(--blue)')+';font-weight:600">'+tbRoleName+'</td><td style="color:var(--muted);font-size:0.85em">実質'+effRate+'%</td><td style="text-align:right;font-weight:700">¥'+tbComm.toLocaleString()+'</td></tr>';
+  }
+  if(tgBonus>0) html+='<tr><td>Telegram誘導</td><td style="color:var(--muted)">現地スタッフ</td><td style="color:var(--muted);font-size:0.85em">'+tg+'件 × ¥1,000</td><td style="text-align:right;font-weight:700">¥'+tgBonus.toLocaleString()+'</td></tr>';
+  if(fdBonus>0) html+='<tr><td>初回入金</td><td style="color:var(--muted)">現地スタッフ</td><td style="color:var(--muted);font-size:0.85em">'+fd+'件 × ¥3,000</td><td style="text-align:right;font-weight:700">¥'+fdBonus.toLocaleString()+'</td></tr>';
+  if(BONUS[evChoi]>0) html+='<tr><td>評価ボーナス</td><td style="color:var(--accent);font-weight:600">チョイ（'+evChoi+'）</td><td></td><td style="text-align:right;font-weight:700">¥'+BONUS[evChoi].toLocaleString()+'</td></tr>';
+  if(BONUS[evKevin]>0) html+='<tr><td>評価ボーナス</td><td style="color:var(--blue);font-weight:600">ケビン（'+evKevin+'）</td><td></td><td style="text-align:right;font-weight:700">¥'+BONUS[evKevin].toLocaleString()+'</td></tr>';
+  if(BONUS[evCherin]>0) html+='<tr><td>評価ボーナス</td><td style="color:var(--green);font-weight:600">チェリン（'+evCherin+'）</td><td></td><td style="text-align:right;font-weight:700">¥'+BONUS[evCherin].toLocaleString()+'</td></tr>';
+  if(BONUS[evYumi]>0) html+='<tr><td>評価ボーナス</td><td style="color:var(--gold);font-weight:600">長岡ゆみ（'+evYumi+'）</td><td></td><td style="text-align:right;font-weight:700">¥'+BONUS[evYumi].toLocaleString()+'</td></tr>';
+  html+='<tr style="border-top:2px solid var(--red)"><td colspan="3"><strong>合計インセンティブ</strong></td><td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--red)">¥'+totalIncentive.toLocaleString()+'</td></tr>';
+  html+='</tbody></table></div>';
+
+  // Per-staff breakdown
+  var perStaff={};
+  ['長岡きみ','長岡ゆみ','チョイ','ケビン','チェリン'].forEach(function(s){perStaff[s]=0;});
+  perStaff['長岡ゆみ']+=bkComm;
+  perStaff['長岡ゆみ']+=BONUS[evYumi];
+  if(role==='leader') perStaff['長岡きみ']+=tbComm;
+  perStaff['チョイ']+=BONUS[evChoi];
+  perStaff['ケビン']+=BONUS[evKevin];
+  perStaff['チェリン']+=BONUS[evCherin];
+  // Telegram/deposit: split equally among on-site (can't track individual without real data)
+  // For simulation, show as team total
+
+  html+='<div class="card mb-16"><h3 style="color:var(--green)">👥 スタッフ別支給額</h3>';
+  html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">';
+  ['長岡きみ','長岡ゆみ','チョイ','ケビン','チェリン'].forEach(function(s){
+    var color=STAFF_COLORS[s]||'var(--muted)';
+    html+='<div style="background:var(--bg-tertiary);border:1px solid var(--border);border-radius:8px;padding:14px;border-left:3px solid '+color+'"><div style="color:'+color+';font-weight:700;font-size:0.9em">'+s+'</div><div style="font-size:1.3em;font-weight:700;color:var(--green);margin-top:6px">¥'+perStaff[s].toLocaleString()+'</div></div>';
+  });
+  html+='</div>';
+  if(tgFdTotal>0) html+='<p style="color:var(--muted);font-size:0.82em;margin-top:12px">※ Telegram/初回入金ボーナス（¥'+tgFdTotal.toLocaleString()+'）は実際の誘導者に支給。上記に含まず。</p>';
+  html+='</div>';
+
+  // Summary
+  html+='<div class="card mb-16" style="border-left:4px solid var(--accent)"><h3>📊 サマリー</h3>';
+  html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
+  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">総売上</div><div style="font-size:1.5em;font-weight:700;color:var(--blue)">¥'+totalRev.toLocaleString()+'</div></div>';
+  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">インセンティブ合計</div><div style="font-size:1.5em;font-weight:700;color:var(--red)">¥'+totalIncentive.toLocaleString()+'</div></div>';
+  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">売上比率</div><div style="font-size:1.5em;font-weight:700;color:var(--gold)">'+incentiveRate.toFixed(2)+'%</div></div>';
+  html+='</div></div>';
+
+  document.getElementById('simResult').innerHTML=html;
 }
 
 // ==================== テレベット経費管理 ====================
