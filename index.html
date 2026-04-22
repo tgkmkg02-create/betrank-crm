@@ -1579,6 +1579,58 @@
       <div id="tbTrendSummary" style="margin-top:16px"></div>
     </div>
 
+    <!-- 顧客数シミュレーション -->
+    <div class="card mb-16">
+      <h3>👥 必要顧客数・スタッフキャパシティ試算</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">
+        目標売上を達成するには何人の顧客が必要か、現行3名体制でカバー可能か判定
+      </p>
+
+      <div class="grid grid-4" style="gap:10px;margin-bottom:16px">
+        <div class="form-group">
+          <label>プレミアム顧客（杉田級）</label>
+          <input type="number" id="tierPremium" min="0" value="500000" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.72em;margin-top:4px">月/人 売上貢献</p>
+        </div>
+        <div class="form-group">
+          <label>ハイクラス顧客</label>
+          <input type="number" id="tierHigh" min="0" value="250000" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.72em;margin-top:4px">月/人 売上貢献</p>
+        </div>
+        <div class="form-group">
+          <label>ミドル顧客</label>
+          <input type="number" id="tierMid" min="0" value="120000" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.72em;margin-top:4px">月/人 売上貢献</p>
+        </div>
+        <div class="form-group">
+          <label>ライト顧客</label>
+          <input type="number" id="tierLight" min="0" value="50000" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.72em;margin-top:4px">月/人 売上貢献</p>
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="gap:10px;margin-bottom:16px">
+        <div class="form-group">
+          <label>スタッフ数</label>
+          <input type="number" id="staffCount" min="1" max="20" value="3" style="background:var(--bg-input)">
+        </div>
+        <div class="form-group">
+          <label>1人あたり担当上限（プレミアム）</label>
+          <input type="number" id="capPremium" min="1" max="20" value="3" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.72em;margin-top:4px">高いケアが必要</p>
+        </div>
+        <div class="form-group">
+          <label>1人あたり担当上限（ミドル）</label>
+          <input type="number" id="capMid" min="1" max="50" value="10" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.72em;margin-top:4px">通常対応</p>
+        </div>
+      </div>
+
+      <button onclick="renderTbChart()" style="width:100%;background:var(--accent);padding:12px;font-size:0.95em">🔄 計算更新</button>
+
+      <div id="customerDemandSummary" style="margin-top:16px"></div>
+    </div>
+
     <!-- プリセット -->
     <div class="card mb-16">
       <h3>プリセットシナリオ</h3>
@@ -5224,6 +5276,83 @@ function renderTbChart(){
   sum+='<strong>📍 4月月末予測：</strong>現時点 ¥'+aprCurrent.toLocaleString()+' ÷ '+aprDays+'日 × 30日 = <strong style="color:var(--gold)">¥'+aprProjected.toLocaleString()+'</strong>';
   sum+=' （1日平均 ¥'+Math.round(aprCurrent/aprDays).toLocaleString()+'）</div>';
   document.getElementById('tbTrendSummary').innerHTML=sum;
+
+  // 顧客数シミュレーション
+  renderCustomerDemand(months,revenue);
+}
+
+function renderCustomerDemand(months,revenue){
+  var el=document.getElementById('customerDemandSummary');
+  if(!el)return;
+  var tPrem=parseInt(document.getElementById('tierPremium').value)||500000;
+  var tHigh=parseInt(document.getElementById('tierHigh').value)||250000;
+  var tMid=parseInt(document.getElementById('tierMid').value)||120000;
+  var tLight=parseInt(document.getElementById('tierLight').value)||50000;
+  var staff=parseInt(document.getElementById('staffCount').value)||3;
+  var capP=parseInt(document.getElementById('capPremium').value)||3;
+  var capM=parseInt(document.getElementById('capMid').value)||10;
+  var maxP=staff*capP;
+  var maxM=staff*capM;
+
+  var html='<h4 style="margin-bottom:10px">月別 必要顧客数（パターン別）</h4>';
+  html+='<table><thead><tr><th>月</th><th style="text-align:right">目標売上</th><th style="text-align:right">プレミアムのみ</th><th style="text-align:right">ミドル中心</th><th style="text-align:right">混合型(バランス)</th><th>キャパ判定</th></tr></thead><tbody>';
+
+  months.forEach(function(m,i){
+    var rev=revenue[i];
+    // Pattern A: プレミアムのみ
+    var needP=Math.ceil(rev/tPrem);
+    // Pattern B: ミドル中心
+    var needM=Math.ceil(rev/tMid);
+    // Pattern C: 混合型 (P:20%, H:30%, M:40%, L:10%)
+    var mixP=Math.ceil((rev*0.2)/tPrem);
+    var mixH=Math.ceil((rev*0.3)/tHigh);
+    var mixM=Math.ceil((rev*0.4)/tMid);
+    var mixL=Math.ceil((rev*0.1)/tLight);
+    var mixTotal=mixP+mixH+mixM+mixL;
+
+    // キャパ判定 (mixパターン基準)
+    var capCheck,capColor;
+    var premiumWeight=mixP;
+    var otherWeight=(mixH+mixM+mixL)/3; // Equivalent to mid-level capacity
+    var capacityUsed=(premiumWeight/capP+otherWeight/capM)/staff;
+    if(mixTotal<=maxM && mixP<=maxP){capCheck='✅ OK';capColor='var(--green)';}
+    else if(mixTotal<=maxM*1.2){capCheck='⚠️ ギリギリ';capColor='var(--gold)';}
+    else{capCheck='❌ 人員追加必要';capColor='var(--red)';}
+
+    var isActual=i<2;
+    var isCurrent=i===2;
+    var monthLabel=m;
+    if(isActual) monthLabel+='<span style="color:var(--blue);font-size:0.72em;margin-left:4px">(実績)</span>';
+    else if(isCurrent) monthLabel+='<span style="color:var(--gold);font-size:0.72em;margin-left:4px">(予測)</span>';
+
+    html+='<tr><td>'+monthLabel+'</td>';
+    html+='<td style="text-align:right;color:var(--muted)">¥'+rev.toLocaleString()+'</td>';
+    html+='<td style="text-align:right">'+needP+'名</td>';
+    html+='<td style="text-align:right">'+needM+'名</td>';
+    html+='<td style="text-align:right;font-weight:600">'+mixTotal+'名<br><span style="font-size:0.72em;color:var(--muted)">P'+mixP+'・H'+mixH+'・M'+mixM+'・L'+mixL+'</span></td>';
+    html+='<td style="color:'+capColor+';font-weight:600">'+capCheck+'</td></tr>';
+  });
+  html+='</tbody></table>';
+
+  // キャパ情報
+  html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:16px">';
+  html+='<div style="padding:14px;background:var(--bg-tertiary);border-radius:8px;border-left:3px solid var(--accent)"><div style="font-weight:700;color:var(--accent);font-size:0.88em">現行'+staff+'名体制の上限</div><div style="margin-top:6px;font-size:0.82em">プレミアム: 最大<strong>'+maxP+'名</strong> / 総顧客: 最大<strong>'+maxM+'名</strong></div></div>';
+
+  // 推奨アクション
+  var recMsg='';
+  var lastMixTotal=Math.ceil((revenue[revenue.length-1]*0.2)/tPrem)+Math.ceil((revenue[revenue.length-1]*0.3)/tHigh)+Math.ceil((revenue[revenue.length-1]*0.4)/tMid)+Math.ceil((revenue[revenue.length-1]*0.1)/tLight);
+  if(lastMixTotal>maxM){
+    var addStaff=Math.ceil((lastMixTotal-maxM)/capM);
+    recMsg='<div style="padding:14px;background:rgba(196,49,75,0.08);border-radius:8px;border-left:3px solid var(--red)"><div style="font-weight:700;color:var(--red);font-size:0.88em">⚠️ 年末までに増員必要</div><div style="margin-top:6px;font-size:0.82em">12月時点で<strong>'+lastMixTotal+'名</strong>の顧客対応が必要 → <strong>+'+addStaff+'名</strong>のスタッフ追加推奨</div></div>';
+  }else{
+    recMsg='<div style="padding:14px;background:rgba(15,123,95,0.08);border-radius:8px;border-left:3px solid var(--green)"><div style="font-weight:700;color:var(--green);font-size:0.88em">✅ 年末まで現行体制で対応可</div><div style="margin-top:6px;font-size:0.82em">12月時点で'+lastMixTotal+'名 / 上限'+maxM+'名 — 余裕あり</div></div>';
+  }
+  html+=recMsg;
+  html+='</div>';
+
+  html+='<div style="margin-top:12px;padding:12px;background:var(--bg-tertiary);border-radius:6px;font-size:0.82em;color:var(--muted)"><strong>📝 顧客分類：</strong>プレミアム=杉田級（月¥'+tPrem.toLocaleString()+'）／ハイ（月¥'+tHigh.toLocaleString()+'）／ミドル（月¥'+tMid.toLocaleString()+'）／ライト（月¥'+tLight.toLocaleString()+'）<br><strong>混合型構成：</strong>P:20% ／ H:30% ／ M:40% ／ L:10%（現実的なバランス型）</div>';
+
+  el.innerHTML=html;
 }
 
 // ==================== 売上シミュレーション ====================
