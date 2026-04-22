@@ -1534,120 +1534,100 @@
     <div class="card mb-16" style="border-left:3px solid var(--accent)">
       <h3>ベットランクツアーズ 組織構成</h3>
       <p style="color:var(--muted);font-size:0.9em;line-height:1.7">
-        韓国カジノツアー事業部 + テレベット事業部の2本立て組織。日本・韓国・フィリピンの3拠点で運営。
+        3部門構成：韓国現地チーム、日本チーム、テレベット部門。各部門にリーダーを配置。
       </p>
     </div>
 
     <!-- Organization Chart -->
     <div class="card mb-16" style="overflow-x:auto">
       <style>
-        .org-container{display:flex;flex-direction:column;align-items:center;padding:24px 20px;min-width:900px}
-        .org-node{background:var(--bg-tertiary);border:2px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:160px;margin:6px;position:relative}
-        .org-node.ceo{background:linear-gradient(135deg,var(--accent),#dc2e47);color:#fff;border-color:var(--accent);padding:18px 28px;min-width:220px}
-        .org-node.ceo .role{color:rgba(255,255,255,0.8)}
-        .org-node.dept{border-width:3px;font-weight:700;padding:14px 24px}
-        .org-node.dept.korea{border-color:var(--blue);background:rgba(54,96,170,0.08)}
-        .org-node.dept.japan{border-color:var(--gold);background:rgba(154,91,0,0.08)}
-        .org-node.dept.telebet{border-color:var(--green);background:rgba(15,123,95,0.08)}
+        .org-container{display:flex;justify-content:center;gap:30px;padding:24px 20px;min-width:900px;flex-wrap:wrap}
+        .org-node{background:var(--bg-tertiary);border:2px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:160px;margin:6px}
+        .org-node.leader{font-weight:700;padding:16px 26px;min-width:200px}
+        .org-node.leader.korea{border-color:var(--blue);background:rgba(54,96,170,0.1);border-width:3px}
+        .org-node.leader.japan{border-color:var(--gold);background:rgba(154,91,0,0.1);border-width:3px}
+        .org-node.leader.telebet{border-color:var(--green);background:rgba(15,123,95,0.1);border-width:3px}
         .org-node .name{font-weight:700;font-size:1.05em}
         .org-node .role{color:var(--muted);font-size:0.78em;margin-top:3px}
-        .org-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;position:relative}
+        .org-node.leader .crown{font-size:1.1em;margin-right:4px}
+        .org-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
         .org-line{height:24px;width:2px;background:var(--border);margin:0 auto}
-        .org-line-h{height:2px;background:var(--border);margin:12px 0}
-        .org-group{display:flex;flex-direction:column;align-items:center;padding:0 12px}
+        .org-group{display:flex;flex-direction:column;align-items:center;padding:0 8px;flex:1;min-width:260px}
+        .org-dept-label{color:var(--muted);font-weight:700;font-size:0.85em;margin-bottom:10px;letter-spacing:1px}
       </style>
       <div class="org-container">
-        <!-- CEO -->
-        <div class="org-node ceo">
-          <div class="name" style="font-size:1.15em">長岡きみ</div>
-          <div class="role">代表 / CEO</div>
-          <div class="role" style="margin-top:4px">🇯🇵 日本本社 + テレベット統括</div>
-        </div>
 
-        <div class="org-line"></div>
-
-        <!-- 3 Departments -->
-        <div class="org-row">
-          <!-- 韓国現地部門 -->
-          <div class="org-group">
-            <div class="org-node dept korea">
-              <div class="name">🇰🇷 韓国現地チーム</div>
-              <div class="role">カジノツアー運営</div>
-            </div>
-            <div class="org-line"></div>
-            <div class="org-row">
-              <div class="org-node" style="border-left:3px solid var(--blue)">
-                <div class="name">チョイ</div>
-                <div class="role">現地スタッフ</div>
-              </div>
-              <div class="org-node" style="border-left:3px solid var(--blue)">
-                <div class="name">ケビン</div>
-                <div class="role">現地スタッフ</div>
-              </div>
-              <div class="org-node" style="border-left:3px solid var(--blue)">
-                <div class="name">チェリン</div>
-                <div class="role">現地スタッフ</div>
-              </div>
-            </div>
+        <!-- 韓国現地チーム -->
+        <div class="org-group">
+          <div class="org-dept-label">🇰🇷 韓国現地チーム</div>
+          <div class="org-node leader korea">
+            <div class="name"><span class="crown">👑</span>ケビン</div>
+            <div class="role">リーダー</div>
           </div>
-
-          <!-- 日本チーム -->
-          <div class="org-group">
-            <div class="org-node dept japan">
-              <div class="name">🇯🇵 日本チーム</div>
-              <div class="role">CS / 予約対応</div>
+          <div class="org-line"></div>
+          <div class="org-row">
+            <div class="org-node" style="border-left:3px solid var(--blue)">
+              <div class="name">チョイ</div>
+              <div class="role">現地スタッフ</div>
             </div>
-            <div class="org-line"></div>
-            <div class="org-row">
-              <div class="org-node" style="border-left:3px solid var(--gold)">
-                <div class="name">長岡ゆみ</div>
-                <div class="role">CS担当</div>
-              </div>
-              <div class="org-node" style="border-left:3px solid var(--gold)">
-                <div class="name">FUさん</div>
-                <div class="role">スタッフ</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- テレベット部門 -->
-          <div class="org-group">
-            <div class="org-node dept telebet">
-              <div class="name">📱 テレベット部門</div>
-              <div class="role">オンラインベット</div>
-            </div>
-            <div class="org-line"></div>
-            <div class="org-row">
-              <div class="org-node" style="border-left:3px solid var(--green)">
-                <div class="name">長岡きみ</div>
-                <div class="role">統括担当</div>
-              </div>
-              <div class="org-node" style="border-left:3px solid var(--green)">
-                <div class="name">フィリピンスタッフ×2</div>
-                <div class="role">現地運営</div>
-              </div>
-              <div class="org-node" style="border-left:3px solid var(--green)">
-                <div class="name">ドライバー</div>
-                <div class="role">送迎</div>
-              </div>
+            <div class="org-node" style="border-left:3px solid var(--blue)">
+              <div class="name">チェリン</div>
+              <div class="role">現地スタッフ</div>
             </div>
           </div>
         </div>
+
+        <!-- 日本チーム -->
+        <div class="org-group">
+          <div class="org-dept-label">🇯🇵 日本チーム</div>
+          <div class="org-node leader japan">
+            <div class="name"><span class="crown">👑</span>長岡きみ</div>
+            <div class="role">リーダー</div>
+          </div>
+          <div class="org-line"></div>
+          <div class="org-row">
+            <div class="org-node" style="border-left:3px solid var(--gold)">
+              <div class="name">長岡ゆみ</div>
+              <div class="role">CS担当</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- テレベット部門 -->
+        <div class="org-group">
+          <div class="org-dept-label">📱 テレベット部門</div>
+          <div class="org-node leader telebet">
+            <div class="name"><span class="crown">👑</span>長岡きみ</div>
+            <div class="role">リーダー</div>
+          </div>
+          <div class="org-line"></div>
+          <div class="org-row">
+            <div class="org-node" style="border-left:3px solid var(--green)">
+              <div class="name">フィリピンスタッフ×2</div>
+              <div class="role">現地運営</div>
+            </div>
+            <div class="org-node" style="border-left:3px solid var(--green)">
+              <div class="name">ドライバー</div>
+              <div class="role">送迎</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <!-- 評価ライン -->
     <div class="card mb-16">
-      <h3>🏆 評価ライン（3名評価制）</h3>
-      <p style="color:var(--muted);font-size:0.9em;margin-bottom:16px">現地スタッフの最終評価は以下3名の平均で決定：</p>
+      <h3>🏆 評価ライン</h3>
+      <p style="color:var(--muted);font-size:0.9em;margin-bottom:16px">現地スタッフの最終評価は以下の評価者による平均で決定：</p>
       <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
         <div style="background:var(--bg-tertiary);border:2px solid var(--blue);border-radius:10px;padding:16px 24px;text-align:center">
           <div style="font-weight:700;color:var(--blue);font-size:1.05em">👤 ケビン</div>
-          <div style="color:var(--muted);font-size:0.8em;margin-top:4px">現地リーダー評価</div>
+          <div style="color:var(--muted);font-size:0.8em;margin-top:4px">韓国現地リーダー評価</div>
         </div>
         <div style="background:var(--bg-tertiary);border:2px solid var(--gold);border-radius:10px;padding:16px 24px;text-align:center">
           <div style="font-weight:700;color:var(--gold);font-size:1.05em">👤 長岡きみ</div>
-          <div style="color:var(--muted);font-size:0.8em;margin-top:4px">CEO評価</div>
+          <div style="color:var(--muted);font-size:0.8em;margin-top:4px">日本・テレベット統括評価</div>
         </div>
         <div style="background:var(--bg-tertiary);border:2px solid var(--purple);border-radius:10px;padding:16px 24px;text-align:center">
           <div style="font-weight:700;color:var(--purple);font-size:1.05em">👤 FUさん</div>
@@ -1660,14 +1640,13 @@
     <div class="card mb-16">
       <h3>役割・担当業務</h3>
       <table>
-        <thead><tr><th>担当者</th><th>所属</th><th>主な業務</th><th>インセンティブ</th></tr></thead>
+        <thead><tr><th>担当者</th><th>所属</th><th>役職</th><th>主な業務</th><th>インセンティブ</th></tr></thead>
         <tbody>
-          <tr><td><strong style="color:var(--gold)">長岡きみ</strong></td><td>🇯🇵 CEO / テレベット統括</td><td>経営判断、テレベット運営</td><td>テレベット歩合（12-18%）+ 評価</td></tr>
-          <tr><td><strong style="color:var(--gold)">長岡ゆみ</strong></td><td>🇯🇵 日本CS</td><td>顧客対応・予約管理</td><td>予約歩合 + 評価</td></tr>
-          <tr><td><strong style="color:var(--purple)">FUさん</strong></td><td>🇯🇵 日本チーム</td><td>CS / 運営サポート / 評価者</td><td>予約歩合 + 評価</td></tr>
-          <tr><td><strong style="color:var(--accent)">チョイ</strong></td><td>🇰🇷 韓国現地</td><td>ツアー運営、顧客案内</td><td>評価ボーナス + Telegram/入金</td></tr>
-          <tr><td><strong style="color:var(--blue)">ケビン</strong></td><td>🇰🇷 韓国現地</td><td>現地リーダー、評価者</td><td>評価ボーナス + Telegram/入金</td></tr>
-          <tr><td><strong style="color:var(--green)">チェリン</strong></td><td>🇰🇷 韓国現地</td><td>ツアー運営、顧客案内</td><td>評価ボーナス + Telegram/入金</td></tr>
+          <tr><td><strong style="color:var(--blue)">ケビン</strong></td><td>🇰🇷 韓国現地</td><td style="color:var(--blue);font-weight:700">リーダー</td><td>現地統括、ツアー運営</td><td>評価ボーナス + Telegram/入金</td></tr>
+          <tr><td><strong style="color:var(--accent)">チョイ</strong></td><td>🇰🇷 韓国現地</td><td>スタッフ</td><td>ツアー運営、顧客案内</td><td>評価ボーナス + Telegram/入金</td></tr>
+          <tr><td><strong style="color:var(--green)">チェリン</strong></td><td>🇰🇷 韓国現地</td><td>スタッフ</td><td>ツアー運営、顧客案内</td><td>評価ボーナス + Telegram/入金</td></tr>
+          <tr><td><strong style="color:var(--gold)">長岡きみ</strong></td><td>🇯🇵 日本 / 📱 テレベット</td><td style="color:var(--gold);font-weight:700">両部門リーダー</td><td>日本チーム統括、テレベット運営</td><td>テレベット歩合（12-18%）+ 評価</td></tr>
+          <tr><td><strong style="color:var(--gold)">長岡ゆみ</strong></td><td>🇯🇵 日本チーム</td><td>CS担当</td><td>顧客対応・予約管理</td><td>予約歩合 + 評価</td></tr>
         </tbody>
       </table>
     </div>
