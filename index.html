@@ -1553,25 +1553,26 @@
 
     <!-- テレベット売上推移グラフ -->
     <div class="card mb-16">
-      <h3>📈 テレベット売上推移 — 実績+予測</h3>
-      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">2〜3月は実績、4月は予測値（3シナリオ）。歩合は長岡きみ基準（12/15/18%）</p>
+      <h3>📈 テレベット売上推移 — 実績+予測（右肩上がり）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">2〜3月実績、4月は現時点から月末予測、5月以降は成長率による予測</p>
 
       <div class="grid grid-3" style="gap:10px;margin-bottom:16px">
         <div class="form-group">
-          <label>4月予測（悲観）</label>
-          <input type="number" id="tbApr低" min="0" value="800000" onchange="renderTbChart()" style="background:var(--bg-input)">
+          <label>4月 現時点売上（¥）</label>
+          <input type="number" id="tbAprCurrent" min="0" value="1000000" onchange="renderTbChart()" style="background:var(--bg-input)">
         </div>
         <div class="form-group">
-          <label>4月予測（標準）</label>
-          <input type="number" id="tbApr標準" min="0" value="1400000" onchange="renderTbChart()" style="background:var(--bg-input)">
+          <label>4月 経過日数</label>
+          <input type="number" id="tbAprDays" min="1" max="30" value="19" onchange="renderTbChart()" style="background:var(--bg-input)">
         </div>
         <div class="form-group">
-          <label>4月予測（楽観）</label>
-          <input type="number" id="tbApr楽観" min="0" value="2000000" onchange="renderTbChart()" style="background:var(--bg-input)">
+          <label>月次成長率（5月〜）</label>
+          <input type="number" id="tbGrowthRate" min="0" max="50" step="1" value="10" onchange="renderTbChart()" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.72em;margin-top:4px">毎月の売上増加率（%）</p>
         </div>
       </div>
 
-      <div style="position:relative;height:360px">
+      <div style="position:relative;height:400px">
         <canvas id="tbTrendChart"></canvas>
       </div>
 
@@ -5157,22 +5158,26 @@ var tbTrendChartInstance=null;
 function renderTbChart(){
   var canvas=document.getElementById('tbTrendChart');
   if(!canvas)return;
+
   var feb=1439885;
   var mar=1430228;
-  var aprLow=parseInt(document.getElementById('tbApr低').value)||0;
-  var aprMid=parseInt(document.getElementById('tbApr標準').value)||0;
-  var aprHigh=parseInt(document.getElementById('tbApr楽観').value)||0;
+  var aprCurrent=parseInt(document.getElementById('tbAprCurrent').value)||0;
+  var aprDays=parseInt(document.getElementById('tbAprDays').value)||19;
+  var growthRate=parseFloat(document.getElementById('tbGrowthRate').value)||10;
 
-  var months=['2月','3月','4月'];
-  var revenue=[feb,mar,aprMid];
-  var revLow=[null,null,aprLow];
-  var revHigh=[null,null,aprHigh];
+  // 4月月末予測（現時点売上 × 30 / 経過日数）
+  var aprProjected=Math.round(aprCurrent*30/aprDays);
 
-  var commFeb=calcTelebetCommission(feb,'leader');
-  var commMar=calcTelebetCommission(mar,'leader');
-  var commAprLow=calcTelebetCommission(aprLow,'leader');
-  var commAprMid=calcTelebetCommission(aprMid,'leader');
-  var commAprHigh=calcTelebetCommission(aprHigh,'leader');
+  // 右肩上がり予測：5月以降は成長率で上昇
+  var months=['2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  var revenue=[feb,mar,aprProjected];
+  for(var i=0;i<8;i++){
+    revenue.push(Math.round(revenue[revenue.length-1]*(1+growthRate/100)));
+  }
+
+  var commissions=revenue.map(function(r){return calcTelebetCommission(r,'leader');});
+  var actualRev=[feb,mar];for(var j=0;j<9;j++)actualRev.push(null);
+  var projectedRev=[null,null];for(var k=2;k<revenue.length;k++)projectedRev.push(revenue[k]);
 
   if(tbTrendChartInstance){tbTrendChartInstance.destroy();}
   var ctx=canvas.getContext('2d');
@@ -5181,96 +5186,43 @@ function renderTbChart(){
     data:{
       labels:months,
       datasets:[
-        {
-          type:'bar',
-          label:'売上（実績）',
-          data:[feb,mar,null],
-          backgroundColor:'rgba(54,96,170,0.7)',
-          borderColor:'#3660aa',
-          borderWidth:2,
-          borderRadius:6
-        },
-        {
-          type:'bar',
-          label:'4月標準予測',
-          data:[null,null,aprMid],
-          backgroundColor:'rgba(15,123,95,0.7)',
-          borderColor:'#0f7b5f',
-          borderWidth:2,
-          borderRadius:6
-        },
-        {
-          type:'line',
-          label:'悲観予測',
-          data:[null,null,aprLow],
-          borderColor:'#c4314b',
-          backgroundColor:'#c4314b',
-          pointRadius:8,
-          pointHoverRadius:10,
-          showLine:false
-        },
-        {
-          type:'line',
-          label:'楽観予測',
-          data:[null,null,aprHigh],
-          borderColor:'#9a5b00',
-          backgroundColor:'#9a5b00',
-          pointRadius:8,
-          pointHoverRadius:10,
-          pointStyle:'triangle',
-          showLine:false
-        },
-        {
-          type:'line',
-          label:'長岡きみ歩合',
-          data:[commFeb,commMar,commAprMid],
-          borderColor:'#e94560',
-          backgroundColor:'rgba(233,69,96,0.1)',
-          borderWidth:3,
-          pointRadius:6,
-          pointBackgroundColor:'#e94560',
-          tension:0.3,
-          yAxisID:'y1'
-        }
+        {type:'bar',label:'売上（実績）',data:actualRev,backgroundColor:'rgba(54,96,170,0.85)',borderColor:'#3660aa',borderWidth:2,borderRadius:6,order:2},
+        {type:'bar',label:'売上（予測）',data:projectedRev,backgroundColor:'rgba(15,123,95,0.55)',borderColor:'#0f7b5f',borderWidth:2,borderRadius:6,order:2},
+        {type:'line',label:'長岡きみ歩合',data:commissions,borderColor:'#e94560',backgroundColor:'rgba(233,69,96,0.15)',borderWidth:3,pointRadius:5,pointBackgroundColor:'#e94560',pointBorderColor:'#fff',pointBorderWidth:2,tension:0.3,yAxisID:'y1',fill:false,order:1}
       ]
     },
     options:{
-      responsive:true,
-      maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
+      responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{
-        legend:{position:'top',labels:{font:{size:12}}},
-        tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': ¥'+(ctx.parsed.y||0).toLocaleString();}}}
+        legend:{position:'top',labels:{font:{size:12},usePointStyle:true}},
+        tooltip:{callbacks:{label:function(ctx){var v=ctx.parsed.y;if(v===null)return null;return ctx.dataset.label+': ¥'+v.toLocaleString();}}},
+        title:{display:true,text:'テレベット売上推移 — 右肩上がり予測',font:{size:13}}
       },
       scales:{
-        y:{
-          beginAtZero:true,
-          title:{display:true,text:'売上（¥）'},
-          ticks:{callback:function(v){return '¥'+(v/10000).toFixed(0)+'万';}}
-        },
-        y1:{
-          beginAtZero:true,
-          position:'right',
-          title:{display:true,text:'歩合（¥）',color:'#e94560'},
-          ticks:{callback:function(v){return '¥'+(v/10000).toFixed(0)+'万';},color:'#e94560'},
-          grid:{drawOnChartArea:false}
-        }
+        y:{beginAtZero:true,title:{display:true,text:'売上（¥）'},ticks:{callback:function(v){return '¥'+(v/10000).toFixed(0)+'万';}}},
+        y1:{beginAtZero:true,position:'right',title:{display:true,text:'歩合（¥）',color:'#e94560'},ticks:{callback:function(v){return '¥'+(v/10000).toFixed(0)+'万';},color:'#e94560'},grid:{drawOnChartArea:false}}
       }
     }
   });
 
-  // Summary table
-  var sum='<table><thead><tr><th>シナリオ</th><th style="text-align:right">4月売上</th><th style="text-align:right">長岡歩合</th><th style="text-align:right">実質率</th><th style="text-align:right">2〜4月合計売上</th></tr></thead><tbody>';
-  [
-    {name:'悲観',val:aprLow,comm:commAprLow,color:'var(--red)'},
-    {name:'標準',val:aprMid,comm:commAprMid,color:'var(--green)'},
-    {name:'楽観',val:aprHigh,comm:commAprHigh,color:'var(--gold)'}
-  ].forEach(function(s){
-    var rate=s.val>0?(s.comm/s.val*100).toFixed(1):0;
-    sum+='<tr><td style="color:'+s.color+';font-weight:700">'+s.name+'</td><td style="text-align:right">¥'+s.val.toLocaleString()+'</td><td style="text-align:right;color:var(--accent);font-weight:600">¥'+s.comm.toLocaleString()+'</td><td style="text-align:right">'+rate+'%</td><td style="text-align:right;font-weight:600">¥'+(feb+mar+s.val).toLocaleString()+'</td></tr>';
-  });
+  // Summary
+  var totalRev=revenue.reduce(function(a,b){return a+b;},0);
+  var totalComm=commissions.reduce(function(a,b){return a+b;},0);
+  var sum='<h4 style="margin-bottom:10px">月別予測サマリー</h4>';
+  sum+='<table><thead><tr><th>月</th><th style="text-align:right">売上</th><th style="text-align:right">長岡歩合</th><th style="text-align:right">実質率</th></tr></thead><tbody>';
+  for(var m=0;m<months.length;m++){
+    var label=months[m];
+    if(m<2) label+=' <span style="color:var(--blue);font-size:0.75em">(実績)</span>';
+    else if(m===2) label+=' <span style="color:var(--gold);font-size:0.75em">(月末予測)</span>';
+    else label+=' <span style="color:var(--muted);font-size:0.75em">(予測)</span>';
+    var rate=revenue[m]>0?(commissions[m]/revenue[m]*100).toFixed(1):0;
+    sum+='<tr><td>'+label+'</td><td style="text-align:right">¥'+revenue[m].toLocaleString()+'</td><td style="text-align:right;color:var(--accent);font-weight:600">¥'+commissions[m].toLocaleString()+'</td><td style="text-align:right">'+rate+'%</td></tr>';
+  }
+  sum+='<tr style="border-top:2px solid var(--accent)"><td><strong>年間合計</strong></td><td style="text-align:right;font-weight:700;color:var(--blue)">¥'+totalRev.toLocaleString()+'</td><td style="text-align:right;font-weight:700;color:var(--accent)">¥'+totalComm.toLocaleString()+'</td><td style="text-align:right">'+(totalRev>0?(totalComm/totalRev*100).toFixed(1):0)+'%</td></tr>';
   sum+='</tbody></table>';
-  sum+='<div style="margin-top:12px;padding:12px;background:rgba(54,96,170,0.08);border-left:3px solid var(--blue);border-radius:6px;font-size:0.85em"><strong>📊 実績：</strong>2月 ¥'+feb.toLocaleString()+' / 3月 ¥'+mar.toLocaleString()+' — 月平均 ¥'+Math.round((feb+mar)/2).toLocaleString()+'</div>';
+  sum+='<div style="margin-top:12px;padding:12px;background:rgba(245,166,35,0.1);border-left:3px solid var(--gold);border-radius:6px;font-size:0.85em">';
+  sum+='<strong>📍 4月月末予測：</strong>現時点 ¥'+aprCurrent.toLocaleString()+' ÷ '+aprDays+'日 × 30日 = <strong style="color:var(--gold)">¥'+aprProjected.toLocaleString()+'</strong>';
+  sum+=' （1日平均 ¥'+Math.round(aprCurrent/aprDays).toLocaleString()+'）</div>';
   document.getElementById('tbTrendSummary').innerHTML=sum;
 }
 
