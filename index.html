@@ -1597,6 +1597,34 @@
       </div>
     </div>
 
+    <!-- 会社利益・経費 -->
+    <div class="card mb-16">
+      <h3>会社利益・経費の仮定</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">予約売上から会社に入る実際の利益率と月固定費を設定</p>
+      <div class="grid grid-2" style="gap:10px">
+        <div class="form-group">
+          <label>韓国利益率（予約売上に対する%）</label>
+          <input type="number" id="simKrProfitRate" step="0.1" min="0" max="100" value="8" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.75em;margin-top:4px">ローリング収益 + W/L利益 + ホテル上乗せ等。実績ベースでは6〜10%</p>
+        </div>
+        <div class="form-group">
+          <label>月間固定費（¥）</label>
+          <input type="number" id="simFixedCost" min="0" value="4200000" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.75em;margin-top:4px">人件費+家賃+広告+その他（実績ベース 約¥420万/月）</p>
+        </div>
+        <div class="form-group">
+          <label>韓国現地費用率（売上に対する%）</label>
+          <input type="number" id="simKrCostRate" step="0.1" min="0" max="100" value="30" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.75em;margin-top:4px">フライト・ホテル・接待等。実績ベース 20〜35%</p>
+        </div>
+        <div class="form-group">
+          <label>テレベット経費（¥）</label>
+          <input type="number" id="simTbExpense" min="0" value="1566482" style="background:var(--bg-input)">
+          <p style="color:var(--muted);font-size:0.75em;margin-top:4px">スタッフ給料・車・家賃・ビザ等（3月実績）</p>
+        </div>
+      </div>
+    </div>
+
     <button onclick="calcCashflow()" style="width:100%;background:var(--accent);padding:14px;font-size:1em;margin-bottom:20px">💰 シミュレーション計算</button>
 
     <div id="simResult"></div>
@@ -5162,6 +5190,20 @@ function calcCashflow(){
   var totalIncentive=bkComm+tbComm+tgFdTotal+evTotal;
   var incentiveRate=totalRev>0?(totalIncentive/totalRev*100):0;
 
+  // Company profit calculation
+  var krProfitRate=parseFloat(document.getElementById('simKrProfitRate').value)||0;
+  var fixedCost=parseInt(document.getElementById('simFixedCost').value)||0;
+  var krCostRate=parseFloat(document.getElementById('simKrCostRate').value)||0;
+  var tbExpense=parseInt(document.getElementById('simTbExpense').value)||0;
+
+  var krGrossProfit=Math.round(krRev*krProfitRate/100);
+  var krLocalCost=Math.round(krRev*krCostRate/100);
+  var krNetProfit=krGrossProfit-krLocalCost;
+  var tbNetProfit=tb-tbExpense-tbComm;
+  var totalExpenses=fixedCost+krLocalCost+tbExpense+totalIncentive;
+  var companyRevenue=krGrossProfit+tb;
+  var companyNet=companyRevenue-fixedCost-krLocalCost-tbExpense-totalIncentive;
+
   // Build result HTML
   var html='';
 
@@ -5220,12 +5262,34 @@ function calcCashflow(){
   if(tgFdTotal>0) html+='<p style="color:var(--muted);font-size:0.82em;margin-top:12px">※ Telegram/初回入金ボーナス（¥'+tgFdTotal.toLocaleString()+'）は実際の誘導者に支給。上記に含まず。</p>';
   html+='</div>';
 
+  // P&L breakdown
+  html+='<div class="card mb-16" style="border-left:4px solid var(--gold)"><h3 style="color:var(--gold)">📋 完全P&L（会社純利益の試算）</h3>';
+  html+='<table><tbody>';
+  html+='<tr style="background:rgba(54,96,170,0.05)"><td colspan="2" style="padding:10px;font-weight:700;color:var(--blue)">💰 収益</td></tr>';
+  html+='<tr><td>韓国予約売上</td><td style="text-align:right">¥'+krRev.toLocaleString()+'</td></tr>';
+  html+='<tr><td style="padding-left:24px;color:var(--muted);font-size:0.85em">　→ 会社利益（'+krProfitRate+'%）</td><td style="text-align:right;color:var(--green)">¥'+krGrossProfit.toLocaleString()+'</td></tr>';
+  html+='<tr><td>テレベット売上</td><td style="text-align:right;color:var(--green)">¥'+tb.toLocaleString()+'</td></tr>';
+  html+='<tr style="border-top:1px solid var(--border)"><td><strong>会社収益合計</strong></td><td style="text-align:right;font-weight:700;color:var(--blue)">¥'+companyRevenue.toLocaleString()+'</td></tr>';
+
+  html+='<tr style="background:rgba(196,49,75,0.05)"><td colspan="2" style="padding:10px;font-weight:700;color:var(--red)">💸 経費</td></tr>';
+  html+='<tr><td>月間固定費（人件費+家賃+広告等）</td><td style="text-align:right;color:var(--red)">-¥'+fixedCost.toLocaleString()+'</td></tr>';
+  html+='<tr><td>韓国現地費用（フライト+ホテル等 '+krCostRate+'%）</td><td style="text-align:right;color:var(--red)">-¥'+krLocalCost.toLocaleString()+'</td></tr>';
+  html+='<tr><td>テレベット経費</td><td style="text-align:right;color:var(--red)">-¥'+tbExpense.toLocaleString()+'</td></tr>';
+  html+='<tr><td>インセンティブ合計</td><td style="text-align:right;color:var(--red)">-¥'+totalIncentive.toLocaleString()+'</td></tr>';
+  html+='<tr style="border-top:1px solid var(--border)"><td><strong>経費合計</strong></td><td style="text-align:right;font-weight:700;color:var(--red)">-¥'+totalExpenses.toLocaleString()+'</td></tr>';
+
+  var netColor=companyNet>=0?'var(--green)':'var(--red)';
+  html+='<tr style="border-top:3px double var(--accent);background:'+(companyNet>=0?'rgba(15,123,95,0.08)':'rgba(196,49,75,0.08)')+'"><td style="padding:14px"><strong style="font-size:1.05em">会社純利益</strong></td><td style="text-align:right;padding:14px;font-size:1.5em;font-weight:700;color:'+netColor+'">¥'+companyNet.toLocaleString()+'</td></tr>';
+  html+='</tbody></table></div>';
+
   // Summary
   html+='<div class="card mb-16" style="border-left:4px solid var(--accent)"><h3>📊 サマリー</h3>';
   html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">';
-  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">総売上</div><div style="font-size:1.5em;font-weight:700;color:var(--blue)">¥'+totalRev.toLocaleString()+'</div></div>';
-  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">インセンティブ合計</div><div style="font-size:1.5em;font-weight:700;color:var(--red)">¥'+totalIncentive.toLocaleString()+'</div></div>';
-  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">売上比率</div><div style="font-size:1.5em;font-weight:700;color:var(--gold)">'+incentiveRate.toFixed(2)+'%</div></div>';
+  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">総売上</div><div style="font-size:1.4em;font-weight:700;color:var(--blue)">¥'+totalRev.toLocaleString()+'</div></div>';
+  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">会社収益</div><div style="font-size:1.4em;font-weight:700;color:var(--blue)">¥'+companyRevenue.toLocaleString()+'</div></div>';
+  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">インセンティブ</div><div style="font-size:1.4em;font-weight:700;color:var(--red)">¥'+totalIncentive.toLocaleString()+'</div></div>';
+  html+='<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px"><div style="color:var(--muted);font-size:0.82em">経費合計</div><div style="font-size:1.4em;font-weight:700;color:var(--red)">¥'+totalExpenses.toLocaleString()+'</div></div>';
+  html+='<div style="text-align:center;padding:16px;background:'+(companyNet>=0?'rgba(15,123,95,0.1)':'rgba(196,49,75,0.1)')+';border:2px solid '+netColor+';border-radius:8px"><div style="color:var(--muted);font-size:0.82em">会社純利益</div><div style="font-size:1.6em;font-weight:700;color:'+netColor+'">¥'+companyNet.toLocaleString()+'</div></div>';
   html+='</div></div>';
 
   document.getElementById('simResult').innerHTML=html;
