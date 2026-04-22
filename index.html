@@ -742,6 +742,9 @@
     <div class="tab" onclick="showTab('totalIncentiveTab',this)">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></span><span>インセンティブ集計</span>
     </div>
+    <div class="tab" onclick="showTab('staffIncentiveTab',this)">
+      <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span>スタッフ別</span>
+    </div>
     <div style="padding:12px 14px 4px;color:rgba(232,230,227,0.3);font-size:0.65em;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:8px">外部システム</div>
     <div class="tab" onclick="window.open('survey.html','_blank')">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>アンケート送信 ↗</span>
@@ -1496,6 +1499,19 @@
       <h3>月次インセンティブ合計</h3>
       <div id="totIncResult"></div>
     </div>
+  </div>
+</div>
+
+<!-- TAB: スタッフ別インセンティブ管理 -->
+<div id="staffIncentiveTab" class="tab-content">
+  <div class="topbar"><div class="topbar-title">スタッフ別インセンティブ管理</div></div>
+  <div style="padding:28px 32px;max-width:1600px;margin:0 auto">
+    <div class="card mb-16">
+      <h3>スタッフを選択</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap" id="staffSelector"></div>
+    </div>
+
+    <div id="staffIncDetail"></div>
   </div>
 </div>
 
@@ -4831,6 +4847,151 @@ function renderTbActions(){
   listEl.innerHTML=html;
 }
 
+// ==================== スタッフ別インセンティブ管理 ====================
+var STAFF_LIST=['長岡きみ','長岡ゆみ','チョイ','ケビン','チェリン'];
+var selectedStaff='長岡きみ';
+
+function seedInitialData(){
+  if(localStorage.getItem('incentive_seeded')==='1')return;
+  // Nagaoka Kimi's telebet profits (Feb-Apr)
+  var tbProfits=[
+    {month:'2026-02',amount:1439885,commission:calcTbCommission(1439885)},
+    {month:'2026-03',amount:1430228,commission:calcTbCommission(1430228)},
+    {month:'2026-04',amount:839567,commission:calcTbCommission(839567)}
+  ];
+  var existing=JSON.parse(localStorage.getItem('tb_profits')||'[]');
+  if(existing.length===0){
+    localStorage.setItem('tb_profits',JSON.stringify(tbProfits));
+  }
+  localStorage.setItem('incentive_seeded','1');
+}
+
+function renderStaffSelector(){
+  var el=document.getElementById('staffSelector');
+  if(!el)return;
+  var html='';
+  STAFF_LIST.forEach(function(s){
+    var color=STAFF_COLORS[s]||'var(--muted)';
+    var active=s===selectedStaff;
+    html+='<button onclick="selectStaff(\''+s+'\')" style="background:'+(active?color:'var(--bg-tertiary)')+';color:'+(active?'#fff':'var(--text-primary)')+';border:1px solid '+color+';padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:'+(active?'700':'500')+';transition:all 0.15s">'+s+'</button>';
+  });
+  el.innerHTML=html;
+}
+
+function selectStaff(s){
+  selectedStaff=s;
+  renderStaffSelector();
+  renderStaffIncDetail();
+}
+
+function renderStaffIncDetail(){
+  var s=selectedStaff;
+  var color=STAFF_COLORS[s]||'var(--muted)';
+
+  // Aggregate by month
+  var monthData={};
+  function ensureMonth(m){if(!monthData[m])monthData[m]={booking:0,telegram:0,deposit:0,eval:null,tb:0,details:{booking:[],telegram:[],deposit:[],tb:null,eval:null}};return monthData[m];}
+
+  getBookings().forEach(function(b){
+    if(b.staff!==s)return;
+    var m=b.date?b.date.substring(0,7):'不明';
+    var md=ensureMonth(m);
+    md.booking+=b.commission;
+    md.details.booking.push(b);
+  });
+
+  getTgRecords().forEach(function(r){
+    if(r.staff!==s)return;
+    var m=r.date?r.date.substring(0,7):'不明';
+    var md=ensureMonth(m);
+    if(r.type==='telegram'){md.telegram+=r.bonus;md.details.telegram.push(r);}
+    else{md.deposit+=r.bonus;md.details.deposit.push(r);}
+  });
+
+  getEvalBonuses().forEach(function(e){
+    if(e.staff!==s)return;
+    var md=ensureMonth(e.month);
+    md.eval=e.bonus;
+    md.details.eval=e;
+  });
+
+  if(s==='長岡きみ'){
+    getTbProfits().forEach(function(p){
+      var md=ensureMonth(p.month);
+      md.tb+=p.commission;
+      md.details.tb=p;
+    });
+  }
+
+  var months=Object.keys(monthData).sort().reverse();
+  var grandTotal=0;
+  months.forEach(function(m){
+    var d=monthData[m];
+    grandTotal+=(d.eval||0)+d.booking+d.telegram+d.deposit+d.tb;
+  });
+
+  var html='<div class="card mb-16" style="border-left:4px solid '+color+'"><div style="display:flex;justify-content:space-between;align-items:center"><div><h2 style="color:'+color+';font-size:1.6em;margin:0">'+s+'</h2><div style="color:var(--muted);font-size:0.85em;margin-top:4px">インセンティブ詳細履歴</div></div><div style="text-align:right"><div style="color:var(--muted);font-size:0.8em">累計インセンティブ</div><div style="font-size:2em;font-weight:700;color:var(--green)">¥'+grandTotal.toLocaleString()+'</div></div></div></div>';
+
+  if(months.length===0){
+    html+='<div class="card"><p style="color:var(--muted);text-align:center;padding:40px">このスタッフのインセンティブ記録はまだありません</p></div>';
+    document.getElementById('staffIncDetail').innerHTML=html;
+    return;
+  }
+
+  // Summary table
+  html+='<div class="card mb-16"><h3>月次サマリー</h3><table><thead><tr><th>月</th><th style="text-align:right">評価ボーナス</th><th style="text-align:right">予約歩合</th><th style="text-align:right">Telegram</th><th style="text-align:right">初回入金</th>'+(s==='長岡きみ'?'<th style="text-align:right">テレベット歩合</th>':'')+'<th style="text-align:right">合計</th></tr></thead><tbody>';
+  months.forEach(function(m){
+    var d=monthData[m];
+    var total=(d.eval||0)+d.booking+d.telegram+d.deposit+d.tb;
+    html+='<tr><td><strong>'+m.replace('-','年')+'月</strong></td>';
+    html+='<td style="text-align:right">'+(d.eval!==null?'¥'+d.eval.toLocaleString():'—')+'</td>';
+    html+='<td style="text-align:right">'+(d.booking?'¥'+d.booking.toLocaleString():'—')+'</td>';
+    html+='<td style="text-align:right">'+(d.telegram?'¥'+d.telegram.toLocaleString():'—')+'</td>';
+    html+='<td style="text-align:right">'+(d.deposit?'¥'+d.deposit.toLocaleString():'—')+'</td>';
+    if(s==='長岡きみ') html+='<td style="text-align:right">'+(d.tb?'¥'+d.tb.toLocaleString():'—')+'</td>';
+    html+='<td style="text-align:right;font-weight:700;color:var(--green);font-size:1.05em">¥'+total.toLocaleString()+'</td></tr>';
+  });
+  html+='<tr style="border-top:2px solid '+color+'"><td colspan="'+(s==='長岡きみ'?6:5)+'"><strong>累計</strong></td><td style="text-align:right;font-size:1.2em;font-weight:700;color:'+color+'">¥'+grandTotal.toLocaleString()+'</td></tr></tbody></table></div>';
+
+  // Detail per month
+  months.forEach(function(m){
+    var d=monthData[m];
+    var monthTotal=(d.eval||0)+d.booking+d.telegram+d.deposit+d.tb;
+    html+='<div class="card mb-16"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><h3 style="color:'+color+'">'+m.replace('-','年')+'月</h3><div style="font-size:1.3em;font-weight:700;color:var(--green)">¥'+monthTotal.toLocaleString()+'</div></div>';
+
+    if(d.details.eval){
+      var rc=d.details.eval.rank==='S'?'var(--accent)':d.details.eval.rank==='A'?'var(--blue)':d.details.eval.rank==='B'?'var(--gold)':'var(--red)';
+      html+='<div style="padding:12px;background:var(--bg-tertiary);border-radius:8px;margin-bottom:10px"><strong style="color:'+rc+'">評価ボーナス（'+d.details.eval.rank+'）</strong>: ¥'+d.details.eval.bonus.toLocaleString()+'</div>';
+    }
+
+    if(d.details.tb&&s==='長岡きみ'){
+      var rate=d.details.tb.amount>0?(d.details.tb.commission/d.details.tb.amount*100).toFixed(1):0;
+      html+='<div style="padding:12px;background:var(--bg-tertiary);border-radius:8px;margin-bottom:10px"><strong style="color:var(--green)">テレベット歩合</strong>: 売上¥'+d.details.tb.amount.toLocaleString()+' × '+rate+'% = <strong>¥'+d.details.tb.commission.toLocaleString()+'</strong></div>';
+    }
+
+    if(d.details.booking.length>0){
+      html+='<div style="margin-bottom:10px"><strong style="color:var(--accent);font-size:0.88em">予約歩合 ('+d.details.booking.length+'件 / ¥'+d.booking.toLocaleString()+')</strong><table style="margin-top:8px"><thead><tr><th>日付</th><th>顧客</th><th>プラン</th><th style="text-align:right">歩合</th></tr></thead><tbody>';
+      d.details.booking.forEach(function(b){
+        html+='<tr><td>'+b.date+'</td><td>'+b.customer+'</td><td>'+b.plan+'万円</td><td style="text-align:right;color:var(--green)">¥'+b.commission.toLocaleString()+'</td></tr>';
+      });
+      html+='</tbody></table></div>';
+    }
+
+    if(d.details.telegram.length>0||d.details.deposit.length>0){
+      var all=d.details.telegram.concat(d.details.deposit).sort(function(a,b){return (a.date||'').localeCompare(b.date||'');});
+      html+='<div style="margin-bottom:10px"><strong style="color:var(--accent);font-size:0.88em">Telegram・初回入金 ('+all.length+'件 / ¥'+(d.telegram+d.deposit).toLocaleString()+')</strong><table style="margin-top:8px"><thead><tr><th>日付</th><th>顧客</th><th>種類</th><th style="text-align:right">ボーナス</th></tr></thead><tbody>';
+      all.forEach(function(r){
+        html+='<tr><td>'+r.date+'</td><td>'+r.customer+'</td><td>'+TG_LABELS[r.type]+'</td><td style="text-align:right;color:var(--green)">¥'+r.bonus.toLocaleString()+'</td></tr>';
+      });
+      html+='</tbody></table></div>';
+    }
+
+    html+='</div>';
+  });
+
+  document.getElementById('staffIncDetail').innerHTML=html;
+}
+
 // ==================== インセンティブ集計 ====================
 var EVAL_BONUS_RATES={S:30000,A:18000,B:8000,C:0};
 
@@ -5241,10 +5402,13 @@ function init(){
   renderTbActions();
   populateTgMonths();
   renderTgRecords();
+  seedInitialData();
   renderEvalBonusList();
   renderTbProfitList();
   populateTotIncMonths();
   renderTotalIncentives();
+  renderStaffSelector();
+  renderStaffIncDetail();
   if(canManageUsers())renderUserAccounts();
 }
 if(sessionStorage.getItem('br_auth')==='1'&&sessionStorage.getItem('br_current_user')){init();}
