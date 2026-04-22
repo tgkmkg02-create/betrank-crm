@@ -739,6 +739,9 @@
     <div class="tab" onclick="showTab('telebetTab',this)">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg></span><span>テレベット歩合</span>
     </div>
+    <div class="tab" onclick="showTab('totalIncentiveTab',this)">
+      <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></span><span>インセンティブ集計</span>
+    </div>
     <div style="padding:12px 14px 4px;color:rgba(232,230,227,0.3);font-size:0.65em;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:8px">外部システム</div>
     <div class="tab" onclick="window.open('survey.html','_blank')">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>アンケート送信 ↗</span>
@@ -1120,8 +1123,8 @@
           <tr><td><strong style="color:var(--gold)">チーム貢献</strong></td><td>同僚サポート、情報共有、チームワーク</td><td style="font-weight:700">5点</td></tr>
         </tbody>
       </table>
-      <h3>上司最終評価（ランク直接指定）</h3>
-      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">上司が4軸スコアを参考に、最終ランクを決定 → 支給額が決定</p>
+      <h3>3名評価者による最終評価</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">評価者：<strong>ケビン・長岡きみ・FUさん</strong>（自分自身は自動除外）<br>3名がそれぞれランクをつけ、平均で最終ランク決定</p>
       <table>
         <thead><tr><th>上司評価</th><th>目安スコア</th><th>ボーナス</th><th>説明</th></tr></thead>
         <tbody>
@@ -1148,18 +1151,41 @@
         <div class="form-group"><label>チーム貢献</label><select id="evalTeam" style="background:var(--bg-input)"><option value="5">5 優秀</option><option value="4">4 良好</option><option value="3" selected>3 普通</option><option value="2">2 要改善</option><option value="1">1 不十分</option></select></div>
       </div>
 
-      <p style="color:var(--accent);font-weight:700;margin:20px 0 8px">🏆 上司最終評価（支給額を決定）</p>
-      <div class="form-group">
-        <label>上司ランク判定</label>
-        <select id="evalBossRank" style="background:var(--bg-input);border:2px solid var(--accent)">
-          <option value="auto">自動（4軸スコアから）</option>
-          <option value="S">S — 期待を超える成果（¥30,000）</option>
-          <option value="A">A — 期待通りの成果（¥18,000）</option>
-          <option value="B">B — 基本水準（¥8,000）</option>
-          <option value="C">C — 要改善（¥0）</option>
-        </select>
+      <p style="color:var(--accent);font-weight:700;margin:20px 0 8px">🏆 3名評価者による最終評価</p>
+      <p style="color:var(--muted);font-size:0.82em;margin-bottom:12px">評価者：<strong>ケビン・長岡きみ・FUさん</strong> — 各々がランクを選び、平均で最終ランク決定（自分自身は評価不可）</p>
+      <div class="grid grid-3" style="gap:10px">
+        <div class="form-group">
+          <label>👤 ケビン評価</label>
+          <select id="evalKevin" style="background:var(--bg-input);border-left:3px solid var(--blue)">
+            <option value="skip">— 評価なし（自己除外）</option>
+            <option value="S">S（¥30,000）</option>
+            <option value="A">A（¥18,000）</option>
+            <option value="B">B（¥8,000）</option>
+            <option value="C">C（¥0）</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>👤 長岡きみ評価</label>
+          <select id="evalKimi" style="background:var(--bg-input);border-left:3px solid var(--gold)">
+            <option value="skip">— 評価なし（自己除外）</option>
+            <option value="S">S（¥30,000）</option>
+            <option value="A">A（¥18,000）</option>
+            <option value="B">B（¥8,000）</option>
+            <option value="C">C（¥0）</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>👤 FUさん評価</label>
+          <select id="evalFu" style="background:var(--bg-input);border-left:3px solid var(--purple)">
+            <option value="skip">— 評価なし（自己除外）</option>
+            <option value="S">S（¥30,000）</option>
+            <option value="A">A（¥18,000）</option>
+            <option value="B">B（¥8,000）</option>
+            <option value="C">C（¥0）</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group"><label>上司コメント（任意）</label><input type="text" id="evalBossComment" placeholder="例: 顧客対応は素晴らしいが、報連相に課題あり" style="background:var(--bg-input)"></div>
+      <div class="form-group"><label>総合コメント（任意）</label><input type="text" id="evalBossComment" placeholder="例: 顧客対応は素晴らしいが、報連相に課題あり" style="background:var(--bg-input)"></div>
 
       <button onclick="calcEval()" style="width:100%;margin-top:8px;background:var(--accent)">計算</button>
       <div id="evalResult" style="display:none;margin-top:16px;padding:20px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:var(--radius)"></div>
@@ -1412,6 +1438,63 @@
     <div class="card mb-16">
       <h3>歩合記録一覧</h3>
       <div id="tbAcList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: インセンティブ集計 -->
+<div id="totalIncentiveTab" class="tab-content">
+  <div class="topbar"><div class="topbar-title">インセンティブ集計（月別・担当別）</div></div>
+  <div style="padding:28px 32px;max-width:1600px;margin:0 auto">
+    <div class="card mb-16" style="border-left:3px solid var(--accent)">
+      <h3>全スタッフのインセンティブを一括集計</h3>
+      <p style="color:var(--muted);font-size:0.9em;line-height:1.7">
+        ① 予約歩合（予約記録から自動集計）<br>
+        ② Telegram/初回入金ボーナス（記録から自動集計）<br>
+        ③ 評価ボーナス（上司が月次で入力）<br>
+        ④ テレベット利益歩合（長岡きみのみ、利益額を入力）
+      </p>
+    </div>
+
+    <!-- 月選択 -->
+    <div class="card mb-16">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <label style="color:var(--muted);font-size:0.9em">集計月:</label>
+        <select id="totIncMonth" onchange="renderTotalIncentives()" style="background:var(--bg-input);width:auto;padding:8px 14px;font-size:0.95em">
+          <option value="all">全期間</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 評価ボーナス入力 -->
+    <div class="card mb-16">
+      <h3>① 評価ボーナス入力（現地スタッフ）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">上司が決定した月次ランク → ボーナス（S:¥30K / A:¥18K / B:¥8K / C:¥0）</p>
+      <div class="grid grid-4" style="gap:10px;margin-bottom:12px">
+        <div class="form-group"><label>対象月</label><input type="month" id="evalInputMonth" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>スタッフ</label><select id="evalInputStaff" style="background:var(--bg-input)"><option>チョイ</option><option>ケビン</option><option>チェリン</option><option>長岡きみ</option><option>長岡ゆみ</option></select></div>
+        <div class="form-group"><label>上司評価ランク</label><select id="evalInputRank" style="background:var(--bg-input)"><option value="S">S — ¥30,000</option><option value="A">A — ¥18,000</option><option value="B">B — ¥8,000</option><option value="C">C — ¥0</option></select></div>
+        <div class="form-group" style="display:flex;align-items:flex-end"><button onclick="saveEvalBonus()" style="background:var(--accent);width:100%">保存</button></div>
+      </div>
+      <div id="evalBonusList"></div>
+    </div>
+
+    <!-- テレベット利益入力 -->
+    <div class="card mb-16">
+      <h3>② テレベット月次利益入力（長岡きみ）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">テレベット売上を入力 → 自動で12/15/18%歩合を計算</p>
+      <div class="grid grid-3" style="gap:10px;margin-bottom:12px">
+        <div class="form-group"><label>対象月</label><input type="month" id="tbProfitMonth" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>テレベット売上（¥）</label><input type="number" id="tbProfitAmount" min="0" value="1200000" style="background:var(--bg-input)"></div>
+        <div class="form-group" style="display:flex;align-items:flex-end"><button onclick="saveTbProfit()" style="background:var(--green);width:100%">保存</button></div>
+      </div>
+      <div id="tbProfitList"></div>
+    </div>
+
+    <!-- 集計表示 -->
+    <div class="card mb-16">
+      <h3>月次インセンティブ合計</h3>
+      <div id="totIncResult"></div>
     </div>
   </div>
 </div>
@@ -4587,35 +4670,74 @@ function calcEval(){
   var att=parseInt(document.getElementById('evalAttitude').value)||0;
   var team=parseInt(document.getElementById('evalTeam').value)||0;
   var score=sales+cs+att+team;
-  var bossRank=document.getElementById('evalBossRank').value;
   var bossComment=document.getElementById('evalBossComment').value.trim();
 
-  // Auto rank from 4-axis
+  // 4-axis auto rank (reference)
   var autoRank;
   if(score>=18) autoRank='S';
   else if(score>=14) autoRank='A';
   else if(score>=10) autoRank='B';
   else autoRank='C';
 
-  // Final rank: boss override OR auto
-  var finalRank=bossRank==='auto'?autoRank:bossRank;
-  var rankColor,rankBonus;
-  if(finalRank==='S'){rankColor='var(--accent)';rankBonus=30000;}
-  else if(finalRank==='A'){rankColor='var(--blue)';rankBonus=18000;}
-  else if(finalRank==='B'){rankColor='var(--gold)';rankBonus=8000;}
-  else{rankColor='var(--red)';rankBonus=0;}
+  // 3名評価者
+  var evalKevin=document.getElementById('evalKevin').value;
+  var evalKimi=document.getElementById('evalKimi').value;
+  var evalFu=document.getElementById('evalFu').value;
+  var RANK_NUM={S:4,A:3,B:2,C:1};
+  var NUM_RANK={4:'S',3:'A',2:'B',1:'C'};
+  var BONUS={S:30000,A:18000,B:8000,C:0};
 
-  var overrideNote='';
-  if(bossRank!=='auto'&&bossRank!==autoRank){
-    overrideNote='<div style="margin-top:8px;padding:8px 12px;background:rgba(245,166,35,0.1);border:1px solid var(--gold);border-radius:6px;font-size:0.85em;color:var(--gold)"><strong>⚠️ 上司評価による上書き</strong> — 4軸スコアから自動判定: '+autoRank+' → 上司評価: '+finalRank+'</div>';
+  // Auto-skip self evaluation
+  var selfSkipped=[];
+  if(staff==='ケビン'&&evalKevin!=='skip'){evalKevin='skip';selfSkipped.push('ケビン');}
+  if(staff==='長岡きみ'&&evalKimi!=='skip'){evalKimi='skip';selfSkipped.push('長岡きみ');}
+
+  var evals=[];
+  if(evalKevin!=='skip') evals.push({name:'ケビン',rank:evalKevin,color:'var(--blue)'});
+  if(evalKimi!=='skip') evals.push({name:'長岡きみ',rank:evalKimi,color:'var(--gold)'});
+  if(evalFu!=='skip') evals.push({name:'FUさん',rank:evalFu,color:'var(--purple)'});
+
+  var finalRank,rankColor,rankBonus,avgNum=0;
+  if(evals.length===0){
+    finalRank=autoRank;
+    rankColor='var(--muted)';
+    rankBonus=BONUS[finalRank];
+  } else {
+    var sum=evals.reduce(function(a,e){return a+RANK_NUM[e.rank];},0);
+    avgNum=sum/evals.length;
+    // Round to nearest rank (ceil to favor employee)
+    var roundedNum=Math.round(avgNum);
+    if(roundedNum>4)roundedNum=4;
+    if(roundedNum<1)roundedNum=1;
+    finalRank=NUM_RANK[roundedNum];
+    if(finalRank==='S'){rankColor='var(--accent)';rankBonus=30000;}
+    else if(finalRank==='A'){rankColor='var(--blue)';rankBonus=18000;}
+    else if(finalRank==='B'){rankColor='var(--gold)';rankBonus=8000;}
+    else{rankColor='var(--red)';rankBonus=0;}
   }
 
   var el=document.getElementById('evalResult');
   el.style.display='block';
-  var html='<div style="display:flex;justify-content:space-between;margin-bottom:12px"><h3 style="color:var(--accent)">'+staff+'</h3><div style="text-align:right"><div style="font-size:0.75em;color:var(--muted)">最終ランク（上司評価）</div><div style="font-size:2.2em;font-weight:700;color:'+rankColor+'">'+finalRank+'</div></div></div>';
-  html+='<p style="color:var(--muted);font-size:0.8em;margin-bottom:6px">4軸評価スコア</p><table style="margin-bottom:16px"><tr><td>営業貢献</td><td style="text-align:right"><strong>'+sales+'/5</strong></td></tr><tr><td>顧客対応</td><td style="text-align:right"><strong>'+cs+'/5</strong></td></tr><tr><td>勤怠・姿勢</td><td style="text-align:right"><strong>'+att+'/5</strong></td></tr><tr><td>チーム貢献</td><td style="text-align:right"><strong>'+team+'/5</strong></td></tr><tr style="border-top:1px solid var(--border)"><td><strong>合計スコア（参考）</strong></td><td style="text-align:right;font-weight:700">'+score+'/20 → '+autoRank+'</td></tr></table>';
-  if(bossComment) html+='<div style="padding:12px;background:var(--bg-tertiary);border-left:3px solid var(--accent);border-radius:4px;margin-bottom:12px;font-size:0.88em"><strong style="color:var(--accent)">📝 上司コメント:</strong> '+bossComment+'</div>';
-  html+=overrideNote;
+  var html='<div style="display:flex;justify-content:space-between;margin-bottom:16px"><h3 style="color:var(--accent)">'+staff+'</h3><div style="text-align:right"><div style="font-size:0.75em;color:var(--muted)">最終ランク（3名評価平均）</div><div style="font-size:2.4em;font-weight:700;color:'+rankColor+'">'+finalRank+'</div></div></div>';
+
+  // 3名評価内訳
+  if(evals.length>0){
+    html+='<p style="color:var(--accent);font-weight:700;font-size:0.88em;margin-bottom:8px">🏆 3名評価内訳</p><table style="margin-bottom:16px">';
+    evals.forEach(function(e){
+      var eBonus=BONUS[e.rank];
+      html+='<tr><td><span style="color:'+e.color+';font-weight:600">'+e.name+'</span></td><td style="text-align:center;font-weight:700;font-size:1.1em">'+e.rank+'</td><td style="text-align:right;color:var(--muted);font-size:0.85em">¥'+eBonus.toLocaleString()+'</td></tr>';
+    });
+    html+='<tr style="border-top:1px solid var(--border)"><td><strong>平均スコア</strong></td><td style="text-align:center;font-weight:700">'+avgNum.toFixed(2)+'</td><td style="text-align:right;color:'+rankColor+';font-weight:700">→ '+finalRank+'</td></tr></table>';
+  }
+
+  if(selfSkipped.length>0){
+    html+='<div style="padding:8px 12px;background:rgba(245,166,35,0.1);border:1px solid var(--gold);border-radius:6px;font-size:0.82em;color:var(--gold);margin-bottom:12px">ℹ️ 自己評価は自動除外：'+selfSkipped.join('、')+'</div>';
+  }
+
+  html+='<p style="color:var(--muted);font-size:0.82em;margin-bottom:6px">4軸評価スコア（参考）</p><table style="margin-bottom:16px"><tr><td>営業貢献</td><td style="text-align:right"><strong>'+sales+'/5</strong></td></tr><tr><td>顧客対応</td><td style="text-align:right"><strong>'+cs+'/5</strong></td></tr><tr><td>勤怠・姿勢</td><td style="text-align:right"><strong>'+att+'/5</strong></td></tr><tr><td>チーム貢献</td><td style="text-align:right"><strong>'+team+'/5</strong></td></tr><tr style="border-top:1px solid var(--border)"><td><strong>合計</strong></td><td style="text-align:right;font-weight:700">'+score+'/20 → '+autoRank+'</td></tr></table>';
+
+  if(bossComment) html+='<div style="padding:12px;background:var(--bg-tertiary);border-left:3px solid var(--accent);border-radius:4px;margin-bottom:12px;font-size:0.88em"><strong style="color:var(--accent)">📝 コメント:</strong> '+bossComment+'</div>';
+
   html+='<div style="display:flex;justify-content:space-between;padding:16px;background:rgba(39,123,95,0.08);border:1px solid var(--green);border-radius:8px;margin-top:12px"><span style="font-weight:700">支給ボーナス（'+finalRank+'ランク）</span><span style="font-size:1.4em;font-weight:700;color:var(--green)">¥'+rankBonus.toLocaleString()+'</span></div>';
   el.innerHTML=html;
 }
@@ -4707,6 +4829,157 @@ function renderTbActions(){
   });
   html+='</tbody></table>';
   listEl.innerHTML=html;
+}
+
+// ==================== インセンティブ集計 ====================
+var EVAL_BONUS_RATES={S:30000,A:18000,B:8000,C:0};
+
+function getEvalBonuses(){return JSON.parse(localStorage.getItem('eval_bonuses')||'[]');}
+function saveEvalBonuses(list){localStorage.setItem('eval_bonuses',JSON.stringify(list));}
+function getTbProfits(){return JSON.parse(localStorage.getItem('tb_profits')||'[]');}
+function saveTbProfits(list){localStorage.setItem('tb_profits',JSON.stringify(list));}
+
+function saveEvalBonus(){
+  var month=document.getElementById('evalInputMonth').value;
+  var staff=document.getElementById('evalInputStaff').value;
+  var rank=document.getElementById('evalInputRank').value;
+  if(!month){alert('対象月を選択してください');return;}
+  var list=getEvalBonuses();
+  // Replace if exists
+  var existing=list.findIndex(function(e){return e.month===month&&e.staff===staff;});
+  var item={month:month,staff:staff,rank:rank,bonus:EVAL_BONUS_RATES[rank]};
+  if(existing>=0) list[existing]=item;
+  else list.push(item);
+  saveEvalBonuses(list);
+  populateTotIncMonths();
+  renderEvalBonusList();
+  renderTotalIncentives();
+}
+
+function deleteEvalBonus(idx){
+  if(!confirm('この評価ボーナスを削除しますか？'))return;
+  var list=getEvalBonuses();
+  list.splice(idx,1);
+  saveEvalBonuses(list);
+  renderEvalBonusList();
+  renderTotalIncentives();
+}
+
+function renderEvalBonusList(){
+  var list=getEvalBonuses();
+  var el=document.getElementById('evalBonusList');
+  if(!list.length){el.innerHTML='<p style="color:var(--muted);font-size:0.85em">評価データなし</p>';return;}
+  var sorted=[].concat(list).sort(function(a,b){return (b.month||'').localeCompare(a.month||'');});
+  var html='<table><thead><tr><th>月</th><th>スタッフ</th><th>ランク</th><th style="text-align:right">ボーナス</th><th></th></tr></thead><tbody>';
+  sorted.forEach(function(e){
+    var origIdx=list.indexOf(e);
+    var color=STAFF_COLORS[e.staff]||'var(--muted)';
+    var rankColor=e.rank==='S'?'var(--accent)':e.rank==='A'?'var(--blue)':e.rank==='B'?'var(--gold)':'var(--red)';
+    html+='<tr><td>'+e.month+'</td><td style="color:'+color+';font-weight:600">'+e.staff+'</td><td style="color:'+rankColor+';font-weight:700">'+e.rank+'</td><td style="text-align:right;font-weight:600;color:'+(e.bonus>0?'var(--green)':'var(--red)')+'">¥'+e.bonus.toLocaleString()+'</td><td><button onclick="deleteEvalBonus('+origIdx+')" style="background:transparent;border:1px solid var(--red);color:var(--red);padding:2px 8px;font-size:0.75em;border-radius:4px">削除</button></td></tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+function calcTbCommission(profit){
+  if(profit<=1000000) return Math.round(profit*0.12);
+  if(profit<=2000000) return Math.round(1000000*0.12+(profit-1000000)*0.15);
+  return Math.round(1000000*0.12+1000000*0.15+(profit-2000000)*0.18);
+}
+
+function saveTbProfit(){
+  var month=document.getElementById('tbProfitMonth').value;
+  var amount=parseInt(document.getElementById('tbProfitAmount').value)||0;
+  if(!month){alert('対象月を選択してください');return;}
+  var list=getTbProfits();
+  var existing=list.findIndex(function(p){return p.month===month;});
+  var item={month:month,amount:amount,commission:calcTbCommission(amount)};
+  if(existing>=0) list[existing]=item;
+  else list.push(item);
+  saveTbProfits(list);
+  populateTotIncMonths();
+  renderTbProfitList();
+  renderTotalIncentives();
+}
+
+function deleteTbProfit(idx){
+  if(!confirm('このテレベット利益を削除しますか？'))return;
+  var list=getTbProfits();
+  list.splice(idx,1);
+  saveTbProfits(list);
+  renderTbProfitList();
+  renderTotalIncentives();
+}
+
+function renderTbProfitList(){
+  var list=getTbProfits();
+  var el=document.getElementById('tbProfitList');
+  if(!list.length){el.innerHTML='<p style="color:var(--muted);font-size:0.85em">データなし</p>';return;}
+  var sorted=[].concat(list).sort(function(a,b){return (b.month||'').localeCompare(a.month||'');});
+  var html='<table><thead><tr><th>月</th><th>売上</th><th>歩合率</th><th style="text-align:right">歩合</th><th></th></tr></thead><tbody>';
+  sorted.forEach(function(p){
+    var origIdx=list.indexOf(p);
+    var rate=p.amount>0?(p.commission/p.amount*100):0;
+    html+='<tr><td>'+p.month+'</td><td>¥'+p.amount.toLocaleString()+'</td><td>'+rate.toFixed(1)+'%</td><td style="text-align:right;font-weight:600;color:var(--green)">¥'+p.commission.toLocaleString()+'</td><td><button onclick="deleteTbProfit('+origIdx+')" style="background:transparent;border:1px solid var(--red);color:var(--red);padding:2px 8px;font-size:0.75em;border-radius:4px">削除</button></td></tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+function populateTotIncMonths(){
+  var sel=document.getElementById('totIncMonth');
+  if(!sel)return;
+  var prev=sel.value;
+  var months=new Set();
+  getBookings().forEach(function(b){if(b.date)months.add(b.date.substring(0,7));});
+  getTgRecords().forEach(function(r){if(r.date)months.add(r.date.substring(0,7));});
+  getEvalBonuses().forEach(function(e){if(e.month)months.add(e.month);});
+  getTbProfits().forEach(function(p){if(p.month)months.add(p.month);});
+  var sorted=Array.from(months).sort().reverse();
+  sel.innerHTML='<option value="all">全期間</option>';
+  sorted.forEach(function(m){sel.innerHTML+='<option value="'+m+'">'+m.replace('-','年')+'月</option>';});
+  if(prev&&[].concat(['all'],sorted).indexOf(prev)>=0) sel.value=prev;
+}
+
+function renderTotalIncentives(){
+  var month=document.getElementById('totIncMonth').value;
+  var matches=function(d){return month==='all'||(d&&d.startsWith(month));};
+
+  // Aggregate per staff
+  var staffList=['長岡きみ','長岡ゆみ','チョイ','ケビン','チェリン'];
+  var totals={};
+  staffList.forEach(function(s){totals[s]={booking:0,telegram:0,deposit:0,eval:0,tb:0,total:0};});
+
+  getBookings().forEach(function(b){if(matches(b.date)&&totals[b.staff]){totals[b.staff].booking+=b.commission;}});
+  getTgRecords().forEach(function(r){
+    if(matches(r.date)&&totals[r.staff]){
+      if(r.type==='telegram') totals[r.staff].telegram+=r.bonus;
+      else totals[r.staff].deposit+=r.bonus;
+    }
+  });
+  getEvalBonuses().forEach(function(e){
+    if((month==='all'||e.month===month)&&totals[e.staff]){totals[e.staff].eval+=e.bonus;}
+  });
+  getTbProfits().forEach(function(p){
+    if(month==='all'||p.month===month){totals['長岡きみ'].tb+=p.commission;}
+  });
+
+  staffList.forEach(function(s){
+    totals[s].total=totals[s].booking+totals[s].telegram+totals[s].deposit+totals[s].eval+totals[s].tb;
+  });
+
+  var grandTotal=staffList.reduce(function(a,s){return a+totals[s].total;},0);
+
+  var html='<table><thead><tr><th>スタッフ</th><th style="text-align:right">評価ボーナス</th><th style="text-align:right">予約歩合</th><th style="text-align:right">Telegram</th><th style="text-align:right">初回入金</th><th style="text-align:right">テレベット歩合</th><th style="text-align:right">合計</th></tr></thead><tbody>';
+  staffList.forEach(function(s){
+    var t=totals[s];
+    var color=STAFF_COLORS[s]||'var(--muted)';
+    html+='<tr><td style="color:'+color+';font-weight:700">'+s+'</td><td style="text-align:right">'+(t.eval?('¥'+t.eval.toLocaleString()):'—')+'</td><td style="text-align:right">'+(t.booking?('¥'+t.booking.toLocaleString()):'—')+'</td><td style="text-align:right">'+(t.telegram?('¥'+t.telegram.toLocaleString()):'—')+'</td><td style="text-align:right">'+(t.deposit?('¥'+t.deposit.toLocaleString()):'—')+'</td><td style="text-align:right">'+(t.tb?('¥'+t.tb.toLocaleString()):'—')+'</td><td style="text-align:right;font-weight:700;color:var(--green);font-size:1.05em">¥'+t.total.toLocaleString()+'</td></tr>';
+  });
+  html+='<tr style="border-top:2px solid var(--accent)"><td colspan="6"><strong>全員合計</strong></td><td style="text-align:right;font-size:1.3em;font-weight:700;color:var(--accent)">¥'+grandTotal.toLocaleString()+'</td></tr>';
+  html+='</tbody></table>';
+
+  document.getElementById('totIncResult').innerHTML=html;
 }
 
 // ==================== Telegram・初回入金記録 ====================
@@ -4968,6 +5241,10 @@ function init(){
   renderTbActions();
   populateTgMonths();
   renderTgRecords();
+  renderEvalBonusList();
+  renderTbProfitList();
+  populateTotIncMonths();
+  renderTotalIncentives();
   if(canManageUsers())renderUserAccounts();
 }
 if(sessionStorage.getItem('br_auth')==='1'&&sessionStorage.getItem('br_current_user')){init();}
