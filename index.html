@@ -1213,15 +1213,16 @@
 
     <div class="card mb-16">
       <h3>予約歩合率（プラン別）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">全プラン一律 <strong style="color:var(--accent)">0.3%</strong>。高額プラン獲得ほどインセンティブも比例して増加。</p>
       <table>
-        <thead><tr><th>プラン</th><th>歩合（1件あたり）</th><th>実質率</th></tr></thead>
+        <thead><tr><th>プラン</th><th>歩合（1件あたり）</th><th>歩合率</th></tr></thead>
         <tbody>
-          <tr><td>77万円プラン（VIP体験）</td><td style="color:var(--green);font-weight:700">¥2,000</td><td style="color:var(--muted)">0.26%</td></tr>
+          <tr><td>77万円プラン（VIP体験）</td><td style="color:var(--green);font-weight:700">¥2,310</td><td style="color:var(--muted)">0.30%</td></tr>
           <tr><td>100万円プラン</td><td style="color:var(--green);font-weight:700">¥3,000</td><td style="color:var(--muted)">0.30%</td></tr>
-          <tr><td>200万円プラン</td><td style="color:var(--green);font-weight:700">¥5,000</td><td style="color:var(--muted)">0.25%</td></tr>
-          <tr><td>300万円プラン</td><td style="color:var(--green);font-weight:700">¥6,000</td><td style="color:var(--muted)">0.20%</td></tr>
-          <tr><td>500万円プラン</td><td style="color:var(--green);font-weight:700">¥8,000</td><td style="color:var(--muted)">0.16%</td></tr>
-          <tr><td>1000万円プラン</td><td style="color:var(--green);font-weight:700">¥10,000</td><td style="color:var(--muted)">0.10%</td></tr>
+          <tr><td>200万円プラン</td><td style="color:var(--green);font-weight:700">¥6,000</td><td style="color:var(--muted)">0.30%</td></tr>
+          <tr><td>300万円プラン</td><td style="color:var(--green);font-weight:700">¥9,000</td><td style="color:var(--muted)">0.30%</td></tr>
+          <tr><td>500万円プラン</td><td style="color:var(--green);font-weight:700">¥15,000</td><td style="color:var(--muted)">0.30%</td></tr>
+          <tr><td>1000万円プラン</td><td style="color:var(--green);font-weight:700">¥30,000</td><td style="color:var(--muted)">0.30%</td></tr>
         </tbody>
       </table>
     </div>
@@ -5466,7 +5467,7 @@ function renderTgRecords(){
 }
 
 // ==================== 予約記録 ====================
-var PLAN_RATES={77:2000,100:3000,200:5000,300:6000,500:8000,1000:10000};
+var PLAN_RATES={77:2310,100:3000,200:6000,300:9000,500:15000,1000:30000};
 var STAFF_COLORS={'長岡きみ':'var(--gold)','長岡ゆみ':'var(--purple)','チョイ':'var(--accent)','ケビン':'var(--blue)','チェリン':'var(--green)'};
 
 function getBookings(){return JSON.parse(localStorage.getItem('bookings')||'[]');}
