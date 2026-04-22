@@ -1326,33 +1326,40 @@
 
     <div class="card mb-16">
       <h3>歩合制（売上ベース・段階制）</h3>
-      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">テレベット利益（売上）に対して歩合を計算</p>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">役割により2%ずつ差がつく2層構造。部下との差額は会社がリーダー育成費として保有。</p>
       <table class="mb-16">
-        <thead><tr><th>テレベット利益（売上）</th><th>歩合率</th><th>計算</th></tr></thead>
+        <thead>
+          <tr>
+            <th>売上帯</th>
+            <th style="color:var(--gold)">👑 長岡きみ（リーダー）</th>
+            <th style="color:var(--blue)">テレベットスタッフ（部下）</th>
+            <th>差</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>¥100万まで</td><td style="font-weight:700">12%</td><td style="color:var(--muted)">売上 × 12%</td></tr>
-          <tr><td>¥100万〜200万の部分</td><td style="color:var(--blue);font-weight:700">15%</td><td style="color:var(--muted)">超過分 × 15%</td></tr>
-          <tr><td>¥200万以上の部分</td><td style="color:var(--green);font-weight:700">18%</td><td style="color:var(--muted)">超過分 × 18%</td></tr>
+          <tr><td>¥100万まで</td><td style="color:var(--gold);font-weight:700">12%</td><td style="color:var(--blue);font-weight:700">10%</td><td style="color:var(--muted)">2%</td></tr>
+          <tr><td>¥100万〜200万の部分</td><td style="color:var(--gold);font-weight:700">15%</td><td style="color:var(--blue);font-weight:700">12%</td><td style="color:var(--muted)">3%</td></tr>
+          <tr><td>¥200万以上の部分</td><td style="color:var(--gold);font-weight:700">18%</td><td style="color:var(--blue);font-weight:700">15%</td><td style="color:var(--muted)">3%</td></tr>
         </tbody>
       </table>
-      <h3>早見表</h3>
+      <h3>早見表（役割別）</h3>
       <table>
-        <thead><tr><th>売上</th><th>歩合額</th><th>実質率</th><th>経費</th><th>会社残り</th></tr></thead>
+        <thead><tr><th>売上</th><th style="color:var(--gold)">長岡きみ歩合</th><th style="color:var(--blue)">部下歩合</th><th>差額（会社）</th></tr></thead>
         <tbody>
-          <tr><td>¥80万</td><td>¥96,000</td><td>12%</td><td>¥58万</td><td style="color:var(--blue)">¥163,000</td></tr>
-          <tr><td>¥100万</td><td>¥120,000</td><td>12%</td><td>¥58万</td><td style="color:var(--green)">¥299,000</td></tr>
-          <tr><td>¥120万</td><td>¥150,000</td><td>12.5%</td><td>¥58万</td><td style="color:var(--green)">¥469,000</td></tr>
-          <tr><td>¥150万</td><td>¥195,000</td><td>13%</td><td>¥58万</td><td style="color:var(--green)">¥724,000</td></tr>
-          <tr><td>¥200万</td><td>¥270,000</td><td>13.5%</td><td>¥58万</td><td style="color:var(--green)">¥1,149,000</td></tr>
-          <tr><td>¥300万</td><td>¥450,000</td><td>15%</td><td>¥58万</td><td style="color:var(--green)">¥1,969,000</td></tr>
+          <tr><td>¥80万</td><td style="color:var(--gold)">¥96,000</td><td style="color:var(--blue)">¥80,000</td><td style="color:var(--green)">¥16,000</td></tr>
+          <tr><td>¥120万</td><td style="color:var(--gold)">¥150,000</td><td style="color:var(--blue)">¥124,000</td><td style="color:var(--green)">¥26,000</td></tr>
+          <tr><td>¥150万</td><td style="color:var(--gold)">¥195,000</td><td style="color:var(--blue)">¥160,000</td><td style="color:var(--green)">¥35,000</td></tr>
+          <tr><td>¥200万</td><td style="color:var(--gold)">¥270,000</td><td style="color:var(--blue)">¥220,000</td><td style="color:var(--green)">¥50,000</td></tr>
+          <tr><td>¥300万</td><td style="color:var(--gold)">¥450,000</td><td style="color:var(--blue)">¥370,000</td><td style="color:var(--green)">¥80,000</td></tr>
         </tbody>
       </table>
-      <p style="color:var(--muted);font-size:0.78em;margin-top:12px">※ 経費¥58万（給料+運転手+ガソリン+サーバー等）は別途会社が負担</p>
+      <p style="color:var(--muted);font-size:0.78em;margin-top:12px">※ 経費（給料+運転手+ガソリン+サーバー等）は別途会社負担</p>
     </div>
 
     <div class="card mb-16">
-      <h3>長岡きみ 歩合シミュレーター</h3>
-      <div class="grid grid-2" style="gap:10px">
+      <h3>テレベット歩合シミュレーター</h3>
+      <div class="grid grid-3" style="gap:10px">
+        <div class="form-group"><label>役割</label><select id="tbRole" style="background:var(--bg-input)"><option value="leader">👑 長岡きみ（12/15/18%）</option><option value="staff">テレベットスタッフ（10/12/15%）</option></select></div>
         <div class="form-group"><label>当月テレベット利益（¥）</label><input type="number" id="tbProfit" min="0" value="1200000"></div>
         <div class="form-group"><label>月間経費（¥）</label><input type="number" id="tbExpense" min="0" value="581152"></div>
       </div>
@@ -4815,19 +4822,39 @@ function calcIncentive(){
   el.innerHTML='<div style="text-align:center;margin-bottom:12px;color:var(--muted)">現地 ¥'+op.toLocaleString()+' + テレベット ¥'+tp.toLocaleString()+' = <strong style="color:var(--accent)">合計 ¥'+net.toLocaleString()+'</strong></div><div style="text-align:center;margin-bottom:16px;color:var(--green)">チーム歩合: ¥'+net.toLocaleString()+' × '+rate+'% = <strong>¥'+pool.toLocaleString()+'</strong></div><table><thead><tr><th>スタッフ</th><th>役割</th><th>条件</th><th style="text-align:right">インセンティブ</th></tr></thead><tbody><tr><td><strong style="color:var(--accent)">チョイ</strong></td><td>リーダー</td><td>'+(ok?'<span style="color:var(--green)">ノルマ達成 → +0.5%</span>':'<span style="color:var(--muted)">ノルマ未達</span>')+'</td><td style="text-align:right;font-weight:700;color:var(--green)">¥'+cg.toLocaleString()+(cb>0?'<div style="font-size:0.8em;color:var(--gold)">基本¥'+pp.toLocaleString()+' + ボーナス¥'+cb.toLocaleString()+'</div>':'')+'</td></tr><tr><td><strong style="color:var(--blue)">ケビン</strong></td><td>メンバー</td><td style="color:var(--green)">ゲート達成</td><td style="text-align:right;font-weight:700;color:var(--green)">¥'+pp.toLocaleString()+'</td></tr><tr><td><strong style="color:var(--green)">チェリン</strong></td><td>メンバー</td><td style="color:var(--green)">ゲート達成</td><td style="text-align:right;font-weight:700;color:var(--green)">¥'+pp.toLocaleString()+'</td></tr><tr style="border-top:2px solid var(--accent)"><td colspan="3"><strong>合計</strong></td><td style="text-align:right;font-size:1.2em;font-weight:700;color:var(--accent)">¥'+(cg+pp*2).toLocaleString()+'</td></tr></tbody></table>';
 }
 
+function calcTelebetCommission(gross,role){
+  var rates=role==='leader'?[0.12,0.15,0.18]:[0.10,0.12,0.15];
+  if(gross<=1000000) return Math.round(gross*rates[0]);
+  if(gross<=2000000) return Math.round(1000000*rates[0]+(gross-1000000)*rates[1]);
+  return Math.round(1000000*rates[0]+1000000*rates[1]+(gross-2000000)*rates[2]);
+}
+
 function calcTelebet(){
+  var role=document.getElementById('tbRole').value;
   var gross=parseInt(document.getElementById('tbProfit').value)||0;
   var expense=parseInt(document.getElementById('tbExpense').value)||0;
-  var comm=0;
-  if(gross<=1000000) comm=Math.round(gross*0.12);
-  else if(gross<=2000000) comm=Math.round(1000000*0.12+(gross-1000000)*0.15);
-  else comm=Math.round(1000000*0.12+1000000*0.15+(gross-2000000)*0.18);
+  var comm=calcTelebetCommission(gross,role);
   var rate=gross>0?(comm/gross*100):0;
   var remain=gross-comm-expense;
+  var roleLabel=role==='leader'?'👑 長岡きみ（リーダー）':'テレベットスタッフ（部下）';
+  var roleColor=role==='leader'?'var(--gold)':'var(--blue)';
+
+  // Show comparison for leader role
+  var compareHtml='';
+  if(role==='leader'){
+    var staffComm=calcTelebetCommission(gross,'staff');
+    var diff=comm-staffComm;
+    compareHtml='<div style="background:rgba(245,166,35,0.08);border-left:3px solid var(--gold);padding:10px 14px;border-radius:6px;margin:12px 0;font-size:0.85em">💡 リーダー歩合は部下より<strong style="color:var(--gold)">+¥'+diff.toLocaleString()+'</strong> 高い（部下なら ¥'+staffComm.toLocaleString()+'）</div>';
+  }else{
+    var leaderComm=calcTelebetCommission(gross,'leader');
+    var diff=leaderComm-comm;
+    compareHtml='<div style="background:rgba(54,96,170,0.08);border-left:3px solid var(--blue);padding:10px 14px;border-radius:6px;margin:12px 0;font-size:0.85em">💡 部下歩合はリーダーより<strong style="color:var(--blue)">-¥'+diff.toLocaleString()+'</strong> 低い（リーダーなら ¥'+leaderComm.toLocaleString()+'）— 差額は会社保有</div>';
+  }
+
   var el=document.getElementById('tbResult');
   el.style.display='block';
   var remainColor=remain>=0?'var(--green)':'var(--red)';
-  el.innerHTML='<h3 style="color:var(--green);margin-bottom:12px">長岡きみ — 歩合計算結果</h3><table><tr><td>テレベット利益（売上）</td><td style="text-align:right;font-weight:700">¥'+gross.toLocaleString()+'</td></tr><tr><td>歩合（実質'+rate.toFixed(1)+'%）</td><td style="text-align:right;color:var(--green);font-weight:700;font-size:1.2em">¥'+comm.toLocaleString()+'</td></tr><tr><td>経費</td><td style="text-align:right;color:var(--red)">-¥'+expense.toLocaleString()+'</td></tr><tr style="border-top:2px solid var(--accent)"><td><strong>会社に残る</strong></td><td style="text-align:right;font-weight:700;color:'+remainColor+';font-size:1.1em">¥'+remain.toLocaleString()+'</td></tr></table>';
+  el.innerHTML='<h3 style="color:'+roleColor+';margin-bottom:12px">'+roleLabel+' — 歩合計算結果</h3><table><tr><td>テレベット利益（売上）</td><td style="text-align:right;font-weight:700">¥'+gross.toLocaleString()+'</td></tr><tr><td>歩合（実質'+rate.toFixed(1)+'%）</td><td style="text-align:right;color:var(--green);font-weight:700;font-size:1.2em">¥'+comm.toLocaleString()+'</td></tr><tr><td>経費</td><td style="text-align:right;color:var(--red)">-¥'+expense.toLocaleString()+'</td></tr><tr style="border-top:2px solid var(--accent)"><td><strong>会社に残る</strong></td><td style="text-align:right;font-weight:700;color:'+remainColor+';font-size:1.1em">¥'+remain.toLocaleString()+'</td></tr></table>'+compareHtml;
 }
 
 function calcEval(){
