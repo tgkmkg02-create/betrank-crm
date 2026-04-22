@@ -745,6 +745,9 @@
     <div class="tab" onclick="showTab('staffIncentiveTab',this)">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span>スタッフ別</span>
     </div>
+    <div class="tab" onclick="showTab('orgChartTab',this)">
+      <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="5" rx="1"/><path d="M12 7v4"/><path d="M6 16H4a1 1 0 0 0-1 1v3"/><rect x="3" y="16" width="6" height="6" rx="1"/><rect x="15" y="16" width="6" height="6" rx="1"/><path d="M12 11v5"/><path d="M12 11h6a1 1 0 0 1 1 1v4"/></svg></span><span>組織図</span>
+    </div>
     <div style="padding:12px 14px 4px;color:rgba(232,230,227,0.3);font-size:0.65em;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-top:8px">外部システム</div>
     <div class="tab" onclick="window.open('survey.html','_blank')">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>アンケート送信 ↗</span>
@@ -1274,30 +1277,51 @@
     </div>
 
     <div class="card mb-16">
-      <h3>月間経費内訳</h3>
+      <h3>3月 Telebet フィリピン経費（実績）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">ペソレート 2.6322 で円換算</p>
       <table>
-        <thead><tr><th>経費項目</th><th>計算</th><th>月額</th></tr></thead>
+        <thead><tr><th>経費項目</th><th style="text-align:right">ペソ（₱）</th><th style="text-align:right">円換算（¥）</th></tr></thead>
         <tbody>
-          <tr><td>スタッフ給料</td><td>8万ペソ × 2人 × 2.6322</td><td>¥421,152</td></tr>
-          <tr><td>運転手+ガソリン</td><td>¥6,000 × 20日</td><td>¥120,000</td></tr>
-          <tr><td>販促費等</td><td></td><td>~¥35,000</td></tr>
-          <tr><td>サーバー費用</td><td></td><td>~¥5,000</td></tr>
+          <tr><td>🚗 車関係費用</td><td style="text-align:right">₱58,718.19</td><td style="text-align:right">¥154,555</td></tr>
+          <tr><td>🏠 家賃</td><td style="text-align:right">₱63,750.00</td><td style="text-align:right">¥167,803</td></tr>
+          <tr><td>👥 人件費（ドライバー等含む）</td><td style="text-align:right">₱339,600.00</td><td style="text-align:right">¥893,895</td></tr>
+          <tr><td>🛂 ビザ費用</td><td style="text-align:right">₱36,470.00</td><td style="text-align:right">¥95,997</td></tr>
+          <tr><td>📦 その他</td><td style="text-align:right">₱96,600.33</td><td style="text-align:right">¥254,232</td></tr>
         </tbody>
-        <tfoot><tr style="border-top:2px solid var(--red)"><td colspan="2"><strong>合計固定経費</strong></td><td style="color:var(--red);font-weight:700">¥581,152</td></tr></tfoot>
+        <tfoot><tr style="border-top:2px solid var(--red)"><td><strong>3月合計</strong></td><td style="text-align:right;font-weight:700">₱595,138.52</td><td style="text-align:right;color:var(--red);font-weight:700;font-size:1.1em">¥1,566,482</td></tr></tfoot>
       </table>
     </div>
 
     <div class="card mb-16">
-      <h3>月次実績</h3>
+      <h3>月次実績（実経費反映）</h3>
       <table>
-        <thead><tr><th>月</th><th>テレベット利益（売上）</th><th>長岡さん歩合</th><th>経費</th><th>会社に残る</th></tr></thead>
+        <thead><tr><th>月</th><th>売上</th><th>長岡歩合</th><th>実経費</th><th>会社に残る</th></tr></thead>
         <tbody>
           <tr><td>1月</td><td colspan="4" style="text-align:center;color:var(--muted)">未稼働</td></tr>
-          <tr><td>2月</td><td>¥1,439,885</td><td>¥185,983</td><td style="color:var(--red)">-¥581,152</td><td style="color:var(--green);font-weight:600">¥672,750</td></tr>
-          <tr><td>3月</td><td>¥1,430,228</td><td>¥184,534</td><td style="color:var(--red)">-¥581,152</td><td style="color:var(--green);font-weight:600">¥664,542</td></tr>
-          <tr><td>4月</td><td>¥839,567</td><td>¥100,748</td><td style="color:var(--red)">-¥581,152</td><td style="color:var(--blue);font-weight:600">¥157,667</td></tr>
+          <tr><td>2月</td><td>¥1,439,885</td><td>¥185,983</td><td style="color:var(--red)">経費データ未入力</td><td style="color:var(--muted)">—</td></tr>
+          <tr><td>3月</td><td>¥1,430,228</td><td>¥184,534</td><td style="color:var(--red)">-¥1,566,482</td><td style="color:var(--red);font-weight:600">-¥320,788</td></tr>
+          <tr><td>4月</td><td>¥839,567</td><td>¥100,748</td><td style="color:var(--red)">経費データ未入力</td><td style="color:var(--muted)">—</td></tr>
         </tbody>
       </table>
+      <p style="color:var(--gold);font-size:0.85em;margin-top:12px;padding:10px;background:rgba(154,91,0,0.1);border-radius:6px">⚠️ 3月は経費超過により赤字 — 売上より経費が大きい。売上ベース歩合は変わらず支給される構造のため、会社負担増加に注意。</p>
+    </div>
+
+    <div class="card mb-16">
+      <h3>経費追加（月別）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:16px">各項目をペソ（₱）で入力。自動で円換算されます。</p>
+      <div class="grid grid-3" style="gap:10px;margin-bottom:12px">
+        <div class="form-group"><label>対象月</label><input type="month" id="expMonth" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>ペソレート</label><input type="number" id="expRate" step="0.01" value="2.6322" style="background:var(--bg-input)"></div>
+        <div class="form-group" style="display:flex;align-items:flex-end"><button onclick="saveExpense()" style="background:var(--accent);width:100%">保存</button></div>
+      </div>
+      <div class="grid grid-3" style="gap:10px">
+        <div class="form-group"><label>🚗 車関係費用（₱）</label><input type="number" id="expCar" step="0.01" value="0" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>🏠 家賃（₱）</label><input type="number" id="expRent" step="0.01" value="0" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>👥 人件費（₱）</label><input type="number" id="expStaff" step="0.01" value="0" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>🛂 ビザ費用（₱）</label><input type="number" id="expVisa" step="0.01" value="0" style="background:var(--bg-input)"></div>
+        <div class="form-group"><label>📦 その他（₱）</label><input type="number" id="expOther" step="0.01" value="0" style="background:var(--bg-input)"></div>
+      </div>
+      <div id="expenseList" style="margin-top:16px"></div>
     </div>
 
     <div class="card mb-16">
@@ -1498,6 +1522,154 @@
     <div class="card mb-16">
       <h3>月次インセンティブ合計</h3>
       <div id="totIncResult"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: 組織図 -->
+<div id="orgChartTab" class="tab-content">
+  <div class="topbar"><div class="topbar-title">組織図 — Betrnk Tours</div></div>
+  <div style="padding:28px 32px;max-width:1400px;margin:0 auto">
+
+    <div class="card mb-16" style="border-left:3px solid var(--accent)">
+      <h3>ベットランクツアーズ 組織構成</h3>
+      <p style="color:var(--muted);font-size:0.9em;line-height:1.7">
+        韓国カジノツアー事業部 + テレベット事業部の2本立て組織。日本・韓国・フィリピンの3拠点で運営。
+      </p>
+    </div>
+
+    <!-- Organization Chart -->
+    <div class="card mb-16" style="overflow-x:auto">
+      <style>
+        .org-container{display:flex;flex-direction:column;align-items:center;padding:24px 20px;min-width:900px}
+        .org-node{background:var(--bg-tertiary);border:2px solid var(--border);border-radius:10px;padding:12px 20px;text-align:center;min-width:160px;margin:6px;position:relative}
+        .org-node.ceo{background:linear-gradient(135deg,var(--accent),#dc2e47);color:#fff;border-color:var(--accent);padding:18px 28px;min-width:220px}
+        .org-node.ceo .role{color:rgba(255,255,255,0.8)}
+        .org-node.dept{border-width:3px;font-weight:700;padding:14px 24px}
+        .org-node.dept.korea{border-color:var(--blue);background:rgba(54,96,170,0.08)}
+        .org-node.dept.japan{border-color:var(--gold);background:rgba(154,91,0,0.08)}
+        .org-node.dept.telebet{border-color:var(--green);background:rgba(15,123,95,0.08)}
+        .org-node .name{font-weight:700;font-size:1.05em}
+        .org-node .role{color:var(--muted);font-size:0.78em;margin-top:3px}
+        .org-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;position:relative}
+        .org-line{height:24px;width:2px;background:var(--border);margin:0 auto}
+        .org-line-h{height:2px;background:var(--border);margin:12px 0}
+        .org-group{display:flex;flex-direction:column;align-items:center;padding:0 12px}
+      </style>
+      <div class="org-container">
+        <!-- CEO -->
+        <div class="org-node ceo">
+          <div class="name" style="font-size:1.15em">長岡きみ</div>
+          <div class="role">代表 / CEO</div>
+          <div class="role" style="margin-top:4px">🇯🇵 日本本社 + テレベット統括</div>
+        </div>
+
+        <div class="org-line"></div>
+
+        <!-- 3 Departments -->
+        <div class="org-row">
+          <!-- 韓国現地部門 -->
+          <div class="org-group">
+            <div class="org-node dept korea">
+              <div class="name">🇰🇷 韓国現地チーム</div>
+              <div class="role">カジノツアー運営</div>
+            </div>
+            <div class="org-line"></div>
+            <div class="org-row">
+              <div class="org-node" style="border-left:3px solid var(--blue)">
+                <div class="name">チョイ</div>
+                <div class="role">現地スタッフ</div>
+              </div>
+              <div class="org-node" style="border-left:3px solid var(--blue)">
+                <div class="name">ケビン</div>
+                <div class="role">現地スタッフ</div>
+              </div>
+              <div class="org-node" style="border-left:3px solid var(--blue)">
+                <div class="name">チェリン</div>
+                <div class="role">現地スタッフ</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 日本チーム -->
+          <div class="org-group">
+            <div class="org-node dept japan">
+              <div class="name">🇯🇵 日本チーム</div>
+              <div class="role">CS / 予約対応</div>
+            </div>
+            <div class="org-line"></div>
+            <div class="org-row">
+              <div class="org-node" style="border-left:3px solid var(--gold)">
+                <div class="name">長岡ゆみ</div>
+                <div class="role">CS担当</div>
+              </div>
+              <div class="org-node" style="border-left:3px solid var(--gold)">
+                <div class="name">FUさん</div>
+                <div class="role">スタッフ</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- テレベット部門 -->
+          <div class="org-group">
+            <div class="org-node dept telebet">
+              <div class="name">📱 テレベット部門</div>
+              <div class="role">オンラインベット</div>
+            </div>
+            <div class="org-line"></div>
+            <div class="org-row">
+              <div class="org-node" style="border-left:3px solid var(--green)">
+                <div class="name">長岡きみ</div>
+                <div class="role">統括担当</div>
+              </div>
+              <div class="org-node" style="border-left:3px solid var(--green)">
+                <div class="name">フィリピンスタッフ×2</div>
+                <div class="role">現地運営</div>
+              </div>
+              <div class="org-node" style="border-left:3px solid var(--green)">
+                <div class="name">ドライバー</div>
+                <div class="role">送迎</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 評価ライン -->
+    <div class="card mb-16">
+      <h3>🏆 評価ライン（3名評価制）</h3>
+      <p style="color:var(--muted);font-size:0.9em;margin-bottom:16px">現地スタッフの最終評価は以下3名の平均で決定：</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+        <div style="background:var(--bg-tertiary);border:2px solid var(--blue);border-radius:10px;padding:16px 24px;text-align:center">
+          <div style="font-weight:700;color:var(--blue);font-size:1.05em">👤 ケビン</div>
+          <div style="color:var(--muted);font-size:0.8em;margin-top:4px">現地リーダー評価</div>
+        </div>
+        <div style="background:var(--bg-tertiary);border:2px solid var(--gold);border-radius:10px;padding:16px 24px;text-align:center">
+          <div style="font-weight:700;color:var(--gold);font-size:1.05em">👤 長岡きみ</div>
+          <div style="color:var(--muted);font-size:0.8em;margin-top:4px">CEO評価</div>
+        </div>
+        <div style="background:var(--bg-tertiary);border:2px solid var(--purple);border-radius:10px;padding:16px 24px;text-align:center">
+          <div style="font-weight:700;color:var(--purple);font-size:1.05em">👤 FUさん</div>
+          <div style="color:var(--muted);font-size:0.8em;margin-top:4px">第三者評価</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 役割サマリー -->
+    <div class="card mb-16">
+      <h3>役割・担当業務</h3>
+      <table>
+        <thead><tr><th>担当者</th><th>所属</th><th>主な業務</th><th>インセンティブ</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:var(--gold)">長岡きみ</strong></td><td>🇯🇵 CEO / テレベット統括</td><td>経営判断、テレベット運営</td><td>テレベット歩合（12-18%）+ 評価</td></tr>
+          <tr><td><strong style="color:var(--gold)">長岡ゆみ</strong></td><td>🇯🇵 日本CS</td><td>顧客対応・予約管理</td><td>予約歩合 + 評価</td></tr>
+          <tr><td><strong style="color:var(--purple)">FUさん</strong></td><td>🇯🇵 日本チーム</td><td>CS / 運営サポート / 評価者</td><td>予約歩合 + 評価</td></tr>
+          <tr><td><strong style="color:var(--accent)">チョイ</strong></td><td>🇰🇷 韓国現地</td><td>ツアー運営、顧客案内</td><td>評価ボーナス + Telegram/入金</td></tr>
+          <tr><td><strong style="color:var(--blue)">ケビン</strong></td><td>🇰🇷 韓国現地</td><td>現地リーダー、評価者</td><td>評価ボーナス + Telegram/入金</td></tr>
+          <tr><td><strong style="color:var(--green)">チェリン</strong></td><td>🇰🇷 韓国現地</td><td>ツアー運営、顧客案内</td><td>評価ボーナス + Telegram/入金</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -4847,6 +5019,64 @@ function renderTbActions(){
   listEl.innerHTML=html;
 }
 
+// ==================== テレベット経費管理 ====================
+function getExpenses(){return JSON.parse(localStorage.getItem('tb_expenses')||'[]');}
+function saveExpensesData(list){localStorage.setItem('tb_expenses',JSON.stringify(list));}
+
+function saveExpense(){
+  var month=document.getElementById('expMonth').value;
+  var rate=parseFloat(document.getElementById('expRate').value)||2.6322;
+  var car=parseFloat(document.getElementById('expCar').value)||0;
+  var rent=parseFloat(document.getElementById('expRent').value)||0;
+  var staff=parseFloat(document.getElementById('expStaff').value)||0;
+  var visa=parseFloat(document.getElementById('expVisa').value)||0;
+  var other=parseFloat(document.getElementById('expOther').value)||0;
+  if(!month){alert('対象月を選択してください');return;}
+  var totalPeso=car+rent+staff+visa+other;
+  var totalYen=Math.round(totalPeso*rate);
+  var list=getExpenses();
+  var existing=list.findIndex(function(e){return e.month===month;});
+  var item={month:month,rate:rate,car:car,rent:rent,staff:staff,visa:visa,other:other,totalPeso:totalPeso,totalYen:totalYen};
+  if(existing>=0) list[existing]=item;
+  else list.push(item);
+  saveExpensesData(list);
+  renderExpenses();
+  alert(month+' の経費を保存しました（₱'+totalPeso.toLocaleString()+' = ¥'+totalYen.toLocaleString()+'）');
+}
+
+function deleteExpense(idx){
+  if(!confirm('この経費データを削除しますか？'))return;
+  var list=getExpenses();
+  list.splice(idx,1);
+  saveExpensesData(list);
+  renderExpenses();
+}
+
+function renderExpenses(){
+  var list=getExpenses();
+  var el=document.getElementById('expenseList');
+  if(!el)return;
+  if(!list.length){el.innerHTML='<p style="color:var(--muted);font-size:0.85em">経費データなし</p>';return;}
+  var sorted=[].concat(list).sort(function(a,b){return (b.month||'').localeCompare(a.month||'');});
+  var html='<table><thead><tr><th>月</th><th style="text-align:right">車</th><th style="text-align:right">家賃</th><th style="text-align:right">人件費</th><th style="text-align:right">ビザ</th><th style="text-align:right">その他</th><th style="text-align:right">合計(円)</th><th></th></tr></thead><tbody>';
+  sorted.forEach(function(e){
+    var origIdx=list.indexOf(e);
+    html+='<tr><td><strong>'+e.month+'</strong></td><td style="text-align:right">₱'+e.car.toLocaleString()+'</td><td style="text-align:right">₱'+e.rent.toLocaleString()+'</td><td style="text-align:right">₱'+e.staff.toLocaleString()+'</td><td style="text-align:right">₱'+e.visa.toLocaleString()+'</td><td style="text-align:right">₱'+e.other.toLocaleString()+'</td><td style="text-align:right;color:var(--red);font-weight:700">¥'+e.totalYen.toLocaleString()+'</td><td><button onclick="deleteExpense('+origIdx+')" style="background:transparent;border:1px solid var(--red);color:var(--red);padding:2px 8px;font-size:0.75em;border-radius:4px">削除</button></td></tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+function seedExpenseData(){
+  if(localStorage.getItem('expense_seeded')==='1')return;
+  var existing=getExpenses();
+  if(existing.length===0){
+    var marchExpense={month:'2026-03',rate:2.6322,car:58718.19,rent:63750,staff:339600,visa:36470,other:96600.33,totalPeso:595138.52,totalYen:1566482};
+    saveExpensesData([marchExpense]);
+  }
+  localStorage.setItem('expense_seeded','1');
+}
+
 // ==================== スタッフ別インセンティブ管理 ====================
 var STAFF_LIST=['長岡きみ','長岡ゆみ','チョイ','ケビン','チェリン'];
 var selectedStaff='長岡きみ';
@@ -5403,6 +5633,8 @@ function init(){
   populateTgMonths();
   renderTgRecords();
   seedInitialData();
+  seedExpenseData();
+  renderExpenses();
   renderEvalBonusList();
   renderTbProfitList();
   populateTotIncMonths();
