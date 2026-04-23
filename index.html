@@ -742,10 +742,24 @@
     </div>
   </div>
 
+  <div class="card mb-16">
+    <div class="flex-between mb-16">
+      <h3 style="color:var(--gold)">スタッフ別 月次給与管理</h3>
+      <div style="display:flex;gap:6px">
+        <button class="btn-sm" onclick="addAvatarStaff()">+ スタッフ追加</button>
+        <button class="btn-sm btn-gold" onclick="calcAllAvatarStaff()">全員計算</button>
+        <button class="btn-sm" onclick="resetAvatarMonth()" style="background:var(--red);color:#fff">月次リセット</button>
+      </div>
+    </div>
+    <p class="text-sm text-muted mb-8">各スタッフの月間セッション実績・ローリング平均・満足度・リピート数を入力。ブラウザに自動保存されます。</p>
+    <div id="avatarStaffList"></div>
+    <div id="avatarStaffSummary" style="margin-top:20px"></div>
+  </div>
+
   <div class="grid grid-2 mb-16">
     <div class="card">
-      <h3>月間給与シミュレーター</h3>
-      <p class="text-sm text-muted mb-16">月間のセッション内訳を入力して月収を算出</p>
+      <h3>月間給与シミュレーター <span class="text-sm text-muted">（what-if用）</span></h3>
+      <p class="text-sm text-muted mb-16">任意の条件で月収を試算（スタッフ管理には影響しません）</p>
       <div class="form-group"><label>スタッフ名</label><input type="text" id="avName" placeholder="例: AVATAR-A" value="AVATAR-A"></div>
       <div class="grid grid-2" style="gap:8px">
         <div class="form-group"><label>VVIP セッション数</label><input type="number" id="avVvip" min="0" value="0"></div>
@@ -3047,6 +3061,7 @@ function init(){
   renderAlerts();
   renderIncentiveCharts();
   renderTelebetCharts();
+  renderAvatarStaff();
 }
 
 function renderTelebetCharts(){
@@ -3082,6 +3097,146 @@ function calcTelebet(){
       ${repeatCount>0?`<tr><td>リピート予約（${repeatCount}件×¥3,000）</td><td class="text-right">¥${repeatBonus.toLocaleString()}</td></tr>`:''}
       ${extraBonus>0?`<tr><td>5件以上達成ボーナス</td><td class="text-right">¥${extraBonus.toLocaleString()}</td></tr>`:''}
       <tr style="border-top:2px solid var(--green)"><td><strong>合計インセンティブ</strong></td><td class="text-right" style="font-size:1.3em;font-weight:700;color:var(--green)">¥${total.toLocaleString()}</td></tr>
+    </table>`;
+}
+
+// ==================== アバタースタッフ管理 ====================
+const AVATAR_STAFF_KEY='br_avatar_staff';
+const DEFAULT_AVATAR_STAFF=[
+  {id:'av_taku',   name:'たく',     sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0},
+  {id:'av_muramatsu', name:'むらまつ', sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0},
+  {id:'av_ayaka',  name:'あやか',   sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0}
+];
+function loadAvatarStaff(){
+  const saved=localStorage.getItem(AVATAR_STAFF_KEY);
+  if(saved){try{return JSON.parse(saved);}catch(e){}}
+  localStorage.setItem(AVATAR_STAFF_KEY,JSON.stringify(DEFAULT_AVATAR_STAFF));
+  return JSON.parse(JSON.stringify(DEFAULT_AVATAR_STAFF));
+}
+function saveAvatarStaff(staff){localStorage.setItem(AVATAR_STAFF_KEY,JSON.stringify(staff));}
+function calcAvatarPts(s){
+  const ss=s.sessions;
+  const basePts=ss.vvip*3.0+ss.vip*2.0+ss.gold*1.5+ss.silver*1.0+ss.bronze*0.8;
+  const totalSessions=ss.vvip+ss.vip+ss.gold+ss.silver+ss.bronze;
+  let rollBonusPer=0;
+  if(s.rolling>=100000000)rollBonusPer=3;
+  else if(s.rolling>=50000000)rollBonusPer=2;
+  else if(s.rolling>=30000000)rollBonusPer=1;
+  const rollingPts=totalSessions*rollBonusPer;
+  const monthEndPts=s.survey*2+s.repeat*3;
+  const totalPts=basePts+rollingPts+monthEndPts;
+  let rate=400, tier='Bronze';
+  if(totalPts>100){rate=1200;tier='Platinum';}
+  else if(totalPts>60){rate=900;tier='Gold';}
+  else if(totalPts>30){rate=600;tier='Silver';}
+  const commission=Math.round(totalPts*rate);
+  return {basePts,rollingPts,monthEndPts,totalPts,rate,tier,commission,total:80000+commission,totalSessions};
+}
+function renderAvatarStaff(){
+  const container=document.getElementById('avatarStaffList');
+  if(!container)return;
+  const staff=loadAvatarStaff();
+  if(staff.length===0){container.innerHTML='<p class="text-sm text-muted">スタッフがいません。「+ スタッフ追加」で追加してください。</p>';return;}
+  container.innerHTML=staff.map((s,i)=>{
+    const calc=calcAvatarPts(s);
+    return `
+    <div style="background:var(--secondary);padding:14px;border-radius:10px;margin-bottom:10px;border-left:3px solid var(--gold)">
+      <div class="flex-between mb-8" style="align-items:center">
+        <input type="text" value="${s.name}" onchange="updateAvatarStaffField(${i},'name',this.value)" style="font-size:1.15em;font-weight:700;background:transparent;border:none;color:var(--gold);max-width:220px;padding:4px">
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="text-sm text-muted">現在: <strong style="color:var(--gold)">${calc.totalPts.toFixed(1)} pt</strong> / <strong style="color:var(--green)">₱${calc.total.toLocaleString()}</strong></span>
+          <button class="btn-sm" onclick="removeAvatarStaff(${i})" style="background:var(--red);color:#fff">削除</button>
+        </div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px">
+        <div><label class="text-sm text-muted">VVIP</label><input type="number" min="0" value="${s.sessions.vvip}" onchange="updateAvatarSession(${i},'vvip',this.value)"></div>
+        <div><label class="text-sm text-muted">VIP</label><input type="number" min="0" value="${s.sessions.vip}" onchange="updateAvatarSession(${i},'vip',this.value)"></div>
+        <div><label class="text-sm text-muted">Gold</label><input type="number" min="0" value="${s.sessions.gold}" onchange="updateAvatarSession(${i},'gold',this.value)"></div>
+        <div><label class="text-sm text-muted">Silver</label><input type="number" min="0" value="${s.sessions.silver}" onchange="updateAvatarSession(${i},'silver',this.value)"></div>
+        <div><label class="text-sm text-muted">Bronze</label><input type="number" min="0" value="${s.sessions.bronze}" onchange="updateAvatarSession(${i},'bronze',this.value)"></div>
+      </div>
+      <div class="grid grid-3" style="gap:6px">
+        <div><label class="text-sm text-muted">平均3hローリング(KRW)</label><input type="number" min="0" value="${s.rolling}" onchange="updateAvatarStaffField(${i},'rolling',this.value)"></div>
+        <div><label class="text-sm text-muted">個人名アンケート評価</label><input type="number" min="0" value="${s.survey}" onchange="updateAvatarStaffField(${i},'survey',this.value)"></div>
+        <div><label class="text-sm text-muted">リピート獲得件数</label><input type="number" min="0" value="${s.repeat}" onchange="updateAvatarStaffField(${i},'repeat',this.value)"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function updateAvatarStaffField(i,field,value){
+  const staff=loadAvatarStaff();
+  if(field==='name')staff[i].name=value;
+  else staff[i][field]=parseInt(value)||0;
+  saveAvatarStaff(staff);
+  renderAvatarStaff();
+}
+function updateAvatarSession(i,rank,value){
+  const staff=loadAvatarStaff();
+  staff[i].sessions[rank]=parseInt(value)||0;
+  saveAvatarStaff(staff);
+  renderAvatarStaff();
+}
+function addAvatarStaff(){
+  const name=prompt('スタッフ名を入力してください');
+  if(!name||!name.trim())return;
+  const staff=loadAvatarStaff();
+  staff.push({id:'av_'+Date.now(),name:name.trim(),sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0},rolling:40000000,survey:0,repeat:0});
+  saveAvatarStaff(staff);
+  renderAvatarStaff();
+}
+function removeAvatarStaff(i){
+  const staff=loadAvatarStaff();
+  if(!confirm(`${staff[i].name} を削除しますか？`))return;
+  staff.splice(i,1);
+  saveAvatarStaff(staff);
+  renderAvatarStaff();
+  const sum=document.getElementById('avatarStaffSummary');
+  if(sum)sum.innerHTML='';
+}
+function resetAvatarMonth(){
+  if(!confirm('全スタッフの今月実績（セッション数・アンケート・リピート）をリセットします。スタッフ名は残ります。続行しますか？'))return;
+  const staff=loadAvatarStaff();
+  staff.forEach(s=>{s.sessions={vvip:0,vip:0,gold:0,silver:0,bronze:0};s.survey=0;s.repeat=0;});
+  saveAvatarStaff(staff);
+  renderAvatarStaff();
+  const sum=document.getElementById('avatarStaffSummary');
+  if(sum)sum.innerHTML='';
+}
+function calcAllAvatarStaff(){
+  const staff=loadAvatarStaff();
+  if(staff.length===0)return;
+  const results=staff.map(s=>({name:s.name,...calcAvatarPts(s)}));
+  const grandCommission=results.reduce((a,b)=>a+b.commission,0);
+  const grandTotal=results.reduce((a,b)=>a+b.total,0);
+  const grandBase=80000*results.length;
+  document.getElementById('avatarStaffSummary').innerHTML=`
+    <h3 style="color:var(--green);margin-bottom:10px">集計結果（${results.length}名）</h3>
+    <table>
+      <thead><tr><th>スタッフ</th><th>セッション</th><th>基本pt</th><th>ローリングpt</th><th>月末pt</th><th>合計pt</th><th>ティア</th><th>基本給</th><th>歩合</th><th>月収</th></tr></thead>
+      <tbody>
+        ${results.map(r=>`
+          <tr>
+            <td><strong>${r.name}</strong></td>
+            <td>${r.totalSessions}回</td>
+            <td class="text-right">${r.basePts.toFixed(1)}</td>
+            <td class="text-right">${r.rollingPts}</td>
+            <td class="text-right">${r.monthEndPts}</td>
+            <td class="text-right"><strong style="color:var(--gold)">${r.totalPts.toFixed(1)}</strong></td>
+            <td><span class="text-sm">${r.tier}</span><br><span class="text-sm text-muted">₱${r.rate}/pt</span></td>
+            <td class="text-right">₱80,000</td>
+            <td class="text-right">₱${r.commission.toLocaleString()}</td>
+            <td class="text-right"><strong style="color:var(--green);font-size:1.1em">₱${r.total.toLocaleString()}</strong></td>
+          </tr>
+        `).join('')}
+      </tbody>
+      <tfoot>
+        <tr style="border-top:2px solid var(--gold);background:var(--secondary)">
+          <td colspan="7"><strong>人件費総額</strong></td>
+          <td class="text-right"><strong>₱${grandBase.toLocaleString()}</strong></td>
+          <td class="text-right"><strong>₱${grandCommission.toLocaleString()}</strong></td>
+          <td class="text-right" style="font-size:1.2em"><strong style="color:var(--green)">₱${grandTotal.toLocaleString()}</strong></td>
+        </tr>
+      </tfoot>
     </table>`;
 }
 
