@@ -173,6 +173,7 @@
   <div class="tab" onclick="showTab('alerts',this)">アラート・アクション</div>
   <div class="tab" onclick="showTab('incentive',this)">営業インセンティブ</div>
   <div class="tab" onclick="showTab('telebetTab',this)" style="color:var(--green)">テレベット歩合</div>
+  <div class="tab" onclick="showTab('avatarSalaryTab',this)" style="color:var(--gold)">アバター給与</div>
   <div class="tab" onclick="showTab('surveyResultsTab',this)">アンケート結果</div>
   <div class="tab" onclick="showTab('fundTab',this)">資金管理</div>
   <div class="tab" onclick="showTab('casinoReportTab',this)">カジノレポート</div>
@@ -666,6 +667,166 @@
       <div class="form-group"><label>新規誘導数</label><input type="number" id="tbNewCount" min="0" value="0"></div>
       <div class="form-group"><label>リピート予約数</label><input type="number" id="tbRepeatCount" min="0" value="0"></div>
     </div>
+  </div>
+</div>
+
+<!-- TAB: アバター給与 -->
+<div id="avatarSalaryTab" class="tab-content">
+  <h2 style="color:var(--gold);margin-bottom:8px">アバタースタッフ給与（ポイント制）</h2>
+  <p class="text-sm text-muted mb-16">基本給 ₱80,000 ＋ 月間ポイントに応じた歩合。顧客ランク・ローリング実績・満足度でポイント加算。</p>
+
+  <div class="grid grid-4 mb-16">
+    <div class="card stat"><div class="label">基本給（固定）</div><div class="value" style="color:var(--gold)">₱80,000</div></div>
+    <div class="card stat"><div class="label">基本pt</div><div class="value">プレイ3時間 = 1pt</div></div>
+    <div class="card stat"><div class="label">最大倍率</div><div class="value" style="color:var(--green)">×3.0 <span class="text-sm text-muted">(VVIP)</span></div></div>
+    <div class="card stat"><div class="label">最高単価</div><div class="value" style="color:var(--green)">₱1,200/pt <span class="text-sm text-muted">(101pt〜)</span></div></div>
+  </div>
+
+  <div class="grid grid-2 mb-16">
+    <div class="card">
+      <h3>ポイント獲得ルール</h3>
+      <h4 class="text-sm" style="color:var(--muted);margin:12px 0 6px">① 基本ポイント（プレイ時間）</h4>
+      <table>
+        <thead><tr><th>プレイ時間</th><th>基本pt</th></tr></thead>
+        <tbody><tr><td>3時間ごと</td><td><strong>1 pt</strong></td></tr></tbody>
+      </table>
+      <h4 class="text-sm" style="color:var(--muted);margin:16px 0 6px">② 顧客ランク倍率（①に乗算）</h4>
+      <table>
+        <thead><tr><th>ランク</th><th>倍率</th></tr></thead>
+        <tbody>
+          <tr><td>VVIP</td><td class="positive"><strong>×3.0</strong></td></tr>
+          <tr><td>VIP</td><td class="positive"><strong>×2.0</strong></td></tr>
+          <tr><td>Gold</td><td class="neutral"><strong>×1.5</strong></td></tr>
+          <tr><td>Silver</td><td><strong>×1.0</strong></td></tr>
+          <tr><td>Bronze</td><td class="text-muted"><strong>×0.8</strong></td></tr>
+        </tbody>
+      </table>
+      <h4 class="text-sm" style="color:var(--muted);margin:16px 0 6px">③ ローリング実績ボーナス（3時間セッションあたり）</h4>
+      <table>
+        <thead><tr><th>3h ローリング額</th><th>追加pt</th></tr></thead>
+        <tbody>
+          <tr><td>〜3,000万 KRW</td><td>+0</td></tr>
+          <tr><td>3,000万〜5,000万</td><td class="neutral"><strong>+1</strong></td></tr>
+          <tr><td>5,000万〜1億</td><td class="positive"><strong>+2</strong></td></tr>
+          <tr><td>1億以上</td><td class="positive"><strong>+3</strong></td></tr>
+        </tbody>
+      </table>
+      <h4 class="text-sm" style="color:var(--muted);margin:16px 0 6px">④ 月末ボーナス</h4>
+      <table>
+        <thead><tr><th>項目</th><th>pt</th></tr></thead>
+        <tbody>
+          <tr><td>アンケート個人名評価 1回</td><td class="positive"><strong>+2 pt</strong></td></tr>
+          <tr><td>リピート獲得 1件</td><td class="positive"><strong>+3 pt</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>ポイント → PHP 換算（ティア制）</h3>
+      <p class="text-sm text-muted mb-8">月間合計ptに応じて単価が上がる仕組み。頑張るほど時給が上がる。</p>
+      <table>
+        <thead><tr><th>月間pt</th><th>1pt単価</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td>0〜30 pt</td><td><strong>₱400</strong></td><td class="text-sm text-muted">30pt → ₱12,000</td></tr>
+          <tr><td>31〜60 pt</td><td class="neutral"><strong>₱600</strong></td><td class="text-sm text-muted">60pt → ₱36,000</td></tr>
+          <tr><td>61〜100 pt</td><td class="positive"><strong>₱900</strong></td><td class="text-sm text-muted">100pt → ₱90,000</td></tr>
+          <tr><td>101 pt〜</td><td class="positive"><strong>₱1,200</strong></td><td class="text-sm text-muted">150pt → ₱180,000</td></tr>
+        </tbody>
+      </table>
+      <div class="divider"></div>
+      <h4 style="margin-bottom:6px">月収の計算式</h4>
+      <div style="background:var(--secondary);padding:12px;border-radius:8px;font-family:monospace;font-size:0.9em">
+        月収 = ₱80,000 + (月間pt × 該当ティア単価)
+      </div>
+      <p class="text-sm text-muted mt-8">※ ティア単価は月間合計ptに応じた1段階のみ（累進ではない）</p>
+    </div>
+  </div>
+
+  <div class="grid grid-2 mb-16">
+    <div class="card">
+      <h3>月間給与シミュレーター</h3>
+      <p class="text-sm text-muted mb-16">月間のセッション内訳を入力して月収を算出</p>
+      <div class="form-group"><label>スタッフ名</label><input type="text" id="avName" placeholder="例: AVATAR-A" value="AVATAR-A"></div>
+      <div class="grid grid-2" style="gap:8px">
+        <div class="form-group"><label>VVIP セッション数</label><input type="number" id="avVvip" min="0" value="0"></div>
+        <div class="form-group"><label>VIP セッション数</label><input type="number" id="avVip" min="0" value="4"></div>
+        <div class="form-group"><label>Gold セッション数</label><input type="number" id="avGold" min="0" value="6"></div>
+        <div class="form-group"><label>Silver セッション数</label><input type="number" id="avSilver" min="0" value="8"></div>
+        <div class="form-group"><label>Bronze セッション数</label><input type="number" id="avBronze" min="0" value="2"></div>
+        <div class="form-group"><label>平均 3h ローリング額(KRW)</label><input type="number" id="avRolling" min="0" value="40000000"></div>
+      </div>
+      <div class="grid grid-2" style="gap:8px">
+        <div class="form-group"><label>個人名アンケート評価</label><input type="number" id="avSurvey" min="0" value="3"></div>
+        <div class="form-group"><label>リピート獲得件数</label><input type="number" id="avRepeat" min="0" value="2"></div>
+      </div>
+      <button onclick="calcAvatarSalary()" style="width:100%">月収を計算</button>
+      <div id="avResult" class="result-box mt-16" style="display:none"></div>
+    </div>
+
+    <div class="card">
+      <h3>想定シミュレーション</h3>
+      <p class="text-sm text-muted mb-16">典型的なスタッフ像別の月収イメージ</p>
+
+      <div style="background:var(--secondary);padding:14px;border-radius:10px;margin-bottom:12px">
+        <div class="flex-between mb-8"><strong>ケースA: 標準スタッフ</strong><span class="text-sm text-muted">Silver中心・月20セッション</span></div>
+        <div class="text-sm" style="color:var(--muted);line-height:1.7">
+          ・基本pt: 20回 × 1.0 = 20pt<br>
+          ・ローリング: 平均 +1 → 20pt<br>
+          ・月間合計: <strong style="color:var(--gold)">40pt</strong> → 単価 ₱600
+        </div>
+        <div class="divider"></div>
+        <div class="flex-between"><span>基本給</span><span>₱80,000</span></div>
+        <div class="flex-between"><span>歩合 (40 × ₱600)</span><span>₱24,000</span></div>
+        <div class="flex-between" style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px">
+          <strong>月収</strong><strong style="color:var(--green);font-size:1.3em">₱104,000</strong>
+        </div>
+      </div>
+
+      <div style="background:var(--secondary);padding:14px;border-radius:10px;margin-bottom:12px">
+        <div class="flex-between mb-8"><strong>ケースB: エース</strong><span class="text-sm text-muted">VIP/VVIP中心・月25セッション</span></div>
+        <div class="text-sm" style="color:var(--muted);line-height:1.7">
+          ・基本pt: 25 × 平均2.5倍率 = 62.5pt<br>
+          ・ローリング: 平均 +2 → 50pt<br>
+          ・満足度＋リピート: 10pt<br>
+          ・月間合計: <strong style="color:var(--gold)">122.5pt</strong> → 単価 ₱1,200
+        </div>
+        <div class="divider"></div>
+        <div class="flex-between"><span>基本給</span><span>₱80,000</span></div>
+        <div class="flex-between"><span>歩合 (122.5 × ₱1,200)</span><span>₱147,000</span></div>
+        <div class="flex-between" style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px">
+          <strong>月収</strong><strong style="color:var(--green);font-size:1.3em">₱227,000</strong>
+        </div>
+      </div>
+
+      <div style="background:var(--secondary);padding:14px;border-radius:10px">
+        <div class="flex-between mb-8"><strong>ケースC: 新人</strong><span class="text-sm text-muted">Bronze/Silver中心・月12セッション</span></div>
+        <div class="text-sm" style="color:var(--muted);line-height:1.7">
+          ・基本pt: 12 × 平均0.9倍率 = 10.8pt<br>
+          ・ローリング: 平均 +0〜1 → 6pt<br>
+          ・月間合計: <strong style="color:var(--gold)">約17pt</strong> → 単価 ₱400
+        </div>
+        <div class="divider"></div>
+        <div class="flex-between"><span>基本給</span><span>₱80,000</span></div>
+        <div class="flex-between"><span>歩合 (17 × ₱400)</span><span>₱6,800</span></div>
+        <div class="flex-between" style="border-top:1px solid var(--border);padding-top:8px;margin-top:8px">
+          <strong>月収</strong><strong style="color:var(--green);font-size:1.3em">₱86,800</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-16">
+    <h3>経営側の健全性チェック</h3>
+    <p class="text-sm text-muted mb-8">バカラ・ハウスエッジ1.15%、1セッション=3時間・平均5,000万KRWローリングを前提。</p>
+    <table>
+      <thead><tr><th>項目</th><th>金額</th><th>人件費比率</th></tr></thead>
+      <tbody>
+        <tr><td>1セッション粗利（概算）</td><td>約 ₱25,000</td><td>—</td></tr>
+        <tr><td>標準スタッフ 歩合/セッション</td><td>約 ₱1,200</td><td class="positive">4.8%</td></tr>
+        <tr><td>エース 歩合/セッション</td><td>約 ₱5,880</td><td class="neutral">約 12%</td></tr>
+      </tbody>
+    </table>
+    <p class="text-sm text-muted mt-8">※ 人件費比率が利益の15%以内に収まれば健全。エースケースも範囲内。</p>
   </div>
 </div>
 
@@ -2921,6 +3082,53 @@ function calcTelebet(){
       ${repeatCount>0?`<tr><td>リピート予約（${repeatCount}件×¥3,000）</td><td class="text-right">¥${repeatBonus.toLocaleString()}</td></tr>`:''}
       ${extraBonus>0?`<tr><td>5件以上達成ボーナス</td><td class="text-right">¥${extraBonus.toLocaleString()}</td></tr>`:''}
       <tr style="border-top:2px solid var(--green)"><td><strong>合計インセンティブ</strong></td><td class="text-right" style="font-size:1.3em;font-weight:700;color:var(--green)">¥${total.toLocaleString()}</td></tr>
+    </table>`;
+}
+
+function calcAvatarSalary(){
+  const name=document.getElementById('avName').value||'スタッフ';
+  const vvip=parseInt(document.getElementById('avVvip').value)||0;
+  const vip=parseInt(document.getElementById('avVip').value)||0;
+  const gold=parseInt(document.getElementById('avGold').value)||0;
+  const silver=parseInt(document.getElementById('avSilver').value)||0;
+  const bronze=parseInt(document.getElementById('avBronze').value)||0;
+  const rolling=parseInt(document.getElementById('avRolling').value)||0;
+  const surveyCount=parseInt(document.getElementById('avSurvey').value)||0;
+  const repeatCount=parseInt(document.getElementById('avRepeat').value)||0;
+
+  const basePts=vvip*3.0 + vip*2.0 + gold*1.5 + silver*1.0 + bronze*0.8;
+  const sessions=vvip+vip+gold+silver+bronze;
+  let rollingBonusPer=0;
+  if(rolling>=100000000) rollingBonusPer=3;
+  else if(rolling>=50000000) rollingBonusPer=2;
+  else if(rolling>=30000000) rollingBonusPer=1;
+  const rollingPts=sessions*rollingBonusPer;
+  const monthEndPts=surveyCount*2 + repeatCount*3;
+  const totalPts=basePts+rollingPts+monthEndPts;
+
+  let tier='', rate=0;
+  if(totalPts<=30){tier='Bronze (0〜30pt)';rate=400;}
+  else if(totalPts<=60){tier='Silver (31〜60pt)';rate=600;}
+  else if(totalPts<=100){tier='Gold (61〜100pt)';rate=900;}
+  else {tier='Platinum (101pt〜)';rate=1200;}
+
+  const commission=Math.round(totalPts*rate);
+  const base=80000;
+  const total=base+commission;
+
+  document.getElementById('avResult').style.display='block';
+  document.getElementById('avResult').innerHTML=`
+    <div class="flex-between mb-8"><h3 style="color:var(--gold)">${name}</h3><span class="text-sm text-muted">${tier}</span></div>
+    <table>
+      <tr><td>総セッション数</td><td class="text-right">${sessions} 回</td></tr>
+      <tr><td>基本pt（ランク倍率適用後）</td><td class="text-right">${basePts.toFixed(1)} pt</td></tr>
+      <tr><td>ローリングpt（${sessions}回 × +${rollingBonusPer}）</td><td class="text-right">${rollingPts} pt</td></tr>
+      <tr><td>月末ボーナスpt（満足度${surveyCount*2} + リピート${repeatCount*3}）</td><td class="text-right">${monthEndPts} pt</td></tr>
+      <tr style="border-top:1px solid var(--border)"><td><strong>月間合計pt</strong></td><td class="text-right"><strong style="color:var(--gold)">${totalPts.toFixed(1)} pt</strong></td></tr>
+      <tr><td>適用単価</td><td class="text-right">₱${rate.toLocaleString()} / pt</td></tr>
+      <tr><td>基本給</td><td class="text-right">₱${base.toLocaleString()}</td></tr>
+      <tr><td>歩合 (${totalPts.toFixed(1)} × ₱${rate.toLocaleString()})</td><td class="text-right"><strong class="positive">₱${commission.toLocaleString()}</strong></td></tr>
+      <tr style="border-top:2px solid var(--gold)"><td><strong>月収合計</strong></td><td class="text-right" style="font-size:1.4em;font-weight:700;color:var(--green)">₱${total.toLocaleString()}</td></tr>
     </table>`;
 }
 
