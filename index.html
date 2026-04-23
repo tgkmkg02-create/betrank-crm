@@ -1547,6 +1547,18 @@
             <tr><td>リピート獲得 1件</td><td style="color:var(--green)"><strong>+3 pt</strong></td></tr>
           </tbody>
         </table>
+        <h4 style="color:var(--muted);font-size:0.85em;margin:16px 0 6px">⑤ 管理者評価（5項目 × 0〜3pt = 最大15pt）</h4>
+        <table>
+          <thead><tr><th>評価項目</th><th>pt</th></tr></thead>
+          <tbody>
+            <tr><td>勤務態度</td><td style="color:var(--gold)"><strong>0〜3 pt</strong></td></tr>
+            <tr><td>チームワーク</td><td style="color:var(--gold)"><strong>0〜3 pt</strong></td></tr>
+            <tr><td>技術・スキル</td><td style="color:var(--gold)"><strong>0〜3 pt</strong></td></tr>
+            <tr><td>責任感</td><td style="color:var(--gold)"><strong>0〜3 pt</strong></td></tr>
+            <tr><td>顧客対応</td><td style="color:var(--gold)"><strong>0〜3 pt</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--muted);font-size:0.75em;margin-top:4px">※ 目安: 0=要改善 / 1=期待以下 / 2=標準 / 3=優秀</p>
       </div>
 
       <div class="card">
@@ -6242,14 +6254,24 @@ function renderTbCustomers(){
 
 // ==================== アバタースタッフ給与 ====================
 var AVATAR_STAFF_KEY='br_avatar_staff';
+var EMPTY_EVAL={attitude:0,teamwork:0,skill:0,responsibility:0,service:0};
 var DEFAULT_AVATAR_STAFF=[
-  {id:'av_taku',      name:'たく',     sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0},
-  {id:'av_muramatsu', name:'むらまつ', sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0},
-  {id:'av_ayaka',     name:'あやか',   sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0}
+  {id:'av_taku',      name:'たく',     sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0, eval:{attitude:0,teamwork:0,skill:0,responsibility:0,service:0}, evalMemo:''},
+  {id:'av_muramatsu', name:'むらまつ', sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0, eval:{attitude:0,teamwork:0,skill:0,responsibility:0,service:0}, evalMemo:''},
+  {id:'av_ayaka',     name:'あやか',   sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0, eval:{attitude:0,teamwork:0,skill:0,responsibility:0,service:0}, evalMemo:''}
 ];
 function loadAvatarStaff(){
   var saved=localStorage.getItem(AVATAR_STAFF_KEY);
-  if(saved){try{return JSON.parse(saved);}catch(e){}}
+  if(saved){try{
+    var parsed=JSON.parse(saved);
+    // backward compat: ensure every staff has eval fields
+    parsed.forEach(function(s){
+      if(!s.eval)s.eval={attitude:0,teamwork:0,skill:0,responsibility:0,service:0};
+      if(typeof s.evalMemo!=='string')s.evalMemo='';
+      ['attitude','teamwork','skill','responsibility','service'].forEach(function(k){if(typeof s.eval[k]!=='number')s.eval[k]=0;});
+    });
+    return parsed;
+  }catch(e){}}
   localStorage.setItem(AVATAR_STAFF_KEY,JSON.stringify(DEFAULT_AVATAR_STAFF));
   return JSON.parse(JSON.stringify(DEFAULT_AVATAR_STAFF));
 }
@@ -6264,13 +6286,15 @@ function calcAvatarPts(s){
   else if(s.rolling>=30000000)rollBonusPer=1;
   var rollingPts=totalSessions*rollBonusPer;
   var monthEndPts=s.survey*2+s.repeat*3;
-  var totalPts=basePts+rollingPts+monthEndPts;
+  var ev=s.eval||{attitude:0,teamwork:0,skill:0,responsibility:0,service:0};
+  var evalPts=(ev.attitude||0)+(ev.teamwork||0)+(ev.skill||0)+(ev.responsibility||0)+(ev.service||0);
+  var totalPts=basePts+rollingPts+monthEndPts+evalPts;
   var rate=400, tier='Bronze';
   if(totalPts>100){rate=1200;tier='Platinum';}
   else if(totalPts>60){rate=900;tier='Gold';}
   else if(totalPts>30){rate=600;tier='Silver';}
   var commission=Math.round(totalPts*rate);
-  return {basePts:basePts,rollingPts:rollingPts,monthEndPts:monthEndPts,totalPts:totalPts,rate:rate,tier:tier,commission:commission,total:80000+commission,totalSessions:totalSessions,rollBonusPer:rollBonusPer};
+  return {basePts:basePts,rollingPts:rollingPts,monthEndPts:monthEndPts,evalPts:evalPts,totalPts:totalPts,rate:rate,tier:tier,commission:commission,total:80000+commission,totalSessions:totalSessions,rollBonusPer:rollBonusPer};
 }
 function renderAvatarStaff(){
   var container=document.getElementById('avatarStaffList');
@@ -6294,13 +6318,44 @@ function renderAvatarStaff(){
         '<div><label style="color:var(--muted);font-size:0.75em">Silver</label><input type="number" min="0" value="'+s.sessions.silver+'" onchange="updateAvatarSession('+i+',\'silver\',this.value)"></div>'+
         '<div><label style="color:var(--muted);font-size:0.75em">Bronze</label><input type="number" min="0" value="'+s.sessions.bronze+'" onchange="updateAvatarSession('+i+',\'bronze\',this.value)"></div>'+
       '</div>'+
-      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">'+
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px">'+
         '<div><label style="color:var(--muted);font-size:0.75em">平均3hローリング(KRW)</label><input type="number" min="0" value="'+s.rolling+'" onchange="updateAvatarStaffField('+i+',\'rolling\',this.value)"></div>'+
         '<div><label style="color:var(--muted);font-size:0.75em">個人名アンケート評価回数</label><input type="number" min="0" value="'+s.survey+'" onchange="updateAvatarStaffField('+i+',\'survey\',this.value)"></div>'+
         '<div><label style="color:var(--muted);font-size:0.75em">リピート獲得件数</label><input type="number" min="0" value="'+s.repeat+'" onchange="updateAvatarStaffField('+i+',\'repeat\',this.value)"></div>'+
       '</div>'+
+      '<div style="background:rgba(154,91,0,0.08);border:1px dashed rgba(154,91,0,0.3);border-radius:8px;padding:10px;margin-top:6px">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="color:var(--gold);font-size:0.8em;font-weight:600">管理者評価（0〜3点 × 5項目 = 最大15pt）</span><span style="color:var(--gold);font-size:0.8em">合計: <strong>'+calc.evalPts+' pt</strong></span></div>'+
+        '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:6px">'+
+          '<div><label style="color:var(--muted);font-size:0.72em">勤務態度</label>'+evalSelect(i,'attitude',s.eval.attitude)+'</div>'+
+          '<div><label style="color:var(--muted);font-size:0.72em">チームワーク</label>'+evalSelect(i,'teamwork',s.eval.teamwork)+'</div>'+
+          '<div><label style="color:var(--muted);font-size:0.72em">技術・スキル</label>'+evalSelect(i,'skill',s.eval.skill)+'</div>'+
+          '<div><label style="color:var(--muted);font-size:0.72em">責任感</label>'+evalSelect(i,'responsibility',s.eval.responsibility)+'</div>'+
+          '<div><label style="color:var(--muted);font-size:0.72em">顧客対応</label>'+evalSelect(i,'service',s.eval.service)+'</div>'+
+        '</div>'+
+        '<div><label style="color:var(--muted);font-size:0.72em">評価メモ（管理者用）</label>'+
+          '<textarea rows="2" onchange="updateAvatarEvalMemo('+i+',this.value)" style="width:100%;resize:vertical;font-size:0.85em" placeholder="例: 積極性があり顧客対応が丁寧。来月も継続を期待。">'+(s.evalMemo||'')+'</textarea>'+
+        '</div>'+
+      '</div>'+
     '</div>';
   }).join('');
+}
+function evalSelect(i,key,current){
+  var labels={0:'0 - 要改善',1:'1 - 期待以下',2:'2 - 標準',3:'3 - 優秀'};
+  var opts='';
+  [0,1,2,3].forEach(function(v){opts+='<option value="'+v+'"'+(v===current?' selected':'')+'>'+labels[v]+'</option>';});
+  return '<select onchange="updateAvatarEval('+i+',\''+key+'\',this.value)" style="width:100%;font-size:0.82em;padding:4px">'+opts+'</select>';
+}
+function updateAvatarEval(i,key,value){
+  var staff=loadAvatarStaff();
+  if(!staff[i].eval)staff[i].eval={attitude:0,teamwork:0,skill:0,responsibility:0,service:0};
+  staff[i].eval[key]=parseInt(value)||0;
+  saveAvatarStaff(staff);
+  renderAvatarStaff();
+}
+function updateAvatarEvalMemo(i,value){
+  var staff=loadAvatarStaff();
+  staff[i].evalMemo=value;
+  saveAvatarStaff(staff);
 }
 function updateAvatarStaffField(i,field,value){
   var staff=loadAvatarStaff();
@@ -6333,9 +6388,14 @@ function removeAvatarStaff(i){
   if(sum)sum.innerHTML='';
 }
 function resetAvatarMonth(){
-  if(!confirm('全スタッフの今月実績（セッション数・アンケート・リピート）をリセットします。スタッフ名は残ります。続行しますか？'))return;
+  if(!confirm('全スタッフの今月実績（セッション・アンケート・リピート・管理者評価・メモ）をリセットします。スタッフ名は残ります。続行しますか？'))return;
   var staff=loadAvatarStaff();
-  staff.forEach(function(s){s.sessions={vvip:0,vip:0,gold:0,silver:0,bronze:0};s.survey=0;s.repeat=0;});
+  staff.forEach(function(s){
+    s.sessions={vvip:0,vip:0,gold:0,silver:0,bronze:0};
+    s.survey=0;s.repeat=0;
+    s.eval={attitude:0,teamwork:0,skill:0,responsibility:0,service:0};
+    s.evalMemo='';
+  });
   saveAvatarStaff(staff);
   renderAvatarStaff();
   var sum=document.getElementById('avatarStaffSummary');
@@ -6355,6 +6415,7 @@ function calcAllAvatarStaff(){
       '<td style="text-align:right">'+r.basePts.toFixed(1)+'</td>'+
       '<td style="text-align:right">'+r.rollingPts+'</td>'+
       '<td style="text-align:right">'+r.monthEndPts+'</td>'+
+      '<td style="text-align:right"><strong style="color:var(--gold)">'+r.evalPts+'</strong></td>'+
       '<td style="text-align:right"><strong style="color:var(--gold)">'+r.totalPts.toFixed(1)+'</strong></td>'+
       '<td><span style="font-size:0.85em">'+r.tier+'</span><br><span style="color:var(--muted);font-size:0.8em">₱'+r.rate+'/pt</span></td>'+
       '<td style="text-align:right">₱80,000</td>'+
@@ -6365,10 +6426,10 @@ function calcAllAvatarStaff(){
   document.getElementById('avatarStaffSummary').innerHTML=
     '<h3 style="color:var(--green);margin-bottom:10px">集計結果（'+results.length+'名）</h3>'+
     '<div style="overflow-x:auto"><table>'+
-      '<thead><tr><th>スタッフ</th><th>セッション</th><th>基本pt</th><th>ローリングpt</th><th>月末pt</th><th>合計pt</th><th>ティア</th><th>基本給</th><th>歩合</th><th>月収</th></tr></thead>'+
+      '<thead><tr><th>スタッフ</th><th>セッション</th><th>基本pt</th><th>ローリングpt</th><th>月末pt</th><th>評価pt</th><th>合計pt</th><th>ティア</th><th>基本給</th><th>歩合</th><th>月収</th></tr></thead>'+
       '<tbody>'+rows+'</tbody>'+
       '<tfoot><tr style="border-top:2px solid var(--gold);background:var(--bg-dark-accent)">'+
-        '<td colspan="7"><strong>人件費総額</strong></td>'+
+        '<td colspan="8"><strong>人件費総額</strong></td>'+
         '<td style="text-align:right"><strong>₱'+grandBase.toLocaleString()+'</strong></td>'+
         '<td style="text-align:right"><strong>₱'+grandCommission.toLocaleString()+'</strong></td>'+
         '<td style="text-align:right;font-size:1.15em"><strong style="color:var(--green)">₱'+grandTotal.toLocaleString()+'</strong></td>'+
