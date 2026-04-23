@@ -134,9 +134,10 @@
   <div class="login-box">
     <h1>BETRANK TOURS</h1>
     <div class="sub">CRM System - Authorized Access Only</div>
-    <input type="password" id="loginPass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="email" id="loginEmail" placeholder="Email" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()">
+    <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
     <button onclick="doLogin()">LOGIN</button>
-    <div class="login-error" id="loginError">パスワードが正しくありません</div>
+    <div class="login-error" id="loginError">メールアドレスまたはパスワードが正しくありません</div>
   </div>
 </div>
 
@@ -704,7 +705,8 @@
 
 <script>
 // ==================== LOGIN ====================
-const PASS_HASH='05a6a039966845f0405054e3d7280114b0f14083beaeaff1c2c0ef6eb647e955';
+const AUTH_EMAIL='lz8950239@gmail.com';
+const PASS_HASH='ffc170c39005b9d562c9500a871c452ddc56695d653e1d23f762e05221f05115';
 
 async function sha256(text){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
@@ -712,9 +714,10 @@ async function sha256(text){
 }
 
 async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
   const input=document.getElementById('loginPass').value;
   const hash=await sha256(input);
-  if(hash===PASS_HASH){
+  if(email===AUTH_EMAIL && hash===PASS_HASH){
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('appMain').style.display='block';
     sessionStorage.setItem('br_auth','1');
