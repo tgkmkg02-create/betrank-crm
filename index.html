@@ -5744,18 +5744,38 @@ var STAFF_LIST=['長岡きみ','長岡ゆみ','チョイ','ケビン','チェリ
 var selectedStaff='長岡きみ';
 
 function seedInitialData(){
-  if(localStorage.getItem('incentive_seeded')==='1')return;
   // Nagaoka Kimi's telebet profits (Feb-Apr)
   var tbProfits=[
     {month:'2026-02',amount:1439885,commission:calcTbCommission(1439885)},
     {month:'2026-03',amount:1430228,commission:calcTbCommission(1430228)},
     {month:'2026-04',amount:969505,commission:calcTbCommission(969505)}
   ];
-  var existing=JSON.parse(localStorage.getItem('tb_profits')||'[]');
-  if(existing.length===0){
-    localStorage.setItem('tb_profits',JSON.stringify(tbProfits));
+  // Migration v2: force update April from 839,567 (old yen interpretation)
+  // or 368,325 (wrong unit) to 969,505 (correct PHP->JPY at 2.6322)
+  if(localStorage.getItem('incentive_seeded_v2')!=='1'){
+    var existing=JSON.parse(localStorage.getItem('tb_profits')||'[]');
+    if(existing.length===0){
+      localStorage.setItem('tb_profits',JSON.stringify(tbProfits));
+    } else {
+      // Update 2026-04 entry if it has the stale amount
+      var changed=false;
+      existing=existing.map(function(e){
+        if(e.month==='2026-04' && (e.amount===839567 || e.amount===368325)){
+          changed=true;
+          return {month:'2026-04',amount:969505,commission:calcTbCommission(969505)};
+        }
+        return e;
+      });
+      // Also ensure 2026-04 exists at all
+      if(!existing.some(function(e){return e.month==='2026-04';})){
+        existing.push({month:'2026-04',amount:969505,commission:calcTbCommission(969505)});
+        changed=true;
+      }
+      if(changed)localStorage.setItem('tb_profits',JSON.stringify(existing));
+    }
+    localStorage.setItem('incentive_seeded','1');
+    localStorage.setItem('incentive_seeded_v2','1');
   }
-  localStorage.setItem('incentive_seeded','1');
 }
 
 function renderStaffSelector(){
