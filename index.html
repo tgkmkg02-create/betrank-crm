@@ -1279,9 +1279,9 @@
   <div class="topbar"><div class="topbar-title">テレベット営業インセンティブ（売上ベース）</div></div>
   <div style="padding:28px 32px;max-width:1600px;margin:0 auto">
     <div class="grid grid-4 mb-16">
-      <div class="card stat"><div class="label">テレベット累計利益（2〜4月）</div><div class="value" style="color:var(--green)">¥3,709,680</div></div>
+      <div class="card stat"><div class="label">テレベット累計利益（2〜4月）</div><div class="value" style="color:var(--green)">¥3,238,438</div></div>
       <div class="card stat"><div class="label">月間固定経費</div><div class="value" style="color:var(--red)">¥581,152</div></div>
-      <div class="card stat"><div class="label">累計純利益</div><div class="value" style="color:var(--green)">¥1,966,456</div></div>
+      <div class="card stat"><div class="label">累計純利益</div><div class="value" style="color:var(--green)">¥1,495,214</div></div>
       <div class="card stat"><div class="label">担当</div><div class="value" style="font-size:1em">長岡きみ</div></div>
     </div>
 
@@ -1309,7 +1309,7 @@
           <tr><td>1月</td><td colspan="4" style="text-align:center;color:var(--muted)">未稼働</td></tr>
           <tr><td>2月</td><td>¥1,439,885</td><td>¥185,983</td><td style="color:var(--red)">経費データ未入力</td><td style="color:var(--muted)">—</td></tr>
           <tr><td>3月</td><td>¥1,430,228</td><td>¥184,534</td><td style="color:var(--red)">-¥1,566,482</td><td style="color:var(--red);font-weight:600">-¥320,788</td></tr>
-          <tr><td>4月</td><td>¥839,567</td><td>¥100,748</td><td style="color:var(--red)">経費データ未入力</td><td style="color:var(--muted)">—</td></tr>
+          <tr><td>4月</td><td>¥368,325</td><td>¥44,199</td><td style="color:var(--red)">経費データ未入力</td><td style="color:var(--muted)">—</td></tr>
         </tbody>
       </table>
       <p style="color:var(--gold);font-size:0.85em;margin-top:12px;padding:10px;background:rgba(154,91,0,0.1);border-radius:6px">⚠️ 3月は経費超過により赤字 — 売上より経費が大きい。売上ベース歩合は変わらず支給される構造のため、会社負担増加に注意。</p>
@@ -5749,7 +5749,7 @@ function seedInitialData(){
   var tbProfits=[
     {month:'2026-02',amount:1439885,commission:calcTbCommission(1439885)},
     {month:'2026-03',amount:1430228,commission:calcTbCommission(1430228)},
-    {month:'2026-04',amount:839567,commission:calcTbCommission(839567)}
+    {month:'2026-04',amount:368325,commission:calcTbCommission(368325)}
   ];
   var existing=JSON.parse(localStorage.getItem('tb_profits')||'[]');
   if(existing.length===0){
