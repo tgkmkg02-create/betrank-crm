@@ -744,6 +744,9 @@
     <div class="tab" onclick="showTab('avatarSalaryTab',this)">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/><path d="M12 11v4"/><path d="M10 13h4"/></svg></span><span>アバター給与</span>
     </div>
+    <div class="tab" onclick="showTab('salaryPlansTab',this)">
+      <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span>歩合プラン選択</span>
+    </div>
     <div class="tab" onclick="showTab('totalIncentiveTab',this)">
       <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></span><span>インセンティブ集計</span>
     </div>
@@ -1630,6 +1633,224 @@
         </tbody>
       </table>
       <p style="color:var(--muted);font-size:0.85em;margin-top:8px">※ 人件費比率が利益の15%以内に収まれば健全。エースケースも範囲内。</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB: 歩合プラン選択 -->
+<div id="salaryPlansTab" class="tab-content">
+  <div class="topbar"><div class="topbar-title">歩合プラン選択（A: 歩合重視 / B: 固定重視）</div></div>
+  <div style="padding:28px 32px;max-width:1600px;margin:0 auto">
+
+    <div class="card mb-16" style="border-left:3px solid var(--accent)">
+      <h3>制度概要</h3>
+      <p style="color:var(--muted);font-size:0.9em;line-height:1.7">
+        スタッフは <strong style="color:var(--accent)">月単位</strong> で2つのプランから選択可能。前月25日までに翌月分を申請。<br>
+        ・<strong style="color:var(--green)">Pattern A（歩合型）</strong>: 基本給を抑え、歩合・ボーナスを厚くする → 高パフォーマンス時に大きく稼げる<br>
+        ・<strong style="color:var(--blue)">Pattern B（固定型）</strong>: 基本給を上げ、歩合は控えめ → 低パフォーマンスでも収入が安定
+      </p>
+    </div>
+
+    <div class="card mb-16" style="border-left:3px solid var(--gold)">
+      <h3>現在の月給（参考）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:12px">下記は現在の月給。Pattern A/B の選択により、低パフォーマンス時はB有利、高パフォーマンス時はA有利となる設計。</p>
+      <div class="grid grid-3" style="gap:14px">
+        <div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">
+          <div style="color:var(--blue,#3498db);font-weight:700;margin-bottom:6px">🇯🇵 日本チーム</div>
+          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>長岡きみ</span><strong>¥350,000</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>長岡ゆみ</span><strong>¥250,000</strong></div>
+        </div>
+        <div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid var(--accent)">
+          <div style="color:var(--accent);font-weight:700;margin-bottom:6px">🇰🇷 韓国現地</div>
+          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>チョイ</span><strong>¥385,000</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>ケビン</span><strong>¥374,000</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>チェリン</span><strong>¥350,000</strong></div>
+        </div>
+        <div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid var(--gold)">
+          <div style="color:var(--gold);font-weight:700;margin-bottom:6px">🇵🇭 アバター</div>
+          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>たく</span><strong>₱80,000</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>むらまつ</span><strong>₱80,000</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>あやか</span><strong style="color:var(--muted)">不明</strong></div>
+        </div>
+      </div>
+      <p style="color:var(--muted);font-size:0.78em;margin-top:10px">⚠️ 下記Pattern A/Bの数値は<strong>モデル値</strong>。実運用では各スタッフの現在給与を「中間値」として、A=−15〜25%, B=+5〜15%で個別調整推奨。</p>
+    </div>
+
+    <!-- ============ ロール 1: アバター給与 ============ -->
+    <div class="card mb-16">
+      <h3 style="color:var(--gold)">① アバター給与（フィリピン拠点・テレベット代行）</h3>
+      <div class="grid grid-2" style="gap:14px;margin-top:14px">
+        <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.3);border-left:4px solid var(--green);padding:14px;border-radius:10px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+            <strong style="color:var(--green);font-size:1.1em">Pattern A — 歩合型</strong>
+            <span style="color:var(--muted);font-size:0.8em">エース志向</span>
+          </div>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>₱60,000</strong></div>
+          <div style="margin-top:8px">1pt単価 (+50%):<br>
+            <span style="color:var(--text);opacity:0.85;font-size:0.85em">0-30pt: ₱600 / 31-60pt: ₱900 / 61-100pt: ₱1,350 / 101+: ₱1,800</span>
+          </div>
+        </div>
+        <div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.3);border-left:4px solid var(--blue,#3498db);padding:14px;border-radius:10px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+            <strong style="color:var(--blue,#3498db);font-size:1.1em">Pattern B — 固定型</strong>
+            <span style="color:var(--muted);font-size:0.8em">安定志向</span>
+          </div>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>₱100,000</strong></div>
+          <div style="margin-top:8px">1pt単価 (-25%):<br>
+            <span style="color:var(--text);opacity:0.85;font-size:0.85em">0-30pt: ₱300 / 31-60pt: ₱450 / 61-100pt: ₱675 / 101+: ₱900</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px">
+        <h4 style="margin-bottom:8px">パフォーマンス別シミュレーション</h4>
+        <table>
+          <thead><tr><th>パフォーマンス</th><th>月間pt</th><th>Pattern A</th><th>Pattern B</th><th>差額</th><th>推奨</th></tr></thead>
+          <tbody>
+            <tr><td>新人</td><td>17pt</td><td>₱70,200</td><td><strong>₱105,100</strong></td><td style="color:var(--blue,#3498db)">B+₱34,900</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>標準</td><td>40pt</td><td>₱96,000</td><td><strong>₱118,000</strong></td><td style="color:var(--blue,#3498db)">B+₱22,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>中堅(損益分岐点付近)</td><td>63pt</td><td><strong>₱145,050</strong></td><td>₱142,525</td><td style="color:var(--green)">A+₱2,525</td><td><strong style="color:var(--muted)">どちらでも</strong></td></tr>
+            <tr><td>準エース</td><td>100pt</td><td><strong>₱195,000</strong></td><td>₱167,500</td><td style="color:var(--green)">A+₱27,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td>エース</td><td>122.5pt</td><td><strong>₱280,500</strong></td><td>₱210,250</td><td style="color:var(--green)">A+₱70,250</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td>スター</td><td>150pt</td><td><strong>₱330,000</strong></td><td>₱235,000</td><td style="color:var(--green)">A+₱95,000</td><td><strong style="color:var(--green)">A</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:16px;background:#4a4a58;padding:14px;border-radius:10px">
+        <h4 style="margin-bottom:8px">シミュレーター</h4>
+        <div class="grid grid-3" style="gap:8px">
+          <div class="form-group"><label>月間ポイント</label><input type="number" id="planAvPts" min="0" value="40" style="background:var(--bg-input)"></div>
+          <div class="form-group" style="display:flex;align-items:flex-end"><button onclick="calcPlanAvatar()" style="width:100%;background:var(--gold);color:#000">比較計算</button></div>
+        </div>
+        <div id="planAvResult" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <!-- ============ ロール 2: 現地スタッフ ============ -->
+    <div class="card mb-16">
+      <h3 style="color:var(--accent)">② 現地スタッフ（チョイ・ケビン・チェリン）</h3>
+      <div class="grid grid-2" style="gap:14px;margin-top:14px">
+        <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.3);border-left:4px solid var(--green);padding:14px;border-radius:10px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+            <strong style="color:var(--green);font-size:1.1em">Pattern A — 歩合型</strong>
+            <span style="color:var(--muted);font-size:0.8em">攻め型</span>
+          </div>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥120,000</strong></div>
+          <div style="margin-top:8px">ランクボーナス (×1.5):<br>
+            <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥45,000 / A: ¥27,000 / B: ¥12,000 / C: ¥0</span>
+          </div>
+          <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--green)">+¥1,500/件</strong></div>
+        </div>
+        <div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.3);border-left:4px solid var(--blue,#3498db);padding:14px;border-radius:10px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+            <strong style="color:var(--blue,#3498db);font-size:1.1em">Pattern B — 固定型</strong>
+            <span style="color:var(--muted);font-size:0.8em">守り型</span>
+          </div>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥180,000</strong></div>
+          <div style="margin-top:8px">ランクボーナス (×0.5):<br>
+            <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥15,000 / A: ¥9,000 / B: ¥4,000 / C: ¥0</span>
+          </div>
+          <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--muted)">なし</strong></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px">
+        <h4 style="margin-bottom:8px">パフォーマンス別シミュレーション</h4>
+        <table>
+          <thead><tr><th>ランク</th><th>テレベット誘導</th><th>Pattern A</th><th>Pattern B</th><th>差額</th><th>推奨</th></tr></thead>
+          <tbody>
+            <tr><td>C</td><td>0件</td><td>¥120,000</td><td><strong>¥180,000</strong></td><td style="color:var(--blue,#3498db)">B+¥60,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>B</td><td>5件</td><td>¥139,500</td><td><strong>¥184,000</strong></td><td style="color:var(--blue,#3498db)">B+¥44,500</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>A</td><td>10件</td><td>¥162,000</td><td><strong>¥189,000</strong></td><td style="color:var(--blue,#3498db)">B+¥27,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>A</td><td>20件</td><td>¥177,000</td><td><strong>¥189,000</strong></td><td style="color:var(--blue,#3498db)">B+¥12,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>S</td><td>10件</td><td>¥180,000</td><td><strong>¥195,000</strong></td><td style="color:var(--blue,#3498db)">B+¥15,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>S</td><td>20件 (損益分岐点)</td><td>¥195,000</td><td>¥195,000</td><td>同額</td><td><strong style="color:var(--muted)">どちらでも</strong></td></tr>
+            <tr><td>S</td><td>30件</td><td><strong>¥210,000</strong></td><td>¥195,000</td><td style="color:var(--green)">A+¥15,000</td><td><strong style="color:var(--green)">A</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ Sランク取得＋月20件以上のテレベット誘導が常時可能なエースのみPattern A有利</p>
+      </div>
+
+      <div style="margin-top:16px;background:#4a4a58;padding:14px;border-radius:10px">
+        <h4 style="margin-bottom:8px">シミュレーター</h4>
+        <div class="grid grid-3" style="gap:8px">
+          <div class="form-group"><label>月次ランク</label><select id="planLocalRank" style="background:var(--bg-input)"><option value="S">S</option><option value="A" selected>A</option><option value="B">B</option><option value="C">C</option></select></div>
+          <div class="form-group"><label>テレベット誘導件数</label><input type="number" id="planLocalRefs" min="0" value="5" style="background:var(--bg-input)"></div>
+          <div class="form-group" style="display:flex;align-items:flex-end"><button onclick="calcPlanLocal()" style="width:100%;background:var(--accent)">比較計算</button></div>
+        </div>
+        <div id="planLocalResult" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <!-- ============ ロール 3: 日本チーム ============ -->
+    <div class="card mb-16">
+      <h3 style="color:var(--blue,#3498db)">③ 日本チーム（CS予約担当）</h3>
+      <div class="grid grid-2" style="gap:14px;margin-top:14px">
+        <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.3);border-left:4px solid var(--green);padding:14px;border-radius:10px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+            <strong style="color:var(--green);font-size:1.1em">Pattern A — 歩合型</strong>
+            <span style="color:var(--muted);font-size:0.8em">獲得型</span>
+          </div>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥180,000</strong></div>
+          <div style="margin-top:8px">予約歩合: <strong>0.5%</strong>（現行0.3%の +67%）</div>
+          <div style="margin-top:6px">月間ボーナス: 5件以上 +¥10,000 / 10件以上 +¥30,000</div>
+        </div>
+        <div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.3);border-left:4px solid var(--blue,#3498db);padding:14px;border-radius:10px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+            <strong style="color:var(--blue,#3498db);font-size:1.1em">Pattern B — 固定型</strong>
+            <span style="color:var(--muted);font-size:0.8em">給与型</span>
+          </div>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥260,000</strong></div>
+          <div style="margin-top:8px">予約歩合: <strong>0.15%</strong>（現行0.3%の -50%）</div>
+          <div style="margin-top:6px">月間ボーナス: <span style="color:var(--muted)">なし</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px">
+        <h4 style="margin-bottom:8px">パフォーマンス別シミュレーション（プラン平均額）</h4>
+        <table>
+          <thead><tr><th>月間獲得</th><th>平均プラン</th><th>売上総額</th><th>Pattern A</th><th>Pattern B</th><th>推奨</th></tr></thead>
+          <tbody>
+            <tr><td>3件</td><td>100万</td><td>300万</td><td>¥195,000</td><td><strong>¥264,500</strong></td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>5件</td><td>100万</td><td>500万</td><td>¥215,000</td><td><strong>¥267,500</strong></td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>5件</td><td>200万</td><td>1,000万</td><td>¥240,000</td><td><strong>¥275,000</strong></td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>8件</td><td>200万</td><td>1,600万</td><td><strong>¥280,000</strong></td><td><strong>¥284,000</strong></td><td><strong style="color:var(--muted)">どちらでも</strong></td></tr>
+            <tr><td>10件</td><td>200万</td><td>2,000万</td><td><strong>¥310,000</strong></td><td>¥290,000</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td>15件</td><td>200万</td><td>3,000万</td><td><strong>¥360,000</strong></td><td>¥305,000</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td>20件</td><td>300万</td><td>6,000万</td><td><strong>¥510,000</strong></td><td>¥350,000</td><td><strong style="color:var(--green)">A</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ 損益分岐点は <strong>月8件 × 200万円プラン平均（売上1,600万）</strong> あたり</p>
+      </div>
+
+      <div style="margin-top:16px;background:#4a4a58;padding:14px;border-radius:10px">
+        <h4 style="margin-bottom:8px">シミュレーター</h4>
+        <div class="grid grid-4" style="gap:8px">
+          <div class="form-group"><label>77万件数</label><input type="number" id="planJp77" min="0" value="0" style="background:var(--bg-input)"></div>
+          <div class="form-group"><label>100万件数</label><input type="number" id="planJp100" min="0" value="3" style="background:var(--bg-input)"></div>
+          <div class="form-group"><label>200万件数</label><input type="number" id="planJp200" min="0" value="2" style="background:var(--bg-input)"></div>
+          <div class="form-group"><label>300万件数</label><input type="number" id="planJp300" min="0" value="0" style="background:var(--bg-input)"></div>
+        </div>
+        <div class="grid grid-3" style="gap:8px">
+          <div class="form-group"><label>500万件数</label><input type="number" id="planJp500" min="0" value="0" style="background:var(--bg-input)"></div>
+          <div class="form-group"><label>1000万件数</label><input type="number" id="planJp1000" min="0" value="0" style="background:var(--bg-input)"></div>
+          <div class="form-group" style="display:flex;align-items:flex-end"><button onclick="calcPlanJp()" style="width:100%;background:var(--blue,#3498db)">比較計算</button></div>
+        </div>
+        <div id="planJpResult" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div class="card mb-16" style="border-left:3px solid var(--gold)">
+      <h3>運用ルール（推奨）</h3>
+      <ul style="color:var(--text);opacity:0.9;line-height:1.8;padding-left:20px">
+        <li>選択は <strong>毎月25日まで</strong> に翌月分を申請</li>
+        <li>初月は全員 <strong>Pattern B（固定型）</strong> から開始（リスク低減）</li>
+        <li>連続3ヶ月以上Pattern Aを選択した場合、達成率に応じて評価</li>
+        <li>Pattern A選択時のC評価が3ヶ月続いた場合、強制的にBへ戻す（保護措置）</li>
+        <li>新人（入社6ヶ月以内）はPattern B限定</li>
+      </ul>
     </div>
 
   </div>
@@ -6484,6 +6705,103 @@ function calcAllAvatarStaff(){
         '<td style="text-align:right;font-size:1.15em"><strong style="color:var(--green)">₱'+grandTotal.toLocaleString()+'</strong></td>'+
       '</tr></tfoot>'+
     '</table></div>';
+}
+
+// ==================== 歩合プラン選択 計算機 ====================
+function ptRateA(p){if(p<=30)return 600;if(p<=60)return 900;if(p<=100)return 1350;return 1800;}
+function ptRateB(p){if(p<=30)return 300;if(p<=60)return 450;if(p<=100)return 675;return 900;}
+function calcPlanAvatar(){
+  var pts=parseFloat(document.getElementById('planAvPts').value)||0;
+  var aBase=60000, bBase=100000;
+  var aTotal=aBase+pts*ptRateA(pts);
+  var bTotal=bBase+pts*ptRateB(pts);
+  var diff=aTotal-bTotal;
+  var winner=diff>0?'A':(diff<0?'B':'同額');
+  var winColor=diff>0?'var(--green)':(diff<0?'var(--blue,#3498db)':'var(--muted)');
+  document.getElementById('planAvResult').innerHTML=
+    '<div class="grid grid-3" style="gap:10px;margin-top:8px">'+
+      '<div style="background:rgba(46,204,113,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--green)">'+
+        '<div style="color:var(--green);font-weight:600">Pattern A</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:var(--green)">₱'+aTotal.toLocaleString()+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">基本₱60,000 + '+pts.toFixed(1)+'pt × ₱'+ptRateA(pts)+'</div>'+
+      '</div>'+
+      '<div style="background:rgba(52,152,219,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">'+
+        '<div style="color:var(--blue,#3498db);font-weight:600">Pattern B</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:var(--blue,#3498db)">₱'+bTotal.toLocaleString()+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">基本₱100,000 + '+pts.toFixed(1)+'pt × ₱'+ptRateB(pts)+'</div>'+
+      '</div>'+
+      '<div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid '+winColor+'">'+
+        '<div style="color:var(--muted);font-weight:600">推奨</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:'+winColor+'">'+winner+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">差額: ₱'+Math.abs(diff).toLocaleString()+'</div>'+
+      '</div>'+
+    '</div>';
+}
+function calcPlanLocal(){
+  var rank=document.getElementById('planLocalRank').value;
+  var refs=parseInt(document.getElementById('planLocalRefs').value)||0;
+  var rankBonusA={S:45000,A:27000,B:12000,C:0}[rank];
+  var rankBonusB={S:15000,A:9000,B:4000,C:0}[rank];
+  var aTotal=120000+rankBonusA+refs*1500;
+  var bTotal=180000+rankBonusB;
+  var diff=aTotal-bTotal;
+  var winner=diff>0?'A':(diff<0?'B':'同額');
+  var winColor=diff>0?'var(--green)':(diff<0?'var(--blue,#3498db)':'var(--muted)');
+  document.getElementById('planLocalResult').innerHTML=
+    '<div class="grid grid-3" style="gap:10px;margin-top:8px">'+
+      '<div style="background:rgba(46,204,113,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--green)">'+
+        '<div style="color:var(--green);font-weight:600">Pattern A</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:var(--green)">¥'+aTotal.toLocaleString()+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥120K + '+rank+'¥'+rankBonusA.toLocaleString()+' + '+refs+'件×¥1,500</div>'+
+      '</div>'+
+      '<div style="background:rgba(52,152,219,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">'+
+        '<div style="color:var(--blue,#3498db);font-weight:600">Pattern B</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:var(--blue,#3498db)">¥'+bTotal.toLocaleString()+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥180K + '+rank+'¥'+rankBonusB.toLocaleString()+'</div>'+
+      '</div>'+
+      '<div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid '+winColor+'">'+
+        '<div style="color:var(--muted);font-weight:600">推奨</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:'+winColor+'">'+winner+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">差額: ¥'+Math.abs(diff).toLocaleString()+'</div>'+
+      '</div>'+
+    '</div>';
+}
+function calcPlanJp(){
+  var n77=parseInt(document.getElementById('planJp77').value)||0;
+  var n100=parseInt(document.getElementById('planJp100').value)||0;
+  var n200=parseInt(document.getElementById('planJp200').value)||0;
+  var n300=parseInt(document.getElementById('planJp300').value)||0;
+  var n500=parseInt(document.getElementById('planJp500').value)||0;
+  var n1000=parseInt(document.getElementById('planJp1000').value)||0;
+  var totalCount=n77+n100+n200+n300+n500+n1000;
+  var totalSales=n77*770000+n100*1000000+n200*2000000+n300*3000000+n500*5000000+n1000*10000000;
+  var aCommission=Math.round(totalSales*0.005);
+  var bCommission=Math.round(totalSales*0.0015);
+  var aBonus=totalCount>=10?30000:(totalCount>=5?10000:0);
+  var aTotal=180000+aCommission+aBonus;
+  var bTotal=260000+bCommission;
+  var diff=aTotal-bTotal;
+  var winner=diff>0?'A':(diff<0?'B':'同額');
+  var winColor=diff>0?'var(--green)':(diff<0?'var(--blue,#3498db)':'var(--muted)');
+  document.getElementById('planJpResult').innerHTML=
+    '<div style="background:#3a3a48;padding:10px;border-radius:6px;margin-bottom:10px;font-size:0.9em">合計: '+totalCount+'件 / 売上 ¥'+totalSales.toLocaleString()+'</div>'+
+    '<div class="grid grid-3" style="gap:10px">'+
+      '<div style="background:rgba(46,204,113,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--green)">'+
+        '<div style="color:var(--green);font-weight:600">Pattern A</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:var(--green)">¥'+aTotal.toLocaleString()+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥180K + 歩合¥'+aCommission.toLocaleString()+' + ボーナス¥'+aBonus.toLocaleString()+'</div>'+
+      '</div>'+
+      '<div style="background:rgba(52,152,219,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">'+
+        '<div style="color:var(--blue,#3498db);font-weight:600">Pattern B</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:var(--blue,#3498db)">¥'+bTotal.toLocaleString()+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥260K + 歩合¥'+bCommission.toLocaleString()+'</div>'+
+      '</div>'+
+      '<div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid '+winColor+'">'+
+        '<div style="color:var(--muted);font-weight:600">推奨</div>'+
+        '<div style="font-size:1.4em;font-weight:700;color:'+winColor+'">'+winner+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">差額: ¥'+Math.abs(diff).toLocaleString()+'</div>'+
+      '</div>'+
+    '</div>';
 }
 
 function init(){
