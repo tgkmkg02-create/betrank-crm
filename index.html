@@ -1674,55 +1674,64 @@
     <!-- ============ ロール 1: 現地スタッフ ============ -->
     <div class="card mb-16">
       <h3 style="color:var(--accent)">① 現地スタッフ（チョイ・ケビン・チェリン）</h3>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:14px">基本給は<strong style="color:var(--text)">現在の月給を維持</strong>。Pattern A/Bは歩合の大きさだけで差をつける。</p>
       <div class="grid grid-2" style="gap:14px;margin-top:14px">
         <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.3);border-left:4px solid var(--green);padding:14px;border-radius:10px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-            <strong style="color:var(--green);font-size:1.1em">Pattern A — 歩合型</strong>
-            <span style="color:var(--muted);font-size:0.8em">攻め型</span>
+            <strong style="color:var(--green);font-size:1.1em">Pattern A — チャレンジ型</strong>
+            <span style="color:var(--muted);font-size:0.8em">攻め</span>
           </div>
-          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥120,000</strong></div>
-          <div style="margin-top:8px">ランクボーナス (×1.5):<br>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>現給 × 0.85</strong></div>
+          <div style="margin-top:8px">ランクボーナス (×1.5倍):<br>
             <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥45,000 / A: ¥27,000 / B: ¥12,000 / C: ¥0</span>
           </div>
-          <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--green)">+¥1,500/件</strong></div>
+          <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--green)">+¥3,000/件</strong></div>
         </div>
         <div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.3);border-left:4px solid var(--blue,#3498db);padding:14px;border-radius:10px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-            <strong style="color:var(--blue,#3498db);font-size:1.1em">Pattern B — 固定型</strong>
-            <span style="color:var(--muted);font-size:0.8em">守り型</span>
+            <strong style="color:var(--blue,#3498db);font-size:1.1em">Pattern B — 現状維持型</strong>
+            <span style="color:var(--muted);font-size:0.8em">守り</span>
           </div>
-          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥180,000</strong></div>
-          <div style="margin-top:8px">ランクボーナス (×0.5):<br>
-            <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥15,000 / A: ¥9,000 / B: ¥4,000 / C: ¥0</span>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>現給そのまま</strong></div>
+          <div style="margin-top:8px">ランクボーナス (現行):<br>
+            <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥30,000 / A: ¥18,000 / B: ¥8,000 / C: ¥0</span>
           </div>
           <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--muted)">なし</strong></div>
         </div>
       </div>
 
       <div style="margin-top:16px">
-        <h4 style="margin-bottom:8px">パフォーマンス別シミュレーション</h4>
+        <h4 style="margin-bottom:8px">スタッフ別シミュレーション</h4>
+        <p style="color:var(--muted);font-size:0.82em;margin-bottom:8px">A評価 × 月10件 ケース</p>
         <table>
-          <thead><tr><th>ランク</th><th>テレベット誘導</th><th>Pattern A</th><th>Pattern B</th><th>差額</th><th>推奨</th></tr></thead>
+          <thead><tr><th>スタッフ</th><th>現給</th><th>Pattern A月収</th><th>Pattern B月収</th><th>差</th><th>推奨</th></tr></thead>
           <tbody>
-            <tr><td>C</td><td>0件</td><td>¥120,000</td><td><strong>¥180,000</strong></td><td style="color:var(--blue,#3498db)">B+¥60,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td>B</td><td>5件</td><td>¥139,500</td><td><strong>¥184,000</strong></td><td style="color:var(--blue,#3498db)">B+¥44,500</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td>A</td><td>10件</td><td>¥162,000</td><td><strong>¥189,000</strong></td><td style="color:var(--blue,#3498db)">B+¥27,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td>A</td><td>20件</td><td>¥177,000</td><td><strong>¥189,000</strong></td><td style="color:var(--blue,#3498db)">B+¥12,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td>S</td><td>10件</td><td>¥180,000</td><td><strong>¥195,000</strong></td><td style="color:var(--blue,#3498db)">B+¥15,000</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td>S</td><td>20件 (損益分岐点)</td><td>¥195,000</td><td>¥195,000</td><td>同額</td><td><strong style="color:var(--muted)">どちらでも</strong></td></tr>
-            <tr><td>S</td><td>30件</td><td><strong>¥210,000</strong></td><td>¥195,000</td><td style="color:var(--green)">A+¥15,000</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td><strong>チョイ</strong></td><td>¥385,000</td><td>¥327,250 + ¥27K + ¥30K = <strong>¥384,250</strong></td><td>¥385,000 + ¥18K = <strong>¥403,000</strong></td><td style="color:var(--blue,#3498db)">B+¥18,750</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td><strong>ケビン</strong></td><td>¥374,000</td><td>¥317,900 + ¥27K + ¥30K = <strong>¥374,900</strong></td><td>¥374,000 + ¥18K = <strong>¥392,000</strong></td><td style="color:var(--blue,#3498db)">B+¥17,100</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td><strong>チェリン</strong></td><td>¥350,000</td><td>¥297,500 + ¥27K + ¥30K = <strong>¥354,500</strong></td><td>¥350,000 + ¥18K = <strong>¥368,000</strong></td><td style="color:var(--blue,#3498db)">B+¥13,500</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
           </tbody>
         </table>
-        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ Sランク取得＋月20件以上のテレベット誘導が常時可能なエースのみPattern A有利</p>
+        <p style="color:var(--muted);font-size:0.82em;margin:12px 0 8px">S評価 × 月20件 ケース（損益分岐点近く）</p>
+        <table>
+          <thead><tr><th>スタッフ</th><th>Pattern A月収</th><th>Pattern B月収</th><th>差</th><th>推奨</th></tr></thead>
+          <tbody>
+            <tr><td><strong>チョイ</strong></td><td><strong>¥432,250</strong></td><td>¥415,000</td><td style="color:var(--green)">A+¥17,250</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td><strong>ケビン</strong></td><td><strong>¥422,900</strong></td><td>¥404,000</td><td style="color:var(--green)">A+¥18,900</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td><strong>チェリン</strong></td><td><strong>¥402,500</strong></td><td>¥380,000</td><td style="color:var(--green)">A+¥22,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ S評価＋月20件以上のテレベット誘導を継続できるエースのみA型有利。中堅以下はB型推奨。</p>
       </div>
 
       <div style="margin-top:16px;background:#4a4a58;padding:14px;border-radius:10px">
-        <h4 style="margin-bottom:8px">シミュレーター</h4>
-        <div class="grid grid-3" style="gap:8px">
+        <h4 style="margin-bottom:8px">シミュレーター（任意のスタッフ）</h4>
+        <div class="grid grid-4" style="gap:8px">
+          <div class="form-group"><label>スタッフ</label><select id="planLocalStaff" onchange="syncLocalBase()" style="background:var(--bg-input)"><option value="385000">チョイ ¥385K</option><option value="374000">ケビン ¥374K</option><option value="350000">チェリン ¥350K</option><option value="custom">カスタム入力</option></select></div>
+          <div class="form-group"><label>現基本給(¥)</label><input type="number" id="planLocalBase" min="0" value="385000" style="background:var(--bg-input)"></div>
           <div class="form-group"><label>月次ランク</label><select id="planLocalRank" style="background:var(--bg-input)"><option value="S">S</option><option value="A" selected>A</option><option value="B">B</option><option value="C">C</option></select></div>
-          <div class="form-group"><label>テレベット誘導件数</label><input type="number" id="planLocalRefs" min="0" value="5" style="background:var(--bg-input)"></div>
-          <div class="form-group" style="display:flex;align-items:flex-end"><button onclick="calcPlanLocal()" style="width:100%;background:var(--accent)">比較計算</button></div>
+          <div class="form-group"><label>テレベット誘導件数</label><input type="number" id="planLocalRefs" min="0" value="10" style="background:var(--bg-input)"></div>
         </div>
+        <button onclick="calcPlanLocal()" style="width:100%;background:var(--accent)">比較計算</button>
         <div id="planLocalResult" style="margin-top:10px"></div>
       </div>
     </div>
@@ -6651,27 +6660,36 @@ function calcAllAvatarStaff(){
 }
 
 // ==================== 歩合プラン選択 計算機 ====================
+function syncLocalBase(){
+  var sel=document.getElementById('planLocalStaff');
+  if(!sel)return;
+  if(sel.value!=='custom'){
+    document.getElementById('planLocalBase').value=sel.value;
+  }
+}
 function calcPlanLocal(){
+  var base=parseInt(document.getElementById('planLocalBase').value)||0;
   var rank=document.getElementById('planLocalRank').value;
   var refs=parseInt(document.getElementById('planLocalRefs').value)||0;
   var rankBonusA={S:45000,A:27000,B:12000,C:0}[rank];
-  var rankBonusB={S:15000,A:9000,B:4000,C:0}[rank];
-  var aTotal=120000+rankBonusA+refs*1500;
-  var bTotal=180000+rankBonusB;
+  var rankBonusB={S:30000,A:18000,B:8000,C:0}[rank];
+  var aBase=Math.round(base*0.85);
+  var aTotal=aBase+rankBonusA+refs*3000;
+  var bTotal=base+rankBonusB;
   var diff=aTotal-bTotal;
   var winner=diff>0?'A':(diff<0?'B':'同額');
   var winColor=diff>0?'var(--green)':(diff<0?'var(--blue,#3498db)':'var(--muted)');
   document.getElementById('planLocalResult').innerHTML=
     '<div class="grid grid-3" style="gap:10px;margin-top:8px">'+
       '<div style="background:rgba(46,204,113,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--green)">'+
-        '<div style="color:var(--green);font-weight:600">Pattern A</div>'+
+        '<div style="color:var(--green);font-weight:600">Pattern A — チャレンジ型</div>'+
         '<div style="font-size:1.4em;font-weight:700;color:var(--green)">¥'+aTotal.toLocaleString()+'</div>'+
-        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥120K + '+rank+'¥'+rankBonusA.toLocaleString()+' + '+refs+'件×¥1,500</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥'+aBase.toLocaleString()+'(0.85倍) + '+rank+'¥'+rankBonusA.toLocaleString()+' + '+refs+'件×¥3,000</div>'+
       '</div>'+
       '<div style="background:rgba(52,152,219,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">'+
-        '<div style="color:var(--blue,#3498db);font-weight:600">Pattern B</div>'+
+        '<div style="color:var(--blue,#3498db);font-weight:600">Pattern B — 現状維持型</div>'+
         '<div style="font-size:1.4em;font-weight:700;color:var(--blue,#3498db)">¥'+bTotal.toLocaleString()+'</div>'+
-        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥180K + '+rank+'¥'+rankBonusB.toLocaleString()+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥'+base.toLocaleString()+'(現給) + '+rank+'¥'+rankBonusB.toLocaleString()+'</div>'+
       '</div>'+
       '<div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid '+winColor+'">'+
         '<div style="color:var(--muted);font-weight:600">推奨</div>'+
