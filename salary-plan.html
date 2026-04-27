@@ -214,10 +214,9 @@
   <thead><tr><th>項目</th><th>ポイント計算</th></tr></thead>
   <tbody>
     <tr><td>① 基本ポイント</td><td>プレイ時間 3時間ごと = 1pt</td></tr>
-    <tr class="alt"><td>② 顧客ランク倍率（①に乗算）</td><td>VVIP×3.0 / VIP×2.0 / Gold×1.5 / Silver×1.0 / Bronze×0.8</td></tr>
-    <tr><td>③ ローリング実績ボーナス（3hセッションあたり）</td><td>3,000万KRW未満:+0 / 〜5,000万:+1 / 〜1億:+2 / 1億以上:+3</td></tr>
-    <tr class="alt"><td>④ 月末ボーナス</td><td>個人名アンケート評価 +2pt/回 / リピート獲得 +3pt/件</td></tr>
-    <tr><td>⑤ 管理者総合ランク評価</td><td>S +25pt / A +15pt / B +5pt / C 0 / D −10pt</td></tr>
+    <tr class="alt"><td>② ローリング実績ボーナス（3hセッションあたり）</td><td>3,000万KRW未満:+0 / 〜5,000万:+1 / 〜1億:+2 / 1億以上:+3</td></tr>
+    <tr><td>③ 月末ボーナス</td><td>個人名アンケート評価 +2pt/回 / リピート獲得 +3pt/件</td></tr>
+    <tr class="alt"><td>④ 管理者総合ランク評価</td><td>S +25pt / A +15pt / B +5pt / C 0 / D −10pt</td></tr>
   </tbody>
 </table>
 
@@ -235,14 +234,15 @@
 
 <h3>想定シミュレーション</h3>
 <table>
-  <thead><tr><th>パフォーマンス</th><th>月間pt</th><th>歩合計算</th><th>月収合計</th></tr></thead>
+  <thead><tr><th>パフォーマンス</th><th>月セッション</th><th>計算内訳</th><th>月間pt</th><th>月収合計</th></tr></thead>
   <tbody>
-    <tr><td>新人 (Bronze/Silver中心・月12セッション)</td><td>17pt</td><td>17 × ₱400 = ₱6,800</td><td class="num"><strong>₱86,800</strong></td></tr>
-    <tr class="alt"><td>標準 (Silver中心・月20セッション)</td><td>40pt</td><td>40 × ₱600 = ₱24,000</td><td class="num"><strong>₱104,000</strong></td></tr>
-    <tr><td>エース (VIP/VVIP中心・月25セッション)</td><td>122.5pt</td><td>122.5 × ₱1,200 = ₱147,000</td><td class="num"><strong>₱227,000</strong></td></tr>
+    <tr><td>新人</td><td class="num">12回</td><td>基本12pt + ローリング+6pt = 18pt</td><td class="num">18pt</td><td class="num"><strong>₱80,000 + 18×₱400 = ₱87,200</strong></td></tr>
+    <tr class="alt"><td>標準</td><td class="num">20回</td><td>基本20pt + ローリング+20pt = 40pt</td><td class="num">40pt</td><td class="num"><strong>₱80,000 + 40×₱600 = ₱104,000</strong></td></tr>
+    <tr><td>エース</td><td class="num">25回</td><td>基本25pt + ローリング+50pt + 月末+10pt = 85pt</td><td class="num">85pt</td><td class="num"><strong>₱80,000 + 85×₱900 = ₱156,500</strong></td></tr>
+    <tr class="alt"><td>トップ</td><td class="num">30回</td><td>基本30pt + ローリング+90pt + 月末+15pt = 135pt</td><td class="num">135pt</td><td class="num"><strong>₱80,000 + 135×₱1,200 = ₱242,000</strong></td></tr>
   </tbody>
 </table>
-<p style="font-size:9pt;color:#666">※ 上記は管理者ランク評価未加算の例。S評価で最大+25pt、D評価で-10ptが上記合計ptに加算される。</p>
+<p style="font-size:9pt;color:#666">※ 上記は管理者ランク評価未加算。S評価で最大+25pt、D評価で-10ptが加算される。</p>
 </section>
 
 <!-- ===================== セクション2: 現地スタッフ ===================== -->

@@ -1522,18 +1522,7 @@
           <thead><tr><th>プレイ時間</th><th>基本pt</th></tr></thead>
           <tbody><tr><td>3時間ごと</td><td><strong>1 pt</strong></td></tr></tbody>
         </table>
-        <h4 style="color:var(--muted);font-size:0.85em;margin:16px 0 6px">② 顧客ランク倍率（①に乗算）</h4>
-        <table>
-          <thead><tr><th>ランク</th><th>倍率</th></tr></thead>
-          <tbody>
-            <tr><td>VVIP</td><td style="color:var(--green)"><strong>×3.0</strong></td></tr>
-            <tr><td>VIP</td><td style="color:var(--green)"><strong>×2.0</strong></td></tr>
-            <tr><td>Gold</td><td style="color:var(--gold)"><strong>×1.5</strong></td></tr>
-            <tr><td>Silver</td><td><strong>×1.0</strong></td></tr>
-            <tr><td>Bronze</td><td style="color:var(--muted)"><strong>×0.8</strong></td></tr>
-          </tbody>
-        </table>
-        <h4 style="color:var(--muted);font-size:0.85em;margin:16px 0 6px">③ ローリング実績ボーナス（3時間セッションあたり）</h4>
+        <h4 style="color:var(--muted);font-size:0.85em;margin:16px 0 6px">② ローリング実績ボーナス（3時間セッションあたり）</h4>
         <table>
           <thead><tr><th>3h ローリング額</th><th>追加pt</th></tr></thead>
           <tbody>
@@ -1543,7 +1532,7 @@
             <tr><td>1億以上</td><td style="color:var(--green)"><strong>+3</strong></td></tr>
           </tbody>
         </table>
-        <h4 style="color:var(--muted);font-size:0.85em;margin:16px 0 6px">④ 月末ボーナス</h4>
+        <h4 style="color:var(--muted);font-size:0.85em;margin:16px 0 6px">③ 月末ボーナス</h4>
         <table>
           <thead><tr><th>項目</th><th>pt</th></tr></thead>
           <tbody>
@@ -1551,7 +1540,7 @@
             <tr><td>リピート獲得 1件</td><td style="color:var(--green)"><strong>+3 pt</strong></td></tr>
           </tbody>
         </table>
-        <h4 style="color:var(--muted);font-size:0.85em;margin:16px 0 6px">⑤ 管理者総合ランク評価</h4>
+        <h4 style="color:var(--muted);font-size:0.85em;margin:16px 0 6px">④ 管理者総合ランク評価</h4>
         <table>
           <thead><tr><th>ランク</th><th>意味</th><th>加算pt</th></tr></thead>
           <tbody>
@@ -6530,9 +6519,9 @@ var RANK_PTS={S:25, A:15, B:5, C:0, D:-10, '':0};
 var RANK_LABEL={S:'S - 卓越・全社模範', A:'A - 優秀・期待以上', B:'B - 標準・十分', C:'C - 要改善・成長余地', D:'D - 要注意・改善必須', '':'未評価'};
 var RANK_COLOR={S:'var(--green)', A:'var(--green)', B:'var(--gold)', C:'var(--muted)', D:'var(--red)', '':'var(--muted)'};
 var DEFAULT_AVATAR_STAFF=[
-  {id:'av_taku',      name:'たく',     sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0, rank:'', evalMemo:''},
-  {id:'av_muramatsu', name:'むらまつ', sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0, rank:'', evalMemo:''},
-  {id:'av_ayaka',     name:'あやか',   sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0}, rolling:40000000, survey:0, repeat:0, rank:'', evalMemo:''}
+  {id:'av_taku',      name:'たく',     sessions:0, rolling:40000000, survey:0, repeat:0, rank:'', evalMemo:''},
+  {id:'av_muramatsu', name:'むらまつ', sessions:0, rolling:40000000, survey:0, repeat:0, rank:'', evalMemo:''},
+  {id:'av_ayaka',     name:'あやか',   sessions:0, rolling:40000000, survey:0, repeat:0, rank:'', evalMemo:''}
 ];
 function loadAvatarStaff(){
   var saved=localStorage.getItem(AVATAR_STAFF_KEY);
@@ -6544,6 +6533,11 @@ function loadAvatarStaff(){
       if(typeof s.evalMemo!=='string')s.evalMemo='';
       // clean up old eval field if present
       if(s.eval)delete s.eval;
+      // migrate sessions from object {vvip,vip,...} to single number (rank multiplier removed)
+      if(s.sessions && typeof s.sessions==='object'){
+        s.sessions=(s.sessions.vvip||0)+(s.sessions.vip||0)+(s.sessions.gold||0)+(s.sessions.silver||0)+(s.sessions.bronze||0);
+      }
+      if(typeof s.sessions!=='number')s.sessions=0;
     });
     return parsed;
   }catch(e){}}
@@ -6553,8 +6547,12 @@ function loadAvatarStaff(){
 function saveAvatarStaff(staff){localStorage.setItem(AVATAR_STAFF_KEY,JSON.stringify(staff));}
 function calcAvatarPts(s){
   var ss=s.sessions;
-  var basePts=ss.vvip*3.0+ss.vip*2.0+ss.gold*1.5+ss.silver*1.0+ss.bronze*0.8;
-  var totalSessions=ss.vvip+ss.vip+ss.gold+ss.silver+ss.bronze;
+  // backward compat: support old object structure or new single number
+  var totalSessions;
+  if(typeof ss==='number'){totalSessions=ss;}
+  else if(ss && typeof ss==='object'){totalSessions=(ss.vvip||0)+(ss.vip||0)+(ss.gold||0)+(ss.silver||0)+(ss.bronze||0);}
+  else {totalSessions=0;}
+  var basePts=totalSessions*1.0;
   var rollBonusPer=0;
   if(s.rolling>=100000000)rollBonusPer=3;
   else if(s.rolling>=50000000)rollBonusPer=2;
@@ -6586,12 +6584,9 @@ function renderAvatarStaff(){
           '<button onclick="removeAvatarStaff('+i+')" style="background:var(--red);color:#fff;padding:4px 10px;font-size:0.8em">削除</button>'+
         '</div>'+
       '</div>'+
-      '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px">'+
-        '<div><label style="color:var(--muted);font-size:0.75em">VVIP</label><input type="number" min="0" value="'+s.sessions.vvip+'" onchange="updateAvatarSession('+i+',\'vvip\',this.value)"></div>'+
-        '<div><label style="color:var(--muted);font-size:0.75em">VIP</label><input type="number" min="0" value="'+s.sessions.vip+'" onchange="updateAvatarSession('+i+',\'vip\',this.value)"></div>'+
-        '<div><label style="color:var(--muted);font-size:0.75em">Gold</label><input type="number" min="0" value="'+s.sessions.gold+'" onchange="updateAvatarSession('+i+',\'gold\',this.value)"></div>'+
-        '<div><label style="color:var(--muted);font-size:0.75em">Silver</label><input type="number" min="0" value="'+s.sessions.silver+'" onchange="updateAvatarSession('+i+',\'silver\',this.value)"></div>'+
-        '<div><label style="color:var(--muted);font-size:0.75em">Bronze</label><input type="number" min="0" value="'+s.sessions.bronze+'" onchange="updateAvatarSession('+i+',\'bronze\',this.value)"></div>'+
+      '<div style="margin-bottom:8px">'+
+        '<label style="color:var(--muted);font-size:0.75em">月間総セッション数（3時間=1セッション）</label>'+
+        '<input type="number" min="0" value="'+(typeof s.sessions==='number'?s.sessions:((s.sessions&&s.sessions.vvip||0)+(s.sessions&&s.sessions.vip||0)+(s.sessions&&s.sessions.gold||0)+(s.sessions&&s.sessions.silver||0)+(s.sessions&&s.sessions.bronze||0)))+'" onchange="updateAvatarStaffField('+i+',\'sessions\',this.value)">'+
       '</div>'+
       '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px">'+
         '<div><label style="color:var(--muted);font-size:0.75em">平均3hローリング(KRW)</label><input type="number" min="0" value="'+s.rolling+'" onchange="updateAvatarStaffField('+i+',\'rolling\',this.value)"></div>'+
@@ -6645,17 +6640,11 @@ function updateAvatarStaffField(i,field,value){
   saveAvatarStaff(staff);
   renderAvatarStaff();
 }
-function updateAvatarSession(i,rank,value){
-  var staff=loadAvatarStaff();
-  staff[i].sessions[rank]=parseInt(value)||0;
-  saveAvatarStaff(staff);
-  renderAvatarStaff();
-}
 function addAvatarStaff(){
   var name=prompt('スタッフ名を入力してください');
   if(!name||!name.trim())return;
   var staff=loadAvatarStaff();
-  staff.push({id:'av_'+Date.now(),name:name.trim(),sessions:{vvip:0,vip:0,gold:0,silver:0,bronze:0},rolling:40000000,survey:0,repeat:0});
+  staff.push({id:'av_'+Date.now(),name:name.trim(),sessions:0,rolling:40000000,survey:0,repeat:0,rank:'',evalMemo:''});
   saveAvatarStaff(staff);
   renderAvatarStaff();
 }
@@ -6672,7 +6661,7 @@ function resetAvatarMonth(){
   if(!confirm('全スタッフの今月実績（セッション・アンケート・リピート・管理者ランク・メモ）をリセットします。スタッフ名は残ります。続行しますか？'))return;
   var staff=loadAvatarStaff();
   staff.forEach(function(s){
-    s.sessions={vvip:0,vip:0,gold:0,silver:0,bronze:0};
+    s.sessions=0;
     s.survey=0;s.repeat=0;
     s.rank='';
     s.evalMemo='';
