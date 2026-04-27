@@ -1678,14 +1678,14 @@
       <div class="grid grid-2" style="gap:14px;margin-top:14px">
         <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.3);border-left:4px solid var(--green);padding:14px;border-radius:10px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-            <strong style="color:var(--green);font-size:1.1em">Pattern A — チャレンジ型</strong>
+            <strong style="color:var(--green);font-size:1.1em">Pattern A — 歩合振り切り型</strong>
             <span style="color:var(--muted);font-size:0.8em">攻め</span>
           </div>
-          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>現給 × 0.85</strong></div>
-          <div style="margin-top:8px">ランクボーナス (×1.5倍):<br>
-            <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥45,000 / A: ¥27,000 / B: ¥12,000 / C: ¥0</span>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>現給 × 0.75</strong></div>
+          <div style="margin-top:8px">ランクボーナス (×2倍):<br>
+            <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥60,000 / A: ¥36,000 / B: ¥16,000 / C: ¥0</span>
           </div>
-          <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--green)">+¥3,000/件</strong></div>
+          <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--green)">+¥4,000/件</strong></div>
         </div>
         <div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.3);border-left:4px solid var(--blue,#3498db);padding:14px;border-radius:10px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
@@ -1702,25 +1702,34 @@
 
       <div style="margin-top:16px">
         <h4 style="margin-bottom:8px">スタッフ別シミュレーション</h4>
-        <p style="color:var(--muted);font-size:0.82em;margin-bottom:8px">A評価 × 月10件 ケース</p>
+        <p style="color:var(--muted);font-size:0.82em;margin-bottom:8px">A評価 × 月10件 ケース（中堅）</p>
         <table>
           <thead><tr><th>スタッフ</th><th>現給</th><th>Pattern A月収</th><th>Pattern B月収</th><th>差</th><th>推奨</th></tr></thead>
           <tbody>
-            <tr><td><strong>チョイ</strong></td><td>¥385,000</td><td>¥327,250 + ¥27K + ¥30K = <strong>¥384,250</strong></td><td>¥385,000 + ¥18K = <strong>¥403,000</strong></td><td style="color:var(--blue,#3498db)">B+¥18,750</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td><strong>ケビン</strong></td><td>¥374,000</td><td>¥317,900 + ¥27K + ¥30K = <strong>¥374,900</strong></td><td>¥374,000 + ¥18K = <strong>¥392,000</strong></td><td style="color:var(--blue,#3498db)">B+¥17,100</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td><strong>チェリン</strong></td><td>¥350,000</td><td>¥297,500 + ¥27K + ¥30K = <strong>¥354,500</strong></td><td>¥350,000 + ¥18K = <strong>¥368,000</strong></td><td style="color:var(--blue,#3498db)">B+¥13,500</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td><strong>チョイ</strong></td><td>¥385,000</td><td>¥288,750 + ¥36K + ¥40K = <strong>¥364,750</strong></td><td>¥385,000 + ¥18K = <strong>¥403,000</strong></td><td style="color:var(--blue,#3498db)">B+¥38,250</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td><strong>ケビン</strong></td><td>¥374,000</td><td>¥280,500 + ¥36K + ¥40K = <strong>¥356,500</strong></td><td>¥374,000 + ¥18K = <strong>¥392,000</strong></td><td style="color:var(--blue,#3498db)">B+¥35,500</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td><strong>チェリン</strong></td><td>¥350,000</td><td>¥262,500 + ¥36K + ¥40K = <strong>¥338,500</strong></td><td>¥350,000 + ¥18K = <strong>¥368,000</strong></td><td style="color:var(--blue,#3498db)">B+¥29,500</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
           </tbody>
         </table>
-        <p style="color:var(--muted);font-size:0.82em;margin:12px 0 8px">S評価 × 月20件 ケース（損益分岐点近く）</p>
+        <p style="color:var(--muted);font-size:0.82em;margin:12px 0 8px">S評価 × 月20件 ケース（エース近く）</p>
         <table>
           <thead><tr><th>スタッフ</th><th>Pattern A月収</th><th>Pattern B月収</th><th>差</th><th>推奨</th></tr></thead>
           <tbody>
-            <tr><td><strong>チョイ</strong></td><td><strong>¥432,250</strong></td><td>¥415,000</td><td style="color:var(--green)">A+¥17,250</td><td><strong style="color:var(--green)">A</strong></td></tr>
-            <tr><td><strong>ケビン</strong></td><td><strong>¥422,900</strong></td><td>¥404,000</td><td style="color:var(--green)">A+¥18,900</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td><strong>チョイ</strong></td><td><strong>¥428,750</strong></td><td>¥415,000</td><td style="color:var(--green)">A+¥13,750</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td><strong>ケビン</strong></td><td><strong>¥420,500</strong></td><td>¥404,000</td><td style="color:var(--green)">A+¥16,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
             <tr><td><strong>チェリン</strong></td><td><strong>¥402,500</strong></td><td>¥380,000</td><td style="color:var(--green)">A+¥22,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
           </tbody>
         </table>
-        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ S評価＋月20件以上のテレベット誘導を継続できるエースのみA型有利。中堅以下はB型推奨。</p>
+        <p style="color:var(--muted);font-size:0.82em;margin:12px 0 8px">S評価 × 月30件 ケース（トップエース）</p>
+        <table>
+          <thead><tr><th>スタッフ</th><th>Pattern A月収</th><th>Pattern B月収</th><th>差</th><th>推奨</th></tr></thead>
+          <tbody>
+            <tr><td><strong>チョイ</strong></td><td><strong>¥468,750</strong></td><td>¥415,000</td><td style="color:var(--green)">A+¥53,750</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td><strong>ケビン</strong></td><td><strong>¥460,500</strong></td><td>¥404,000</td><td style="color:var(--green)">A+¥56,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
+            <tr><td><strong>チェリン</strong></td><td><strong>¥442,500</strong></td><td>¥380,000</td><td style="color:var(--green)">A+¥62,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ 損益分岐点は <strong>S評価 × 月20件前後</strong>。エース級で月+¥50K以上の上振れ可能、中堅以下はB型で安定推奨。</p>
       </div>
 
       <div style="margin-top:16px;background:#4a4a58;padding:14px;border-radius:10px">
@@ -6671,10 +6680,10 @@ function calcPlanLocal(){
   var base=parseInt(document.getElementById('planLocalBase').value)||0;
   var rank=document.getElementById('planLocalRank').value;
   var refs=parseInt(document.getElementById('planLocalRefs').value)||0;
-  var rankBonusA={S:45000,A:27000,B:12000,C:0}[rank];
+  var rankBonusA={S:60000,A:36000,B:16000,C:0}[rank];
   var rankBonusB={S:30000,A:18000,B:8000,C:0}[rank];
-  var aBase=Math.round(base*0.85);
-  var aTotal=aBase+rankBonusA+refs*3000;
+  var aBase=Math.round(base*0.75);
+  var aTotal=aBase+rankBonusA+refs*4000;
   var bTotal=base+rankBonusB;
   var diff=aTotal-bTotal;
   var winner=diff>0?'A':(diff<0?'B':'同額');
@@ -6684,7 +6693,7 @@ function calcPlanLocal(){
       '<div style="background:rgba(46,204,113,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--green)">'+
         '<div style="color:var(--green);font-weight:600">Pattern A — チャレンジ型</div>'+
         '<div style="font-size:1.4em;font-weight:700;color:var(--green)">¥'+aTotal.toLocaleString()+'</div>'+
-        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥'+aBase.toLocaleString()+'(0.85倍) + '+rank+'¥'+rankBonusA.toLocaleString()+' + '+refs+'件×¥3,000</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥'+aBase.toLocaleString()+'(0.75倍) + '+rank+'¥'+rankBonusA.toLocaleString()+' + '+refs+'件×¥4,000</div>'+
       '</div>'+
       '<div style="background:rgba(52,152,219,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">'+
         '<div style="color:var(--blue,#3498db);font-weight:600">Pattern B — 現状維持型</div>'+
