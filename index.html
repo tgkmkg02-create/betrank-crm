@@ -1687,11 +1687,11 @@
           </div>
           <div style="margin-top:8px"><strong style="color:var(--green);font-size:0.9em">評価ボーナス:</strong></div>
           <div style="font-size:0.85em;line-height:1.7;color:var(--text);opacity:0.9">
-            ・テレベット誘導: <strong>+¥4,000/件</strong><br>
             ・顧客アンケート個人名評価: <strong>+¥3,000/回</strong><br>
             ・リピート獲得: <strong>+¥5,000/件</strong><br>
             ・新規顧客紹介: <strong>+¥10,000/件</strong>
           </div>
+          <div style="margin-top:8px;padding:6px 10px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:0.78em;color:var(--muted)">※ テレベット誘導は <strong style="color:var(--gold)">別枠ボーナス</strong> として A/B 共通で支給</div>
         </div>
         <div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.3);border-left:4px solid var(--blue,#3498db);padding:14px;border-radius:10px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
@@ -1702,43 +1702,66 @@
           <div style="margin-top:8px">ランクボーナス (現行):<br>
             <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥30,000 / A: ¥18,000 / B: ¥8,000 / C: ¥0</span>
           </div>
-          <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--muted)">なし</strong></div>
+          <div style="margin-top:8px;padding:6px 10px;background:rgba(0,0,0,0.2);border-radius:6px;font-size:0.78em;color:var(--muted)">※ テレベット誘導は <strong style="color:var(--gold)">別枠ボーナス</strong> として A/B 共通で支給</div>
         </div>
+      </div>
+
+      <div style="margin-top:14px;background:rgba(154,91,0,0.1);border:2px solid var(--gold);border-radius:10px;padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+          <strong style="color:var(--gold);font-size:1.05em">★ テレベット誘導 別枠ボーナス（A/B共通・全員対象）</strong>
+        </div>
+        <p style="color:var(--muted);font-size:0.85em;margin-bottom:8px">テレベット誘導は本人のパターン選択に関係なく、誘導した件数に応じて月次で支給。</p>
+        <div class="grid grid-3" style="gap:10px">
+          <div style="background:#3a3a48;padding:10px;border-radius:8px">
+            <div style="color:var(--gold);font-size:0.85em;margin-bottom:4px">基本歩合</div>
+            <div style="font-size:1.2em;font-weight:700">¥3,000 / 件</div>
+          </div>
+          <div style="background:#3a3a48;padding:10px;border-radius:8px">
+            <div style="color:var(--gold);font-size:0.85em;margin-bottom:4px">5件達成ボーナス</div>
+            <div style="font-size:1.2em;font-weight:700">+¥10,000</div>
+          </div>
+          <div style="background:#3a3a48;padding:10px;border-radius:8px">
+            <div style="color:var(--gold);font-size:0.85em;margin-bottom:4px">10件達成ボーナス</div>
+            <div style="font-size:1.2em;font-weight:700">+¥30,000</div>
+          </div>
+        </div>
+        <p style="color:var(--muted);font-size:0.78em;margin-top:8px">例: 月10件誘導 → ¥3,000×10 + ¥30,000 = <strong style="color:var(--gold)">¥60,000</strong> 支給（A/Bどちらでも）</p>
       </div>
 
       <div style="margin-top:16px">
         <h4 style="margin-bottom:8px">パフォーマンス別シミュレーション（チョイ ¥385,000 ベース）</h4>
+        <p style="color:var(--muted);font-size:0.78em;margin-bottom:8px">※ A/B本体の比較（テレベット誘導ボーナスは別枠で同額加算なので除外）</p>
         <table>
-          <thead><tr><th>パターン</th><th>ランク</th><th>誘導</th><th>アンケ</th><th>リピート</th><th>新規</th><th>Pattern A</th><th>Pattern B</th><th>推奨</th></tr></thead>
+          <thead><tr><th>パターン</th><th>ランク</th><th>アンケ</th><th>リピート</th><th>新規</th><th>Pattern A本体</th><th>Pattern B本体</th><th>推奨</th></tr></thead>
           <tbody>
-            <tr><td>標準</td><td>A</td><td>5件</td><td>2回</td><td>1件</td><td>0件</td>
-              <td>¥288,750+¥36K+¥20K+¥6K+¥5K = <strong>¥355,750</strong></td>
+            <tr><td>標準</td><td>A</td><td>2回</td><td>1件</td><td>0件</td>
+              <td>¥288,750+¥36K+¥6K+¥5K = <strong>¥335,750</strong></td>
               <td>¥385,000+¥18K = <strong>¥403,000</strong></td>
-              <td><strong style="color:var(--blue,#3498db)">B+¥47,250</strong></td>
+              <td><strong style="color:var(--blue,#3498db)">B+¥67,250</strong></td>
             </tr>
-            <tr><td>中堅</td><td>A</td><td>10件</td><td>3回</td><td>2件</td><td>1件</td>
-              <td>¥288,750+¥36K+¥40K+¥9K+¥10K+¥10K = <strong>¥393,750</strong></td>
+            <tr><td>中堅</td><td>A</td><td>3回</td><td>2件</td><td>1件</td>
+              <td>¥288,750+¥36K+¥9K+¥10K+¥10K = <strong>¥353,750</strong></td>
               <td>¥385,000+¥18K = <strong>¥403,000</strong></td>
-              <td><strong style="color:var(--blue,#3498db)">B+¥9,250</strong></td>
+              <td><strong style="color:var(--blue,#3498db)">B+¥49,250</strong></td>
             </tr>
-            <tr><td>準エース</td><td>S</td><td>15件</td><td>4回</td><td>3件</td><td>1件</td>
-              <td>¥288,750+¥60K+¥60K+¥12K+¥15K+¥10K = <strong>¥445,750</strong></td>
+            <tr><td>準エース</td><td>S</td><td>4回</td><td>3件</td><td>1件</td>
+              <td>¥288,750+¥60K+¥12K+¥15K+¥10K = <strong>¥385,750</strong></td>
               <td>¥385,000+¥30K = <strong>¥415,000</strong></td>
-              <td><strong style="color:var(--green)">A+¥30,750</strong></td>
+              <td><strong style="color:var(--blue,#3498db)">B+¥29,250</strong></td>
             </tr>
-            <tr><td>エース</td><td>S</td><td>20件</td><td>5回</td><td>5件</td><td>2件</td>
-              <td>¥288,750+¥60K+¥80K+¥15K+¥25K+¥20K = <strong>¥488,750</strong></td>
+            <tr><td>エース</td><td>S</td><td>5回</td><td>5件</td><td>2件</td>
+              <td>¥288,750+¥60K+¥15K+¥25K+¥20K = <strong>¥408,750</strong></td>
               <td>¥385,000+¥30K = <strong>¥415,000</strong></td>
-              <td><strong style="color:var(--green)">A+¥73,750</strong></td>
+              <td><strong style="color:var(--muted)">同等（差¥6,250）</strong></td>
             </tr>
-            <tr><td>トップ</td><td>S</td><td>30件</td><td>8回</td><td>8件</td><td>3件</td>
-              <td>¥288,750+¥60K+¥120K+¥24K+¥40K+¥30K = <strong>¥562,750</strong></td>
+            <tr><td>トップ</td><td>S</td><td>8回</td><td>8件</td><td>3件</td>
+              <td>¥288,750+¥60K+¥24K+¥40K+¥30K = <strong>¥442,750</strong></td>
               <td>¥385,000+¥30K = <strong>¥415,000</strong></td>
-              <td><strong style="color:var(--green)">A+¥147,750</strong></td>
+              <td><strong style="color:var(--green)">A+¥27,750</strong></td>
             </tr>
           </tbody>
         </table>
-        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ 損益分岐点は <strong>S評価＋複数評価軸で活躍するエース級</strong>。中堅以下は基本給保証のB型推奨。トップ級は月収+¥10万超の上振れ可能。</p>
+        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ 損益分岐点は <strong>エース級（S評価＋複数評価軸活躍）</strong>。テレベット誘導ボーナスは別枠なので両パターンに同額加算され、判断材料にはならない。</p>
       </div>
 
       <div style="margin-top:16px;background:#4a4a58;padding:14px;border-radius:10px">
@@ -6700,14 +6723,19 @@ function calcPlanLocal(){
   var rankBonusA={S:60000,A:36000,B:16000,C:0}[rank];
   var rankBonusB={S:30000,A:18000,B:8000,C:0}[rank];
   var aBase=Math.round(base*0.75);
-  var refBonus=refs*4000;
   var surveyBonus=survey*3000;
   var repeatBonus=repeat*5000;
   var newBonus=newcust*10000;
-  var aEvalBonus=refBonus+surveyBonus+repeatBonus+newBonus;
-  var aTotal=aBase+rankBonusA+aEvalBonus;
-  var bTotal=base+rankBonusB;
-  var diff=aTotal-bTotal;
+  var aEvalBonus=surveyBonus+repeatBonus+newBonus;
+  var aBody=aBase+rankBonusA+aEvalBonus;
+  var bBody=base+rankBonusB;
+  // テレベット誘導 別枠ボーナス（A/B共通）
+  var tbBase=refs*3000;
+  var tbAchieve=refs>=10?30000:(refs>=5?10000:0);
+  var tbBonus=tbBase+tbAchieve;
+  var aTotal=aBody+tbBonus;
+  var bTotal=bBody+tbBonus;
+  var diff=aBody-bBody; // 本体比較で判断
   var winner=diff>0?'A':(diff<0?'B':'同額');
   var winColor=diff>0?'var(--green)':(diff<0?'var(--blue,#3498db)':'var(--muted)');
   document.getElementById('planLocalResult').innerHTML=
@@ -6718,10 +6746,10 @@ function calcPlanLocal(){
         '<div style="color:var(--text);opacity:0.8;font-size:0.8em;line-height:1.6">'+
           '・基本給(×0.75): ¥'+aBase.toLocaleString()+'<br>'+
           '・ランク'+rank+': ¥'+rankBonusA.toLocaleString()+'<br>'+
-          '・誘導 '+refs+'件×¥4,000: ¥'+refBonus.toLocaleString()+'<br>'+
           '・アンケ '+survey+'回×¥3,000: ¥'+surveyBonus.toLocaleString()+'<br>'+
           '・リピート '+repeat+'件×¥5,000: ¥'+repeatBonus.toLocaleString()+'<br>'+
-          '・新規 '+newcust+'件×¥10,000: ¥'+newBonus.toLocaleString()+
+          '・新規 '+newcust+'件×¥10,000: ¥'+newBonus.toLocaleString()+'<br>'+
+          '<span style="color:var(--gold)">+ テレベット別枠: ¥'+tbBonus.toLocaleString()+'</span>'+
         '</div>'+
       '</div>'+
       '<div style="background:rgba(52,152,219,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">'+
@@ -6729,13 +6757,15 @@ function calcPlanLocal(){
         '<div style="font-size:1.4em;font-weight:700;color:var(--blue,#3498db)">¥'+bTotal.toLocaleString()+'</div>'+
         '<div style="color:var(--text);opacity:0.8;font-size:0.8em;line-height:1.6">'+
           '・基本給(現給): ¥'+base.toLocaleString()+'<br>'+
-          '・ランク'+rank+': ¥'+rankBonusB.toLocaleString()+
+          '・ランク'+rank+': ¥'+rankBonusB.toLocaleString()+'<br>'+
+          '<span style="color:var(--gold)">+ テレベット別枠: ¥'+tbBonus.toLocaleString()+'</span>'+
         '</div>'+
       '</div>'+
       '<div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid '+winColor+'">'+
-        '<div style="color:var(--muted);font-weight:600">推奨</div>'+
+        '<div style="color:var(--muted);font-weight:600">推奨（本体比較）</div>'+
         '<div style="font-size:1.6em;font-weight:700;color:'+winColor+'">'+winner+'</div>'+
-        '<div style="color:var(--text);opacity:0.8;font-size:0.85em;margin-top:6px">差額: <strong>¥'+Math.abs(diff).toLocaleString()+'</strong></div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em;margin-top:6px">本体差額: <strong>¥'+Math.abs(diff).toLocaleString()+'</strong></div>'+
+        '<div style="color:var(--muted);font-size:0.78em;margin-top:8px;line-height:1.5">テレベット誘導ボーナス（共通）<br>'+refs+'件 × ¥3,000 + 達成¥'+tbAchieve.toLocaleString()+'<br>= <strong style="color:var(--gold)">¥'+tbBonus.toLocaleString()+'</strong></div>'+
       '</div>'+
     '</div>';
 }
