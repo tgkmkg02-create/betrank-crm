@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>給与プランA/B制度設計書 — ベットランクツアーズ</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: #222;
+    background: #fff;
+    line-height: 1.55;
+    font-size: 10.5pt;
+    margin: 0;
+    padding: 24px;
+  }
+  .page { max-width: 800px; margin: 0 auto; }
+  h1 {
+    font-size: 22pt;
+    color: #1a1a2e;
+    border-bottom: 3px solid #c9a14a;
+    padding-bottom: 8px;
+    margin: 0 0 6px 0;
+  }
+  .subtitle { color: #777; font-size: 11pt; margin-bottom: 24px; }
+  h2 {
+    font-size: 15pt;
+    color: #1a1a2e;
+    border-left: 5px solid #c9a14a;
+    padding-left: 10px;
+    margin-top: 28px;
+    margin-bottom: 14px;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 12pt; color: #2c3e50; margin: 18px 0 8px; page-break-after: avoid; }
+  h4 { font-size: 10.5pt; color: #555; margin: 12px 0 6px; }
+  p { margin: 6px 0; }
+
+  .meta {
+    background: #f7f5f0;
+    border: 1px solid #e0d8c0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 9.5pt;
+    margin-bottom: 18px;
+  }
+  .meta strong { color: #8b6f1f; }
+
+  /* パターンカード */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .pattern-card {
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 12px 14px;
+    page-break-inside: avoid;
+  }
+  .pattern-card.a { border-color: #2e9c5d; background: #f0faf3; }
+  .pattern-card.b { border-color: #2c7cb0; background: #f0f6fb; }
+  .pattern-card .label {
+    font-size: 11pt;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .pattern-card.a .label { color: #1f7d49; }
+  .pattern-card.b .label { color: #1f5d8a; }
+  .pattern-card ul { margin: 4px 0 0; padding-left: 18px; font-size: 9.5pt; line-height: 1.7; }
+  .pattern-card .tag { font-size: 8.5pt; color: #888; font-weight: normal; }
+
+  /* テレベット別枠 */
+  .telebet-box {
+    border: 2px solid #c9a14a;
+    background: #fef9ee;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .telebet-box .label {
+    color: #8b6f1f;
+    font-weight: 700;
+    font-size: 11pt;
+    margin-bottom: 6px;
+  }
+  .telebet-box .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .telebet-box .cell {
+    background: #fff;
+    border: 1px solid #e6d4a3;
+    padding: 8px 10px;
+    border-radius: 5px;
+    font-size: 9.5pt;
+  }
+  .telebet-box .cell strong { display: block; font-size: 11pt; color: #8b6f1f; }
+
+  /* テーブル */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 10px 0;
+    page-break-inside: avoid;
+  }
+  thead { background: #1a1a2e; color: #fff; }
+  th, td { padding: 6px 8px; border: 1px solid #d8d8d8; text-align: left; }
+  th { font-weight: 600; font-size: 9pt; }
+  td.num { text-align: right; }
+  tr.alt td { background: #fafafa; }
+  .tag-a { color: #1f7d49; font-weight: 700; }
+  .tag-b { color: #1f5d8a; font-weight: 700; }
+  .tag-neutral { color: #888; }
+
+  /* スタッフテーブル */
+  .staff-table th { background: #2c3e50; }
+
+  /* 注意事項 */
+  .rules-box {
+    background: #fafafa;
+    border-left: 4px solid #c9a14a;
+    padding: 10px 14px;
+    margin: 14px 0;
+    font-size: 9.5pt;
+  }
+  .rules-box ul { margin: 4px 0; padding-left: 20px; line-height: 1.7; }
+
+  /* セクション境界 */
+  .section { page-break-before: auto; page-break-inside: avoid; }
+  .page-break { page-break-after: always; }
+
+  /* フッター */
+  footer {
+    margin-top: 32px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    font-size: 8.5pt;
+    color: #888;
+    text-align: center;
+  }
+
+  /* 印刷時の調整 */
+  @media print {
+    body { padding: 0; font-size: 10pt; }
+    h1 { font-size: 18pt; }
+    h2 { font-size: 13pt; }
+    a { color: #222; text-decoration: none; }
+    .no-print { display: none; }
+  }
+
+  /* スクリーン時の印刷ボタン */
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #c9a14a;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 11pt;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .print-btn:hover { background: #b08a30; }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">📄 PDFとして保存</button>
+
+<div class="page">
+
+<h1>給与プランA/B制度設計書</h1>
+<div class="subtitle">ベットランクツアーズ — 現地スタッフ・日本チーム向け新給与制度</div>
+
+<div class="meta">
+  <strong>制度概要:</strong> スタッフは月単位で2つのプラン（A: 歩合振り切り型 / B: 現状維持型）から選択可能。
+  前月25日までに翌月分を申請。テレベット誘導ボーナスは別枠で全員対象（A/B共通）。
+  <br><strong>適用対象:</strong> 韓国現地スタッフ（チョイ・ケビン・チェリン）、日本チーム（長岡きみ・長岡ゆみ）
+  <br><strong>非適用:</strong> アバタースタッフ（たく・むらまつ・あやか）は現行のポイント制を維持
+</div>
+
+<!-- ===================== セクション1: 現地スタッフ ===================== -->
+<section class="section">
+<h2>① 現地スタッフ（チョイ・ケビン・チェリン）</h2>
+
+<p>基本給は<strong>現在の月給を維持</strong>し、Pattern A/Bは歩合の大きさだけで差をつける設計。</p>
+
+<div class="pattern-grid">
+  <div class="pattern-card a">
+    <div class="label">Pattern A — 歩合振り切り型 <span class="tag">攻め</span></div>
+    <ul>
+      <li>基本給: <strong>現給 × 0.75</strong>（−25%）</li>
+      <li>ランクボーナス（×2倍）: S ¥60,000 / A ¥36,000 / B ¥16,000 / C ¥0</li>
+      <li>顧客アンケート個人名評価: <strong>+¥3,000/回</strong></li>
+      <li>リピート獲得: <strong>+¥5,000/件</strong></li>
+      <li>新規顧客紹介: <strong>+¥10,000/件</strong></li>
+    </ul>
+  </div>
+  <div class="pattern-card b">
+    <div class="label">Pattern B — 現状維持型 <span class="tag">守り</span></div>
+    <ul>
+      <li>基本給: <strong>現給そのまま</strong></li>
+      <li>ランクボーナス（現行）: S ¥30,000 / A ¥18,000 / B ¥8,000 / C ¥0</li>
+      <li>評価ボーナス: なし</li>
+    </ul>
+  </div>
+</div>
+
+<div class="telebet-box">
+  <div class="label">★ テレベット誘導 別枠ボーナス（A/B共通・全員対象）</div>
+  <p style="margin:0;font-size:9.5pt;color:#555">テレベット誘導は本人のパターン選択に関係なく、誘導した件数に応じて月次で支給。</p>
+  <div class="row">
+    <div class="cell"><strong>¥3,000 / 件</strong>基本歩合</div>
+    <div class="cell"><strong>+¥10,000</strong>5件達成ボーナス</div>
+    <div class="cell"><strong>+¥30,000</strong>10件達成ボーナス</div>
+  </div>
+  <p style="margin:8px 0 0;font-size:9pt;color:#666">例: 月10件誘導 → ¥3,000×10 + ¥30,000 = <strong>¥60,000</strong>（A/Bどちらでも）</p>
+</div>
+
+<h3>現地スタッフ給与（基本給）</h3>
+<table class="staff-table">
+  <thead>
+    <tr><th>スタッフ</th><th>現基本給</th><th>Pattern A基本給（×0.75）</th><th>Pattern B基本給（現給）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>チョイ</strong></td><td class="num">¥385,000</td><td class="num">¥288,750</td><td class="num">¥385,000</td></tr>
+    <tr class="alt"><td><strong>ケビン</strong></td><td class="num">¥374,000</td><td class="num">¥280,500</td><td class="num">¥374,000</td></tr>
+    <tr><td><strong>チェリン</strong></td><td class="num">¥350,000</td><td class="num">¥262,500</td><td class="num">¥350,000</td></tr>
+  </tbody>
+</table>
+
+<h3>パフォーマンス別シミュレーション（チョイ ¥385K ベース）</h3>
+<p style="font-size:9pt;color:#666">※ A/B本体の比較。テレベット誘導ボーナスは両パターンに同額加算なので除外。</p>
+<table>
+  <thead>
+    <tr><th>パターン</th><th>ランク</th><th>アンケ</th><th>リピート</th><th>新規</th><th>Pattern A</th><th>Pattern B</th><th>推奨</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>標準</td><td>A</td><td>2回</td><td>1件</td><td>0件</td><td class="num">¥335,750</td><td class="num">¥403,000</td><td class="tag-b">B+¥67,250</td></tr>
+    <tr class="alt"><td>中堅</td><td>A</td><td>3回</td><td>2件</td><td>1件</td><td class="num">¥353,750</td><td class="num">¥403,000</td><td class="tag-b">B+¥49,250</td></tr>
+    <tr><td>準エース</td><td>S</td><td>4回</td><td>3件</td><td>1件</td><td class="num">¥385,750</td><td class="num">¥415,000</td><td class="tag-b">B+¥29,250</td></tr>
+    <tr class="alt"><td>エース</td><td>S</td><td>5回</td><td>5件</td><td>2件</td><td class="num">¥408,750</td><td class="num">¥415,000</td><td class="tag-neutral">同等</td></tr>
+    <tr><td>トップ</td><td>S</td><td>8回</td><td>8件</td><td>3件</td><td class="num">¥442,750</td><td class="num">¥415,000</td><td class="tag-a">A+¥27,750</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#555">損益分岐点: <strong>エース級（S評価＋複数評価軸活躍）</strong>。中堅以下はB型推奨。</p>
+</section>
+
+<!-- ===================== セクション2: 日本チーム ===================== -->
+<section class="section" style="page-break-before:always">
+<h2>② 日本チーム（CS予約担当・長岡きみ・長岡ゆみ）</h2>
+
+<p>顧客対応・予約獲得を担う日本チームのA/Bプラン。基本給は現給ベースで運用調整推奨。</p>
+
+<div class="pattern-grid">
+  <div class="pattern-card a">
+    <div class="label">Pattern A — 獲得型 <span class="tag">攻め</span></div>
+    <ul>
+      <li>基本給: <strong>¥180,000（モデル値）</strong></li>
+      <li>予約歩合: <strong>0.5%</strong>（現行0.3%の +67%）</li>
+      <li>月間ボーナス: 5件以上 +¥10,000 / 10件以上 +¥30,000</li>
+    </ul>
+  </div>
+  <div class="pattern-card b">
+    <div class="label">Pattern B — 給与型 <span class="tag">守り</span></div>
+    <ul>
+      <li>基本給: <strong>¥260,000（モデル値）</strong></li>
+      <li>予約歩合: <strong>0.15%</strong>（現行0.3%の −50%）</li>
+      <li>月間ボーナス: なし</li>
+    </ul>
+  </div>
+</div>
+
+<div class="meta" style="background:#fff5f5;border-color:#f0c8c8">
+  <strong>⚠️ 注:</strong> 上記は<strong>モデル値</strong>。実際の現給は きみ ¥350,000 / ゆみ ¥250,000。
+  実運用では現給ベースで Pattern A: 現給×0.75 / Pattern B: 現給そのまま、への移行を推奨（現地スタッフ案と同じ構造）。
+</div>
+
+<h3>パフォーマンス別シミュレーション（モデル値ベース）</h3>
+<table>
+  <thead>
+    <tr><th>月間獲得</th><th>平均プラン</th><th>売上総額</th><th>Pattern A</th><th>Pattern B</th><th>推奨</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>3件</td><td>100万</td><td>¥300万</td><td class="num">¥195,000</td><td class="num">¥264,500</td><td class="tag-b">B</td></tr>
+    <tr class="alt"><td>5件</td><td>100万</td><td>¥500万</td><td class="num">¥215,000</td><td class="num">¥267,500</td><td class="tag-b">B</td></tr>
+    <tr><td>5件</td><td>200万</td><td>¥1,000万</td><td class="num">¥240,000</td><td class="num">¥275,000</td><td class="tag-b">B</td></tr>
+    <tr class="alt"><td>8件</td><td>200万</td><td>¥1,600万</td><td class="num">¥280,000</td><td class="num">¥284,000</td><td class="tag-neutral">同等</td></tr>
+    <tr><td>10件</td><td>200万</td><td>¥2,000万</td><td class="num">¥310,000</td><td class="num">¥290,000</td><td class="tag-a">A</td></tr>
+    <tr class="alt"><td>15件</td><td>200万</td><td>¥3,000万</td><td class="num">¥360,000</td><td class="num">¥305,000</td><td class="tag-a">A</td></tr>
+    <tr><td>20件</td><td>300万</td><td>¥6,000万</td><td class="num">¥510,000</td><td class="num">¥350,000</td><td class="tag-a">A</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#555">損益分岐点: <strong>月8件 × 200万円プラン平均</strong>（売上¥1,600万）あたり。</p>
+
+<h3>現給 (参考)</h3>
+<table class="staff-table">
+  <thead>
+    <tr><th>スタッフ</th><th>現基本給</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>長岡きみ</strong></td><td class="num">¥350,000</td></tr>
+    <tr class="alt"><td><strong>長岡ゆみ</strong></td><td class="num">¥250,000</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ===================== セクション3: 運用ルール ===================== -->
+<section class="section">
+<h2>③ 運用ルール</h2>
+
+<div class="rules-box">
+<h4 style="margin-top:0">選択ルール</h4>
+<ul>
+  <li>選択は<strong>毎月25日まで</strong>に翌月分を申請</li>
+  <li>初月は全員 <strong>Pattern B（現状維持型）</strong> から開始（リスク低減）</li>
+  <li>新人（入社6ヶ月以内）は Pattern B 限定</li>
+  <li>選択は月単位で変更可能（前月25日までの申請で翌月から）</li>
+</ul>
+
+<h4>保護措置</h4>
+<ul>
+  <li>連続3ヶ月以上 Pattern A を選択した場合、達成率に応じて評価</li>
+  <li>Pattern A選択時の C評価が3ヶ月続いた場合、強制的にBへ戻す</li>
+  <li>Pattern B はいつでも選択可能・現給は保証</li>
+</ul>
+
+<h4>テレベット誘導ボーナス</h4>
+<ul>
+  <li>パターンA/Bの選択に関係なく、<strong>誘導件数に応じて全員に支給</strong></li>
+  <li>1件 ¥3,000 + 5件達成 ¥10,000 + 10件達成 ¥30,000（達成ボーナスは段階累積）</li>
+  <li>例: 12件 → ¥3,000×12 + ¥30,000 = ¥66,000</li>
+</ul>
+
+<h4>評価項目（Pattern A選択時のみ加算）</h4>
+<ul>
+  <li><strong>ランクボーナス</strong>: 月次4軸評価 + 3名評価者で決定（営業貢献・顧客対応・勤怠・チーム）</li>
+  <li><strong>顧客アンケート個人名評価</strong>: アンケートで個人名が記載された回数</li>
+  <li><strong>リピート獲得</strong>: 既存顧客の再訪を獲得した件数</li>
+  <li><strong>新規顧客紹介</strong>: 新規顧客を開拓・紹介した件数</li>
+</ul>
+</div>
+</section>
+
+<!-- ===================== セクション4: 経営側の影響 ===================== -->
+<section class="section">
+<h2>④ 経営側の試算</h2>
+
+<h3>現地スタッフ3名の月次人件費（パフォーマンス別）</h3>
+<table>
+  <thead>
+    <tr><th>シナリオ</th><th>全員Pattern B</th><th>全員Pattern A（中堅）</th><th>全員Pattern A（エース）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>本体給与3名合計</td><td class="num">¥1,109,000</td><td class="num">¥1,034,000</td><td class="num">¥1,184,000</td></tr>
+    <tr class="alt"><td>ランクボーナス3名合計</td><td class="num">¥54,000</td><td class="num">¥108,000</td><td class="num">¥180,000</td></tr>
+    <tr><td>評価ボーナス3名合計</td><td class="num">¥0</td><td class="num">¥87,000</td><td class="num">¥180,000</td></tr>
+    <tr class="alt"><td>テレベット別枠（仮20件/人）</td><td class="num">¥270,000</td><td class="num">¥270,000</td><td class="num">¥270,000</td></tr>
+    <tr style="border-top:2px solid #1a1a2e"><td><strong>月次合計</strong></td><td class="num"><strong>¥1,433,000</strong></td><td class="num"><strong>¥1,499,000</strong></td><td class="num"><strong>¥1,814,000</strong></td></tr>
+  </tbody>
+</table>
+
+<div class="rules-box" style="background:#f0f9f0;border-color:#2e9c5d">
+<h4 style="margin-top:0;color:#1f7d49">💡 設計のメリット</h4>
+<ul>
+  <li><strong>低パフォーマンス時の人件費抑制</strong>: 全員Aで成果なしなら本体給与は▲6.7%減</li>
+  <li><strong>高パフォーマンス時のリターン正比例</strong>: エース級は会社の売上も大きく伸びる前提</li>
+  <li><strong>スタッフのモチベーション設計</strong>: 「選んだ責任」がパフォーマンスを引き出す</li>
+  <li><strong>テレベット別枠</strong>: 本来業務（カジノ顧客対応）と独立した評価が可能</li>
+</ul>
+</div>
+</section>
+
+<footer>
+  ベットランクツアーズ給与プラン制度設計書 — 2026年4月版<br>
+  本書はモデル設計案。実運用時は労務・税務専門家の確認を推奨。
+</footer>
+
+</div>
+</body>
+</html>
