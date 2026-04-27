@@ -1685,7 +1685,13 @@
           <div style="margin-top:8px">ランクボーナス (×2倍):<br>
             <span style="color:var(--text);opacity:0.85;font-size:0.85em">S: ¥60,000 / A: ¥36,000 / B: ¥16,000 / C: ¥0</span>
           </div>
-          <div style="margin-top:6px">テレベット誘導: <strong style="color:var(--green)">+¥4,000/件</strong></div>
+          <div style="margin-top:8px"><strong style="color:var(--green);font-size:0.9em">評価ボーナス:</strong></div>
+          <div style="font-size:0.85em;line-height:1.7;color:var(--text);opacity:0.9">
+            ・テレベット誘導: <strong>+¥4,000/件</strong><br>
+            ・顧客アンケート個人名評価: <strong>+¥3,000/回</strong><br>
+            ・リピート獲得: <strong>+¥5,000/件</strong><br>
+            ・新規顧客紹介: <strong>+¥10,000/件</strong>
+          </div>
         </div>
         <div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.3);border-left:4px solid var(--blue,#3498db);padding:14px;border-radius:10px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
@@ -1701,35 +1707,38 @@
       </div>
 
       <div style="margin-top:16px">
-        <h4 style="margin-bottom:8px">スタッフ別シミュレーション</h4>
-        <p style="color:var(--muted);font-size:0.82em;margin-bottom:8px">A評価 × 月10件 ケース（中堅）</p>
+        <h4 style="margin-bottom:8px">パフォーマンス別シミュレーション（チョイ ¥385,000 ベース）</h4>
         <table>
-          <thead><tr><th>スタッフ</th><th>現給</th><th>Pattern A月収</th><th>Pattern B月収</th><th>差</th><th>推奨</th></tr></thead>
+          <thead><tr><th>パターン</th><th>ランク</th><th>誘導</th><th>アンケ</th><th>リピート</th><th>新規</th><th>Pattern A</th><th>Pattern B</th><th>推奨</th></tr></thead>
           <tbody>
-            <tr><td><strong>チョイ</strong></td><td>¥385,000</td><td>¥288,750 + ¥36K + ¥40K = <strong>¥364,750</strong></td><td>¥385,000 + ¥18K = <strong>¥403,000</strong></td><td style="color:var(--blue,#3498db)">B+¥38,250</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td><strong>ケビン</strong></td><td>¥374,000</td><td>¥280,500 + ¥36K + ¥40K = <strong>¥356,500</strong></td><td>¥374,000 + ¥18K = <strong>¥392,000</strong></td><td style="color:var(--blue,#3498db)">B+¥35,500</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
-            <tr><td><strong>チェリン</strong></td><td>¥350,000</td><td>¥262,500 + ¥36K + ¥40K = <strong>¥338,500</strong></td><td>¥350,000 + ¥18K = <strong>¥368,000</strong></td><td style="color:var(--blue,#3498db)">B+¥29,500</td><td><strong style="color:var(--blue,#3498db)">B</strong></td></tr>
+            <tr><td>標準</td><td>A</td><td>5件</td><td>2回</td><td>1件</td><td>0件</td>
+              <td>¥288,750+¥36K+¥20K+¥6K+¥5K = <strong>¥355,750</strong></td>
+              <td>¥385,000+¥18K = <strong>¥403,000</strong></td>
+              <td><strong style="color:var(--blue,#3498db)">B+¥47,250</strong></td>
+            </tr>
+            <tr><td>中堅</td><td>A</td><td>10件</td><td>3回</td><td>2件</td><td>1件</td>
+              <td>¥288,750+¥36K+¥40K+¥9K+¥10K+¥10K = <strong>¥393,750</strong></td>
+              <td>¥385,000+¥18K = <strong>¥403,000</strong></td>
+              <td><strong style="color:var(--blue,#3498db)">B+¥9,250</strong></td>
+            </tr>
+            <tr><td>準エース</td><td>S</td><td>15件</td><td>4回</td><td>3件</td><td>1件</td>
+              <td>¥288,750+¥60K+¥60K+¥12K+¥15K+¥10K = <strong>¥445,750</strong></td>
+              <td>¥385,000+¥30K = <strong>¥415,000</strong></td>
+              <td><strong style="color:var(--green)">A+¥30,750</strong></td>
+            </tr>
+            <tr><td>エース</td><td>S</td><td>20件</td><td>5回</td><td>5件</td><td>2件</td>
+              <td>¥288,750+¥60K+¥80K+¥15K+¥25K+¥20K = <strong>¥488,750</strong></td>
+              <td>¥385,000+¥30K = <strong>¥415,000</strong></td>
+              <td><strong style="color:var(--green)">A+¥73,750</strong></td>
+            </tr>
+            <tr><td>トップ</td><td>S</td><td>30件</td><td>8回</td><td>8件</td><td>3件</td>
+              <td>¥288,750+¥60K+¥120K+¥24K+¥40K+¥30K = <strong>¥562,750</strong></td>
+              <td>¥385,000+¥30K = <strong>¥415,000</strong></td>
+              <td><strong style="color:var(--green)">A+¥147,750</strong></td>
+            </tr>
           </tbody>
         </table>
-        <p style="color:var(--muted);font-size:0.82em;margin:12px 0 8px">S評価 × 月20件 ケース（エース近く）</p>
-        <table>
-          <thead><tr><th>スタッフ</th><th>Pattern A月収</th><th>Pattern B月収</th><th>差</th><th>推奨</th></tr></thead>
-          <tbody>
-            <tr><td><strong>チョイ</strong></td><td><strong>¥428,750</strong></td><td>¥415,000</td><td style="color:var(--green)">A+¥13,750</td><td><strong style="color:var(--green)">A</strong></td></tr>
-            <tr><td><strong>ケビン</strong></td><td><strong>¥420,500</strong></td><td>¥404,000</td><td style="color:var(--green)">A+¥16,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
-            <tr><td><strong>チェリン</strong></td><td><strong>¥402,500</strong></td><td>¥380,000</td><td style="color:var(--green)">A+¥22,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
-          </tbody>
-        </table>
-        <p style="color:var(--muted);font-size:0.82em;margin:12px 0 8px">S評価 × 月30件 ケース（トップエース）</p>
-        <table>
-          <thead><tr><th>スタッフ</th><th>Pattern A月収</th><th>Pattern B月収</th><th>差</th><th>推奨</th></tr></thead>
-          <tbody>
-            <tr><td><strong>チョイ</strong></td><td><strong>¥468,750</strong></td><td>¥415,000</td><td style="color:var(--green)">A+¥53,750</td><td><strong style="color:var(--green)">A</strong></td></tr>
-            <tr><td><strong>ケビン</strong></td><td><strong>¥460,500</strong></td><td>¥404,000</td><td style="color:var(--green)">A+¥56,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
-            <tr><td><strong>チェリン</strong></td><td><strong>¥442,500</strong></td><td>¥380,000</td><td style="color:var(--green)">A+¥62,500</td><td><strong style="color:var(--green)">A</strong></td></tr>
-          </tbody>
-        </table>
-        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ 損益分岐点は <strong>S評価 × 月20件前後</strong>。エース級で月+¥50K以上の上振れ可能、中堅以下はB型で安定推奨。</p>
+        <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ 損益分岐点は <strong>S評価＋複数評価軸で活躍するエース級</strong>。中堅以下は基本給保証のB型推奨。トップ級は月収+¥10万超の上振れ可能。</p>
       </div>
 
       <div style="margin-top:16px;background:#4a4a58;padding:14px;border-radius:10px">
@@ -1740,7 +1749,12 @@
           <div class="form-group"><label>月次ランク</label><select id="planLocalRank" style="background:var(--bg-input)"><option value="S">S</option><option value="A" selected>A</option><option value="B">B</option><option value="C">C</option></select></div>
           <div class="form-group"><label>テレベット誘導件数</label><input type="number" id="planLocalRefs" min="0" value="10" style="background:var(--bg-input)"></div>
         </div>
-        <button onclick="calcPlanLocal()" style="width:100%;background:var(--accent)">比較計算</button>
+        <div class="grid grid-4" style="gap:8px">
+          <div class="form-group"><label>個人名アンケート評価回数</label><input type="number" id="planLocalSurvey" min="0" value="3" style="background:var(--bg-input)"></div>
+          <div class="form-group"><label>リピート獲得件数</label><input type="number" id="planLocalRepeat" min="0" value="2" style="background:var(--bg-input)"></div>
+          <div class="form-group"><label>新規顧客紹介件数</label><input type="number" id="planLocalNew" min="0" value="1" style="background:var(--bg-input)"></div>
+          <div class="form-group" style="display:flex;align-items:flex-end"><button onclick="calcPlanLocal()" style="width:100%;background:var(--accent)">比較計算</button></div>
+        </div>
         <div id="planLocalResult" style="margin-top:10px"></div>
       </div>
     </div>
@@ -6680,10 +6694,18 @@ function calcPlanLocal(){
   var base=parseInt(document.getElementById('planLocalBase').value)||0;
   var rank=document.getElementById('planLocalRank').value;
   var refs=parseInt(document.getElementById('planLocalRefs').value)||0;
+  var survey=parseInt(document.getElementById('planLocalSurvey').value)||0;
+  var repeat=parseInt(document.getElementById('planLocalRepeat').value)||0;
+  var newcust=parseInt(document.getElementById('planLocalNew').value)||0;
   var rankBonusA={S:60000,A:36000,B:16000,C:0}[rank];
   var rankBonusB={S:30000,A:18000,B:8000,C:0}[rank];
   var aBase=Math.round(base*0.75);
-  var aTotal=aBase+rankBonusA+refs*4000;
+  var refBonus=refs*4000;
+  var surveyBonus=survey*3000;
+  var repeatBonus=repeat*5000;
+  var newBonus=newcust*10000;
+  var aEvalBonus=refBonus+surveyBonus+repeatBonus+newBonus;
+  var aTotal=aBase+rankBonusA+aEvalBonus;
   var bTotal=base+rankBonusB;
   var diff=aTotal-bTotal;
   var winner=diff>0?'A':(diff<0?'B':'同額');
@@ -6691,19 +6713,29 @@ function calcPlanLocal(){
   document.getElementById('planLocalResult').innerHTML=
     '<div class="grid grid-3" style="gap:10px;margin-top:8px">'+
       '<div style="background:rgba(46,204,113,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--green)">'+
-        '<div style="color:var(--green);font-weight:600">Pattern A — チャレンジ型</div>'+
+        '<div style="color:var(--green);font-weight:600">Pattern A — 歩合振り切り型</div>'+
         '<div style="font-size:1.4em;font-weight:700;color:var(--green)">¥'+aTotal.toLocaleString()+'</div>'+
-        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥'+aBase.toLocaleString()+'(0.75倍) + '+rank+'¥'+rankBonusA.toLocaleString()+' + '+refs+'件×¥4,000</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.8em;line-height:1.6">'+
+          '・基本給(×0.75): ¥'+aBase.toLocaleString()+'<br>'+
+          '・ランク'+rank+': ¥'+rankBonusA.toLocaleString()+'<br>'+
+          '・誘導 '+refs+'件×¥4,000: ¥'+refBonus.toLocaleString()+'<br>'+
+          '・アンケ '+survey+'回×¥3,000: ¥'+surveyBonus.toLocaleString()+'<br>'+
+          '・リピート '+repeat+'件×¥5,000: ¥'+repeatBonus.toLocaleString()+'<br>'+
+          '・新規 '+newcust+'件×¥10,000: ¥'+newBonus.toLocaleString()+
+        '</div>'+
       '</div>'+
       '<div style="background:rgba(52,152,219,0.15);padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">'+
         '<div style="color:var(--blue,#3498db);font-weight:600">Pattern B — 現状維持型</div>'+
         '<div style="font-size:1.4em;font-weight:700;color:var(--blue,#3498db)">¥'+bTotal.toLocaleString()+'</div>'+
-        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">¥'+base.toLocaleString()+'(現給) + '+rank+'¥'+rankBonusB.toLocaleString()+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.8em;line-height:1.6">'+
+          '・基本給(現給): ¥'+base.toLocaleString()+'<br>'+
+          '・ランク'+rank+': ¥'+rankBonusB.toLocaleString()+
+        '</div>'+
       '</div>'+
       '<div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid '+winColor+'">'+
         '<div style="color:var(--muted);font-weight:600">推奨</div>'+
-        '<div style="font-size:1.4em;font-weight:700;color:'+winColor+'">'+winner+'</div>'+
-        '<div style="color:var(--text);opacity:0.8;font-size:0.85em">差額: ¥'+Math.abs(diff).toLocaleString()+'</div>'+
+        '<div style="font-size:1.6em;font-weight:700;color:'+winColor+'">'+winner+'</div>'+
+        '<div style="color:var(--text);opacity:0.8;font-size:0.85em;margin-top:6px">差額: <strong>¥'+Math.abs(diff).toLocaleString()+'</strong></div>'+
       '</div>'+
     '</div>';
 }
