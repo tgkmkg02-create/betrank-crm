@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>テレベット歩合制度設計書 — ベットランクツアーズ</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: #222;
+    background: #fff;
+    line-height: 1.55;
+    font-size: 10.5pt;
+    margin: 0;
+    padding: 24px;
+  }
+  .page { max-width: 800px; margin: 0 auto; }
+  h1 {
+    font-size: 22pt;
+    color: #1a1a2e;
+    border-bottom: 3px solid #2e9c5d;
+    padding-bottom: 8px;
+    margin: 0 0 6px 0;
+  }
+  .subtitle { color: #777; font-size: 11pt; margin-bottom: 24px; }
+  h2 {
+    font-size: 15pt;
+    color: #1a1a2e;
+    border-left: 5px solid #2e9c5d;
+    padding-left: 10px;
+    margin-top: 28px;
+    margin-bottom: 14px;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 12pt; color: #2c3e50; margin: 18px 0 8px; page-break-after: avoid; }
+  h4 { font-size: 10.5pt; color: #555; margin: 12px 0 6px; }
+  p { margin: 6px 0; }
+
+  .meta {
+    background: #f0faf3;
+    border: 1px solid #b7e0c4;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 9.5pt;
+    margin-bottom: 18px;
+  }
+  .meta strong { color: #1f7d49; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 10px 0;
+    page-break-inside: avoid;
+  }
+  thead { background: #1a1a2e; color: #fff; }
+  th, td { padding: 6px 8px; border: 1px solid #d8d8d8; text-align: left; }
+  th { font-weight: 600; font-size: 9pt; }
+  td.num { text-align: right; }
+  tr.alt td { background: #fafafa; }
+  .positive { color: #1f7d49; font-weight: 700; }
+  .negative { color: #c0392b; font-weight: 700; }
+  .neutral { color: #c9a14a; font-weight: 700; }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .stat-card {
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    padding: 10px 12px;
+    background: #fafafa;
+  }
+  .stat-card .label { font-size: 8.5pt; color: #666; }
+  .stat-card .value { font-size: 14pt; font-weight: 700; color: #1a1a2e; margin-top: 4px; }
+
+  .commission-tier {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .tier-card {
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .tier-card.basic { border-color: #2e9c5d; background: #f0faf3; }
+  .tier-card.mid { border-color: #c9a14a; background: #fef9ee; }
+  .tier-card.top { border-color: #c0392b; background: #fdf2f0; }
+  .tier-card .tier-name { font-size: 10pt; color: #666; }
+  .tier-card .rate { font-size: 22pt; font-weight: 700; margin: 4px 0; }
+  .tier-card .desc { font-size: 9pt; color: #555; }
+  .tier-card.basic .rate { color: #1f7d49; }
+  .tier-card.mid .rate { color: #8b6f1f; }
+  .tier-card.top .rate { color: #a93226; }
+
+  .rules-box {
+    background: #fafafa;
+    border-left: 4px solid #2e9c5d;
+    padding: 10px 14px;
+    margin: 14px 0;
+    font-size: 9.5pt;
+  }
+  .rules-box ul { margin: 4px 0; padding-left: 20px; line-height: 1.7; }
+
+  .alert {
+    background: #fef5e7;
+    border: 1px solid #f5c987;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 9.5pt;
+    color: #7d4f0d;
+  }
+
+  footer {
+    margin-top: 32px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    font-size: 8.5pt;
+    color: #888;
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 0; font-size: 10pt; }
+    h1 { font-size: 18pt; }
+    h2 { font-size: 13pt; }
+    .no-print { display: none; }
+  }
+
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #2e9c5d;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 11pt;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .print-btn:hover { background: #1f7d49; }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">📄 PDFとして保存</button>
+
+<div class="page">
+
+<h1>テレベット歩合制度設計書</h1>
+<div class="subtitle">ベットランクツアーズ — テレベット営業インセンティブ（売上ベース・段階制）</div>
+
+<div class="meta">
+  <strong>制度概要:</strong> テレベット利益（売上）に対する個人歩合。長岡きみ担当。現地スタッフのインセンティブとは別管理。
+  <br><strong>担当:</strong> 長岡きみ（現担当）
+  <br><strong>適用期間:</strong> 2026年2月〜稼働中
+  <br><strong>支払い方式:</strong> 売上ベース・段階累進制（テレベット月間利益額に応じて変動）
+</div>
+
+<!-- ===================== 累計実績 ===================== -->
+<section>
+<h2>① 累計実績（2026年2〜4月）</h2>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="label">テレベット累計利益</div>
+    <div class="value positive">¥3,839,618</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">月間固定経費</div>
+    <div class="value negative">¥581,152</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">累計純利益</div>
+    <div class="value positive">¥2,080,801</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">担当者</div>
+    <div class="value" style="font-size:11pt">長岡きみ</div>
+  </div>
+</div>
+
+<h3>月次実績</h3>
+<table>
+  <thead>
+    <tr><th>月</th><th>売上（テレベット利益）</th><th>長岡歩合</th><th>実経費</th><th>会社に残る</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>2026-01</td><td colspan="4" style="text-align:center;color:#888">未稼働</td></tr>
+    <tr class="alt"><td>2026-02</td><td class="num">¥1,439,885</td><td class="num">¥185,983</td><td class="num" style="color:#888">未入力</td><td class="num" style="color:#888">—</td></tr>
+    <tr><td>2026-03</td><td class="num">¥1,430,228</td><td class="num">¥184,534</td><td class="num negative">−¥1,566,482</td><td class="num negative">−¥320,788</td></tr>
+    <tr class="alt"><td>2026-04</td><td class="num">¥969,505</td><td class="num">¥116,341</td><td class="num" style="color:#888">未入力</td><td class="num" style="color:#888">—</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666">※ 4月: ローリング ₱24,555,000、粗利益 ₱368,325 ＝ ¥969,505（円換算 2.6322）</p>
+</section>
+
+<!-- ===================== 歩合制度 ===================== -->
+<section>
+<h2>② 歩合制（段階累進制）</h2>
+
+<p>月間テレベット利益の額に応じて、3段階の累進歩合率が適用される。</p>
+
+<div class="commission-tier">
+  <div class="tier-card basic">
+    <div class="tier-name">¥100万までの部分</div>
+    <div class="rate">12%</div>
+    <div class="desc">基本層</div>
+  </div>
+  <div class="tier-card mid">
+    <div class="tier-name">¥100万〜200万の部分</div>
+    <div class="rate">15%</div>
+    <div class="desc">中間層</div>
+  </div>
+  <div class="tier-card top">
+    <div class="tier-name">¥200万以上の部分</div>
+    <div class="rate">18%</div>
+    <div class="desc">上位層</div>
+  </div>
+</div>
+
+<h3>計算方法（累進制）</h3>
+<table>
+  <thead>
+    <tr><th>テレベット月間利益</th><th>歩合率</th><th>計算式</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>¥100万まで</td><td><strong>12%</strong></td><td>利益 × 12%</td></tr>
+    <tr class="alt"><td>¥100万〜200万の部分</td><td><strong>15%</strong></td><td>¥100万×12% + 超過分×15%</td></tr>
+    <tr><td>¥200万以上の部分</td><td><strong>18%</strong></td><td>¥100万×12% + ¥100万×15% + 超過分×18%</td></tr>
+  </tbody>
+</table>
+
+<h3>歩合早見表</h3>
+<table>
+  <thead>
+    <tr><th>テレベット利益</th><th>歩合額</th><th>実質率</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>¥80万</td><td class="num"><strong>¥96,000</strong></td><td>12.0%</td></tr>
+    <tr class="alt"><td>¥100万</td><td class="num"><strong>¥120,000</strong></td><td>12.0%</td></tr>
+    <tr><td>¥120万</td><td class="num"><strong>¥150,000</strong></td><td>12.5%</td></tr>
+    <tr class="alt"><td>¥150万</td><td class="num"><strong>¥195,000</strong></td><td>13.0%</td></tr>
+    <tr><td>¥200万</td><td class="num"><strong>¥270,000</strong></td><td>13.5%</td></tr>
+    <tr class="alt"><td>¥250万</td><td class="num"><strong>¥360,000</strong></td><td>14.4%</td></tr>
+    <tr><td>¥300万</td><td class="num"><strong>¥450,000</strong></td><td>15.0%</td></tr>
+    <tr class="alt"><td>¥400万</td><td class="num"><strong>¥630,000</strong></td><td>15.8%</td></tr>
+    <tr><td>¥500万</td><td class="num"><strong>¥810,000</strong></td><td>16.2%</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ===================== リピート・新規ボーナス ===================== -->
+<section>
+<h2>③ リピート・新規顧客ボーナス（追加）</h2>
+
+<p>テレベットへの誘導実績に応じた追加ボーナス。</p>
+
+<table>
+  <thead>
+    <tr><th>実績</th><th>ボーナス</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>テレベット新規誘導 1件</td><td class="num positive">¥5,000 / 件</td></tr>
+    <tr class="alt"><td>リピート予約獲得 1件</td><td class="num positive">¥3,000 / 件</td></tr>
+    <tr><td>月間テレベット誘導 5件以上</td><td class="num positive">追加 +¥10,000</td></tr>
+  </tbody>
+</table>
+
+<p style="font-size:9pt;color:#666">例: 新規誘導3件 + リピート2件 → ¥15,000 + ¥6,000 = ¥21,000（5件未満なので追加ボーナスなし）</p>
+<p style="font-size:9pt;color:#666">例: 新規誘導4件 + リピート2件 → ¥20,000 + ¥6,000 + ¥10,000 = ¥36,000（合計6件で達成ボーナス加算）</p>
+</section>
+
+<!-- ===================== 経費 ===================== -->
+<section style="page-break-before:always">
+<h2>④ テレベット経費（フィリピン拠点）</h2>
+
+<h3>3月実績（実経費）</h3>
+<p style="font-size:9.5pt">ペソレート 2.6322（円換算）</p>
+<table>
+  <thead>
+    <tr><th>経費項目</th><th>ペソ（₱）</th><th>円換算（¥）</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>🚗 車関係費用</td><td class="num">₱58,718.19</td><td class="num">¥154,555</td></tr>
+    <tr class="alt"><td>🏠 家賃</td><td class="num">₱63,750.00</td><td class="num">¥167,803</td></tr>
+    <tr><td>👥 人件費（ドライバー等含む）</td><td class="num">₱339,600.00</td><td class="num">¥893,895</td></tr>
+    <tr class="alt"><td>🛂 ビザ費用</td><td class="num">₱36,470.00</td><td class="num">¥95,997</td></tr>
+    <tr><td>📦 その他</td><td class="num">₱96,600.33</td><td class="num">¥254,232</td></tr>
+    <tr style="border-top:2px solid #1a1a2e"><td><strong>3月合計</strong></td><td class="num"><strong>₱595,138.52</strong></td><td class="num negative"><strong>¥1,566,482</strong></td></tr>
+  </tbody>
+</table>
+
+<div class="alert">
+  <strong>⚠️ 3月の収支:</strong> 売上 ¥1,430,228 − 歩合 ¥184,534 − 経費 ¥1,566,482 = <strong>−¥320,788（赤字）</strong>。
+  売上ベース歩合は変わらず支給される構造のため、経費超過時は会社負担増加に注意。
+</div>
+</section>
+
+<!-- ===================== シミュレーション ===================== -->
+<section>
+<h2>⑤ 月収シミュレーション</h2>
+
+<table>
+  <thead>
+    <tr><th>シナリオ</th><th>テレベット利益</th><th>段階歩合</th><th>誘導ボーナス</th><th>合計支給</th><th>実質率</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>低調月</td><td class="num">¥80万</td><td class="num">¥96,000</td><td class="num">¥0</td><td class="num"><strong>¥96,000</strong></td><td>12.0%</td></tr>
+    <tr class="alt"><td>標準月</td><td class="num">¥120万</td><td class="num">¥150,000</td><td class="num">¥18,000</td><td class="num"><strong>¥168,000</strong></td><td>14.0%</td></tr>
+    <tr><td>好調月</td><td class="num">¥200万</td><td class="num">¥270,000</td><td class="num">¥36,000</td><td class="num"><strong>¥306,000</strong></td><td>15.3%</td></tr>
+    <tr class="alt"><td>絶好調月</td><td class="num">¥300万</td><td class="num">¥450,000</td><td class="num">¥45,000</td><td class="num"><strong>¥495,000</strong></td><td>16.5%</td></tr>
+    <tr><td>最高月</td><td class="num">¥500万</td><td class="num">¥810,000</td><td class="num">¥60,000</td><td class="num"><strong>¥870,000</strong></td><td>17.4%</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666">※ 誘導ボーナス試算: 低調=0件、標準=新規2件+リピ2件+達成、好調=新規3件+リピ3件+達成、絶好調=新規4件+リピ4件+達成、最高=新規5件+リピ5件+達成</p>
+</section>
+
+<!-- ===================== 運用ルール ===================== -->
+<section>
+<h2>⑥ 運用ルール</h2>
+
+<div class="rules-box">
+<h4 style="margin-top:0">支給タイミング</h4>
+<ul>
+  <li>翌月の <strong>15日</strong> に前月分を支給</li>
+  <li>テレベット利益確定 = カジノ側の精算完了後</li>
+</ul>
+
+<h4>歩合計算の基礎</h4>
+<ul>
+  <li>テレベット利益 = W/L利益 + R/C利益（カジノからの実支払額）</li>
+  <li>経費は歩合計算に含めない（あくまで売上ベース）</li>
+  <li>ローリング額 ≠ 利益。利益のみが歩合対象</li>
+</ul>
+
+<h4>注意事項</h4>
+<ul>
+  <li>3月のように経費超過で赤字でも、歩合は売上ベースで支給される</li>
+  <li>会社の純利益を守るため、月間固定経費の見直しが定期的に必要</li>
+  <li>新規誘導・リピート獲得は<strong>担当者本人の実績のみ</strong>カウント</li>
+</ul>
+</div>
+</section>
+
+<footer>
+  ベットランクツアーズテレベット歩合制度設計書 — 2026年4月版<br>
+  本書は実運用ベースの記録。労務・税務専門家による最終確認推奨。
+</footer>
+
+</div>
+</body>
+</html>

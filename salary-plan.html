@@ -188,9 +188,66 @@
   <br><strong>非適用:</strong> アバタースタッフ（たく・むらまつ・あやか）は現行のポイント制を維持
 </div>
 
-<!-- ===================== セクション1: 現地スタッフ ===================== -->
+<!-- ===================== セクション0: アバタースタッフ ===================== -->
 <section class="section">
-<h2>① 現地スタッフ（チョイ・ケビン・チェリン）</h2>
+<h2>① アバタースタッフ給与（たく・むらまつ・あやか）</h2>
+
+<p>テレベット代行（フィリピン拠点）。<strong>ポイント制で運用</strong>。本制度のA/B選択対象外。現行のままを維持。</p>
+
+<div class="meta">
+  <strong>基本給（固定）:</strong> ₱80,000<br>
+  <strong>歩合:</strong> 月間獲得ポイントに応じたティア単価
+</div>
+
+<h3>アバタースタッフ現給</h3>
+<table class="staff-table">
+  <thead><tr><th>スタッフ</th><th>基本給</th><th>備考</th></tr></thead>
+  <tbody>
+    <tr><td><strong>たく</strong></td><td class="num">₱80,000</td><td>+ ポイント歩合</td></tr>
+    <tr class="alt"><td><strong>むらまつ</strong></td><td class="num">₱80,000</td><td>+ ポイント歩合</td></tr>
+    <tr><td><strong>あやか</strong></td><td class="num" style="color:#888">不明</td><td>確認待ち</td></tr>
+  </tbody>
+</table>
+
+<h3>ポイント獲得ルール</h3>
+<table>
+  <thead><tr><th>項目</th><th>ポイント計算</th></tr></thead>
+  <tbody>
+    <tr><td>① 基本ポイント</td><td>プレイ時間 3時間ごと = 1pt</td></tr>
+    <tr class="alt"><td>② 顧客ランク倍率（①に乗算）</td><td>VVIP×3.0 / VIP×2.0 / Gold×1.5 / Silver×1.0 / Bronze×0.8</td></tr>
+    <tr><td>③ ローリング実績ボーナス（3hセッションあたり）</td><td>3,000万KRW未満:+0 / 〜5,000万:+1 / 〜1億:+2 / 1億以上:+3</td></tr>
+    <tr class="alt"><td>④ 月末ボーナス</td><td>個人名アンケート評価 +2pt/回 / リピート獲得 +3pt/件</td></tr>
+    <tr><td>⑤ 管理者総合ランク評価</td><td>S +25pt / A +15pt / B +5pt / C 0 / D −10pt</td></tr>
+  </tbody>
+</table>
+
+<h3>ポイント → PHP 換算（ティア制）</h3>
+<table>
+  <thead><tr><th>月間pt</th><th>1pt単価</th><th>例</th></tr></thead>
+  <tbody>
+    <tr><td>0〜30 pt</td><td class="num"><strong>₱400</strong></td><td>30pt → ₱12,000</td></tr>
+    <tr class="alt"><td>31〜60 pt</td><td class="num"><strong>₱600</strong></td><td>60pt → ₱36,000</td></tr>
+    <tr><td>61〜100 pt</td><td class="num"><strong>₱900</strong></td><td>100pt → ₱90,000</td></tr>
+    <tr class="alt"><td>101 pt〜</td><td class="num"><strong>₱1,200</strong></td><td>150pt → ₱180,000</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666">月収 = ₱80,000 + (月間pt × 該当ティア単価)。ティア単価は累進ではなく、月間合計ptに応じた1段階のみ適用。</p>
+
+<h3>想定シミュレーション</h3>
+<table>
+  <thead><tr><th>パフォーマンス</th><th>月間pt</th><th>歩合計算</th><th>月収合計</th></tr></thead>
+  <tbody>
+    <tr><td>新人 (Bronze/Silver中心・月12セッション)</td><td>17pt</td><td>17 × ₱400 = ₱6,800</td><td class="num"><strong>₱86,800</strong></td></tr>
+    <tr class="alt"><td>標準 (Silver中心・月20セッション)</td><td>40pt</td><td>40 × ₱600 = ₱24,000</td><td class="num"><strong>₱104,000</strong></td></tr>
+    <tr><td>エース (VIP/VVIP中心・月25セッション)</td><td>122.5pt</td><td>122.5 × ₱1,200 = ₱147,000</td><td class="num"><strong>₱227,000</strong></td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666">※ 上記は管理者ランク評価未加算の例。S評価で最大+25pt、D評価で-10ptが上記合計ptに加算される。</p>
+</section>
+
+<!-- ===================== セクション2: 現地スタッフ ===================== -->
+<section class="section" style="page-break-before:always">
+<h2>② 現地スタッフ（チョイ・ケビン・チェリン）</h2>
 
 <p>基本給は<strong>現在の月給を維持</strong>し、Pattern A/Bは歩合の大きさだけで差をつける設計。</p>
 
@@ -255,9 +312,9 @@
 <p style="font-size:9pt;color:#555">損益分岐点: <strong>エース級（S評価＋複数評価軸活躍）</strong>。中堅以下はB型推奨。</p>
 </section>
 
-<!-- ===================== セクション2: 日本チーム ===================== -->
+<!-- ===================== セクション3: 日本チーム ===================== -->
 <section class="section" style="page-break-before:always">
-<h2>② 日本チーム（CS予約担当・長岡きみ・長岡ゆみ）</h2>
+<h2>③ 日本チーム（CS予約担当・長岡きみ・長岡ゆみ）</h2>
 
 <p>顧客対応・予約獲得を担う日本チームのA/Bプラン。基本給は現給ベースで運用調整推奨。</p>
 
@@ -266,17 +323,39 @@
     <div class="label">Pattern A — 獲得型 <span class="tag">攻め</span></div>
     <ul>
       <li>基本給: <strong>¥180,000（モデル値）</strong></li>
-      <li>予約歩合: <strong>0.5%</strong>（現行0.3%の +67%）</li>
+      <li>予約件数歩合（プラン別・1件あたり）</li>
       <li>月間ボーナス: 5件以上 +¥10,000 / 10件以上 +¥30,000</li>
     </ul>
+    <table style="margin-top:8px;font-size:8.5pt">
+      <thead><tr><th>プラン</th><th>1件あたり</th></tr></thead>
+      <tbody>
+        <tr><td>77万</td><td class="num"><strong>¥3,500</strong></td></tr>
+        <tr class="alt"><td>100万</td><td class="num"><strong>¥5,000</strong></td></tr>
+        <tr><td>200万</td><td class="num"><strong>¥10,000</strong></td></tr>
+        <tr class="alt"><td>300万</td><td class="num"><strong>¥15,000</strong></td></tr>
+        <tr><td>500万</td><td class="num"><strong>¥25,000</strong></td></tr>
+        <tr class="alt"><td>1000万</td><td class="num"><strong>¥50,000</strong></td></tr>
+      </tbody>
+    </table>
   </div>
   <div class="pattern-card b">
     <div class="label">Pattern B — 給与型 <span class="tag">守り</span></div>
     <ul>
       <li>基本給: <strong>¥260,000（モデル値）</strong></li>
-      <li>予約歩合: <strong>0.15%</strong>（現行0.3%の −50%）</li>
+      <li>予約件数歩合（プラン別・1件あたり）</li>
       <li>月間ボーナス: なし</li>
     </ul>
+    <table style="margin-top:8px;font-size:8.5pt">
+      <thead><tr><th>プラン</th><th>1件あたり</th></tr></thead>
+      <tbody>
+        <tr><td>77万</td><td class="num"><strong>¥1,000</strong></td></tr>
+        <tr class="alt"><td>100万</td><td class="num"><strong>¥1,500</strong></td></tr>
+        <tr><td>200万</td><td class="num"><strong>¥3,000</strong></td></tr>
+        <tr class="alt"><td>300万</td><td class="num"><strong>¥4,500</strong></td></tr>
+        <tr><td>500万</td><td class="num"><strong>¥7,500</strong></td></tr>
+        <tr class="alt"><td>1000万</td><td class="num"><strong>¥15,000</strong></td></tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -286,21 +365,22 @@
 </div>
 
 <h3>パフォーマンス別シミュレーション（モデル値ベース）</h3>
+<p style="font-size:9pt;color:#666">A合計 = ¥180,000基本 + 件数歩合 + 月間ボーナス／B合計 = ¥260,000基本 + 件数歩合</p>
 <table>
   <thead>
-    <tr><th>月間獲得</th><th>平均プラン</th><th>売上総額</th><th>Pattern A</th><th>Pattern B</th><th>推奨</th></tr>
+    <tr><th>月間獲得</th><th>内訳例</th><th>件数歩合A</th><th>件数歩合B</th><th>Pattern A合計</th><th>Pattern B合計</th><th>推奨</th></tr>
   </thead>
   <tbody>
-    <tr><td>3件</td><td>100万</td><td>¥300万</td><td class="num">¥195,000</td><td class="num">¥264,500</td><td class="tag-b">B</td></tr>
-    <tr class="alt"><td>5件</td><td>100万</td><td>¥500万</td><td class="num">¥215,000</td><td class="num">¥267,500</td><td class="tag-b">B</td></tr>
-    <tr><td>5件</td><td>200万</td><td>¥1,000万</td><td class="num">¥240,000</td><td class="num">¥275,000</td><td class="tag-b">B</td></tr>
-    <tr class="alt"><td>8件</td><td>200万</td><td>¥1,600万</td><td class="num">¥280,000</td><td class="num">¥284,000</td><td class="tag-neutral">同等</td></tr>
-    <tr><td>10件</td><td>200万</td><td>¥2,000万</td><td class="num">¥310,000</td><td class="num">¥290,000</td><td class="tag-a">A</td></tr>
-    <tr class="alt"><td>15件</td><td>200万</td><td>¥3,000万</td><td class="num">¥360,000</td><td class="num">¥305,000</td><td class="tag-a">A</td></tr>
-    <tr><td>20件</td><td>300万</td><td>¥6,000万</td><td class="num">¥510,000</td><td class="num">¥350,000</td><td class="tag-a">A</td></tr>
+    <tr><td>3件</td><td>100万×3</td><td class="num">¥15,000</td><td class="num">¥4,500</td><td class="num">¥195,000</td><td class="num">¥264,500</td><td class="tag-b">B</td></tr>
+    <tr class="alt"><td>5件</td><td>100万×5</td><td class="num">¥25,000</td><td class="num">¥7,500</td><td class="num">¥215,000</td><td class="num">¥267,500</td><td class="tag-b">B</td></tr>
+    <tr><td>5件</td><td>200万×5</td><td class="num">¥50,000</td><td class="num">¥15,000</td><td class="num">¥240,000</td><td class="num">¥275,000</td><td class="tag-b">B</td></tr>
+    <tr class="alt"><td>8件</td><td>200万×8</td><td class="num">¥80,000</td><td class="num">¥24,000</td><td class="num">¥290,000</td><td class="num">¥284,000</td><td class="tag-neutral">A+¥6K</td></tr>
+    <tr><td>10件</td><td>200万×10</td><td class="num">¥100,000</td><td class="num">¥30,000</td><td class="num">¥310,000</td><td class="num">¥290,000</td><td class="tag-a">A</td></tr>
+    <tr class="alt"><td>15件</td><td>200万×15</td><td class="num">¥150,000</td><td class="num">¥45,000</td><td class="num">¥360,000</td><td class="num">¥305,000</td><td class="tag-a">A</td></tr>
+    <tr><td>20件</td><td>300万×20</td><td class="num">¥300,000</td><td class="num">¥90,000</td><td class="num">¥510,000</td><td class="num">¥350,000</td><td class="tag-a">A</td></tr>
   </tbody>
 </table>
-<p style="font-size:9pt;color:#555">損益分岐点: <strong>月8件 × 200万円プラン平均</strong>（売上¥1,600万）あたり。</p>
+<p style="font-size:9pt;color:#555">損益分岐点: <strong>200万円プラン × 月8件以上</strong>。それ以下はB型推奨。</p>
 
 <h3>現給 (参考)</h3>
 <table class="staff-table">
@@ -314,9 +394,9 @@
 </table>
 </section>
 
-<!-- ===================== セクション3: 運用ルール ===================== -->
+<!-- ===================== セクション4: 運用ルール ===================== -->
 <section class="section">
-<h2>③ 運用ルール</h2>
+<h2>④ 運用ルール</h2>
 
 <div class="rules-box">
 <h4 style="margin-top:0">選択ルール</h4>
@@ -351,9 +431,9 @@
 </div>
 </section>
 
-<!-- ===================== セクション4: 経営側の影響 ===================== -->
+<!-- ===================== セクション5: 経営側の影響 ===================== -->
 <section class="section">
-<h2>④ 経営側の試算</h2>
+<h2>⑤ 経営側の試算</h2>
 
 <h3>現地スタッフ3名の月次人件費（パフォーマンス別）</h3>
 <table>

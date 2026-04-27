@@ -1654,21 +1654,31 @@
 
     <div class="card mb-16" style="border-left:3px solid var(--gold)">
       <h3>対象（現在の月給）</h3>
-      <p style="color:var(--muted);font-size:0.85em;margin-bottom:12px">A/Bパターン選択の対象は <strong style="color:var(--text)">CS対応（日本チーム）</strong>と<strong style="color:var(--text)">現地スタッフ（韓国）</strong>のみ。<br>※ アバター（テレベット）は現行のポイント制を維持し、本制度の対象外。</p>
-      <div class="grid grid-2" style="gap:14px">
-        <div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid var(--blue,#3498db)">
-          <div style="color:var(--blue,#3498db);font-weight:700;margin-bottom:6px">🇯🇵 日本チーム（CS予約）</div>
-          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>長岡きみ</span><strong>¥350,000</strong></div>
-          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>長岡ゆみ</span><strong>¥250,000</strong></div>
+      <p style="color:var(--muted);font-size:0.85em;margin-bottom:12px">A/Bパターン選択の対象は <strong style="color:var(--text)">CS対応（日本チーム）</strong>と<strong style="color:var(--text)">現地スタッフ（韓国）</strong>のみ。<br>※ アバター（テレベット）は現行のポイント制を維持し、本制度の対象外。参考としてベース給を表示。</p>
+      <div class="grid grid-3" style="gap:14px">
+        <!-- JP: blue -->
+        <div style="background:#3a3a48;padding:14px;border-radius:8px;border-left:4px solid #5dade2">
+          <div style="color:#5dade2;font-weight:700;margin-bottom:10px;font-size:0.98em">🇯🇵 日本チーム（CS予約）</div>
+          <div style="display:flex;justify-content:space-between;font-size:0.92em;padding:4px 0"><span>長岡きみ</span><strong>¥350,000</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.92em;padding:4px 0"><span>長岡ゆみ</span><strong>¥250,000</strong></div>
         </div>
-        <div style="background:#3a3a48;padding:12px;border-radius:8px;border-left:3px solid var(--accent)">
-          <div style="color:var(--accent);font-weight:700;margin-bottom:6px">🇰🇷 韓国現地</div>
-          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>チョイ</span><strong>¥385,000</strong></div>
-          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>ケビン</span><strong>¥374,000</strong></div>
-          <div style="display:flex;justify-content:space-between;font-size:0.9em;padding:3px 0"><span>チェリン</span><strong>¥350,000</strong></div>
+        <!-- KR: red -->
+        <div style="background:#3a3a48;padding:14px;border-radius:8px;border-left:4px solid #ff7a6a">
+          <div style="color:#ff7a6a;font-weight:700;margin-bottom:10px;font-size:0.98em">🇰🇷 韓国現地</div>
+          <div style="display:flex;justify-content:space-between;font-size:0.92em;padding:4px 0"><span>チョイ</span><strong>₩3,580,500</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.92em;padding:4px 0"><span>ケビン</span><strong>₩3,478,200</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.92em;padding:4px 0"><span>チェリン</span><strong>₩3,255,000</strong></div>
+        </div>
+        <!-- Avatar (PH): gold -->
+        <div style="background:#3a3a48;padding:14px;border-radius:8px;border-left:4px solid #f5d76e">
+          <div style="color:#f5d76e;font-weight:700;margin-bottom:10px;font-size:0.98em">🇵🇭 アバター（参考）</div>
+          <div style="display:flex;justify-content:space-between;font-size:0.92em;padding:4px 0"><span>たく</span><strong>₱80,000</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.92em;padding:4px 0"><span>むらまつ</span><strong>₱80,000</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.92em;padding:4px 0"><span>あやか</span><strong>₱80,000</strong></div>
+          <div style="font-size:0.72em;color:var(--muted);margin-top:8px">基本給。pt連動部分は別途加算</div>
         </div>
       </div>
-      <p style="color:var(--muted);font-size:0.78em;margin-top:10px">⚠️ 下記Pattern A/Bの数値は<strong>モデル値</strong>。実運用では各スタッフの現在給与を「中間値」として、A=−15〜25%, B=+5〜15%で個別調整推奨。</p>
+      <p style="color:var(--muted);font-size:0.78em;margin-top:10px">⚠️ 下記Pattern A/Bの数値は<strong>モデル値</strong>。実運用では各スタッフの現在給与を「中間値」として、A=−15〜25%, B=+5〜15%で個別調整推奨。<br>💱 通貨換算: 1 JPY ≈ <strong style="color:var(--text)">9.3 KRW</strong>（exchange.html の市場レート） / 1 JPY ≈ 0.37 PHP。実支給時のレートは経理側で確定。</p>
     </div>
 
     <!-- ============ ロール 1: 現地スタッフ ============ -->
@@ -1788,20 +1798,24 @@
       <div class="grid grid-2" style="gap:14px;margin-top:14px">
         <div style="background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.3);border-left:4px solid var(--green);padding:14px;border-radius:10px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-            <strong style="color:var(--green);font-size:1.1em">Pattern A — 歩合型</strong>
-            <span style="color:var(--muted);font-size:0.8em">獲得型</span>
+            <strong style="color:var(--green);font-size:1.1em">Pattern A — 獲得型</strong>
+            <span style="color:var(--muted);font-size:0.8em">攻め</span>
           </div>
-          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥180,000</strong></div>
-          <div style="margin-top:8px">予約歩合: <strong>0.5%</strong>（現行0.3%の +67%）</div>
-          <div style="margin-top:6px">月間ボーナス: 5件以上 +¥10,000 / 10件以上 +¥30,000</div>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥180,000（モデル値）</strong></div>
+          <div style="margin-top:8px;font-size:0.85em">予約件数歩合 (1件あたり):<br>
+            <span style="color:var(--text);opacity:0.85">77万: ¥3,500 / 100万: ¥5,000 / 200万: ¥10,000 / 300万: ¥15,000 / 500万: ¥25,000 / 1000万: ¥50,000</span>
+          </div>
+          <div style="margin-top:6px">月間ボーナス: <strong>5件 +¥10K / 10件 +¥30K</strong></div>
         </div>
         <div style="background:rgba(52,152,219,0.08);border:1px solid rgba(52,152,219,0.3);border-left:4px solid var(--blue,#3498db);padding:14px;border-radius:10px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-            <strong style="color:var(--blue,#3498db);font-size:1.1em">Pattern B — 固定型</strong>
-            <span style="color:var(--muted);font-size:0.8em">給与型</span>
+            <strong style="color:var(--blue,#3498db);font-size:1.1em">Pattern B — 給与型</strong>
+            <span style="color:var(--muted);font-size:0.8em">守り</span>
           </div>
-          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥260,000</strong></div>
-          <div style="margin-top:8px">予約歩合: <strong>0.15%</strong>（現行0.3%の -50%）</div>
+          <div style="display:flex;justify-content:space-between"><span>基本給</span><strong>¥260,000（モデル値）</strong></div>
+          <div style="margin-top:8px;font-size:0.85em">予約件数歩合 (1件あたり):<br>
+            <span style="color:var(--text);opacity:0.85">77万: ¥1,000 / 100万: ¥1,500 / 200万: ¥3,000 / 300万: ¥4,500 / 500万: ¥7,500 / 1000万: ¥15,000</span>
+          </div>
           <div style="margin-top:6px">月間ボーナス: <span style="color:var(--muted)">なし</span></div>
         </div>
       </div>
@@ -6778,8 +6792,10 @@ function calcPlanJp(){
   var n1000=parseInt(document.getElementById('planJp1000').value)||0;
   var totalCount=n77+n100+n200+n300+n500+n1000;
   var totalSales=n77*770000+n100*1000000+n200*2000000+n300*3000000+n500*5000000+n1000*10000000;
-  var aCommission=Math.round(totalSales*0.005);
-  var bCommission=Math.round(totalSales*0.0015);
+  // Pattern A: per-件 rates
+  var aCommission=n77*3500+n100*5000+n200*10000+n300*15000+n500*25000+n1000*50000;
+  // Pattern B: per-件 rates
+  var bCommission=n77*1000+n100*1500+n200*3000+n300*4500+n500*7500+n1000*15000;
   var aBonus=totalCount>=10?30000:(totalCount>=5?10000:0);
   var aTotal=180000+aCommission+aBonus;
   var bTotal=260000+bCommission;
