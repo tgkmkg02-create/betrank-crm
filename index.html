@@ -1686,13 +1686,35 @@
       <table>
         <thead><tr><th>項目</th><th>支給</th><th>条件</th></tr></thead>
         <tbody>
-          <tr><td>担当顧客の月次売上歩合</td><td style="color:var(--green);font-weight:700">12% / 15% / 18% 段階累進</td><td style="color:var(--muted);font-size:0.85em">¥100万まで12% / 100-200万部分15% / 200万超部分18%</td></tr>
+          <tr><td>担当顧客の月次売上歩合</td><td style="color:var(--green);font-weight:700">段階累進制（下表参照）</td><td style="color:var(--muted);font-size:0.85em">売上帯ごとに歩合率が変動</td></tr>
           <tr><td>3ヶ月継続ボーナス</td><td style="color:var(--green);font-weight:700">¥30,000</td><td style="color:var(--muted);font-size:0.85em">同顧客が <strong style="color:var(--text)">月15日以上参加</strong> を3ヶ月連続</td></tr>
           <tr><td>6ヶ月継続ボーナス</td><td style="color:var(--green);font-weight:700">¥80,000</td><td style="color:var(--muted);font-size:0.85em">同顧客が <strong style="color:var(--text)">月15日以上参加</strong> を6ヶ月連続</td></tr>
           <tr><td>12ヶ月継続ボーナス ★新</td><td style="color:var(--gold);font-weight:700">¥150,000</td><td style="color:var(--muted);font-size:0.85em">同顧客が <strong style="color:var(--text)">月15日以上参加</strong> を12ヶ月連続</td></tr>
           <tr><td>LTV ¥500万到達</td><td style="color:var(--gold);font-weight:700">¥50,000</td><td style="color:var(--muted);font-size:0.85em">担当客のLTV突破時</td></tr>
           <tr><td>LTV ¥1,000万到達</td><td style="color:var(--gold);font-weight:700">¥150,000</td><td style="color:var(--muted);font-size:0.85em">担当客のLTV突破時</td></tr>
           <tr><td>LTV ¥2,000万到達 ★新</td><td style="color:var(--gold);font-weight:700">¥300,000</td><td style="color:var(--muted);font-size:0.85em">担当客のLTV突破時</td></tr>
+        </tbody>
+      </table>
+      <h4 style="margin-top:14px">★ テレベ売上歩合 段階累進制</h4>
+      <table>
+        <thead><tr><th>売上帯</th><th>歩合率</th><th>計算方法</th></tr></thead>
+        <tbody>
+          <tr><td>¥100万まで</td><td style="color:var(--green);font-weight:700">12%</td><td style="color:var(--muted);font-size:0.85em">売上 × 12%</td></tr>
+          <tr><td>¥100万〜200万の部分</td><td style="color:var(--green);font-weight:700">15%</td><td style="color:var(--muted);font-size:0.85em">超過分 × 15%</td></tr>
+          <tr><td>¥200万以上の部分</td><td style="color:var(--green);font-weight:700">18%</td><td style="color:var(--muted);font-size:0.85em">超過分 × 18%</td></tr>
+        </tbody>
+      </table>
+      <h4 style="margin-top:10px">早見表（テレベ売上→歩合額）</h4>
+      <table>
+        <thead><tr><th>テレベ月次売上</th><th>歩合額</th><th>実質率</th></tr></thead>
+        <tbody>
+          <tr><td>¥80万</td><td style="color:var(--green);font-weight:700">¥96,000</td><td style="color:var(--muted)">12.0%</td></tr>
+          <tr><td>¥100万</td><td style="color:var(--green);font-weight:700">¥120,000</td><td style="color:var(--muted)">12.0%</td></tr>
+          <tr><td>¥130万</td><td style="color:var(--green);font-weight:700">¥165,000</td><td style="color:var(--muted)">12.7%</td></tr>
+          <tr><td>¥150万</td><td style="color:var(--green);font-weight:700">¥195,000</td><td style="color:var(--muted)">13.0%</td></tr>
+          <tr><td>¥200万</td><td style="color:var(--gold);font-weight:700">¥270,000</td><td style="color:var(--muted)">13.5%</td></tr>
+          <tr><td>¥300万</td><td style="color:var(--gold);font-weight:700">¥450,000</td><td style="color:var(--muted)">15.0%</td></tr>
+          <tr><td>¥500万</td><td style="color:var(--gold);font-weight:700">¥810,000</td><td style="color:var(--muted)">16.2%</td></tr>
         </tbody>
       </table>
     </div>
@@ -1739,10 +1761,22 @@
       <table>
         <thead><tr><th>項目</th><th>支給</th></tr></thead>
         <tbody>
-          <tr><td>新規獲得</td><td style="color:var(--green);font-weight:700">プラン金額の0.2% + ¥3,000</td></tr>
-          <tr><td>リピート獲得</td><td style="color:var(--green);font-weight:700">プラン金額の0.15% + ¥5,000</td></tr>
+          <tr><td>新規獲得</td><td style="color:var(--green);font-weight:700">プラン別固定額（下表参照）</td></tr>
+          <tr><td>リピート獲得</td><td style="color:var(--green);font-weight:700">プラン別固定額（下表参照）</td></tr>
           <tr><td>紹介発生</td><td style="color:var(--green);font-weight:700">¥10,000</td></tr>
           <tr><td>VVIP級リピート獲得</td><td style="color:var(--gold);font-weight:700">上記+追加 ¥20,000</td></tr>
+        </tbody>
+      </table>
+      <h4 style="margin-top:14px">プラン別 固定報酬テーブル</h4>
+      <table>
+        <thead><tr><th>プラン</th><th>新規獲得</th><th>リピート獲得</th></tr></thead>
+        <tbody>
+          <tr><td>77万円プラン</td><td style="color:var(--green);font-weight:700">¥5,000</td><td style="color:var(--green);font-weight:700">¥6,000</td></tr>
+          <tr><td>100万円プラン</td><td style="color:var(--green);font-weight:700">¥5,000</td><td style="color:var(--green);font-weight:700">¥7,000</td></tr>
+          <tr><td>200万円プラン</td><td style="color:var(--green);font-weight:700">¥7,000</td><td style="color:var(--green);font-weight:700">¥8,000</td></tr>
+          <tr><td>300万円プラン</td><td style="color:var(--green);font-weight:700">¥10,000</td><td style="color:var(--green);font-weight:700">¥10,000</td></tr>
+          <tr><td>500万円プラン</td><td style="color:var(--green);font-weight:700">¥15,000</td><td style="color:var(--green);font-weight:700">¥15,000</td></tr>
+          <tr><td>1000万円プラン</td><td style="color:var(--gold);font-weight:700">¥25,000</td><td style="color:var(--gold);font-weight:700">¥20,000</td></tr>
         </tbody>
       </table>
     </div>
