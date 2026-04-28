@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>インセンティブ制度 V4提案書 — Telebet強化型</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: #1a1a2e;
+    background: #fff;
+    line-height: 1.6;
+    font-size: 10.5pt;
+    margin: 0;
+    padding: 24px;
+  }
+  .page { max-width: 800px; margin: 0 auto; }
+
+  .cover {
+    background: linear-gradient(135deg, #1a3a2e 0%, #2c5e3e 50%, #1a3a2e 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 40px 36px;
+    margin-bottom: 24px;
+    text-align: center;
+    page-break-after: avoid;
+  }
+  .cover .badge {
+    display: inline-block;
+    background: #2e9c5d;
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 1pt;
+    margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-size: 28pt;
+    margin: 0 0 8px;
+    border: none;
+    padding: 0;
+    letter-spacing: -1pt;
+    line-height: 1.2;
+  }
+  .cover .ja {
+    color: #5dde8a;
+    font-size: 18pt;
+    font-weight: 600;
+    margin: 4px 0 16px;
+  }
+  .cover .description {
+    color: #c8d6cc;
+    font-size: 11pt;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .cover .replaces {
+    color: #888;
+    font-size: 9pt;
+    margin-top: 14px;
+    font-style: italic;
+  }
+
+  h2 {
+    font-size: 16pt;
+    color: #1a1a2e;
+    border-left: 6px solid #2e9c5d;
+    padding-left: 12px;
+    margin-top: 30px;
+    margin-bottom: 14px;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 13pt; color: #2c3e50; margin: 20px 0 8px; page-break-after: avoid; }
+  h4 { font-size: 11pt; color: #555; margin: 14px 0 6px; }
+
+  .strategy-shift {
+    background: linear-gradient(135deg, #f0faf3 0%, #fff 100%);
+    border: 2px solid #2e9c5d;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .strategy-shift .label {
+    color: #1f7d49;
+    font-weight: 700;
+    font-size: 9pt;
+    letter-spacing: 1pt;
+    margin-bottom: 8px;
+  }
+  .strategy-shift .quote {
+    font-size: 14pt;
+    color: #1a1a2e;
+    font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+    margin: 12px 0;
+  }
+  .strategy-shift .from-to {
+    display: grid;
+    grid-template-columns: 1fr 30px 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-top: 14px;
+  }
+  .from-box, .to-box {
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .from-box {
+    background: #f0f0f0;
+    color: #888;
+  }
+  .to-box {
+    background: #1f7d49;
+    color: #fff;
+  }
+  .from-box .title, .to-box .title {
+    font-size: 10pt;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .from-box .desc, .to-box .desc {
+    font-size: 9pt;
+    line-height: 1.5;
+  }
+  .from-to-arrow {
+    font-size: 20pt;
+    color: #2e9c5d;
+    text-align: center;
+  }
+
+  .dept-section {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .dept-section.tb {
+    background: linear-gradient(135deg, #f0faf3 0%, #e8f5ed 100%);
+    border-left: 6px solid #2e9c5d;
+    border: 2px solid #2e9c5d;
+  }
+  .dept-section.tb .boost-badge {
+    display: inline-block;
+    background: #2e9c5d;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 1pt;
+    margin-bottom: 8px;
+  }
+  .dept-section.local {
+    background: #fff5f0;
+    border-left: 6px solid #e94560;
+  }
+  .dept-section.local .simplify-badge {
+    display: inline-block;
+    background: #e94560;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 1pt;
+    margin-bottom: 8px;
+  }
+  .dept-section.cs {
+    background: #f0f6fb;
+    border-left: 6px solid #2c7cb0;
+  }
+  .dept-section h3 { margin-top: 0; font-size: 14pt; }
+  .dept-section.cs h3 { color: #1f5d8a; }
+  .dept-section.local h3 { color: #a93226; }
+  .dept-section.tb h3 { color: #1f7d49; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 10px 0;
+    page-break-inside: avoid;
+    background: #fff;
+  }
+  thead { background: #1a1a2e; color: #fff; }
+  th, td { padding: 7px 9px; border: 1px solid #ddd; text-align: left; }
+  th { font-weight: 600; font-size: 9pt; letter-spacing: 0.3pt; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.alt td { background: #fafafa; }
+  tr.removed td { background: #f0f0f0; color: #999; text-decoration: line-through; }
+  tr.boosted td { background: #e8f5ed; font-weight: 600; }
+  tr.new td { background: #fef9ee; }
+
+  .change-table th { background: #2e9c5d; }
+
+  /* VVIP特別 */
+  .vvip-special {
+    background: linear-gradient(135deg, #c9a14a 0%, #e8c878 100%);
+    color: #1a1a2e;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin: 18px 0;
+    page-break-inside: avoid;
+    box-shadow: 0 4px 20px rgba(201,161,74,0.3);
+  }
+  .vvip-special .badge {
+    display: inline-block;
+    background: #1a1a2e;
+    color: #c9a14a;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 1pt;
+    margin-bottom: 8px;
+  }
+  .vvip-special h3 {
+    color: #1a1a2e;
+    margin: 4px 0 8px;
+    font-size: 16pt;
+  }
+  .vvip-special table { background: rgba(255,255,255,0.95); }
+
+  /* コスト */
+  .cost-box {
+    background: #f0faf3;
+    border: 2px solid #2e9c5d;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .cost-box .label {
+    color: #1f7d49;
+    font-weight: 700;
+    font-size: 9pt;
+    letter-spacing: 1pt;
+  }
+  .cost-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .cost-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .cost-item .num {
+    font-size: 20pt;
+    font-weight: 700;
+    color: #1f7d49;
+  }
+  .cost-item .label-text {
+    font-size: 9pt;
+    color: #555;
+    margin-top: 4px;
+  }
+  .cost-item .delta {
+    font-size: 10pt;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .cost-item .delta.up { color: #1f7d49; }
+  .cost-item .delta.down { color: #c0392b; }
+  .cost-item .delta.neutral { color: #888; }
+
+  /* Summary */
+  .summary-final {
+    background: linear-gradient(135deg, #1a3a2e 0%, #2c5e3e 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 26px 30px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .summary-final h2 { color: #5dde8a; border: none; padding: 0; margin: 0 0 14px; }
+  .summary-final ul { margin: 8px 0; padding-left: 24px; line-height: 2; }
+  .summary-final li::marker { color: #5dde8a; }
+  .summary-final .quote {
+    font-size: 13pt;
+    color: #5dde8a;
+    font-weight: 600;
+    text-align: center;
+    margin: 14px 0 8px;
+    line-height: 1.6;
+  }
+
+  footer {
+    margin-top: 32px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    font-size: 8.5pt;
+    color: #888;
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 0; font-size: 10pt; }
+    .cover h1 { font-size: 22pt; }
+    h2 { font-size: 14pt; }
+    .no-print { display: none; }
+  }
+
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #2e9c5d;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 11pt;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .green { color: #1f7d49; font-weight: 700; }
+  .red { color: #c0392b; font-weight: 700; }
+  .gold { color: #c9a14a; font-weight: 700; }
+  .strikethrough { text-decoration: line-through; color: #999; }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">📄 PDFとして保存</button>
+
+<div class="page">
+
+<div class="cover">
+  <div class="badge">PROPOSAL · V4 · TELEBET-FOCUSED</div>
+  <h1>TELEBET-CENTRIC INCENTIVE</h1>
+  <div class="ja">テレベット強化型インセンティブ V4</div>
+  <div class="description">
+    <strong style="color:#fff">「テレベット = 安定収益の主軸」</strong>に経営資源と報酬を集中。<br>
+    現地スタッフは<strong style="color:#5dde8a">デポジット獲得とテレベ移行のみで評価</strong>し、現地アップセル歩合は廃止。<br>
+    全員が「顧客を長期化する」方向に同期する設計。
+  </div>
+  <div class="replaces">※ V3提案を更新（テレベット強化＋現地簡素化）</div>
+</div>
+
+<!-- ===================== 戦略シフト ===================== -->
+<section>
+<h2>① 戦略的シフト — V3からV4への変更</h2>
+
+<div class="strategy-shift">
+  <div class="label">CORE STRATEGIC SHIFT</div>
+  <div class="quote">
+    「現地で稼ぐ」から<br>
+    <span style="color:#1f7d49">「現地で長期顧客に変える」</span>へ
+  </div>
+
+  <div class="from-to">
+    <div class="from-box">
+      <div class="title">V3 — 現地アップセル評価</div>
+      <div class="desc">現地売上の3%を現地スタッフに支給<br>(月額¥150,000程度)</div>
+    </div>
+    <div class="from-to-arrow">▶</div>
+    <div class="to-box">
+      <div class="title">V4 — 廃止 → 移行に集中</div>
+      <div class="desc">現地アップセル歩合は廃止。<br>デポジット・テレベ移行のみで評価</div>
+    </div>
+  </div>
+
+  <div class="from-to" style="margin-top:14px">
+    <div class="from-box">
+      <div class="title">V3 — テレベ歩合 5%</div>
+      <div class="desc">継続ボーナス控えめ<br>(月額¥95,000程度)</div>
+    </div>
+    <div class="from-to-arrow">▶</div>
+    <div class="to-box">
+      <div class="title">V4 — テレベ歩合 8%</div>
+      <div class="desc">継続/LTV到達ボーナス大幅強化<br>(月額¥234,000程度)</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:#fef9ee;border-left:4px solid #c9a14a;padding:14px 18px;border-radius:8px;margin:14px 0">
+<h4 style="margin-top:0;color:#8b6f1f">🎯 なぜこの転換が正しいか</h4>
+<ul style="margin:6px 0;padding-left:20px;font-size:9.5pt;line-height:1.7">
+  <li><strong>テレベット = 安定収益</strong>（場所代・移動費なし、月次継続課金構造）</li>
+  <li><strong>現地アップセル歩合 = 「居るだけ」評価</strong>になりがち、選別が曖昧</li>
+  <li><strong>現地の真の価値 = 顧客を長期化する橋渡し</strong>（ここに金銭インセンティブを集中）</li>
+  <li>テレベ強化で<strong>担当者が顧客を長期維持する強い動機</strong>が生まれる</li>
+</ul>
+</div>
+</section>
+
+<!-- ===================== テレベット強化 ===================== -->
+<section style="page-break-before:always">
+<h2>② 🟩 テレベット/アバター — 大幅強化（コア部署化）</h2>
+
+<div class="dept-section tb">
+<div class="boost-badge">★ STRENGTHENED</div>
+<h3>テレベット/アバター（たく・むらまつ・あやか）</h3>
+<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: 安定収益の主軸 ／ LTV最大化 ／ 顧客関係の長期維持</p>
+
+<table>
+<thead><tr><th>項目</th><th>V3（旧）</th><th>V4（新）</th><th>変化</th></tr></thead>
+<tbody>
+<tr class="boosted"><td><strong>売上歩合</strong></td><td class="strikethrough">5%</td><td class="num green"><strong>8%</strong></td><td class="green">+60%</td></tr>
+<tr class="boosted"><td><strong>3ヶ月継続</strong></td><td class="strikethrough">¥10,000</td><td class="num green"><strong>¥30,000</strong></td><td class="green">+200%</td></tr>
+<tr class="boosted"><td><strong>6ヶ月継続</strong></td><td class="strikethrough">¥30,000</td><td class="num green"><strong>¥80,000</strong></td><td class="green">+167%</td></tr>
+<tr class="new"><td><strong>12ヶ月継続</strong> ★新</td><td>—</td><td class="num gold"><strong>¥150,000</strong></td><td class="gold">NEW</td></tr>
+<tr class="boosted"><td><strong>LTV ¥500万到達</strong></td><td class="strikethrough">¥30,000</td><td class="num green"><strong>¥50,000</strong></td><td class="green">+67%</td></tr>
+<tr class="boosted"><td><strong>LTV ¥1,000万到達</strong></td><td class="strikethrough">¥100,000</td><td class="num green"><strong>¥150,000</strong></td><td class="green">+50%</td></tr>
+<tr class="new"><td><strong>LTV ¥2,000万到達</strong> ★新</td><td>—</td><td class="num gold"><strong>¥300,000</strong></td><td class="gold">NEW</td></tr>
+</tbody>
+</table>
+
+<p style="font-size:9pt;color:#666;margin-top:8px">
+  <strong>標準シナリオ:</strong> 月¥130万売上 × 8% = ¥104,000 ＋ 6ヶ月継続¥80,000 ＋ LTV¥500万到達¥50,000 = <strong>月¥234,000</strong>（V3比 +¥139K）<br>
+  <strong>エースシナリオ:</strong> 月¥300万売上 × 8% = ¥240,000 ＋ 12ヶ月継続¥150,000 ＋ LTV¥1,000万到達¥150,000 = <strong>月¥540,000</strong>
+</p>
+</div>
+</section>
+
+<!-- ===================== 現地スタッフ簡素化 ===================== -->
+<section>
+<h2>③ 🟥 現地スタッフ — 簡素化（橋渡し評価のみ）</h2>
+
+<div class="dept-section local">
+<div class="simplify-badge">⚙ SIMPLIFIED</div>
+<h3>現地スタッフ（チョイ・ケビン・チェリン）</h3>
+<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: <strong>顧客を長期化する「橋」</strong>（デポジット獲得・テレベット移行が唯一の評価軸）</p>
+
+<table>
+<thead><tr><th>項目</th><th>V3（旧）</th><th>V4（新）</th><th>変化</th></tr></thead>
+<tbody>
+<tr class="removed"><td><strong>現地アップセル売上歩合</strong></td><td>3%</td><td>—</td><td>廃止</td></tr>
+<tr class="boosted"><td><strong>デポジット獲得</strong></td><td>¥20,000/件</td><td class="num green"><strong>¥30,000/件</strong></td><td class="green">+50%</td></tr>
+<tr class="boosted"><td><strong>テレベット移行（即時）</strong></td><td class="strikethrough">¥10,000</td><td class="num green"><strong>¥20,000/件</strong></td><td class="green">+100%</td></tr>
+<tr class="boosted"><td><strong>テレベット移行後追い</strong></td><td class="strikethrough">2%（3年）</td><td class="num green"><strong>3%（3年）</strong></td><td class="green">+50%</td></tr>
+</tbody>
+</table>
+
+<p style="font-size:9pt;color:#666;margin-top:8px">
+  <strong>標準シナリオ:</strong> デポジ3件×¥30K=¥90,000 ＋ 移行2件×¥20K=¥40,000 ＋ 後追い¥30,000 = <strong>月¥160,000</strong>（V3比 -¥70K）<br>
+  ※ 現地アップセル歩合廃止で減るが、移行ボーナス強化で<strong>長期顧客創出のインセンティブが明確化</strong>。
+</p>
+
+<div style="background:rgba(231,76,60,0.1);padding:10px 14px;border-radius:8px;margin-top:10px;font-size:9pt">
+  <strong style="color:#a93226">⚠️ 設計意図:</strong> 「現地で売上立てる」から「現地で長期顧客に変える」へ役割を再定義。
+  従来の「居るだけ」評価をやめ、明確に長期化貢献のみで評価する。
+</div>
+</div>
+</section>
+
+<!-- ===================== CSマーケ ===================== -->
+<section>
+<h2>④ 🟦 CSマーケティング — V3から変更なし</h2>
+
+<div class="dept-section cs">
+<h3>CSマーケティング（長岡きみ・長岡ゆみ）</h3>
+<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: 新規獲得 ／ リピート管理 ／ 紹介促進</p>
+
+<table>
+<thead><tr><th>項目</th><th>報酬構造</th></tr></thead>
+<tbody>
+<tr><td><strong>新規獲得</strong></td><td>初回プラン金額の <strong>0.3%</strong> ＋ 固定 <span class="green">¥5,000</span></td></tr>
+<tr class="alt"><td><strong>リピート獲得</strong></td><td>プラン金額の <strong>0.2%</strong> ＋ 固定 <span class="green">¥10,000</span></td></tr>
+<tr><td><strong>紹介発生</strong></td><td>固定 <span class="green">¥20,000</span></td></tr>
+<tr class="alt"><td><strong>VVIP級リピート獲得</strong></td><td>上記＋追加 <span class="gold">¥30,000</span></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ===================== VVIP特別ボーナス ===================== -->
+<section style="page-break-before:always">
+<h2>⑤ ⭐ VVIP維持特別ボーナス（V3から維持）</h2>
+
+<div class="vvip-special">
+<div class="badge">CRITICAL · UNCHANGED</div>
+<h3>「Top10 VVIPを失わないこと」が会社の生命線</h3>
+<table>
+<thead><tr><th>トリガー</th><th>対象部署</th><th>支給</th></tr></thead>
+<tbody>
+<tr><td>Top10 VVIP のリピート来店</td><td>CS担当 ＋ 現地担当 ＋ テレベ担当 全員</td><td><strong>各 ¥30,000</strong></td></tr>
+<tr><td>VVIP の半年間離脱を防止</td><td>同上</td><td><strong>各 ¥50,000</strong></td></tr>
+<tr><td>新規VVIP獲得（LTV1000万超予測）</td><td>CS担当</td><td><strong>¥200,000</strong></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ===================== コスト試算 ===================== -->
+<section>
+<h2>⑥ 月次コスト試算 — V3 vs V4</h2>
+
+<div class="cost-box">
+<div class="label">SCENARIO · STANDARD MONTH</div>
+
+<table style="margin-top:12px">
+<thead><tr><th>項目</th><th>V3</th><th>V4</th><th>差</th></tr></thead>
+<tbody>
+<tr><td>CSマーケ歩合</td><td class="num">¥120,000</td><td class="num">¥120,000</td><td class="num">±0</td></tr>
+<tr class="alt"><td>現地アップセル歩合（3%）</td><td class="num">¥150,000</td><td class="num red">廃止</td><td class="num red">-¥150,000</td></tr>
+<tr><td>デポジット獲得</td><td class="num">¥60,000</td><td class="num">¥90,000</td><td class="num green">+¥30,000</td></tr>
+<tr class="alt"><td>テレベ移行（即時）</td><td class="num">¥20,000</td><td class="num">¥40,000</td><td class="num green">+¥20,000</td></tr>
+<tr><td>テレベ移行後追い</td><td class="num">—</td><td class="num">¥30,000</td><td class="num green">+¥30,000</td></tr>
+<tr class="alt"><td>テレベ売上歩合</td><td class="num">¥65,000 (5%)</td><td class="num">¥104,000 (8%)</td><td class="num green">+¥39,000</td></tr>
+<tr><td>テレベ継続ボーナス</td><td class="num">¥30,000</td><td class="num">¥80,000</td><td class="num green">+¥50,000</td></tr>
+<tr class="alt"><td>テレベLTV到達</td><td class="num">—</td><td class="num">¥50,000</td><td class="num green">+¥50,000</td></tr>
+<tr><td>VVIP特別ボーナス</td><td class="num">¥90,000</td><td class="num">¥90,000</td><td class="num">±0</td></tr>
+<tr style="border-top:2px solid #1f7d49;background:#e8f5e9"><td><strong>月次合計</strong></td><td class="num"><strong>¥535,000</strong></td><td class="num"><strong style="color:#1f7d49">¥604,000</strong></td><td class="num"><strong style="color:#1f7d49">+¥69,000</strong></td></tr>
+</tbody>
+</table>
+
+<div class="cost-summary">
+  <div class="cost-item">
+    <div class="num">¥604,000</div>
+    <div class="label-text">月次インセンティブ V4</div>
+    <div class="delta up">V3比 +¥69K</div>
+  </div>
+  <div class="cost-item">
+    <div class="num">15%</div>
+    <div class="label-text">月次粗利比率</div>
+    <div class="delta neutral">25%上限内</div>
+  </div>
+  <div class="cost-item">
+    <div class="num">+¥139K</div>
+    <div class="label-text">テレベ部門への配分増</div>
+    <div class="delta up">継続強化に集中</div>
+  </div>
+</div>
+
+<p style="font-size:9.5pt;margin-top:14px">
+  <strong>増加 ¥69,000 の解釈:</strong> 現地から減らした ¥150K を、テレベ部門に ¥139K 振り分け、純増は ¥69K。<br>
+  → <strong>同じコスト感で「長期収益エンジン」への投資にシフト</strong>。25%上限ルールに余裕（実績15%）。
+</p>
+</div>
+</section>
+
+<!-- ===================== 効果予測 ===================== -->
+<section>
+<h2>⑦ 期待される効果（3〜6ヶ月後）</h2>
+
+<table>
+<thead><tr><th>KPI</th><th>現状</th><th>V4導入3ヶ月後（予測）</th><th>6ヶ月後（予測）</th></tr></thead>
+<tbody>
+<tr><td>テレベ移行率</td><td class="num">推定 5-10%</td><td class="num green">15-20%</td><td class="num green">25-30%</td></tr>
+<tr class="alt"><td>テレベ顧客平均継続期間</td><td class="num">推定 2-3ヶ月</td><td class="num green">4-5ヶ月</td><td class="num green">6-8ヶ月</td></tr>
+<tr><td>デポジット成立率</td><td class="num">推定 10%</td><td class="num green">15%</td><td class="num green">20%</td></tr>
+<tr class="alt"><td>テレベ部門月次売上</td><td class="num">¥130万</td><td class="num green">¥180万</td><td class="num green">¥250万</td></tr>
+<tr><td>テレベ部門純利益（経費差し引き後）</td><td class="num red">-¥30万</td><td class="num neutral">±¥0</td><td class="num green">+¥80万</td></tr>
+</tbody>
+</table>
+
+<p style="font-size:9pt;color:#666;margin-top:8px">
+  ※ 現地スタッフが「移行こそ自分の評価対象」と認識すると、テレベ部門の集客が劇的に改善する見込み。<br>
+  ※ テレベ担当者も継続/LTV到達のために積極的に顧客フォローする動機が強まる。
+</p>
+</section>
+
+<!-- ===================== 結論 ===================== -->
+<section>
+<div class="summary-final">
+<h2>⑧ 結論 — V4を採用すべき理由</h2>
+<div class="quote">
+  「テレベット = 安定収益の主軸」を全員で守る<br>
+  そのために、現地は「橋渡し」に集中させる
+</div>
+<ul>
+  <li><strong>テレベ歩合60%増（5%→8%）</strong>＋ 継続/LTV到達ボーナス大幅強化</li>
+  <li><strong>現地アップセル歩合廃止</strong> → 「現地で居るだけ」評価をやめる</li>
+  <li><strong>デポジット・移行ボーナス強化</strong>（現地スタッフの仕事を再定義）</li>
+  <li><strong>VVIP特別ボーナス維持</strong>（離脱防止が最優先）</li>
+  <li>月次コスト純増+¥69K（粗利の15%、25%上限内で安全運用）</li>
+  <li>3ヶ月後にはテレベ部門単独黒字化見込み</li>
+</ul>
+</div>
+</section>
+
+<footer>
+  ベットランクツアーズ インセンティブ制度 V4提案書 — 2026年4月29日<br>
+  V3提案を更新（テレベット強化＋現地簡素化）／根拠: data-analysis.pdf
+</footer>
+
+</div>
+</body>
+</html>
