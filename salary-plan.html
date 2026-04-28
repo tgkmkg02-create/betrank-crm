@@ -2,107 +2,100 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>給与プランA/B制度設計書 — ベットランクツアーズ</title>
+<title>LTV基軸 統一給与制度設計書 — ベットランクツアーズ</title>
 <style>
   @page { size: A4; margin: 18mm 16mm; }
   * { box-sizing: border-box; }
   body {
     font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
-    color: #222;
+    color: #1a1a2e;
     background: #fff;
-    line-height: 1.55;
+    line-height: 1.6;
     font-size: 10.5pt;
     margin: 0;
     padding: 24px;
   }
   .page { max-width: 800px; margin: 0 auto; }
+
   h1 {
-    font-size: 22pt;
+    font-size: 24pt;
     color: #1a1a2e;
-    border-bottom: 3px solid #c9a14a;
-    padding-bottom: 8px;
+    border-bottom: 4px double #c9a14a;
+    padding-bottom: 10px;
     margin: 0 0 6px 0;
+    letter-spacing: -0.5pt;
   }
-  .subtitle { color: #777; font-size: 11pt; margin-bottom: 24px; }
+  .subtitle { color: #777; font-size: 11pt; margin-bottom: 22px; font-weight: 500; }
+
   h2 {
-    font-size: 15pt;
+    font-size: 16pt;
     color: #1a1a2e;
-    border-left: 5px solid #c9a14a;
-    padding-left: 10px;
-    margin-top: 28px;
+    border-left: 6px solid #c9a14a;
+    padding-left: 12px;
+    margin-top: 30px;
     margin-bottom: 14px;
     page-break-after: avoid;
   }
-  h3 { font-size: 12pt; color: #2c3e50; margin: 18px 0 8px; page-break-after: avoid; }
-  h4 { font-size: 10.5pt; color: #555; margin: 12px 0 6px; }
-  p { margin: 6px 0; }
+  h3 { font-size: 13pt; color: #2c3e50; margin: 20px 0 8px; page-break-after: avoid; }
+  h4 { font-size: 11pt; color: #555; margin: 14px 0 6px; }
 
-  .meta {
-    background: #f7f5f0;
-    border: 1px solid #e0d8c0;
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 9.5pt;
-    margin-bottom: 18px;
-  }
-  .meta strong { color: #8b6f1f; }
-
-  /* パターンカード */
-  .pattern-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 12px 0;
-  }
-  .pattern-card {
-    border: 2px solid;
-    border-radius: 8px;
-    padding: 12px 14px;
-    page-break-inside: avoid;
-  }
-  .pattern-card.a { border-color: #2e9c5d; background: #f0faf3; }
-  .pattern-card.b { border-color: #2c7cb0; background: #f0f6fb; }
-  .pattern-card .label {
-    font-size: 11pt;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .pattern-card.a .label { color: #1f7d49; }
-  .pattern-card.b .label { color: #1f5d8a; }
-  .pattern-card ul { margin: 4px 0 0; padding-left: 18px; font-size: 9.5pt; line-height: 1.7; }
-  .pattern-card .tag { font-size: 8.5pt; color: #888; font-weight: normal; }
-
-  /* テレベット別枠 */
-  .telebet-box {
+  .principle-box {
+    background: linear-gradient(135deg, #fef9ee 0%, #fff 100%);
     border: 2px solid #c9a14a;
-    background: #fef9ee;
-    border-radius: 8px;
-    padding: 12px 14px;
+    border-radius: 10px;
+    padding: 16px 20px;
     margin: 14px 0;
     page-break-inside: avoid;
   }
-  .telebet-box .label {
-    color: #8b6f1f;
-    font-weight: 700;
-    font-size: 11pt;
-    margin-bottom: 6px;
-  }
-  .telebet-box .row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-top: 8px;
-  }
-  .telebet-box .cell {
-    background: #fff;
-    border: 1px solid #e6d4a3;
-    padding: 8px 10px;
-    border-radius: 5px;
-    font-size: 9.5pt;
-  }
-  .telebet-box .cell strong { display: block; font-size: 11pt; color: #8b6f1f; }
+  .principle-box strong { color: #8b6f1f; }
 
-  /* テーブル */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .kpi-card {
+    background: #1a1a2e;
+    color: #fff;
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .kpi-card .label { font-size: 8.5pt; color: #c9a14a; letter-spacing: 1pt; font-weight: 600; }
+  .kpi-card .value { font-size: 15pt; font-weight: 700; margin-top: 4px; }
+  .kpi-card.primary { background: #c9a14a; color: #1a1a2e; }
+  .kpi-card.primary .label { color: #1a1a2e; }
+
+  .dept-section {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .dept-section.cs { background: #f0f6fb; border-left: 6px solid #2c7cb0; }
+  .dept-section.local { background: #fff5f0; border-left: 6px solid #e94560; }
+  .dept-section.tb { background: #f0faf3; border-left: 6px solid #2e9c5d; }
+  .dept-section h3 { margin-top: 0; font-size: 14pt; }
+  .dept-section.cs h3 { color: #1f5d8a; }
+  .dept-section.local h3 { color: #a93226; }
+  .dept-section.tb h3 { color: #1f7d49; }
+
+  .role-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 8px 0 12px;
+  }
+  .role-tag {
+    background: rgba(0,0,0,0.05);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 9pt;
+    color: #444;
+    font-weight: 500;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -111,32 +104,84 @@
     page-break-inside: avoid;
   }
   thead { background: #1a1a2e; color: #fff; }
-  th, td { padding: 6px 8px; border: 1px solid #d8d8d8; text-align: left; }
-  th { font-weight: 600; font-size: 9pt; }
-  td.num { text-align: right; }
+  th, td { padding: 7px 9px; border: 1px solid #ddd; text-align: left; }
+  th { font-weight: 600; font-size: 9pt; letter-spacing: 0.3pt; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
   tr.alt td { background: #fafafa; }
-  .tag-a { color: #1f7d49; font-weight: 700; }
-  .tag-b { color: #1f5d8a; font-weight: 700; }
-  .tag-neutral { color: #888; }
+  .positive { color: #1f7d49; font-weight: 700; }
+  .negative { color: #c0392b; font-weight: 700; }
+  .neutral { color: #c9a14a; font-weight: 700; }
 
-  /* スタッフテーブル */
-  .staff-table th { background: #2c3e50; }
-
-  /* 注意事項 */
-  .rules-box {
-    background: #fafafa;
-    border-left: 4px solid #c9a14a;
-    padding: 10px 14px;
+  .deposit-callout {
+    background: #fef5e7;
+    border: 2px solid #f5c987;
+    border-radius: 12px;
+    padding: 16px 20px;
     margin: 14px 0;
-    font-size: 9.5pt;
+    page-break-inside: avoid;
   }
-  .rules-box ul { margin: 4px 0; padding-left: 20px; line-height: 1.7; }
+  .deposit-callout h3 { margin-top: 0; color: #8b6f1f; }
 
-  /* セクション境界 */
-  .section { page-break-before: auto; page-break-inside: avoid; }
-  .page-break { page-break-after: always; }
+  .ng-ok-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .ng-box, .ok-box {
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .ng-box {
+    background: #fdf2f0;
+    border-left: 4px solid #c0392b;
+  }
+  .ok-box {
+    background: #f0faf3;
+    border-left: 4px solid #2e9c5d;
+  }
+  .ng-box .label { color: #a93226; font-weight: 700; font-size: 10pt; margin-bottom: 6px; }
+  .ok-box .label { color: #1f7d49; font-weight: 700; font-size: 10pt; margin-bottom: 6px; }
+  .ng-box ul, .ok-box ul { margin: 0; padding-left: 20px; font-size: 9.5pt; line-height: 1.7; }
 
-  /* フッター */
+  .flow-diagram {
+    background: #1a1a2e;
+    color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .flow-diagram .stage-row {
+    display: grid;
+    grid-template-columns: 1fr 30px 1fr 30px 1fr;
+    gap: 6px;
+    align-items: center;
+  }
+  .flow-stage {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(201,161,74,0.3);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .flow-stage .stage-num { color: #c9a14a; font-size: 8pt; letter-spacing: 1pt; font-weight: 700; }
+  .flow-stage .stage-name { font-size: 11pt; font-weight: 700; margin-top: 2px; }
+  .flow-stage .stage-team { color: #c9a14a; font-size: 8.5pt; margin-top: 4px; }
+  .flow-arrow { color: #c9a14a; text-align: center; font-size: 16pt; }
+
+  .summary-final {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .summary-final h2 { color: #c9a14a; border: none; padding: 0; margin: 0 0 12px; }
+  .summary-final ul { margin: 8px 0; padding-left: 24px; line-height: 2; }
+  .summary-final li::marker { color: #c9a14a; }
+
   footer {
     margin-top: 32px;
     padding-top: 12px;
@@ -146,22 +191,19 @@
     text-align: center;
   }
 
-  /* 印刷時の調整 */
   @media print {
     body { padding: 0; font-size: 10pt; }
-    h1 { font-size: 18pt; }
-    h2 { font-size: 13pt; }
-    a { color: #222; text-decoration: none; }
+    h1 { font-size: 19pt; }
+    h2 { font-size: 14pt; }
     .no-print { display: none; }
   }
 
-  /* スクリーン時の印刷ボタン */
   .print-btn {
     position: fixed;
     top: 20px;
     right: 20px;
     background: #c9a14a;
-    color: #fff;
+    color: #1a1a2e;
     border: none;
     padding: 10px 18px;
     border-radius: 6px;
@@ -170,7 +212,6 @@
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
-  .print-btn:hover { background: #b08a30; }
 </style>
 </head>
 <body>
@@ -178,356 +219,327 @@
 
 <div class="page">
 
-<h1>給与プランA/B制度設計書</h1>
-<div class="subtitle">ベットランクツアーズ — 現地スタッフ・日本チーム向け新給与制度</div>
+<h1>LTV基軸 統一給与制度</h1>
+<div class="subtitle">ベットランクツアーズ — 全部署を「顧客生涯価値」で連動させる新給与体系</div>
 
-<div class="meta">
-  <strong>制度概要:</strong> スタッフは月単位で2つのプラン（A: 歩合振り切り型 / B: 現状維持型）から選択可能。
-  前月20日までに翌月分を申請。テレベット誘導ボーナスは別枠で全員対象（A/B共通）。給与は毎月20日支給。
-  <br><strong>適用対象:</strong> 韓国現地スタッフ（チョイ・ケビン・チェリン）、日本チーム（長岡きみ・長岡ゆみ）
-  <br><strong>非適用:</strong> アバタースタッフ（たく・むらまつ・あやか）は現行のポイント制を維持
+<!-- ===================== 1. 設計思想 ===================== -->
+<section>
+<h2>① 設計思想 — なぜLTVなのか</h2>
+
+<div class="principle-box">
+  <strong>会社の利益（LTV）に対してどれだけ貢献したか</strong>で全員を評価する。
+  売上だけ・新規だけ・部署バラバラでの評価をやめ、<strong>全員共通の指標</strong>に統一。
 </div>
 
-<!-- ===================== セクション0: アバタースタッフ ===================== -->
-<section class="section">
-<h2>① アバタースタッフ給与（たく・むらまつ・あやか）</h2>
-
-<p>テレベット代行（フィリピン拠点）。<strong>ポイント制で運用</strong>。本制度のA/B選択対象外。現行のままを維持。</p>
-
-<div class="meta">
-  <strong>基本給（固定）:</strong> ₱80,000<br>
-  <strong>歩合:</strong> 月間獲得ポイントに応じたティア単価
+<div class="ng-ok-grid">
+  <div class="ng-box">
+    <div class="label">❌ NG — 旧型評価</div>
+    <ul>
+      <li>売上だけで評価</li>
+      <li>新規取ったら終わり</li>
+      <li>部署ごとにバラバラ</li>
+      <li>会社が赤字でも歩合は支給</li>
+    </ul>
+  </div>
+  <div class="ok-box">
+    <div class="label">✅ 正解 — LTV基軸評価</div>
+    <ul>
+      <li>顧客が最終的にいくら落としたかで評価</li>
+      <li>新規→現地→継続を連動</li>
+      <li>全部署が同じKPIを追う</li>
+      <li>LTVが伸びれば全員が利益を共有</li>
+    </ul>
+  </div>
 </div>
-
-<h3>アバタースタッフ現給</h3>
-<table class="staff-table">
-  <thead><tr><th>スタッフ</th><th>基本給</th><th>備考</th></tr></thead>
-  <tbody>
-    <tr><td><strong>たく</strong></td><td class="num">₱80,000</td><td>+ ポイント歩合</td></tr>
-    <tr class="alt"><td><strong>むらまつ</strong></td><td class="num">₱80,000</td><td>+ ポイント歩合</td></tr>
-    <tr><td><strong>あやか</strong></td><td class="num" style="color:#888">不明</td><td>確認待ち</td></tr>
-  </tbody>
-</table>
-
-<h3>ポイント獲得ルール</h3>
-<table>
-  <thead><tr><th>項目</th><th>ポイント計算</th></tr></thead>
-  <tbody>
-    <tr><td>① 基本ポイント</td><td>プレイ時間 3時間ごと = 1pt</td></tr>
-    <tr class="alt"><td>② ローリング実績ボーナス（3hセッションあたり）</td><td>3,000万KRW未満:+0 / 〜5,000万:+1 / 〜1億:+2 / 1億以上:+3</td></tr>
-    <tr><td>③ 月末ボーナス</td><td>個人名アンケート評価 +2pt/回 / リピート獲得 +3pt/件</td></tr>
-    <tr class="alt"><td>④ 管理者総合ランク評価</td><td>S +25pt / A +15pt / B +5pt / C 0 / D −10pt</td></tr>
-  </tbody>
-</table>
-
-<h3>ポイント → PHP 換算（ティア制）</h3>
-<table>
-  <thead><tr><th>月間pt</th><th>1pt単価</th><th>例</th></tr></thead>
-  <tbody>
-    <tr><td>0〜30 pt</td><td class="num"><strong>₱400</strong></td><td>30pt → ₱12,000</td></tr>
-    <tr class="alt"><td>31〜60 pt</td><td class="num"><strong>₱600</strong></td><td>60pt → ₱36,000</td></tr>
-    <tr><td>61〜100 pt</td><td class="num"><strong>₱900</strong></td><td>100pt → ₱90,000</td></tr>
-    <tr class="alt"><td>101 pt〜</td><td class="num"><strong>₱1,200</strong></td><td>150pt → ₱180,000</td></tr>
-  </tbody>
-</table>
-<p style="font-size:9pt;color:#666">月収 = ₱80,000 + (月間pt × 該当ティア単価)。ティア単価は累進ではなく、月間合計ptに応じた1段階のみ適用。</p>
-
-<h3>想定シミュレーション</h3>
-<table>
-  <thead><tr><th>パフォーマンス</th><th>月セッション</th><th>計算内訳</th><th>月間pt</th><th>月収合計</th></tr></thead>
-  <tbody>
-    <tr><td>新人</td><td class="num">12回</td><td>基本12pt + ローリング+6pt = 18pt</td><td class="num">18pt</td><td class="num"><strong>₱80,000 + 18×₱400 = ₱87,200</strong></td></tr>
-    <tr class="alt"><td>標準</td><td class="num">20回</td><td>基本20pt + ローリング+20pt = 40pt</td><td class="num">40pt</td><td class="num"><strong>₱80,000 + 40×₱600 = ₱104,000</strong></td></tr>
-    <tr><td>エース</td><td class="num">25回</td><td>基本25pt + ローリング+50pt + 月末+10pt = 85pt</td><td class="num">85pt</td><td class="num"><strong>₱80,000 + 85×₱900 = ₱156,500</strong></td></tr>
-    <tr class="alt"><td>トップ</td><td class="num">30回</td><td>基本30pt + ローリング+90pt + 月末+15pt = 135pt</td><td class="num">135pt</td><td class="num"><strong>₱80,000 + 135×₱1,200 = ₱242,000</strong></td></tr>
-  </tbody>
-</table>
-<p style="font-size:9pt;color:#666">※ 上記は管理者ランク評価未加算。S評価で最大+25pt、D評価で-10ptが加算される。</p>
 </section>
 
-<!-- ===================== セクション2: 現地スタッフ ===================== -->
-<section class="section" style="page-break-before:always">
-<h2>② 現地スタッフ（チョイ・ケビン・チェリン）</h2>
+<!-- ===================== 2. KPI ===================== -->
+<section>
+<h2>② 重要KPI（5つ）</h2>
 
-<p>基本給は<strong>現在の月給を維持</strong>し、Pattern A/Bは歩合の大きさだけで差をつける設計。</p>
-
-<div class="pattern-grid">
-  <div class="pattern-card a">
-    <div class="label">Pattern A — 歩合振り切り型 <span class="tag">攻め</span></div>
-    <ul>
-      <li>基本給: <strong>現給 × 0.75</strong>（−25%）</li>
-      <li>ランクボーナス（×2倍）: S ¥60,000 / A ¥36,000 / B ¥16,000 / C ¥0</li>
-      <li>顧客アンケート個人名評価: <strong>+¥3,000/回</strong></li>
-      <li>リピート獲得: <strong>+¥5,000/件</strong></li>
-      <li>新規顧客紹介: <strong>+¥10,000/件</strong></li>
-    </ul>
+<div class="kpi-grid">
+  <div class="kpi-card primary">
+    <div class="label">PRIMARY</div>
+    <div class="value">LTV</div>
+    <div style="font-size:8pt;margin-top:4px">顧客生涯価値</div>
   </div>
-  <div class="pattern-card b">
-    <div class="label">Pattern B — 現状維持型 <span class="tag">守り</span></div>
-    <ul>
-      <li>基本給: <strong>現給そのまま</strong></li>
-      <li>ランクボーナス（現行）: S ¥30,000 / A ¥18,000 / B ¥8,000 / C ¥0</li>
-      <li>評価ボーナス: なし</li>
-    </ul>
+  <div class="kpi-card">
+    <div class="label">EFFICIENCY</div>
+    <div class="value">CPA</div>
+    <div style="font-size:8pt;margin-top:4px;color:#aaa">獲得単価</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">RETENTION</div>
+    <div class="value">リピート率</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">REFERRAL</div>
+    <div class="value">紹介率</div>
+  </div>
+  <div class="kpi-card" style="background:#c0392b">
+    <div class="label" style="color:#f5c987">CRITICAL</div>
+    <div class="value">デポジット率</div>
   </div>
 </div>
 
-<div class="telebet-box">
-  <div class="label">★ テレベット誘導 別枠ボーナス（A/B共通・全員対象）</div>
-  <p style="margin:0;font-size:9.5pt;color:#555">テレベット誘導は本人のパターン選択に関係なく、誘導した件数に応じて月次で支給。</p>
-  <div class="row">
-    <div class="cell"><strong>¥3,000 / 件</strong>基本歩合</div>
-    <div class="cell"><strong>+¥10,000</strong>5件達成ボーナス</div>
-    <div class="cell"><strong>+¥30,000</strong>10件達成ボーナス</div>
-  </div>
-  <p style="margin:8px 0 0;font-size:9pt;color:#666">例: 月10件誘導 → ¥3,000×10 + ¥30,000 = <strong>¥60,000</strong>（A/Bどちらでも）</p>
-</div>
-
-<h3>現地スタッフ給与（基本給・KRWベース）</h3>
-<table class="staff-table">
-  <thead>
-    <tr><th>スタッフ</th><th>現基本給(₩)</th><th>円換算(参考)</th><th>Pattern A基本給(×0.75)</th><th>Pattern B基本給(現給)</th></tr>
-  </thead>
-  <tbody>
-    <tr><td><strong>チョイ</strong></td><td class="num">₩3,500,000</td><td class="num">¥376,344</td><td class="num">¥282,000</td><td class="num">¥376,000</td></tr>
-    <tr class="alt"><td><strong>ケビン</strong></td><td class="num">₩3,400,000</td><td class="num">¥365,591</td><td class="num">¥274,500</td><td class="num">¥366,000</td></tr>
-    <tr><td><strong>チェリン</strong></td><td class="num">₩3,200,000</td><td class="num">¥344,086</td><td class="num">¥258,000</td><td class="num">¥344,000</td></tr>
-  </tbody>
-</table>
-<p style="font-size:9pt;color:#666">※ レート 1 JPY ≈ 9.3 KRW で換算。実支給は KRW で行うため、円換算値は参考。</p>
-
-<h3>パフォーマンス別シミュレーション（チョイ ₩3,500,000 ≈ ¥376,000 ベース）</h3>
-<p style="font-size:9pt;color:#666">※ A/B本体の比較。テレベット誘導ボーナスは両パターンに同額加算なので除外。</p>
+<h3>LTVの計算例（77万円プラン顧客）</h3>
 <table>
-  <thead>
-    <tr><th>パターン</th><th>ランク</th><th>アンケ</th><th>リピート</th><th>新規</th><th>Pattern A</th><th>Pattern B</th><th>推奨</th></tr>
-  </thead>
+  <thead><tr><th>段階</th><th>使用額</th><th>累積LTV</th></tr></thead>
   <tbody>
-    <tr><td>標準</td><td>A</td><td>2回</td><td>1件</td><td>0件</td><td class="num">¥329,000</td><td class="num">¥394,000</td><td class="tag-b">B+¥65,000</td></tr>
-    <tr class="alt"><td>中堅</td><td>A</td><td>3回</td><td>2件</td><td>1件</td><td class="num">¥347,000</td><td class="num">¥394,000</td><td class="tag-b">B+¥47,000</td></tr>
-    <tr><td>準エース</td><td>S</td><td>4回</td><td>3件</td><td>1件</td><td class="num">¥379,000</td><td class="num">¥406,000</td><td class="tag-b">B+¥27,000</td></tr>
-    <tr class="alt"><td>エース</td><td>S</td><td>5回</td><td>5件</td><td>2件</td><td class="num">¥402,000</td><td class="num">¥406,000</td><td class="tag-neutral">同等</td></tr>
-    <tr><td>トップ</td><td>S</td><td>8回</td><td>8件</td><td>3件</td><td class="num">¥436,000</td><td class="num">¥406,000</td><td class="tag-a">A+¥30,000</td></tr>
+    <tr><td>初回プラン購入</td><td class="num">¥770,000</td><td class="num">¥770,000</td></tr>
+    <tr class="alt"><td>現地アップセル（追加チップ等）</td><td class="num">¥500,000</td><td class="num">¥1,270,000</td></tr>
+    <tr><td>テレベット移行後の継続課金</td><td class="num">¥1,200,000</td><td class="num positive">¥2,470,000</td></tr>
   </tbody>
 </table>
-<p style="font-size:9pt;color:#555">損益分岐点: <strong>エース級（S評価＋複数評価軸活躍）</strong>。中堅以下はB型推奨。</p>
+<p style="font-size:9pt;color:#666">→ <strong>LTV ¥247万</strong>。この客に対し全部署が貢献している。</p>
+
+<h3>広告費上限 — LTV逆算ルール</h3>
+<table>
+  <thead><tr><th>シナリオ</th><th>計算</th><th>使ってよい広告費</th></tr></thead>
+  <tbody>
+    <tr><td>粗利確保ライン（最大）</td><td>平均LTV ¥200万 × 70%</td><td class="num neutral">≤ ¥1,400,000</td></tr>
+    <tr class="alt"><td>安全ライン（推奨）</td><td>LTV × 25〜40%</td><td class="num positive">¥500,000〜¥800,000</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666">※ LTV未達月は広告投下を抑制。CPA &gt; LTV×40% で警告。</p>
 </section>
 
-<!-- ===================== セクション3: 日本チーム ===================== -->
-<section class="section" style="page-break-before:always">
-<h2>③ 日本チーム（CS予約担当・長岡きみ・長岡ゆみ）</h2>
+<!-- ===================== 3. 3段階フロー ===================== -->
+<section style="page-break-before:always">
+<h2>③ 3段階フロー — 全員連動の構造</h2>
 
-<p>顧客対応・予約獲得を担う日本チームのA/Bプラン。基本給は現給ベースで運用調整推奨。</p>
-
-<div class="pattern-grid">
-  <div class="pattern-card a">
-    <div class="label">Pattern A — 獲得型 <span class="tag">攻め</span></div>
-    <ul>
-      <li>基本給: <strong>¥180,000（モデル値）</strong></li>
-      <li>予約件数歩合（プラン別・1件あたり）</li>
-      <li>月間ボーナス: 5件以上 +¥10,000 / 10件以上 +¥30,000</li>
-    </ul>
-    <table style="margin-top:8px;font-size:8.5pt">
-      <thead><tr><th>プラン</th><th>1件あたり</th></tr></thead>
-      <tbody>
-        <tr><td>77万</td><td class="num"><strong>¥3,500</strong></td></tr>
-        <tr class="alt"><td>100万</td><td class="num"><strong>¥5,000</strong></td></tr>
-        <tr><td>200万</td><td class="num"><strong>¥10,000</strong></td></tr>
-        <tr class="alt"><td>300万</td><td class="num"><strong>¥15,000</strong></td></tr>
-        <tr><td>500万</td><td class="num"><strong>¥25,000</strong></td></tr>
-        <tr class="alt"><td>1000万</td><td class="num"><strong>¥50,000</strong></td></tr>
-      </tbody>
-    </table>
+<div class="flow-diagram">
+  <div class="stage-row">
+    <div class="flow-stage">
+      <div class="stage-num">STAGE 01</div>
+      <div class="stage-name">新規獲得</div>
+      <div class="stage-team">CSマーケティング<br>長岡きみ・ゆみ</div>
+    </div>
+    <div class="flow-arrow">▶</div>
+    <div class="flow-stage">
+      <div class="stage-num">STAGE 02</div>
+      <div class="stage-name">現地アテンド</div>
+      <div class="stage-team">韓国現地<br>チョイ・ケビン・チェリン</div>
+    </div>
+    <div class="flow-arrow">▶</div>
+    <div class="flow-stage">
+      <div class="stage-num">STAGE 03</div>
+      <div class="stage-name">継続課金</div>
+      <div class="stage-team">テレベット/アバター<br>たく・むらまつ・あやか</div>
+    </div>
   </div>
-  <div class="pattern-card b">
-    <div class="label">Pattern B — 給与型 <span class="tag">守り</span></div>
-    <ul>
-      <li>基本給: <strong>¥260,000（モデル値）</strong></li>
-      <li>予約件数歩合（プラン別・1件あたり）</li>
-      <li>月間ボーナス: なし</li>
-    </ul>
-    <table style="margin-top:8px;font-size:8.5pt">
-      <thead><tr><th>プラン</th><th>1件あたり</th></tr></thead>
-      <tbody>
-        <tr><td>77万</td><td class="num"><strong>¥1,000</strong></td></tr>
-        <tr class="alt"><td>100万</td><td class="num"><strong>¥1,500</strong></td></tr>
-        <tr><td>200万</td><td class="num"><strong>¥3,000</strong></td></tr>
-        <tr class="alt"><td>300万</td><td class="num"><strong>¥4,500</strong></td></tr>
-        <tr><td>500万</td><td class="num"><strong>¥7,500</strong></td></tr>
-        <tr class="alt"><td>1000万</td><td class="num"><strong>¥15,000</strong></td></tr>
-      </tbody>
-    </table>
-  </div>
+  <p style="text-align:center;margin:14px 0 0;color:#c9a14a;font-size:10pt;font-weight:600">
+    全段階の合計売上 ＝ LTV ／ 全員が同じLTVを高める方向で動く
+  </p>
 </div>
-
-<div class="meta" style="background:#fff5f5;border-color:#f0c8c8">
-  <strong>⚠️ 注:</strong> 上記は<strong>モデル値</strong>。実際の現給は きみ ¥350,000 / ゆみ ¥250,000。
-  実運用では現給ベースで Pattern A: 現給×0.75 / Pattern B: 現給そのまま、への移行を推奨（現地スタッフ案と同じ構造）。
-</div>
-
-<h3>パフォーマンス別シミュレーション（モデル値ベース）</h3>
-<p style="font-size:9pt;color:#666">A合計 = ¥180,000基本 + 件数歩合 + 月間ボーナス／B合計 = ¥260,000基本 + 件数歩合</p>
-<table>
-  <thead>
-    <tr><th>月間獲得</th><th>内訳例</th><th>件数歩合A</th><th>件数歩合B</th><th>Pattern A合計</th><th>Pattern B合計</th><th>推奨</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>3件</td><td>100万×3</td><td class="num">¥15,000</td><td class="num">¥4,500</td><td class="num">¥195,000</td><td class="num">¥264,500</td><td class="tag-b">B</td></tr>
-    <tr class="alt"><td>5件</td><td>100万×5</td><td class="num">¥25,000</td><td class="num">¥7,500</td><td class="num">¥215,000</td><td class="num">¥267,500</td><td class="tag-b">B</td></tr>
-    <tr><td>5件</td><td>200万×5</td><td class="num">¥50,000</td><td class="num">¥15,000</td><td class="num">¥240,000</td><td class="num">¥275,000</td><td class="tag-b">B</td></tr>
-    <tr class="alt"><td>8件</td><td>200万×8</td><td class="num">¥80,000</td><td class="num">¥24,000</td><td class="num">¥290,000</td><td class="num">¥284,000</td><td class="tag-neutral">A+¥6K</td></tr>
-    <tr><td>10件</td><td>200万×10</td><td class="num">¥100,000</td><td class="num">¥30,000</td><td class="num">¥310,000</td><td class="num">¥290,000</td><td class="tag-a">A</td></tr>
-    <tr class="alt"><td>15件</td><td>200万×15</td><td class="num">¥150,000</td><td class="num">¥45,000</td><td class="num">¥360,000</td><td class="num">¥305,000</td><td class="tag-a">A</td></tr>
-    <tr><td>20件</td><td>300万×20</td><td class="num">¥300,000</td><td class="num">¥90,000</td><td class="num">¥510,000</td><td class="num">¥350,000</td><td class="tag-a">A</td></tr>
-  </tbody>
-</table>
-<p style="font-size:9pt;color:#555">損益分岐点: <strong>200万円プラン × 月8件以上</strong>。それ以下はB型推奨。</p>
-
-<h3>現給 (参考)</h3>
-<table class="staff-table">
-  <thead>
-    <tr><th>スタッフ</th><th>現基本給</th></tr>
-  </thead>
-  <tbody>
-    <tr><td><strong>長岡きみ</strong></td><td class="num">¥350,000</td></tr>
-    <tr class="alt"><td><strong>長岡ゆみ</strong></td><td class="num">¥250,000</td></tr>
-  </tbody>
-</table>
 </section>
 
-<!-- ===================== セクション3.5: 会社黒字維持型インセンティブ ===================== -->
-<section class="section" style="page-break-before:always">
-<h2 style="border-left-color:#c0392b;color:#a93226">★ 会社黒字維持型インセンティブ（最重要原則）</h2>
+<!-- ===================== 4. CSマーケ ===================== -->
+<section>
+<h2>④ CSマーケティング（長岡きみ・長岡ゆみ）</h2>
 
-<div class="meta" style="background:#fdf2f0;border-color:#f5c4ba">
-  <strong style="color:#a93226">設計思想:</strong> 会社がマイナスに陥らないようインセンティブを根本設計。
-  <strong>基本給は常に100%保証</strong>、ただし歩合・ボーナスは会社業績に連動。
+<div class="dept-section cs">
+<h3>🟢 CSマーケティング</h3>
+<div class="role-tags">
+  <span class="role-tag">新規獲得</span>
+  <span class="role-tag">リピート管理</span>
+  <span class="role-tag">紹介促進</span>
 </div>
 
-<h3>原則① 基本給保証（無条件）</h3>
-<p>全スタッフ（日本・韓国・アバター・テレベット）の<strong>基本給は会社収支に関わらず100%支給</strong>。生活基盤を保護。</p>
-
-<h3>原則② インセンティブ総額上限（月次粗利の20%）</h3>
-<p>全スタッフの歩合・ボーナス合計が<strong>月次粗利の20%</strong>を超えた場合、超過分は全員按分で減額。粗利を毀損しない。</p>
-<table>
-  <thead><tr><th>月次粗利</th><th>インセンティブ総額上限</th></tr></thead>
-  <tbody>
-    <tr><td class="num">¥1,000万</td><td class="num positive"><strong>¥200万</strong></td></tr>
-    <tr class="alt"><td class="num">¥500万</td><td class="num positive"><strong>¥100万</strong></td></tr>
-    <tr><td class="num">¥300万</td><td class="num positive"><strong>¥60万</strong></td></tr>
-    <tr class="alt"><td class="num">¥0（粗利なし）</td><td class="num negative"><strong>¥0</strong></td></tr>
-  </tbody>
-</table>
-
-<h3>原則③ 利益連動係数</h3>
-<p>会社月次純利益に応じてインセンティブ支給率が変動（A型評価ボーナス・テレベ累進歩合に適用）。</p>
-<table>
-  <thead><tr><th>会社月次純利益</th><th>歩合支給率（係数）</th><th>影響対象</th></tr></thead>
-  <tbody>
-    <tr><td class="positive">≥ ¥100万（健全黒字）</td><td class="positive"><strong>100%</strong></td><td>全インセンティブ満額</td></tr>
-    <tr class="alt"><td>¥0 〜 ¥100万（薄利）</td><td><strong>85%</strong></td><td>A型評価ボーナス・テレベ累進</td></tr>
-    <tr><td>-¥1 〜 -¥50万（小赤字）</td><td class="neutral"><strong>70%</strong></td><td>A型評価ボーナス・テレベ累進</td></tr>
-    <tr class="alt"><td>-¥50万 〜 -¥100万（中赤字）</td><td class="neutral"><strong>40%</strong></td><td>A型評価ボーナス・テレベ累進</td></tr>
-    <tr><td class="negative">< -¥100万（大赤字）</td><td class="negative"><strong>0%</strong></td><td>基本給のみ（攻めボーナス停止）</td></tr>
-  </tbody>
-</table>
-
-<h3>原則④ テレベット部門P&L連動歩合</h3>
-<p>現行の売上ベース 12/15/18% は、経費超過月に会社負担が膨らむ問題がある。<strong>部門P&L連動</strong>に変更。</p>
-<table>
-  <thead><tr><th>テレベット部門収支</th><th>適用歩合</th><th>例（売上¥150万）</th></tr></thead>
-  <tbody>
-    <tr><td class="positive">純利益 ≥ ¥100万</td><td class="positive"><strong>12% / 15% / 18% 累進制</strong></td><td>¥195,000</td></tr>
-    <tr class="alt"><td>純利益 ¥0 〜 ¥100万</td><td><strong>12%固定</strong></td><td>¥180,000</td></tr>
-    <tr><td class="negative">純利益 < ¥0（赤字）</td><td class="negative"><strong>8%固定</strong></td><td>¥120,000</td></tr>
-  </tbody>
-</table>
-
-<h3>原則⑤ 月末確定後の翌月支給</h3>
-<p>月末にP&L確定 → 翌月20日に上記原則を適用した確定額を支給。<strong>仮払い・前払いなし</strong>。</p>
-
-<div class="rules-box" style="background:#f0faf3;border-color:#2e9c5d">
-<h4 style="margin-top:0;color:#1f7d49">💡 構造的効果</h4>
-<ul>
-  <li>会社が赤字 → 攻めボーナスが自動的に減額 → <strong>赤字が拡大しない</strong></li>
-  <li>粗利の20%上限 → <strong>利益の80%は必ず会社に残る</strong></li>
-  <li>テレベット赤字月でも担当者基本給は保証 → 安心感</li>
-  <li>スタッフは「会社の利益 = 自分の利益」と直感的に理解可能</li>
-  <li>3月の-¥320,788のような構造的赤字を未然防止</li>
+<h4>追うKPI</h4>
+<ul style="font-size:9.5pt">
+  <li><strong>LTV</strong>（担当顧客が最終的に落とした金額）</li>
+  <li><strong>CPA</strong>（広告費 ÷ 新規獲得数）</li>
+  <li><strong>リピート率</strong>・<strong>紹介率</strong></li>
 </ul>
-</div>
 
+<h4>インセンティブ — LTVベース歩合</h4>
+<table style="background:#fff">
+  <thead><tr><th>担当顧客の確定LTV</th><th>歩合率</th><th>例（LTV ¥200万の場合）</th></tr></thead>
+  <tbody>
+    <tr><td>LTV ¥100万 〜 ¥199万</td><td><strong>3%</strong></td><td class="num">¥30,000〜¥59,700</td></tr>
+    <tr class="alt"><td>LTV ¥200万 〜 ¥299万</td><td class="neutral"><strong>5%</strong></td><td class="num">¥100,000〜¥149,500</td></tr>
+    <tr><td>LTV ¥300万以上</td><td class="positive"><strong>7%</strong></td><td class="num">¥210,000〜</td></tr>
+  </tbody>
+</table>
+
+<h4>追加ボーナス（重ね掛け可）</h4>
+<table style="background:#fff">
+  <tbody>
+    <tr><td>紹介発生（顧客から新規紹介）</td><td class="positive"><strong>+2%</strong> をLTV歩合に上乗せ</td></tr>
+    <tr class="alt"><td>リピート獲得（同顧客が再来店）</td><td class="positive"><strong>+2%</strong> をLTV歩合に上乗せ</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:8px">※ LTV確定 = 顧客との関係終了 or 12ヶ月経過時点で確定。月次は「累計LTV進捗」で仮算定し、確定時に精算。</p>
+</div>
 </section>
 
-<!-- ===================== セクション4: 運用ルール ===================== -->
-<section class="section">
-<h2>④ 運用ルール</h2>
+<!-- ===================== 5. 現地スタッフ ===================== -->
+<section>
+<h2>⑤ 現地スタッフ（チョイ・ケビン・チェリン）</h2>
 
-<div class="rules-box">
-<h4 style="margin-top:0">選択ルール</h4>
-<ul>
-  <li>選択は<strong>毎月20日まで</strong>に翌月分を申請</li>
+<div class="dept-section local">
+<h3>🟢 現地スタッフ（アテンド）</h3>
+<div class="role-tags">
+  <span class="role-tag">現地アップセル</span>
+  <span class="role-tag">デポジット獲得</span>
+  <span class="role-tag">テレベット導線作り</span>
+</div>
+
+<h4>追うKPI</h4>
+<ul style="font-size:9.5pt">
+  <li><strong>デポジット率</strong>（来店客のうち何%がデポジット）</li>
+  <li><strong>現地売上</strong>（チップ・追加プラン・延長）</li>
+  <li><strong>テレベット移行率</strong>（来店客の何%がテレベに移行）</li>
+</ul>
+
+<h4>インセンティブ</h4>
+<table style="background:#fff">
+  <thead><tr><th>項目</th><th>報酬</th><th>備考</th></tr></thead>
+  <tbody>
+    <tr><td>デポジット獲得</td><td class="positive"><strong>¥20,000 / 件（固定）</strong></td><td>金額帯による調整あり（¥10K〜¥30K）</td></tr>
+    <tr class="alt"><td>現地売上歩合</td><td class="neutral"><strong>3〜5%</strong></td><td>追加チップ・延長等の現地売上対象</td></tr>
+    <tr><td>テレベット移行（即時）</td><td class="positive"><strong>¥10,000 / 件</strong></td><td>移行成立時に固定支給</td></tr>
+    <tr class="alt"><td>テレベット移行（後追い歩合）</td><td class="positive"><strong>+3%</strong></td><td>移行客がテレベで売上発生時、現地担当に3%</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:8px">→ 現地で終わらず<strong>テレベに繋ぐほど報酬が伸びる</strong>構造。LTVを意識した動きを促進。</p>
+</div>
+</section>
+
+<!-- ===================== 6. テレベット/アバター ===================== -->
+<section>
+<h2>⑥ テレベット / アバター（たく・むらまつ・あやか）</h2>
+
+<div class="dept-section tb">
+<h3>🟢 テレベット / アバター</h3>
+<div class="role-tags">
+  <span class="role-tag">継続課金 = 利益の核</span>
+  <span class="role-tag">関係維持</span>
+  <span class="role-tag">LTV最大化</span>
+</div>
+
+<h4>追うKPI</h4>
+<ul style="font-size:9.5pt">
+  <li><strong>継続率</strong>（担当顧客の月次継続率）</li>
+  <li><strong>売上</strong>（担当顧客のテレベ月次プレイ額）</li>
+  <li><strong>LTV増加額</strong>（担当客のLTVをいくら積み上げたか）</li>
+</ul>
+
+<h4>インセンティブ</h4>
+<table style="background:#fff">
+  <thead><tr><th>項目</th><th>報酬</th></tr></thead>
+  <tbody>
+    <tr><td>売上歩合</td><td class="neutral"><strong>5〜10%</strong></td></tr>
+    <tr class="alt"><td>3ヶ月継続ボーナス（同顧客）</td><td class="positive"><strong>+¥20,000</strong></td></tr>
+    <tr><td>6ヶ月継続ボーナス（同顧客）</td><td class="positive"><strong>+¥50,000</strong></td></tr>
+    <tr class="alt"><td>LTV貢献ボーナス（担当客LTV ¥200万超）</td><td class="positive"><strong>+3%</strong> を売上歩合に上乗せ</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:8px">→ 継続させるほど・LTVを伸ばすほど指数関数的に報酬が伸びる。短期売上だけでなく長期関係を評価。</p>
+
+<p style="font-size:9.5pt;margin-top:12px"><strong>アバタースタッフ給与（フィリピン拠点）:</strong> 基本給 ₱80,000 + 上記売上歩合・継続ボーナス（PHP換算）。たく・むらまつは ₱80K確定、あやかは確認中。</p>
+</div>
+</section>
+
+<!-- ===================== 7. デポジット連動 ===================== -->
+<section style="page-break-before:always">
+<h2>⑦ デポジット連動ボーナス（全部署対象）</h2>
+
+<div class="deposit-callout">
+<h3>🌟 デポジットは最重要KPI</h3>
+<p style="font-size:9.5pt;margin:6px 0 12px"><strong>理由:</strong></p>
+<ul style="font-size:9.5pt;margin:0;padding-left:24px;line-height:1.8">
+  <li>顧客の本気度が高い → 離脱しない</li>
+  <li>LTVが伸びる確率が圧倒的に高い</li>
+  <li>会社のキャッシュフローが安定</li>
+</ul>
+
+<h4>分配型インセンティブ — 部署連携を強化</h4>
+<table style="background:#fff;margin-top:8px">
+  <thead><tr><th>部署</th><th>役割</th><th>報酬</th></tr></thead>
+  <tbody>
+    <tr><td><strong style="color:#1f5d8a">CSマーケ</strong></td><td>アポ獲得（デポ説明アポ）</td><td class="positive"><strong>¥10,000 / 件</strong></td></tr>
+    <tr class="alt"><td><strong style="color:#a93226">現地スタッフ</strong></td><td>デポジット契約成立</td><td class="positive"><strong>¥20,000 / 件</strong></td></tr>
+    <tr><td><strong style="color:#1f7d49">テレベット/アバター</strong></td><td>デポジット回収（実プレイ）</td><td class="positive"><strong>¥10,000 / 件</strong></td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:10px">→ 1人の顧客のデポジット成立で <strong>3部署が同時に報酬を得る</strong>構造。
+部署をまたいだ連携が報酬で促進される。</p>
+</div>
+</section>
+
+<!-- ===================== 8. 旧設計の問題点と修正 ===================== -->
+<section>
+<h2>⑧ 旧設計（A/Bプラン）の問題点と修正</h2>
+
+<table>
+  <thead><tr><th>旧設計の課題</th><th>新設計での解決</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>「会社がマイナスにならない」</strong>が抽象的</td>
+      <td class="positive">→ <strong>LTVとCPAで数値化</strong>。広告費上限・歩合率を客観的に判断可能</td>
+    </tr>
+    <tr class="alt">
+      <td><strong>「デポジット重要」</strong>とは言っているが評価に落ちていない</td>
+      <td class="positive">→ <strong>デポジットを固定報酬KPI化</strong>（¥10K〜¥20K/件、3部署分配）</td>
+    </tr>
+    <tr>
+      <td><strong>部署ごとに評価軸がバラバラ</strong>（CSは件数、現地はランク、テレベは%）</td>
+      <td class="positive">→ <strong>全部署LTVに紐付け</strong>。共通言語で評価</td>
+    </tr>
+    <tr class="alt">
+      <td>新規取って終わり、関係維持が評価されない</td>
+      <td class="positive">→ 継続ボーナス・LTV貢献ボーナスで<strong>長期関係を評価</strong></td>
+    </tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ===================== 9. 運用ルール ===================== -->
+<section>
+<h2>⑨ 運用ルール</h2>
+
+<div style="background:#fafafa;border-left:4px solid #c9a14a;padding:14px 18px;border-radius:6px">
+<h4 style="margin-top:0">支給タイミング</h4>
+<ul style="font-size:9.5pt;line-height:1.8;margin:6px 0">
   <li>給与支給日: <strong>毎月20日</strong>（前月分を支給）</li>
-  <li>初月は全員 <strong>Pattern B（現状維持型）</strong> から開始（リスク低減）</li>
-  <li>新人（入社6ヶ月以内）は Pattern B 限定</li>
-  <li>選択は月単位で変更可能（前月20日までの申請で翌月から）</li>
+  <li>LTV基本歩合は仮算定 → 12ヶ月後に確定額で精算</li>
+  <li>デポジット・継続ボーナスは月次確定支給</li>
 </ul>
 
-<h4>保護措置</h4>
-<ul>
-  <li>連続3ヶ月以上 Pattern A を選択した場合、達成率に応じて評価</li>
-  <li>Pattern A選択時の C評価が3ヶ月続いた場合、強制的にBへ戻す</li>
-  <li>Pattern B はいつでも選択可能・現給は保証</li>
+<h4>会社黒字維持の安全装置</h4>
+<ul style="font-size:9.5pt;line-height:1.8;margin:6px 0">
+  <li>全インセンティブの合計 ≤ <strong>月次粗利の25%</strong>（超過時は按分減額）</li>
+  <li>会社月次純利益赤字時はLTVボーナス支給率を50%に減額</li>
+  <li>基本給は会社収支に関わらず100%保証</li>
 </ul>
 
-<h4>テレベット誘導ボーナス</h4>
-<ul>
-  <li>パターンA/Bの選択に関係なく、<strong>誘導件数に応じて全員に支給</strong></li>
-  <li>1件 ¥3,000 + 5件達成 ¥10,000 + 10件達成 ¥30,000（達成ボーナスは段階累積）</li>
-  <li>例: 12件 → ¥3,000×12 + ¥30,000 = ¥66,000</li>
-</ul>
-
-<h4>評価項目（Pattern A選択時のみ加算）</h4>
-<ul>
-  <li><strong>ランクボーナス</strong>: 月次4軸評価 + 3名評価者で決定（営業貢献・顧客対応・勤怠・チーム）</li>
-  <li><strong>顧客アンケート個人名評価</strong>: アンケートで個人名が記載された回数</li>
-  <li><strong>リピート獲得</strong>: 既存顧客の再訪を獲得した件数</li>
-  <li><strong>新規顧客紹介</strong>: 新規顧客を開拓・紹介した件数</li>
+<h4>LTV確定ルール</h4>
+<ul style="font-size:9.5pt;line-height:1.8;margin:6px 0">
+  <li>顧客との関係終了（明確な離脱）時 = 確定</li>
+  <li>最終来店から12ヶ月経過 = 確定</li>
+  <li>担当変更時 = 引き継ぎ時点で旧担当のLTV確定</li>
 </ul>
 </div>
 </section>
 
-<!-- ===================== セクション5: 経営側の影響 ===================== -->
-<section class="section">
-<h2>⑤ 経営側の試算</h2>
-
-<h3>現地スタッフ3名の月次人件費（パフォーマンス別）</h3>
-<table>
-  <thead>
-    <tr><th>シナリオ</th><th>全員Pattern B</th><th>全員Pattern A（中堅）</th><th>全員Pattern A（エース）</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>本体給与3名合計</td><td class="num">¥1,109,000</td><td class="num">¥1,034,000</td><td class="num">¥1,184,000</td></tr>
-    <tr class="alt"><td>ランクボーナス3名合計</td><td class="num">¥54,000</td><td class="num">¥108,000</td><td class="num">¥180,000</td></tr>
-    <tr><td>評価ボーナス3名合計</td><td class="num">¥0</td><td class="num">¥87,000</td><td class="num">¥180,000</td></tr>
-    <tr class="alt"><td>テレベット別枠（仮20件/人）</td><td class="num">¥270,000</td><td class="num">¥270,000</td><td class="num">¥270,000</td></tr>
-    <tr style="border-top:2px solid #1a1a2e"><td><strong>月次合計</strong></td><td class="num"><strong>¥1,433,000</strong></td><td class="num"><strong>¥1,499,000</strong></td><td class="num"><strong>¥1,814,000</strong></td></tr>
-  </tbody>
-</table>
-
-<div class="rules-box" style="background:#f0f9f0;border-color:#2e9c5d">
-<h4 style="margin-top:0;color:#1f7d49">💡 設計のメリット</h4>
+<!-- ===================== 10. まとめ ===================== -->
+<section>
+<div class="summary-final">
+<h2>⑩ 設計まとめ</h2>
 <ul>
-  <li><strong>低パフォーマンス時の人件費抑制</strong>: 全員Aで成果なしなら本体給与は▲6.7%減</li>
-  <li><strong>高パフォーマンス時のリターン正比例</strong>: エース級は会社の売上も大きく伸びる前提</li>
-  <li><strong>スタッフのモチベーション設計</strong>: 「選んだ責任」がパフォーマンスを引き出す</li>
-  <li><strong>テレベット別枠</strong>: 本来業務（カジノ顧客対応）と独立した評価が可能</li>
+  <li><strong>広告 → LTVで判断</strong>（CPA &gt; LTV×40%は警告）</li>
+  <li><strong>インセン → LTVベース統一</strong>（部署で計算式は違うが指標は同じ）</li>
+  <li><strong>デポジット → 強化KPI</strong>（3部署同時支給で連携促進）</li>
+  <li><strong>部署 → 分断せず連動</strong>（新規→現地→継続を全員で追う）</li>
+  <li><strong>会社黒字維持</strong>（粗利25%上限・赤字時自動減額）</li>
 </ul>
 </div>
 </section>
 
 <footer>
-  ベットランクツアーズ給与プラン制度設計書 — 2026年4月版<br>
+  ベットランクツアーズ LTV基軸 統一給与制度設計書 — 2026年4月版<br>
   本書はモデル設計案。実運用時は労務・税務専門家の確認を推奨。
 </footer>
 
