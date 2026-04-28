@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>顧客データ分析レポート — ベットランクツアーズ</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: #1a1a2e;
+    background: #fff;
+    line-height: 1.6;
+    font-size: 10.5pt;
+    margin: 0;
+    padding: 24px;
+  }
+  .page { max-width: 800px; margin: 0 auto; }
+
+  h1 {
+    font-size: 24pt;
+    color: #1a1a2e;
+    border-bottom: 4px double #c9a14a;
+    padding-bottom: 10px;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5pt;
+  }
+  .subtitle { color: #777; font-size: 11pt; margin-bottom: 22px; font-weight: 500; }
+  .meta-line { color: #888; font-size: 9pt; margin-bottom: 26px; }
+
+  h2 {
+    font-size: 16pt;
+    color: #1a1a2e;
+    border-left: 6px solid #c9a14a;
+    padding-left: 12px;
+    margin-top: 30px;
+    margin-bottom: 14px;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 13pt; color: #2c3e50; margin: 20px 0 8px; page-break-after: avoid; }
+  h4 { font-size: 11pt; color: #555; margin: 14px 0 6px; }
+
+  /* スタットカード */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .stat-card {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+    color: #fff;
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .stat-card .label { font-size: 8.5pt; color: #c9a14a; letter-spacing: 1pt; font-weight: 600; }
+  .stat-card .value { font-size: 17pt; font-weight: 700; margin-top: 4px; }
+  .stat-card .sub { font-size: 8pt; color: #aaa; margin-top: 4px; }
+
+  /* テーブル */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 10px 0;
+    page-break-inside: avoid;
+  }
+  thead { background: #1a1a2e; color: #fff; }
+  th, td { padding: 7px 9px; border: 1px solid #ddd; text-align: left; }
+  th { font-weight: 600; font-size: 9pt; letter-spacing: 0.3pt; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.alt td { background: #fafafa; }
+  .positive { color: #1f7d49; font-weight: 700; }
+  .negative { color: #c0392b; font-weight: 700; }
+  .neutral { color: #c9a14a; font-weight: 700; }
+
+  /* Tier色分け */
+  .tier-vvip { color: #c0392b; font-weight: 700; }
+  .tier-vip { color: #c9a14a; font-weight: 700; }
+  .tier-gold { color: #b8860b; font-weight: 700; }
+  .tier-silver { color: #708090; font-weight: 600; }
+  .tier-bronze { color: #8b7355; font-weight: 600; }
+
+  /* バー（横棒グラフ） */
+  .bar-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 80px;
+    gap: 10px;
+    align-items: center;
+    margin: 6px 0;
+  }
+  .bar-label { font-size: 9.5pt; font-weight: 600; }
+  .bar-track {
+    height: 22px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #c9a14a, #e8c878);
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+  .bar-value { font-size: 9.5pt; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* アラートボックス */
+  .alert-box {
+    background: #fef5e7;
+    border: 2px solid #f5c987;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .alert-box.danger {
+    background: #fdf2f0;
+    border-color: #c0392b;
+  }
+  .alert-box.danger h3 { color: #a93226; margin-top: 0; }
+  .alert-box.warning h3 { color: #8b6f1f; margin-top: 0; }
+  .alert-box.info {
+    background: #f0f6fb;
+    border-color: #2c7cb0;
+  }
+  .alert-box.info h3 { color: #1f5d8a; margin-top: 0; }
+
+  /* 戦略示唆 */
+  .insight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .insight-card {
+    background: #fafafa;
+    border-left: 4px solid #c9a14a;
+    border-radius: 8px;
+    padding: 14px 16px;
+    page-break-inside: avoid;
+  }
+  .insight-card .num {
+    font-size: 22pt;
+    font-weight: 700;
+    color: #c9a14a;
+    line-height: 1;
+  }
+  .insight-card .title {
+    font-size: 11pt;
+    font-weight: 700;
+    margin: 6px 0;
+    color: #1a1a2e;
+  }
+  .insight-card .desc {
+    font-size: 9pt;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* サマリー */
+  .summary-final {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .summary-final h2 { color: #c9a14a; border: none; padding: 0; margin: 0 0 12px; }
+  .summary-final ul { margin: 8px 0; padding-left: 24px; line-height: 2; }
+  .summary-final li::marker { color: #c9a14a; }
+
+  footer {
+    margin-top: 32px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    font-size: 8.5pt;
+    color: #888;
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 0; font-size: 10pt; }
+    h1 { font-size: 19pt; }
+    h2 { font-size: 14pt; }
+    .no-print { display: none; }
+  }
+
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #c9a14a;
+    color: #1a1a2e;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 11pt;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">📄 PDFとして保存</button>
+
+<div class="page">
+
+<h1>顧客データ分析レポート</h1>
+<div class="subtitle">ベットランクツアーズ — CRM全341名の集計と LTV基軸インセンティブの妥当性検証</div>
+<div class="meta-line">作成日: 2026年4月29日 / データソース: betrank-crm 顧客マスタ全件 / 為替レート: 1 JPY ≈ 9.3 KRW</div>
+
+<!-- ===================== サマリー ===================== -->
+<section>
+<h2>① エグゼクティブサマリー</h2>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="label">CUSTOMERS</div>
+    <div class="value">341</div>
+    <div class="sub">登録顧客数</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">ROLLING</div>
+    <div class="value">¥38.0億</div>
+    <div class="sub">全期間累計</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">VISITS</div>
+    <div class="value">655</div>
+    <div class="sub">全期間来店</div>
+  </div>
+  <div class="stat-card" style="background:linear-gradient(135deg,#c9a14a,#b08a30)">
+    <div class="label" style="color:#1a1a2e">GROSS PROFIT</div>
+    <div class="value" style="color:#1a1a2e">¥4,372万</div>
+    <div class="sub" style="color:#1a1a2e">推定（1.15%エッジ）</div>
+  </div>
+</div>
+
+<div class="alert-box danger">
+  <h3>🚨 重要な発見</h3>
+  <p style="margin:6px 0;font-size:9.5pt;line-height:1.7">
+    <strong>LTV基軸インセンティブ（3% / 5% / 7%）を現顧客341名に適用すると歩合総額 ¥2.61億</strong><br>
+    全期間粗利 ¥4,372万に対し<strong style="color:#c0392b">支払い不可能</strong>。LTV帯7%対象が154名（45%）と多すぎる。<br>
+    → 歩合率を <strong>0.3% / 0.5% / 0.8%</strong>（10分の1）程度に修正必須。
+  </p>
+</div>
+</section>
+
+<!-- ===================== Tier別構成 ===================== -->
+<section>
+<h2>② Tier別 顧客構成</h2>
+
+<table>
+  <thead>
+    <tr><th>Tier</th><th>人数</th><th>比率</th><th>累計ローリング</th><th>来店回数</th><th>平均/客</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><span class="tier-vvip">VVIP</span></td><td class="num">7</td><td class="num">2.1%</td><td class="num">¥1,879,065,591</td><td class="num">55</td><td class="num">¥268,437,942</td></tr>
+    <tr class="alt"><td><span class="tier-vip">VIP</span></td><td class="num">50</td><td class="num">14.7%</td><td class="num">¥1,222,592,043</td><td class="num">180</td><td class="num">¥24,451,841</td></tr>
+    <tr><td><span class="tier-gold">Gold</span></td><td class="num">54</td><td class="num">15.8%</td><td class="num">¥355,938,172</td><td class="num">134</td><td class="num">¥6,591,448</td></tr>
+    <tr class="alt"><td><span class="tier-silver">Silver</span></td><td class="num">89</td><td class="num">26.1%</td><td class="num">¥274,461,290</td><td class="num">120</td><td class="num">¥3,083,835</td></tr>
+    <tr><td><span class="tier-bronze">Bronze</span></td><td class="num">141</td><td class="num">41.3%</td><td class="num">¥69,713,441</td><td class="num">166</td><td class="num">¥494,422</td></tr>
+    <tr style="border-top:2px solid #1a1a2e"><td><strong>合計</strong></td><td class="num"><strong>341</strong></td><td class="num"><strong>100%</strong></td><td class="num"><strong>¥3,801,770,538</strong></td><td class="num"><strong>655</strong></td><td class="num"><strong>¥11,148,887</strong></td></tr>
+  </tbody>
+</table>
+
+<h3>ローリング額シェア（Tier別）</h3>
+<div>
+  <div class="bar-row">
+    <div class="bar-label tier-vvip">VVIP (7名)</div>
+    <div class="bar-track"><div class="bar-fill" style="width:49.4%"></div></div>
+    <div class="bar-value">49.4%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label tier-vip">VIP (50名)</div>
+    <div class="bar-track"><div class="bar-fill" style="width:32.2%;background:linear-gradient(90deg,#b08a30,#d4af6c)"></div></div>
+    <div class="bar-value">32.2%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label tier-gold">Gold (54名)</div>
+    <div class="bar-track"><div class="bar-fill" style="width:9.4%;background:linear-gradient(90deg,#b8860b,#d4a64f)"></div></div>
+    <div class="bar-value">9.4%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label tier-silver">Silver (89名)</div>
+    <div class="bar-track"><div class="bar-fill" style="width:7.2%;background:linear-gradient(90deg,#708090,#9eafc0)"></div></div>
+    <div class="bar-value">7.2%</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label tier-bronze">Bronze (141名)</div>
+    <div class="bar-track"><div class="bar-fill" style="width:1.8%;background:linear-gradient(90deg,#8b7355,#b09875)"></div></div>
+    <div class="bar-value">1.8%</div>
+  </div>
+</div>
+
+<div class="alert-box info">
+  <h3>📊 構造的特徴</h3>
+  <ul style="margin:6px 0;padding-left:20px;font-size:9.5pt;line-height:1.7">
+    <li><strong>VVIP 7名（2%）でローリングの49.4%</strong>を占める極端な集中</li>
+    <li><strong>VVIP+VIP 57名（17%）で81.6%</strong> — パレート以上の超偏重</li>
+    <li><strong>Bronze 141名（41%）でわずか1.8%</strong> — 数は多いが利益貢献は低い</li>
+  </ul>
+</div>
+</section>
+
+<!-- ===================== Top 顧客 ===================== -->
+<section style="page-break-before:always">
+<h2>③ Top 15 顧客（ローリング額順）</h2>
+
+<table>
+  <thead>
+    <tr><th>順位</th><th>名前</th><th>Tier</th><th>来店</th><th>累計ローリング</th><th>シェア</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td><strong>李 勤富</strong></td><td><span class="tier-vvip">VVIP</span></td><td class="num">3回</td><td class="num">¥670,430,108</td><td class="num neutral">17.6%</td></tr>
+    <tr class="alt"><td>2</td><td><strong>森田 正則</strong></td><td><span class="tier-vvip">VVIP</span></td><td class="num">8回</td><td class="num">¥278,677,419</td><td class="num">7.3%</td></tr>
+    <tr><td>3</td><td><strong>大久保 勇志</strong></td><td><span class="tier-vvip">VVIP</span></td><td class="num">1回</td><td class="num">¥259,489,247</td><td class="num">6.8%</td></tr>
+    <tr class="alt"><td>4</td><td><strong>林 陽一</strong></td><td><span class="tier-vvip">VVIP</span></td><td class="num">12回</td><td class="num">¥246,907,527</td><td class="num">6.5%</td></tr>
+    <tr><td>5</td><td><strong>佐野 翔平</strong></td><td><span class="tier-vvip">VVIP</span></td><td class="num">28回</td><td class="num">¥225,053,763</td><td class="num">5.9%</td></tr>
+    <tr class="alt"><td>6</td><td>赤星 亮太郎</td><td><span class="tier-vvip">VVIP</span></td><td class="num">1回</td><td class="num">¥140,623,656</td><td class="num">3.7%</td></tr>
+    <tr><td>7</td><td>池田 錦</td><td><span class="tier-vip">VIP</span></td><td class="num">8回</td><td class="num">¥118,308,602</td><td class="num">3.1%</td></tr>
+    <tr class="alt"><td>8</td><td>元田 悠希</td><td><span class="tier-vip">VIP</span></td><td class="num">12回</td><td class="num">¥61,838,710</td><td class="num">1.6%</td></tr>
+    <tr><td>9</td><td>宮島 俊一</td><td><span class="tier-vip">VIP</span></td><td class="num">3回</td><td class="num">¥59,926,882</td><td class="num">1.6%</td></tr>
+    <tr class="alt"><td>10</td><td>星野 太郎</td><td><span class="tier-vvip">VVIP</span></td><td class="num">2回</td><td class="num">¥57,883,871</td><td class="num">1.5%</td></tr>
+    <tr><td>11</td><td>宇田 翔太</td><td><span class="tier-vip">VIP</span></td><td class="num">10回</td><td class="num">¥52,580,645</td><td class="num">1.4%</td></tr>
+    <tr class="alt"><td>12</td><td>小磯 誠</td><td><span class="tier-vip">VIP</span></td><td class="num">10回</td><td class="num">¥42,161,290</td><td class="num">1.1%</td></tr>
+    <tr><td>13</td><td>高田 紀一郎</td><td><span class="tier-vip">VIP</span></td><td class="num">9回</td><td class="num">¥41,713,441</td><td class="num">1.1%</td></tr>
+    <tr class="alt"><td>14</td><td>池上 大樹</td><td><span class="tier-vip">VIP</span></td><td class="num">4回</td><td class="num">¥39,225,806</td><td class="num">1.0%</td></tr>
+    <tr><td>15</td><td>門田 和樹</td><td><span class="tier-vip">VIP</span></td><td class="num">12回</td><td class="num">¥36,646,237</td><td class="num">1.0%</td></tr>
+  </tbody>
+</table>
+
+<div class="alert-box warning">
+  <h3>⚠️ 顧客集中リスク</h3>
+  <p style="margin:6px 0;font-size:9.5pt;line-height:1.7">
+    Top 1（李 勤富）<strong>1名で全体の17.6%</strong> ／ Top 5で <strong>44.1%</strong> ／ Top 15で <strong>59.2%</strong>。<br>
+    主要顧客の離脱は事業に致命的な影響。VVIP維持が最優先KPI。
+  </p>
+</div>
+</section>
+
+<!-- ===================== LTV分布 ===================== -->
+<section>
+<h2>④ LTV帯別分布（円換算）</h2>
+
+<div class="bar-row">
+  <div class="bar-label">1,000万超</div>
+  <div class="bar-track"><div class="bar-fill" style="width:64.5%"></div></div>
+  <div class="bar-value">60名</div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">500-1000万</div>
+  <div class="bar-track"><div class="bar-fill" style="width:53.8%;background:linear-gradient(90deg,#d4a64f,#e8c878)"></div></div>
+  <div class="bar-value">50名</div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">300-500万</div>
+  <div class="bar-track"><div class="bar-fill" style="width:47.3%;background:linear-gradient(90deg,#c9a14a,#d4b87a)"></div></div>
+  <div class="bar-value">44名</div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">200-300万</div>
+  <div class="bar-track"><div class="bar-fill" style="width:34.4%;background:linear-gradient(90deg,#b08a30,#c9a14a)"></div></div>
+  <div class="bar-value">32名</div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">100-200万</div>
+  <div class="bar-track"><div class="bar-fill" style="width:43.0%;background:linear-gradient(90deg,#9c7a28,#b89230)"></div></div>
+  <div class="bar-value">40名</div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">50-100万</div>
+  <div class="bar-track"><div class="bar-fill" style="width:23.7%;background:linear-gradient(90deg,#8b7355,#a08966)"></div></div>
+  <div class="bar-value">22名</div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">50万未満</div>
+  <div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#666,#999)"></div></div>
+  <div class="bar-value">93名</div>
+</div>
+
+<p style="font-size:9pt;color:#666;margin-top:12px">
+  <strong>LTV 100万超（インセンティブ歩合対象）= 226名 / 341名 = 66%</strong><br>
+  → LTV 100万を歩合付与の閾値とすると、約2/3の顧客が対象。歩合率設定が極めて重要。
+</p>
+</section>
+
+<!-- ===================== LTVインセンティブ試算 ===================== -->
+<section>
+<h2>⑤ LTV基軸インセンティブ — 歩合率の妥当性検証</h2>
+
+<h3>現案（3% / 5% / 7%）の問題</h3>
+<table>
+  <thead>
+    <tr><th>LTV帯</th><th>現案の歩合率</th><th>対象人数</th><th>歩合計算</th><th>累積支払額</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>100-199万</td><td><strong>3%</strong></td><td class="num">40名</td><td>各客 ¥3-6万</td><td class="num">約 ¥180万</td></tr>
+    <tr class="alt"><td>200-299万</td><td><strong>5%</strong></td><td class="num">32名</td><td>各客 ¥10-15万</td><td class="num">約 ¥400万</td></tr>
+    <tr><td>300万以上</td><td><strong>7%</strong></td><td class="num"><span class="negative">154名</span></td><td>各客 ¥21万〜<br>(VVIP李氏 ¥504万)</td><td class="num"><span class="negative">約 ¥2.55億</span></td></tr>
+    <tr style="border-top:2px solid #c0392b"><td colspan="4"><strong>合計支払歩合（全期間累積）</strong></td><td class="num negative"><strong>¥2.61億</strong></td></tr>
+  </tbody>
+</table>
+
+<div class="alert-box danger">
+  <h3>🚨 致命的な構造的欠陥</h3>
+  <p style="margin:6px 0;font-size:9.5pt;line-height:1.7">
+    全期間カジノ粗利（推定）<strong>¥4,372万</strong> に対し、現案歩合は <strong>¥2.61億</strong>。<br>
+    <strong style="color:#c0392b">支払額が粗利の6倍 — 払えない</strong>。<br>
+    主因: 7%帯（300万超）が154名と圧倒的に多く、VVIP（特に李氏 LTV ¥6.7億）に7%適用すると単独で ¥4,690万。
+  </p>
+</div>
+
+<h3>修正案 — 歩合率を1/10に</h3>
+<table>
+  <thead>
+    <tr><th>修正案</th><th>歩合率</th><th>累積支払額（試算）</th><th>粗利比率</th><th>判定</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>現案</td><td>3% / 5% / 7%</td><td class="num">¥2.61億</td><td class="num negative">600%</td><td class="negative">❌ 不可能</td></tr>
+    <tr class="alt"><td><strong>修正A</strong></td><td>0.5% / 0.8% / 1.2%</td><td class="num">約 ¥4,200万</td><td class="num neutral">95%</td><td class="neutral">⚠️ ギリ</td></tr>
+    <tr><td><strong>修正B（推奨）</strong></td><td>0.3% / 0.5% / 0.8%</td><td class="num">約 ¥2,800万</td><td class="num positive">64%</td><td class="positive">✅ 健全</td></tr>
+    <tr class="alt"><td><strong>修正C</strong></td><td>0.2% / 0.3% / 0.5%</td><td class="num">約 ¥1,750万</td><td class="num positive">40%</td><td class="positive">✅ 余裕</td></tr>
+  </tbody>
+</table>
+
+<div class="alert-box info">
+  <h3>💡 推奨: 修正B（0.3% / 0.5% / 0.8%）</h3>
+  <p style="margin:6px 0;font-size:9.5pt;line-height:1.7">
+    粗利の64%を歩合に回す設計。残り36%（約¥1,572万）が会社利益＋経費。<br>
+    別途インセンティブ総額上限25%ルール（既存）と組み合わせれば、<br>
+    実質歩合は粗利の約25-40%に収まり、<strong>会社黒字維持型</strong>原則と整合。
+  </p>
+</div>
+</section>
+
+<!-- ===================== 月次コスト ===================== -->
+<section style="page-break-before:always">
+<h2>⑥ 月次コスト構造</h2>
+
+<h3>基本給合計（全部署）</h3>
+<table>
+  <thead>
+    <tr><th>部署</th><th>メンバー</th><th>月次基本給</th><th>年間</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>🇯🇵 日本チーム</td>
+      <td>長岡きみ ¥350K + 長岡ゆみ ¥250K</td>
+      <td class="num">¥600,000</td>
+      <td class="num">¥7,200,000</td>
+    </tr>
+    <tr class="alt">
+      <td>🇰🇷 韓国現地</td>
+      <td>チョイ ¥376K + ケビン ¥366K + チェリン ¥344K</td>
+      <td class="num">¥1,086,000</td>
+      <td class="num">¥13,032,000</td>
+    </tr>
+    <tr>
+      <td>🇵🇭 アバター</td>
+      <td>たく + むらまつ + あやか（₱80K×3 ≈ ¥633K）</td>
+      <td class="num">¥633,000</td>
+      <td class="num">¥7,596,000</td>
+    </tr>
+    <tr style="border-top:2px solid #c9a14a">
+      <td colspan="2"><strong>合計</strong></td>
+      <td class="num"><strong>¥2,319,000</strong></td>
+      <td class="num"><strong>¥27,828,000</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>テレベット部門 単独収支（過去3ヶ月）</h3>
+<table>
+  <thead>
+    <tr><th>月</th><th>売上</th><th>歩合</th><th>経費</th><th>純利益</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>2026-02</td><td class="num">¥1,439,885</td><td class="num">¥185,983</td><td class="num">未入力</td><td class="num">推定 ¥-300K</td></tr>
+    <tr class="alt"><td>2026-03</td><td class="num">¥1,430,228</td><td class="num">¥184,534</td><td class="num">¥1,566,482</td><td class="num negative">¥-320,788</td></tr>
+    <tr><td>2026-04</td><td class="num">¥969,505</td><td class="num">¥116,341</td><td class="num">未確定</td><td class="num">推定 ¥-700K</td></tr>
+  </tbody>
+</table>
+
+<div class="alert-box warning">
+  <h3>⚠️ テレベット部門 構造的赤字</h3>
+  <p style="margin:6px 0;font-size:9.5pt;line-height:1.7">
+    月次平均売上 ¥1,279,873 に対し月次経費 ¥1,566,482（3月実績）。<br>
+    <strong>テレベ単独では月次経費すら賄えていない</strong>。<br>
+    → ツアー（プラン売上）と現地アップセルが利益の柱。テレベは「LTV最大化のための投資」と位置づけが必要。
+  </p>
+</div>
+</section>
+
+<!-- ===================== 戦略示唆 ===================== -->
+<section>
+<h2>⑦ 戦略的示唆</h2>
+
+<div class="insight-grid">
+  <div class="insight-card">
+    <div class="num">1</div>
+    <div class="title">LTV歩合率を10分の1に</div>
+    <div class="desc">現案 3%/5%/7% → <strong>0.3%/0.5%/0.8%</strong>。粗利の60%程度に収まる現実的水準。</div>
+  </div>
+  <div class="insight-card">
+    <div class="num">2</div>
+    <div class="title">VVIP/VIP特化戦略</div>
+    <div class="desc">Top5（VVIP）で売上の<strong>44%</strong>。新規獲得よりVVIP維持・離脱防止が経営最優先。</div>
+  </div>
+  <div class="insight-card">
+    <div class="num">3</div>
+    <div class="title">テレベ位置づけ転換</div>
+    <div class="desc">単独赤字を許容、<strong>LTV最大化への投資</strong>として再定義。現地→テレベ移行率を最重要KPIに。</div>
+  </div>
+  <div class="insight-card">
+    <div class="num">4</div>
+    <div class="title">Bronze層の選別</div>
+    <div class="desc">141名（41%）でローリングシェア<strong>1.8%</strong>。CPA削減対象・自動化対応で経費を絞る。</div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== まとめ ===================== -->
+<section>
+<div class="summary-final">
+<h2>⑧ 結論</h2>
+<ul>
+  <li><strong>LTV基軸の設計思想は正しい</strong> — ただし歩合率は<strong>1/10に修正必須</strong></li>
+  <li><strong>顧客集中リスク</strong> — Top1で17.6%、VVIP維持に経営資源を集中</li>
+  <li><strong>テレベット単独赤字</strong> — LTV投資ツールとして再定義、目的をLTV最大化に</li>
+  <li><strong>月次基本給 ¥231万</strong> — 現状でツアー粗利でカバー可能、ただしマージンは薄い</li>
+  <li><strong>修正B案推奨</strong> — 歩合率 0.3% / 0.5% / 0.8% で粗利の64%、健全運用可能</li>
+</ul>
+</div>
+</section>
+
+<footer>
+  ベットランクツアーズ 顧客データ分析レポート — 2026年4月29日<br>
+  データ取得元: betrank-crm 顧客マスタ（341名・全期間）／ 為替: 1 JPY = 9.3 KRW
+</footer>
+
+</div>
+</body>
+</html>
