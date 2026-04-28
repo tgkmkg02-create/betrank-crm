@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>インセンティブ制度 V3提案書 — ハイブリッド型</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: #1a1a2e;
+    background: #fff;
+    line-height: 1.6;
+    font-size: 10.5pt;
+    margin: 0;
+    padding: 24px;
+  }
+  .page { max-width: 800px; margin: 0 auto; }
+
+  /* カバーセクション */
+  .cover {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 50%, #1a1a2e 100%);
+    color: #fff;
+    border-radius: 16px;
+    padding: 40px 36px;
+    margin-bottom: 24px;
+    text-align: center;
+    page-break-after: avoid;
+  }
+  .cover .badge {
+    display: inline-block;
+    background: #c9a14a;
+    color: #1a1a2e;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 1pt;
+    margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-size: 28pt;
+    margin: 0 0 8px;
+    border: none;
+    padding: 0;
+    letter-spacing: -1pt;
+    line-height: 1.2;
+  }
+  .cover .ja {
+    color: #c9a14a;
+    font-size: 18pt;
+    font-weight: 600;
+    margin: 4px 0 16px;
+  }
+  .cover .description {
+    color: #b8c5d6;
+    font-size: 11pt;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  h1 {
+    font-size: 24pt;
+    color: #1a1a2e;
+    border-bottom: 4px double #c9a14a;
+    padding-bottom: 10px;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5pt;
+  }
+
+  h2 {
+    font-size: 16pt;
+    color: #1a1a2e;
+    border-left: 6px solid #c9a14a;
+    padding-left: 12px;
+    margin-top: 30px;
+    margin-bottom: 14px;
+    page-break-after: avoid;
+  }
+  h3 { font-size: 13pt; color: #2c3e50; margin: 20px 0 8px; page-break-after: avoid; }
+  h4 { font-size: 11pt; color: #555; margin: 14px 0 6px; }
+
+  /* データインサイト */
+  .data-insight {
+    background: #fef9ee;
+    border: 2px solid #c9a14a;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 14px 0;
+  }
+  .data-insight .label {
+    color: #8b6f1f;
+    font-weight: 700;
+    font-size: 9pt;
+    letter-spacing: 1pt;
+    margin-bottom: 8px;
+  }
+  .insight-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .insight-num {
+    text-align: center;
+  }
+  .insight-num .big {
+    font-size: 22pt;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1;
+  }
+  .insight-num .small {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 4px;
+  }
+
+  /* 原則カード */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .principle-card {
+    background: linear-gradient(135deg, #fef9ee 0%, #fff 100%);
+    border-left: 5px solid #c9a14a;
+    border-radius: 10px;
+    padding: 14px 18px;
+    page-break-inside: avoid;
+  }
+  .principle-card .num {
+    color: #c9a14a;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 1pt;
+  }
+  .principle-card .title {
+    font-size: 12pt;
+    font-weight: 700;
+    margin: 4px 0 6px;
+  }
+  .principle-card .desc {
+    font-size: 9.5pt;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* 部署セクション */
+  .dept-section {
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .dept-section.cs { background: #f0f6fb; border-left: 6px solid #2c7cb0; }
+  .dept-section.local { background: #fff5f0; border-left: 6px solid #e94560; }
+  .dept-section.tb { background: #f0faf3; border-left: 6px solid #2e9c5d; }
+  .dept-section h3 { margin-top: 0; font-size: 14pt; }
+  .dept-section.cs h3 { color: #1f5d8a; }
+  .dept-section.local h3 { color: #a93226; }
+  .dept-section.tb h3 { color: #1f7d49; }
+
+  /* テーブル */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 10px 0;
+    page-break-inside: avoid;
+    background: #fff;
+  }
+  thead { background: #1a1a2e; color: #fff; }
+  th, td { padding: 7px 9px; border: 1px solid #ddd; text-align: left; }
+  th { font-weight: 600; font-size: 9pt; letter-spacing: 0.3pt; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.alt td { background: #fafafa; }
+
+  /* VVIP特別ボーナスのハイライト */
+  .vvip-special {
+    background: linear-gradient(135deg, #c9a14a 0%, #e8c878 100%);
+    color: #1a1a2e;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin: 18px 0;
+    page-break-inside: avoid;
+    box-shadow: 0 4px 20px rgba(201,161,74,0.3);
+  }
+  .vvip-special .badge {
+    display: inline-block;
+    background: #1a1a2e;
+    color: #c9a14a;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 1pt;
+    margin-bottom: 8px;
+  }
+  .vvip-special h3 {
+    color: #1a1a2e;
+    margin: 4px 0 8px;
+    font-size: 16pt;
+  }
+  .vvip-special .reason {
+    background: rgba(26,26,46,0.1);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 9.5pt;
+    margin: 10px 0;
+  }
+  .vvip-special table { background: rgba(255,255,255,0.95); }
+
+  /* 試算ボックス */
+  .cost-box {
+    background: #f0faf3;
+    border: 2px solid #2e9c5d;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 14px 0;
+    page-break-inside: avoid;
+  }
+  .cost-box .label {
+    color: #1f7d49;
+    font-weight: 700;
+    font-size: 9pt;
+    letter-spacing: 1pt;
+  }
+  .cost-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .cost-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .cost-item .num {
+    font-size: 22pt;
+    font-weight: 700;
+    color: #1f7d49;
+  }
+  .cost-item .label-text {
+    font-size: 9pt;
+    color: #555;
+    margin-top: 4px;
+  }
+  .cost-item .ratio {
+    font-size: 11pt;
+    color: #1f7d49;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  /* Compare */
+  .compare-table th { background: #c0392b; }
+
+  /* Implementation */
+  .impl-box {
+    background: #f0f6fb;
+    border-left: 4px solid #2c7cb0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .impl-box ol {
+    margin: 8px 0;
+    padding-left: 24px;
+    line-height: 1.9;
+  }
+
+  /* Final summary */
+  .summary-final {
+    background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 26px 30px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+  .summary-final h2 { color: #c9a14a; border: none; padding: 0; margin: 0 0 14px; }
+  .summary-final ul { margin: 8px 0; padding-left: 24px; line-height: 2; }
+  .summary-final li::marker { color: #c9a14a; }
+  .summary-final .quote {
+    font-size: 13pt;
+    color: #c9a14a;
+    font-weight: 600;
+    text-align: center;
+    margin: 14px 0 8px;
+    line-height: 1.6;
+  }
+
+  footer {
+    margin-top: 32px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+    font-size: 8.5pt;
+    color: #888;
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 0; font-size: 10pt; }
+    .cover h1 { font-size: 22pt; }
+    h2 { font-size: 14pt; }
+    .no-print { display: none; }
+  }
+
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #c9a14a;
+    color: #1a1a2e;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 11pt;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .green { color: #1f7d49; font-weight: 700; }
+  .red { color: #c0392b; font-weight: 700; }
+  .gold { color: #c9a14a; font-weight: 700; }
+</style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">📄 PDFとして保存</button>
+
+<div class="page">
+
+<!-- ===================== カバー ===================== -->
+<div class="cover">
+  <div class="badge">PROPOSAL · V3</div>
+  <h1>HYBRID INCENTIVE</h1>
+  <div class="ja">3層ハイブリッド型インセンティブ V3</div>
+  <div class="description">
+    341名の顧客データ分析を踏まえた、<strong style="color:#fff">「会社の黒字を守りながらVVIPを維持する」</strong>新インセンティブ設計。<br>
+    旧LTV案（3/5/7%）の支払不能問題を解決し、<strong style="color:#c9a14a">固定ボーナス＋低率歩合＋VVIP維持特別賞</strong>のハイブリッド構造に転換。
+  </div>
+</div>
+
+<!-- ===================== データから見えた事実 ===================== -->
+<section>
+<h2>① 提案の根拠（データ分析からの事実）</h2>
+
+<div class="data-insight">
+  <div class="label">CRITICAL FINDINGS</div>
+  <div style="font-size:10pt;line-height:1.7;color:#444">
+    本提案は、CRM全341名の顧客データ分析（data-analysis.pdf）から導かれた以下の事実に基づく。
+  </div>
+  <div class="insight-row">
+    <div class="insight-num">
+      <div class="big">44%</div>
+      <div class="small">Top5 VVIP の<br>売上シェア</div>
+    </div>
+    <div class="insight-num">
+      <div class="big" style="color:#c0392b">¥2.61億</div>
+      <div class="small">旧LTV案の<br>支払予測（粗利の600%）</div>
+    </div>
+    <div class="insight-num">
+      <div class="big">66%</div>
+      <div class="small">LTV 100万超<br>顧客比率</div>
+    </div>
+  </div>
+</div>
+
+<p style="font-size:10pt;line-height:1.7;margin-top:12px">
+  → <strong>VVIP1名の離脱で売上の17.6%が消える</strong>構造。新規獲得より<strong>VVIP維持</strong>に資源を集中すべき。<br>
+  → 旧LTV案（高率歩合）は<strong>VVIPに対しては破綻的</strong>。固定ボーナス化で会社負担を制御する必要がある。
+</p>
+</section>
+
+<!-- ===================== 設計原則 ===================== -->
+<section>
+<h2>② 4つの設計原則</h2>
+
+<div class="principles-grid">
+  <div class="principle-card">
+    <div class="num">PRINCIPLE 01</div>
+    <div class="title">基本給は完全保証</div>
+    <div class="desc">全員の基本給は会社収支に関わらず100%支給。生活基盤を守ることがチームの安定基盤。</div>
+  </div>
+  <div class="principle-card">
+    <div class="num">PRINCIPLE 02</div>
+    <div class="title">月次粗利の25%上限</div>
+    <div class="desc">全インセンティブ合計が月次粗利の25%を超えた場合は按分減額。利益の75%は必ず会社に残る。</div>
+  </div>
+  <div class="principle-card">
+    <div class="num">PRINCIPLE 03</div>
+    <div class="title">超大型LTVは固定額化</div>
+    <div class="desc">VVIP（LTV1000万超）はパーセント歩合ではなく到達ボーナス制に。1名で歩合が爆発する事故を防ぐ。</div>
+  </div>
+  <div class="principle-card" style="border-color:#c0392b;background:linear-gradient(135deg,#fdf2f0 0%,#fff 100%)">
+    <div class="num" style="color:#c0392b">PRINCIPLE 04 ★</div>
+    <div class="title">VVIP維持に特別ボーナス</div>
+    <div class="desc"><strong>離脱防止が経営最優先KPI</strong>。Top10 VVIPのリピート/維持に対して全部署同時支給で守る。</div>
+  </div>
+</div>
+</section>
+
+<!-- ===================== CSマーケ ===================== -->
+<section style="page-break-before:always">
+<h2>③ 部署別設計</h2>
+
+<div class="dept-section cs">
+<h3>🟦 CSマーケティング — 長岡きみ・長岡ゆみ</h3>
+<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: 新規獲得 ／ リピート管理 ／ 紹介促進</p>
+
+<table>
+<thead><tr><th>項目</th><th>報酬構造</th><th>例</th></tr></thead>
+<tbody>
+<tr><td><strong>新規獲得</strong></td><td>初回プラン金額の <strong>0.3%</strong> ＋ 固定 <span class="green">¥5,000</span></td><td>200万プラン → ¥11,000</td></tr>
+<tr class="alt"><td><strong>リピート獲得</strong></td><td>プラン金額の <strong>0.2%</strong> ＋ 固定 <span class="green">¥10,000</span></td><td>200万プラン → ¥14,000</td></tr>
+<tr><td><strong>紹介発生</strong></td><td>固定 <span class="green">¥20,000</span></td><td>紹介客が初来店した時</td></tr>
+<tr class="alt"><td><strong>VVIP級リピート獲得</strong></td><td>上記＋追加 <span class="gold">¥30,000</span></td><td>Top10客のリピート</td></tr>
+</tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:8px">月20件・平均200万プランで約 ¥120,000の歩合を想定。</p>
+</div>
+
+<div class="dept-section local">
+<h3>🟥 現地スタッフ — チョイ・ケビン・チェリン</h3>
+<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: 現地アップセル ／ デポジット獲得 ／ テレベット導線作り</p>
+
+<table>
+<thead><tr><th>項目</th><th>報酬構造</th><th>例</th></tr></thead>
+<tbody>
+<tr><td><strong>現地アップセル売上</strong></td><td>売上の <strong>3%</strong></td><td>現地¥500万 → ¥150,000</td></tr>
+<tr class="alt"><td><strong>デポジット獲得</strong></td><td>固定 <span class="green">¥20,000/件</span></td><td>金額帯による調整 ¥10K〜¥30K</td></tr>
+<tr><td><strong>テレベット移行（即時）</strong></td><td>固定 <span class="green">¥10,000/件</span></td><td>移行成立時</td></tr>
+<tr class="alt"><td><strong>テレベット移行後追い</strong></td><td>移行客の売上 <strong>2%（3年間限定）</strong></td><td>移行後3年間継続</td></tr>
+</tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:8px">月20件・5%平均で歩合 ¥250,000、デポジ3件で ¥60,000、合計約 ¥310,000を想定。</p>
+</div>
+
+<div class="dept-section tb">
+<h3>🟩 テレベット / アバター — たく・むらまつ・あやか</h3>
+<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: 継続課金（利益の核） ／ 関係維持 ／ LTV最大化</p>
+
+<table>
+<thead><tr><th>項目</th><th>報酬構造</th><th>例</th></tr></thead>
+<tbody>
+<tr><td><strong>担当顧客の月次売上歩合</strong></td><td>売上の <strong>5%</strong></td><td>月¥130万 → ¥65,000</td></tr>
+<tr class="alt"><td><strong>3ヶ月継続ボーナス</strong></td><td>固定 <span class="green">¥10,000</span></td><td>同顧客の3ヶ月継続</td></tr>
+<tr><td><strong>6ヶ月継続ボーナス</strong></td><td>固定 <span class="green">¥30,000</span></td><td>同顧客の6ヶ月継続</td></tr>
+<tr class="alt"><td><strong>LTV ¥500万到達ボーナス</strong></td><td>一時金 <span class="gold">¥30,000</span></td><td>担当客LTV到達時</td></tr>
+<tr><td><strong>LTV ¥1,000万到達ボーナス</strong></td><td>一時金 <span class="gold">¥100,000</span></td><td>担当客LTV到達時</td></tr>
+</tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:8px">アバター基本給 ₱80,000 ＋ 上記歩合（PHP換算）。継続させるほど報酬が伸びる構造。</p>
+</div>
+</section>
+
+<!-- ===================== VVIP特別ボーナス ===================== -->
+<section>
+<h2>④ ⭐ VVIP維持特別ボーナス（最重要・新規追加）</h2>
+
+<div class="vvip-special">
+<div class="badge">CRITICAL · NEW IN V3</div>
+<h3>「Top10 VVIPを失わないこと」が会社の生命線</h3>
+<div class="reason">
+  <strong>なぜ必要か:</strong> データ分析でTop1で17.6%、Top5で44%の集中が判明。1名離脱が事業に致命的。
+  <strong>全部署同時支給</strong>で「VVIPはチーム全員で守る」文化を金銭的に表現する。
+</div>
+<table>
+<thead><tr><th>トリガー</th><th>対象部署</th><th>支給</th></tr></thead>
+<tbody>
+<tr><td>Top10 VVIP のリピート来店</td><td>CS担当 ＋ 現地担当 ＋ テレベ担当 全員</td><td><strong>各 ¥30,000</strong></td></tr>
+<tr><td>VVIP の半年間離脱を防止</td><td>同上</td><td><strong>各 ¥50,000</strong></td></tr>
+<tr><td>新規VVIP獲得（LTV1000万超予測）</td><td>CS担当</td><td><strong>¥200,000</strong></td></tr>
+</tbody>
+</table>
+<p style="font-size:9pt;margin-top:8px">→ 1名のVVIPリピートで会社支出は ¥90,000（3部署×¥30K）。Top1のLTV ¥6.7億の維持価値と比べれば極めて低コスト。</p>
+</div>
+</section>
+
+<!-- ===================== コスト試算 ===================== -->
+<section style="page-break-before:always">
+<h2>⑤ 月次コスト試算</h2>
+
+<div class="cost-box">
+<div class="label">SCENARIO · STANDARD MONTH</div>
+
+<h4 style="margin-top:8px">標準的な月のシミュレーション</h4>
+<table>
+<thead><tr><th>項目</th><th>前提</th><th>金額</th></tr></thead>
+<tbody>
+<tr><td>CSマーケ歩合</td><td>月20件・平均200万プラン</td><td class="num">¥120,000</td></tr>
+<tr class="alt"><td>現地アップセル歩合</td><td>現地売上 ¥500万 × 3%</td><td class="num">¥150,000</td></tr>
+<tr><td>デポジット獲得</td><td>月3件 × ¥20,000</td><td class="num">¥60,000</td></tr>
+<tr class="alt"><td>テレベ移行</td><td>月2件 × ¥10,000</td><td class="num">¥20,000</td></tr>
+<tr><td>テレベ売上歩合</td><td>¥130万 × 5%</td><td class="num">¥65,000</td></tr>
+<tr class="alt"><td>継続ボーナス</td><td>3ヶ月継続2名等</td><td class="num">¥30,000</td></tr>
+<tr><td>VVIP特別ボーナス</td><td>月1名リピート（3部署計）</td><td class="num">¥90,000</td></tr>
+<tr style="border-top:2px solid #1f7d49;background:#e8f5e9"><td colspan="2"><strong>月次インセンティブ合計</strong></td><td class="num"><strong style="color:#1f7d49">¥535,000</strong></td></tr>
+</tbody>
+</table>
+
+<div class="cost-summary">
+  <div class="cost-item">
+    <div class="num">¥53.5万</div>
+    <div class="label-text">月次インセンティブ総額</div>
+    <div class="ratio">粗利の約13%</div>
+  </div>
+  <div class="cost-item">
+    <div class="num">¥284.5万</div>
+    <div class="label-text">月次総人件費（基本給+歩合）</div>
+    <div class="ratio">年¥3,414万</div>
+  </div>
+</div>
+
+<p style="font-size:9.5pt;margin-top:14px">
+  <strong>25%上限ルール:</strong> 月次粗利の25%を上限として運用。<br>
+  → 13%の運用なので<strong>余裕で収まる</strong>。粗利が想定より落ちても安全マージンあり。
+</p>
+</div>
+</section>
+
+<!-- ===================== 旧案 vs 新案 ===================== -->
+<section>
+<h2>⑥ 旧LTV案 vs 新ハイブリッドV3</h2>
+
+<table class="compare-table">
+<thead><tr><th>項目</th><th>旧LTV案 (3/5/7%)</th><th>新ハイブリッド V3</th></tr></thead>
+<tbody>
+<tr><td>LTV 300万以上の歩合</td><td class="red">7%（爆発的）</td><td class="green">0%（固定ボーナス化）</td></tr>
+<tr class="alt"><td>VVIP維持の評価</td><td>弱い</td><td class="gold">★ 強い特別ボーナス</td></tr>
+<tr><td>全期間累積試算</td><td class="red">¥2.61億</td><td class="green">約 ¥3,500万</td></tr>
+<tr class="alt"><td>粗利との整合性</td><td class="red">600%（破綻）</td><td class="green">80%（健全）</td></tr>
+<tr><td>計算複雑度</td><td>中</td><td>中（固定額多めで分かりやすい）</td></tr>
+<tr class="alt"><td>Top1偏重リスク</td><td class="red">1名で¥4,690万歩合</td><td class="green">全員に分散</td></tr>
+<tr><td>新規 vs リピート評価</td><td>同等</td><td>リピートを若干優遇</td></tr>
+<tr class="alt"><td>部署連携</td><td>独立</td><td class="gold">VVIP特別で連携誘発</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ===================== 実装プラン ===================== -->
+<section>
+<h2>⑦ 実装プラン（採用時）</h2>
+
+<div class="impl-box">
+<h4 style="margin-top:0">採用後のステップ</h4>
+<ol style="font-size:10pt">
+  <li><strong>CRM「LTV基軸 統一給与制度」タブ</strong>を新設計（V3）に置換</li>
+  <li><strong>salary-plan.pdf</strong> を新版に更新（V3として再生成）</li>
+  <li><strong>VVIP維持ボーナス追跡画面</strong>を新規追加（Top10リスト＋リピート/離脱トラッキング）</li>
+  <li>初月は<strong>仮運用</strong>（実績ベースで数字検証 → 必要なら微調整）</li>
+  <li>3ヶ月後に効果測定（VVIPリピート率、月次粗利比、スタッフ満足度）</li>
+</ol>
+</div>
+</section>
+
+<!-- ===================== 結論 ===================== -->
+<section>
+<div class="summary-final">
+<h2>⑧ 結論 — V3を採用すべき理由</h2>
+<div class="quote">
+  「VVIPを失わないこと」<br>
+  これが、利益・成長・スタッフモチベーション すべての起点になる。
+</div>
+<ul>
+  <li><strong>会社のキャッシュフローが守られる</strong>（粗利の13%、25%上限内）</li>
+  <li><strong>VVIP維持の動機が全員に共通する</strong>（特別ボーナスで連携促進）</li>
+  <li><strong>歩合爆発リスクがない</strong>（超大型LTVは固定額化）</li>
+  <li><strong>新規・現地・継続の3段階</strong>を全員で評価する哲学を維持</li>
+  <li><strong>固定額が多いため計算が透明</strong>（スタッフの納得感）</li>
+</ul>
+</div>
+</section>
+
+<footer>
+  ベットランクツアーズ インセンティブ制度 V3提案書 — 2026年4月29日<br>
+  根拠データ: data-analysis.pdf（CRM全341名・全期間）／ 既存設計: salary-plan.pdf
+</footer>
+
+</div>
+</body>
+</html>
