@@ -303,7 +303,51 @@
 
 <div class="alert">
   <strong>⚠️ 3月の収支:</strong> 売上 ¥1,430,228 − 歩合 ¥184,534 − 経費 ¥1,566,482 = <strong>−¥320,788（赤字）</strong>。
-  売上ベース歩合は変わらず支給される構造のため、経費超過時は会社負担増加に注意。
+  これを受け、<strong>売上ベース歩合 → 部門P&L連動歩合へ移行</strong>（次節参照）。
+</div>
+</section>
+
+<!-- ===================== 部門P&L連動 ===================== -->
+<section style="page-break-before:always">
+<h2 style="border-left-color:#c0392b">★ 部門P&L連動歩合（新ルール・会社黒字維持型）</h2>
+
+<div class="meta" style="background:#fdf2f0;border-color:#f5c4ba">
+  <strong style="color:#a93226">変更理由:</strong> 旧設計（売上ベース12/15/18%累進）は、経費超過月に会社負担が膨らむ問題があった（3月実績 -¥320,788）。
+  <strong>部門P&L（純利益）連動</strong>に切り替えることで、会社マイナスを構造的に防ぐ。
+</div>
+
+<h3>新歩合制（部門純利益ベース）</h3>
+<table>
+  <thead><tr><th>テレベット部門純利益</th><th>適用歩合</th><th>支給例（売上¥150万）</th></tr></thead>
+  <tbody>
+    <tr><td class="positive">≥ ¥100万（健全黒字）</td><td class="positive"><strong>12% / 15% / 18% 累進制</strong></td><td class="num">¥195,000</td></tr>
+    <tr class="alt"><td>¥0 〜 ¥100万（薄利）</td><td><strong>12%固定</strong></td><td class="num">¥180,000</td></tr>
+    <tr><td class="negative">< ¥0（赤字）</td><td class="negative"><strong>8%固定</strong></td><td class="num">¥120,000</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666">※ テレベット部門純利益 = テレベット売上（W/L+R/C） − 月間固定経費（人件費・家賃・車関係・その他）</p>
+
+<h3>シナリオ別 月収比較（新旧）</h3>
+<table>
+  <thead><tr><th>月</th><th>売上</th><th>経費</th><th>純利益</th><th>旧支給（売上ベース）</th><th>新支給（P&L連動）</th><th>差</th></tr></thead>
+  <tbody>
+    <tr><td>2月</td><td class="num">¥1,439,885</td><td class="num">未入力</td><td class="num">仮¥800K黒字</td><td class="num">¥185,983</td><td class="num">¥185,983</td><td>同額</td></tr>
+    <tr class="alt"><td>3月</td><td class="num">¥1,430,228</td><td class="num">¥1,566,482</td><td class="num negative">-¥136,254</td><td class="num">¥184,534</td><td class="num positive">¥114,418 (8%)</td><td class="positive">-¥70,116</td></tr>
+    <tr><td>4月</td><td class="num">¥969,505</td><td class="num">未確定</td><td class="num">仮¥400K想定</td><td class="num">¥116,341</td><td class="num">¥116,341 (12%)</td><td>同額</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9pt;color:#666">※ 3月のような経費超過月では、新ルール下で歩合が <strong>¥70,116削減</strong> → 会社負担を緩和。担当者には基本歩合（8%）を保証。</p>
+
+<h3>会社黒字維持型インセンティブ全体方針</h3>
+<div class="rules-box" style="background:#f0faf3;border-color:#2e9c5d">
+<h4 style="margin-top:0;color:#1f7d49">5原則（給与プランPDFと共通）</h4>
+<ul>
+  <li><strong>① 基本給保証</strong>: 会社収支に関わらず100%支給</li>
+  <li><strong>② インセンティブ上限</strong>: 全スタッフ歩合合計 ≤ 月次粗利の20%</li>
+  <li><strong>③ 利益連動係数</strong>: 純利益に応じて歩合支給率0〜100%可変</li>
+  <li><strong>④ 部門P&L連動</strong>: テレベット歩合は本節の新ルール適用</li>
+  <li><strong>⑤ 月末確定後支給</strong>: 翌月20日に確定額支給</li>
+</ul>
 </div>
 </section>
 

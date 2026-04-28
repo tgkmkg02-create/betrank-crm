@@ -1854,6 +1854,66 @@
       </div>
     </div>
 
+    <div class="card mb-16" style="border:2px solid var(--red);background:rgba(231,76,60,0.05)">
+      <h3 style="color:var(--red)">🛡️ 会社黒字維持型インセンティブ（最重要設計原則）</h3>
+      <p style="color:var(--muted);font-size:0.9em;line-height:1.7;margin-bottom:14px">
+        会社がマイナスに陥らないようインセンティブを根本再設計。<strong style="color:var(--red)">基本給は常に100%保証</strong>、ただし歩合・ボーナスは会社業績に連動。
+      </p>
+
+      <h4 style="margin-top:14px">原則① 基本給保証（無条件）</h4>
+      <p style="color:var(--muted);font-size:0.85em">全スタッフ（日本・韓国・アバター・テレベット）の<strong style="color:var(--text)">基本給は会社収支に関わらず100%支給</strong>。生活基盤を保護。</p>
+
+      <h4 style="margin-top:18px">原則② インセンティブ総額上限（月次粗利の20%）</h4>
+      <p style="color:var(--muted);font-size:0.85em">全スタッフの歩合・ボーナス合計が <strong style="color:var(--red)">月次粗利の20%</strong> を超えた場合、超過分は全員按分で減額。粗利を毀損しない。</p>
+      <table style="margin-top:6px">
+        <thead><tr><th>月次粗利</th><th>インセンティブ総額上限</th></tr></thead>
+        <tbody>
+          <tr><td>¥1,000万</td><td><strong>¥200万</strong></td></tr>
+          <tr><td>¥500万</td><td><strong>¥100万</strong></td></tr>
+          <tr><td>¥300万</td><td><strong>¥60万</strong></td></tr>
+          <tr><td>¥0（粗利なし）</td><td style="color:var(--red)"><strong>¥0</strong></td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top:18px">原則③ 利益連動係数（A型ボーナス・テレベット段階累進）</h4>
+      <p style="color:var(--muted);font-size:0.85em">会社月次純利益に応じてインセンティブ支給率が変動。</p>
+      <table>
+        <thead><tr><th>会社月次純利益</th><th>歩合支給率（係数）</th><th>影響対象</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--green)">≥ ¥100万（健全黒字）</td><td><strong style="color:var(--green)">100%</strong></td><td>全インセンティブ満額</td></tr>
+          <tr><td>¥0 〜 ¥100万（薄利）</td><td><strong>85%</strong></td><td>A型評価ボーナス・テレベ累進</td></tr>
+          <tr><td>-¥1 〜 -¥50万（小赤字）</td><td><strong style="color:var(--gold)">70%</strong></td><td>A型評価ボーナス・テレベ累進</td></tr>
+          <tr><td>-¥50万 〜 -¥100万（中赤字）</td><td><strong style="color:var(--gold)">40%</strong></td><td>A型評価ボーナス・テレベ累進</td></tr>
+          <tr><td style="color:var(--red)">< -¥100万（大赤字）</td><td><strong style="color:var(--red)">0%</strong></td><td>基本給のみ（攻めボーナス停止）</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="margin-top:18px">原則④ テレベット部門P&L連動歩合（売上ベース→利益ベース）</h4>
+      <p style="color:var(--muted);font-size:0.85em">現行の売上ベース12/15/18%は、3月のような経費超過月に会社負担が膨らむ問題があった。<strong style="color:var(--text)">部門P&L連動</strong>に変更。</p>
+      <table>
+        <thead><tr><th>テレベット部門収支</th><th>適用歩合</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--green)">純利益 ≥ ¥100万</td><td>通常 <strong>12% / 15% / 18%</strong> 累進制</td><td>売上¥150万→¥195K支給</td></tr>
+          <tr><td>純利益 ¥0 〜 ¥100万</td><td><strong>12%固定</strong></td><td>売上¥150万→¥180K支給</td></tr>
+          <tr><td style="color:var(--red)">純利益 < ¥0（赤字）</td><td><strong style="color:var(--red)">8%固定</strong></td><td>売上¥150万→¥120K支給</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--muted);font-size:0.78em;margin-top:6px">※ 経費超過月でも担当者基本給+8%歩合は確保。会社負担が無限に膨らまない構造。</p>
+
+      <h4 style="margin-top:18px">原則⑤ 月末確定後の翌月支給</h4>
+      <p style="color:var(--muted);font-size:0.85em">月末にP&L確定 → 翌月20日に上記原則を適用した確定額を支給。仮払い・前払いなし。</p>
+
+      <div style="margin-top:16px;padding:12px 14px;background:rgba(46,204,113,0.1);border-left:3px solid var(--green);border-radius:6px">
+        <strong style="color:var(--green)">💡 構造的効果:</strong>
+        <ul style="margin:6px 0 0;padding-left:20px;font-size:0.88em;line-height:1.7">
+          <li>会社が赤字 → 攻めボーナスが自動的に減額 → 赤字が拡大しない</li>
+          <li>粗利の20%上限 → 利益の80%は必ず会社に残る</li>
+          <li>テレベット赤字月でも担当者基本給は保証 → 安心感</li>
+          <li>スタッフは「会社の利益が自分の利益」と直感的に理解可能</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="card mb-16" style="border-left:3px solid var(--gold)">
       <h3>運用ルール（推奨）</h3>
       <ul style="color:var(--text);opacity:0.9;line-height:1.8;padding-left:20px">
