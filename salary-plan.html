@@ -2,20 +2,21 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>テレベット強化型 給与制度設計書 — ベットランクツアーズ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>テレベットインセンティブ制度 — 従業員向けガイド｜ベットランクツアーズ</title>
 <style>
-  @page { size: A4; margin: 18mm 16mm; }
+  @page { size: A4; margin: 16mm 14mm; }
   * { box-sizing: border-box; }
   body {
     font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
     color: #1a1a2e;
-    background: #fff;
+    background: #f4f6f5;
     line-height: 1.6;
     font-size: 10.5pt;
     margin: 0;
     padding: 24px;
   }
-  .page { max-width: 800px; margin: 0 auto; }
+  .page { max-width: 820px; margin: 0 auto; background:#fff; border-radius:16px; padding:28px 32px; box-shadow:0 2px 24px rgba(0,0,0,0.06); }
 
   .cover {
     background: linear-gradient(135deg, #1a3a2e 0%, #2c5e3e 50%, #1a3a2e 100%);
@@ -28,261 +29,129 @@
   }
   .cover .badge {
     display: inline-block;
-    background: #2e9c5d;
-    color: #fff;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 9pt;
-    font-weight: 700;
-    letter-spacing: 1pt;
-    margin-bottom: 16px;
+    background: #2e9c5d; color: #fff;
+    padding: 4px 14px; border-radius: 20px;
+    font-size: 9pt; font-weight: 700; letter-spacing: 1pt; margin-bottom: 16px;
   }
-  .cover h1 {
-    font-size: 28pt;
-    margin: 0 0 8px;
-    border: none;
-    padding: 0;
-    letter-spacing: -1pt;
-    line-height: 1.2;
-  }
-  .cover .ja {
-    color: #5dde8a;
-    font-size: 18pt;
-    font-weight: 600;
-    margin: 4px 0 16px;
-  }
-  .cover .description {
-    color: #c8d6cc;
-    font-size: 11pt;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.7;
-  }
+  .cover h1 { font-size: 27pt; margin: 0 0 8px; border: none; padding: 0; letter-spacing: -1pt; line-height: 1.2; }
+  .cover .ja { color: #5dde8a; font-size: 17pt; font-weight: 600; margin: 4px 0 16px; }
+  .cover .description { color: #c8d6cc; font-size: 11pt; max-width: 620px; margin: 0 auto; line-height: 1.8; }
 
   h2 {
-    font-size: 16pt;
-    color: #1a1a2e;
-    border-left: 6px solid #2e9c5d;
-    padding-left: 12px;
-    margin-top: 30px;
-    margin-bottom: 14px;
-    page-break-after: avoid;
+    font-size: 16pt; color: #1a1a2e;
+    border-left: 6px solid #2e9c5d; padding-left: 12px;
+    margin-top: 34px; margin-bottom: 14px; page-break-after: avoid;
   }
+  h2 .pnum { color:#2e9c5d; font-size:11pt; font-weight:700; letter-spacing:1pt; display:block; margin-bottom:2px; }
   h3 { font-size: 13pt; color: #2c3e50; margin: 20px 0 8px; page-break-after: avoid; }
   h4 { font-size: 11pt; color: #555; margin: 14px 0 6px; }
+  p { margin: 8px 0; }
+  .lead { font-size:10.5pt; line-height:1.8; color:#333; }
 
-  /* 設計原則 */
-  .principles-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin: 14px 0;
-  }
-  .principle-card {
-    background: linear-gradient(135deg, #f0faf3 0%, #fff 100%);
-    border-left: 5px solid #2e9c5d;
-    border-radius: 10px;
-    padding: 14px 18px;
-    page-break-inside: avoid;
-  }
-  .principle-card .num {
-    color: #2e9c5d;
-    font-size: 9pt;
-    font-weight: 700;
-    letter-spacing: 1pt;
-  }
-  .principle-card .title {
-    font-size: 12pt;
-    font-weight: 700;
-    margin: 4px 0 6px;
-  }
-  .principle-card .desc {
-    font-size: 9.5pt;
-    color: #555;
-    line-height: 1.6;
-  }
+  /* 3本柱 */
+  .pillar-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:16px 0; }
+  .pillar-card { border-radius:12px; padding:18px 18px; page-break-inside:avoid; border-top:5px solid #2e9c5d; background:linear-gradient(135deg,#f0faf3 0%,#fff 100%); }
+  .pillar-card.p2 { border-top-color:#e07b39; background:linear-gradient(135deg,#fef4ec 0%,#fff 100%); }
+  .pillar-card.p3 { border-top-color:#c9a14a; background:linear-gradient(135deg,#fdf8ec 0%,#fff 100%); }
+  .pillar-card .tag { font-size:8.5pt; font-weight:700; letter-spacing:1.5pt; color:#2e9c5d; }
+  .pillar-card.p2 .tag { color:#c0651f; } .pillar-card.p3 .tag { color:#a9842f; }
+  .pillar-card .ttl { font-size:13pt; font-weight:700; margin:6px 0 8px; }
+  .pillar-card .body { font-size:9.5pt; color:#555; line-height:1.7; }
+  .plus { text-align:center; font-size:20pt; color:#bbb; font-weight:700; align-self:center; }
 
-  /* 部署セクション */
-  .dept-section {
-    border-radius: 12px;
-    padding: 18px 22px;
-    margin: 16px 0;
-    page-break-inside: avoid;
-  }
-  .dept-section.cs { background: #f0f6fb; border-left: 6px solid #2c7cb0; }
-  .dept-section.local { background: #fff5f0; border-left: 6px solid #e94560; }
-  .dept-section.tb {
-    background: linear-gradient(135deg, #f0faf3 0%, #e8f5ed 100%);
-    border-left: 6px solid #2e9c5d;
-    border: 2px solid #2e9c5d;
-  }
-  .dept-section.tb .core-badge {
-    display: inline-block;
-    background: #2e9c5d;
-    color: #fff;
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 9pt;
-    font-weight: 700;
-    letter-spacing: 1pt;
-    margin-bottom: 8px;
-  }
-  .dept-section h3 { margin-top: 0; font-size: 14pt; }
-  .dept-section.cs h3 { color: #1f5d8a; }
-  .dept-section.local h3 { color: #a93226; }
-  .dept-section.tb h3 { color: #1f7d49; }
+  /* 職種カラー */
+  .role { display:inline-block; padding:2px 9px; border-radius:11px; font-size:9pt; font-weight:700; color:#fff; }
+  .role.acq { background:#2c7cb0; } .role.bridge { background:#7a4dd4; } .role.avatar { background:#2e9c5d; }
 
   /* テーブル */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 9.5pt;
-    margin: 10px 0;
-    page-break-inside: avoid;
-    background: #fff;
-  }
-  thead { background: #1a1a2e; color: #fff; }
-  th, td { padding: 7px 9px; border: 1px solid #ddd; text-align: left; }
-  th { font-weight: 600; font-size: 9pt; letter-spacing: 0.3pt; }
-  td.num { text-align: right; font-variant-numeric: tabular-nums; }
-  tr.alt td { background: #fafafa; }
+  table { width:100%; border-collapse:collapse; font-size:9.5pt; margin:10px 0; page-break-inside:avoid; background:#fff; }
+  thead { background:#1a1a2e; color:#fff; }
+  th, td { padding:7px 9px; border:1px solid #ddd; text-align:left; vertical-align:top; }
+  th { font-weight:600; font-size:9pt; letter-spacing:0.3pt; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  tr.alt td { background:#fafafa; }
+  tr.total td { border-top:2px solid #1f7d49; background:#e8f5e9; font-weight:700; }
 
-  /* VVIP */
-  .vvip-special {
-    background: linear-gradient(135deg, #c9a14a 0%, #e8c878 100%);
-    color: #1a1a2e;
-    border-radius: 14px;
-    padding: 22px 26px;
-    margin: 18px 0;
-    page-break-inside: avoid;
-    box-shadow: 0 4px 20px rgba(201,161,74,0.3);
-  }
-  .vvip-special .badge {
-    display: inline-block;
-    background: #1a1a2e;
-    color: #c9a14a;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 8.5pt;
-    font-weight: 700;
-    letter-spacing: 1pt;
-    margin-bottom: 8px;
-  }
-  .vvip-special h3 {
-    color: #1a1a2e;
-    margin: 4px 0 8px;
-    font-size: 16pt;
-  }
-  .vvip-special table { background: rgba(255,255,255,0.95); }
+  /* 累進歩合ボックス */
+  .tier-box { border:2px solid #2e9c5d; border-radius:12px; padding:6px 0; margin:10px 0; page-break-inside:avoid; overflow:hidden; }
+  .tier-box.bridge { border-color:#7a4dd4; }
+  .tier-row { display:flex; align-items:center; justify-content:space-between; padding:10px 18px; border-bottom:1px solid #eee; }
+  .tier-row:last-child { border-bottom:none; }
+  .tier-row .band { font-size:10pt; }
+  .tier-row .rate { font-size:18pt; font-weight:800; color:#1f7d49; }
+  .tier-box.bridge .tier-row .rate { color:#5a2fb0; }
 
-  /* デポジット */
-  .deposit-callout {
-    background: #fef5e7;
-    border: 2px solid #f5c987;
-    border-radius: 12px;
-    padding: 18px 22px;
-    margin: 14px 0;
-    page-break-inside: avoid;
-  }
-  .deposit-callout h3 { margin-top: 0; color: #8b6f1f; }
+  /* 計算例カード */
+  .calc-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:12px 0; }
+  .calc-card { border:1px solid #e3e8e5; border-radius:10px; padding:14px 16px; background:#fbfdfc; page-break-inside:avoid; }
+  .calc-card.hl { border:2px solid #2e9c5d; background:#f0faf3; }
+  .calc-card .cs { font-size:10pt; font-weight:700; color:#2c3e50; }
+  .calc-card .formula { font-size:8.8pt; color:#777; margin:6px 0; font-variant-numeric:tabular-nums; }
+  .calc-card .res { font-size:17pt; font-weight:800; color:#1f7d49; }
 
-  /* セーフティネット */
-  .safety-net {
-    background: #fdf2f0;
-    border: 2px solid #e94560;
-    border-radius: 12px;
-    padding: 18px 22px;
-    margin: 14px 0;
-    page-break-inside: avoid;
-  }
-  .safety-net h3 { color: #a93226; margin-top: 0; }
+  /* コールアウト */
+  .callout { border-radius:12px; padding:16px 20px; margin:14px 0; page-break-inside:avoid; }
+  .callout.green { background:#eef9f1; border:2px solid #2e9c5d; }
+  .callout.gold { background:#fdf8ec; border:2px solid #d9b65a; }
+  .callout.red { background:#fdf2f0; border:2px solid #e94560; }
+  .callout.blue { background:#eef5fb; border:2px solid #2c7cb0; }
+  .callout h3 { margin-top:0; }
+  .callout.green h3 { color:#1f7d49; } .callout.gold h3 { color:#8b6f1f; }
+  .callout.red h3 { color:#a93226; } .callout.blue h3 { color:#1f5d8a; }
 
-  /* コスト */
-  .cost-summary {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 14px 0;
-  }
-  .cost-item {
-    background: #fff;
-    border: 2px solid #2e9c5d;
-    border-radius: 10px;
-    padding: 14px;
-    text-align: center;
-  }
-  .cost-item .num {
-    font-size: 20pt;
-    font-weight: 700;
-    color: #1f7d49;
-  }
-  .cost-item .label-text {
-    font-size: 9pt;
-    color: #555;
-    margin-top: 4px;
-  }
-  .cost-item .ratio {
-    font-size: 10pt;
-    color: #1f7d49;
-    font-weight: 700;
-    margin-top: 6px;
-  }
+  /* デポジットCPA ハイライト */
+  .cpa-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  .cpa-box { border-radius:12px; padding:18px 20px; page-break-inside:avoid; }
+  .cpa-box.main { background:#fff5f0; border:2px solid #e07b39; }
+  .cpa-box.sub { background:#eef9f1; border:2px solid #2e9c5d; }
+  .cpa-box .label { font-size:9pt; color:#777; }
+  .cpa-box .big { font-size:30pt; font-weight:800; color:#c0651f; line-height:1.1; margin:2px 0; }
+  .cpa-box.sub .big { font-size:24pt; color:#1f7d49; }
+  .cpa-box .note { font-size:9pt; color:#666; }
 
-  /* Final */
-  .summary-final {
-    background: linear-gradient(135deg, #1a3a2e 0%, #2c5e3e 100%);
-    color: #fff;
-    border-radius: 14px;
-    padding: 26px 30px;
-    margin: 16px 0;
-    page-break-inside: avoid;
-  }
-  .summary-final h2 { color: #5dde8a; border: none; padding: 0; margin: 0 0 14px; }
-  .summary-final ul { margin: 8px 0; padding-left: 24px; line-height: 2; }
-  .summary-final li::marker { color: #5dde8a; }
-  .summary-final .quote {
-    font-size: 13pt;
-    color: #5dde8a;
-    font-weight: 600;
-    text-align: center;
-    margin: 14px 0 8px;
-    line-height: 1.6;
-  }
+  /* 評価2軸 / 5軸 */
+  .eval-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:10px 0; }
+  .badge-list { list-style:none; padding:0; margin:8px 0; }
+  .badge-list li { padding:7px 12px; background:#f4f7f5; border-left:4px solid #2e9c5d; border-radius:6px; margin:6px 0; font-size:9.5pt; }
 
-  footer {
-    margin-top: 32px;
-    padding-top: 12px;
-    border-top: 1px solid #ddd;
-    font-size: 8.5pt;
-    color: #888;
-    text-align: center;
-  }
+  /* 半期ボーナス算定 */
+  .periods { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:12px 0; }
+  .period-box { border:1px solid #ddd; border-radius:10px; padding:14px; background:#fafbfa; }
+  .period-box.warn { background:#fdf2f0; border:2px solid #e94560; }
+  .period-box .pl { font-size:8.5pt; color:#888; }
+  .period-box .pd { font-size:11pt; font-weight:700; margin:4px 0; }
+  .period-box .pg { font-size:9pt; color:#1f7d49; font-weight:700; }
+  .period-box.warn .pd { color:#a93226; }
+  .formula-block { background:#1a1a2e; color:#e8f5ed; border-radius:10px; padding:16px 20px; font-size:10pt; line-height:2; margin:10px 0; }
+  .formula-block b { color:#5dde8a; }
+
+  .summary-final { background:linear-gradient(135deg,#1a3a2e 0%,#2c5e3e 100%); color:#fff; border-radius:14px; padding:26px 30px; margin:24px 0 8px; page-break-inside:avoid; }
+  .summary-final h2 { color:#5dde8a; border:none; padding:0; margin:0 0 14px; }
+  .summary-final ul { margin:8px 0; padding-left:24px; line-height:2; }
+  .summary-final li::marker { color:#5dde8a; }
+  .summary-final .quote { font-size:13pt; color:#5dde8a; font-weight:600; text-align:center; margin:14px 0 8px; line-height:1.6; }
+
+  footer { margin-top:32px; padding-top:12px; border-top:1px solid #ddd; font-size:8.5pt; color:#888; text-align:center; }
+
+  .green { color:#1f7d49; font-weight:700; }
+  .red { color:#c0392b; font-weight:700; }
+  .gold { color:#a9842f; font-weight:700; }
+  .blue { color:#1f5d8a; font-weight:700; }
+
+  .print-btn { position:fixed; top:20px; right:20px; background:#2e9c5d; color:#fff; border:none; padding:10px 18px; border-radius:6px; font-size:11pt; font-weight:700; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.15); z-index:10; }
 
   @media print {
-    body { padding: 0; font-size: 10pt; }
-    .cover h1 { font-size: 22pt; }
-    h2 { font-size: 14pt; }
-    .no-print { display: none; }
+    body { padding:0; background:#fff; font-size:10pt; }
+    .page { box-shadow:none; border-radius:0; padding:0; max-width:none; }
+    .cover h1 { font-size:22pt; }
+    h2 { font-size:14pt; }
+    .no-print { display:none; }
   }
-
-  .print-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #2e9c5d;
-    color: #fff;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    font-size: 11pt;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  @media (max-width:680px) {
+    .pillar-grid, .calc-grid, .cpa-grid, .eval-grid, .periods { grid-template-columns:1fr; }
+    .plus { display:none; }
+    body { padding:12px; } .page { padding:18px 16px; }
   }
-
-  .green { color: #1f7d49; font-weight: 700; }
-  .red { color: #c0392b; font-weight: 700; }
-  .gold { color: #c9a14a; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -291,355 +160,330 @@
 <div class="page">
 
 <div class="cover">
-  <div class="badge">OFFICIAL · V4 · TELEBET-FOCUSED</div>
-  <h1>TELEBET-CENTRIC<br>COMPENSATION</h1>
-  <div class="ja">テレベット強化型 給与制度</div>
+  <div class="badge">OFFICIAL · 従業員向けガイド · TELEBET INCENTIVE</div>
+  <h1>TELEBET<br>INCENTIVE SYSTEM</h1>
+  <div class="ja">テレベットインセンティブ制度</div>
   <div class="description">
-    <strong style="color:#fff">「テレベット = 安定収益の主軸」</strong>として全社が同じ方向を向く設計。<br>
-    現地スタッフは<strong style="color:#5dde8a">デポジット獲得とテレベット移行のみで評価</strong>。<br>
-    顧客を長期化することが、全員の報酬の源泉となる構造。
+    あなたの給料は <strong style="color:#fff">「基本給」＋「月の歩合」＋「半期ボーナス」</strong> の3層構造です。<br>
+    基本給で生活が守られ、歩合で頑張りが報われ、半期ボーナスで会社の成功を共有します。
   </div>
 </div>
 
-<!-- ===================== 設計思想 ===================== -->
+<!-- ===================== ① 給料の全体像 ===================== -->
 <section>
-<h2>① 設計思想 — テレベット主軸への戦略集中</h2>
+<h2><span class="pnum">01 / 給料の全体像</span>3つの柱と職種別早見</h2>
 
-<p style="font-size:10.5pt;line-height:1.8">
-  ベットランクツアーズの収益構造分析（341名・¥38億ローリング）から、以下の戦略原則を導出。
-</p>
+<p class="lead">あなたの給料は3つの柱で構成されます。下の3本柱がそのまま毎月〜半期の収入の流れになります。</p>
 
-<div class="principles-grid">
-  <div class="principle-card">
-    <div class="num">PRINCIPLE 01</div>
-    <div class="title">テレベット = 利益の核</div>
-    <div class="desc">場所代・移動費なし、月次継続課金構造で<strong>最も安定した収益源</strong>。ここに報酬を集中させる。</div>
+<div class="pillar-grid">
+  <div class="pillar-card p1">
+    <div class="tag">PILLAR 1</div>
+    <div class="ttl">基本給 ＋ 役職手当</div>
+    <div class="body">毎月決まった額。<strong>会社が赤字でも変わらない。</strong>管理監督責任者には役職手当 <strong>+¥50,000／月</strong>。</div>
   </div>
-  <div class="principle-card">
-    <div class="num">PRINCIPLE 02</div>
-    <div class="title">現地は「橋渡し」</div>
-    <div class="desc">現地スタッフはデポジット獲得・テレベ移行のみで評価。「居るだけ」評価をやめ、<strong>長期顧客創出</strong>に集中。</div>
+  <div class="pillar-card p2">
+    <div class="tag">PILLAR 2</div>
+    <div class="ttl">月の歩合</div>
+    <div class="body">担当客の利益に応じて支給。<strong>翌月20日に振込</strong>（70%即時／30%は半期繰延）。<strong>客が勝った月はゼロ。</strong></div>
   </div>
-  <div class="principle-card">
-    <div class="num">PRINCIPLE 03</div>
-    <div class="title">VVIP維持が最優先</div>
-    <div class="desc">Top10 VVIPで売上の45%。離脱防止に<strong>3部署同時支給の特別ボーナス</strong>を投入。</div>
+  <div class="pillar-card p3">
+    <div class="tag">PILLAR 3</div>
+    <div class="ttl">半期ボーナス</div>
+    <div class="body">年2回（<strong>7/20・1/20</strong>）。会社の半期利益の<strong>10%</strong>をチームで配分。成果評価×上司評価で<strong>最大1.54倍</strong>。</div>
   </div>
-  <div class="principle-card">
-    <div class="num">PRINCIPLE 04</div>
-    <div class="title">会社黒字保証</div>
-    <div class="desc">全インセンティブ ≤ 月次粗利の25%。基本給は無条件で100%支給。<strong>会社が赤字に転落しない</strong>構造的安全装置。</div>
-  </div>
+</div>
+
+<h3>3つの職種 — 行動で歩合が決まる</h3>
+<p style="font-size:9.5pt;color:#666;margin-top:0">役職は歩合に関係しません（役職手当は管理監督責任者のみ）。</p>
+<table>
+<thead><tr><th style="width:90px">職種</th><th>主な仕事</th><th>基本給（月）</th><th>歩合の特徴</th></tr></thead>
+<tbody>
+<tr>
+  <td><span class="role acq">獲得者</span></td>
+  <td>新しい客を獲得する。3ヶ月以上ロック付きデポジットで CPA 確定。</td>
+  <td>営業マネージャー <strong>¥385,000</strong><br>営業（標準） ¥350,000<br>営業（ジュニア） ¥250,000</td>
+  <td>月次歩合 <strong class="green">10〜20%</strong>（3段階累進）・<strong>永続</strong><br>＋ 獲得CPA ¥10,000／件<br>＋ LTV達成ボーナス</td>
+</tr>
+<tr class="alt">
+  <td><span class="role bridge">橋渡し</span></td>
+  <td>韓国IRで客をケアし、テレベに移行させる。獲得者と別人なら両方支給。</td>
+  <td>橋渡しシニア <strong>¥385,000</strong><br>橋渡し ¥350,000〜374,000</td>
+  <td>月次歩合 <strong style="color:#5a2fb0">2〜4%</strong>（3段階累進）・<strong>6ヶ月</strong><br>＋ 移行手当 ¥15K／件<br>＋ デポジット獲得補助 ¥20K／件</td>
+</tr>
+<tr>
+  <td><span class="role avatar">アバター</span></td>
+  <td>実際にプレイを代行する。スキルランク4段階で基本給が決まる。</td>
+  <td>マスター <strong>₱115,000</strong><br>ベテラン ₱80,000<br>標準 ₱50,000／見習い ₱40,000</td>
+  <td>月次歩合は<strong>対象外</strong>（プレイ規模は責任外のため）<br>半期ごとのランク判定で昇格＝基本給アップ</td>
+</tr>
+</tbody>
+</table>
+
+<div class="callout green">
+  <h3>歩合の計算ベース＝「歩合対象粗利」とは</h3>
+  <p style="margin:6px 0;font-size:10pt">
+    <strong>客のテレベ利益 −（拠点経費 ＋ 顧客還元 ＋ 広告費）</strong><br>
+    客が負けて会社が儲かった分が歩合の対象です。<strong>月単位で計算</strong>され、マイナス（赤字月）の客からは歩合 <strong class="red">¥0</strong>。
+  </p>
 </div>
 </section>
 
-<!-- ===================== テレベット ===================== -->
+<!-- ===================== ② 月次歩合の仕組み ===================== -->
 <section style="page-break-before:always">
-<h2>② 🟩 テレベット/アバター — 利益エンジン部署</h2>
+<h2><span class="pnum">02 / 月次歩合の仕組み</span>計算式・計算例・繰延ルール</h2>
 
-<div class="dept-section tb">
-<div class="core-badge">★ 利益の核</div>
-<h3>テレベット/アバター（たく・むらまつ・あやか）</h3>
-<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: 安定収益の主軸 ／ LTV最大化 ／ 顧客関係の長期維持</p>
+<p class="lead">月の歩合は「担当客の歩合対象粗利」に、職種別の累進率を掛けて計算します。獲得者は最大20%、橋渡しは最大4%。<strong>客が勝った月（赤字月）は ¥0</strong>。</p>
 
-<h4>基本給</h4>
+<h3><span class="role acq">獲得者</span> 月次利益歩合（3段階累進・上限20%）</h3>
+<div class="tier-box">
+  <div class="tier-row"><span class="band">利益のうち <strong>〜¥1,000万</strong> 部分 × 10%</span><span class="rate">10%</span></div>
+  <div class="tier-row"><span class="band">利益のうち <strong>¥1,000万〜¥3,000万</strong> 部分 × 15%</span><span class="rate">15%</span></div>
+  <div class="tier-row"><span class="band">利益のうち <strong>¥3,000万 超</strong> 部分 × 20%</span><span class="rate">20%</span></div>
+</div>
+
+<h4>計算例</h4>
+<div class="calc-grid">
+  <div class="calc-card"><div class="cs">A. 標準客（月利 ¥80万）</div><div class="formula">¥80万 × 10%</div><div class="res">¥80,000</div></div>
+  <div class="calc-card"><div class="cs">B. 大型VIP（月利 ¥800万）</div><div class="formula">¥800万 × 10%</div><div class="res">¥800,000</div></div>
+  <div class="calc-card"><div class="cs">C. VVIP（月利 ¥3,000万）</div><div class="formula">¥1,000万×10% ＋ ¥2,000万×15% ＝ ¥100万＋¥300万</div><div class="res">¥4,000,000</div></div>
+  <div class="calc-card hl"><div class="cs">D. メガVVIP（月利 ¥5,000万）</div><div class="formula">¥1,000万×10% ＋ ¥2,000万×15% ＋ ¥2,000万×20%</div><div class="res">¥8,000,000</div></div>
+</div>
+
+<h3 style="margin-top:24px"><span class="role bridge">橋渡し</span> 月次利益歩合（3段階累進・上限4%・6ヶ月）</h3>
+<div class="tier-box bridge">
+  <div class="tier-row"><span class="band">利益のうち <strong>〜¥1,000万</strong> 部分 × 2%</span><span class="rate">2%</span></div>
+  <div class="tier-row"><span class="band">利益のうち <strong>¥1,000万〜¥3,000万</strong> 部分 × 3%</span><span class="rate">3%</span></div>
+  <div class="tier-row"><span class="band">利益のうち <strong>¥3,000万 超</strong> 部分 × 4%</span><span class="rate">4%</span></div>
+</div>
+<div class="calc-grid">
+  <div class="calc-card"><div class="cs">VVIP関与（月利 ¥3,000万）</div><div class="formula">¥1,000万×2% ＋ ¥2,000万×3% ＝ ¥20万＋¥60万</div><div class="res" style="color:#5a2fb0">¥800,000</div></div>
+</div>
+
+<h3 style="margin-top:24px">30%繰延ルール（離職防止メカニズム）</h3>
 <table>
-<thead><tr><th>スタッフ</th><th>基本給</th><th>備考</th></tr></thead>
+<thead><tr><th>支給タイミング</th><th>割合</th><th>扱い</th></tr></thead>
 <tbody>
-<tr><td><strong>たく</strong></td><td class="num">₱80,000</td><td>確定（PHPベース）</td></tr>
-<tr class="alt"><td><strong>むらまつ</strong></td><td class="num">₱80,000</td><td>確定</td></tr>
-<tr><td><strong>あやか</strong></td><td class="num">₱80,000（仮）</td><td>確認待ち</td></tr>
+<tr><td>毎月20日に支給</td><td><strong class="green">70%</strong></td><td>即時受取</td></tr>
+<tr class="alt"><td>半期繰延</td><td><strong class="red">30%</strong></td><td><strong>退職で失効</strong></td></tr>
 </tbody>
 </table>
+<div class="callout red" style="margin-top:10px">
+  <p style="margin:0;font-size:9.5pt"><strong>失効例：</strong>月歩合 ¥250K の人なら直近6ヶ月の繰延 <strong>¥450K</strong> が退職時に消滅。VVIP担当（月¥1M超）なら <strong>¥1.8M超</strong> が常時リスク。</p>
+</div>
 
-<h4 style="margin-top:14px">歩合・ボーナス</h4>
+<h3 style="margin-top:24px">LTV達成ボーナス（半期内累計到達で支給）</h3>
 <table>
-<thead><tr><th>項目</th><th>支給</th><th>条件</th></tr></thead>
+<thead><tr><th>累計LTV</th><th>≥ ¥500万</th><th>≥ ¥1,000万</th><th>≥ ¥6,000万</th><th>≥ ¥1.2億</th><th>≥ ¥3.6億</th></tr></thead>
 <tbody>
-<tr><td><strong>担当顧客の月次売上歩合</strong></td><td><strong class="green">段階累進制（下表参照）</strong></td><td>売上帯ごとに歩合率が変動</td></tr>
-<tr class="alt"><td><strong>3ヶ月継続ボーナス</strong></td><td class="green"><strong>¥30,000</strong></td><td>同顧客が <strong>月15日以上参加</strong> を3ヶ月連続</td></tr>
-<tr><td><strong>6ヶ月継続ボーナス</strong></td><td class="green"><strong>¥80,000</strong></td><td>同顧客が <strong>月15日以上参加</strong> を6ヶ月連続</td></tr>
-<tr class="alt"><td><strong>12ヶ月継続ボーナス</strong></td><td class="green"><strong>¥150,000</strong></td><td>同顧客が <strong>月15日以上参加</strong> を12ヶ月連続</td></tr>
-<tr><td><strong>LTV ¥500万到達</strong></td><td class="gold"><strong>¥50,000</strong></td><td>担当客のLTV500万円突破時</td></tr>
-<tr class="alt"><td><strong>LTV ¥1,000万到達</strong></td><td class="gold"><strong>¥150,000</strong></td><td>担当客のLTV1,000万円突破時</td></tr>
-<tr><td><strong>LTV ¥2,000万到達</strong></td><td class="gold"><strong>¥300,000</strong></td><td>担当客のLTV2,000万円突破時</td></tr>
+<tr><td><strong>支給額</strong></td><td class="gold"><strong>¥50K</strong></td><td class="gold"><strong>¥100K</strong></td><td class="gold"><strong>¥600K</strong></td><td class="gold"><strong>¥1.2M</strong></td><td class="gold"><strong>¥3.6M</strong></td></tr>
 </tbody>
 </table>
+<p style="font-size:9pt;color:#666;margin-top:4px">※ 累計LTVが半期（6ヶ月）以内に各層到達で支給。同一顧客で各層1回まで。期間内未達は不支給。</p>
 
-<h4 style="margin-top:14px">★ テレベ売上歩合 段階累進制（重要）</h4>
-<table>
-<thead><tr><th>売上帯</th><th>歩合率</th><th>計算方法</th></tr></thead>
-<tbody>
-<tr><td>¥100万まで</td><td><strong class="green">12%</strong></td><td>売上 × 12%</td></tr>
-<tr class="alt"><td>¥100万〜200万の部分</td><td><strong class="green">15%</strong></td><td>超過分 × 15%</td></tr>
-<tr><td>¥200万以上の部分</td><td><strong class="green">18%</strong></td><td>超過分 × 18%</td></tr>
-</tbody>
-</table>
-
-<h4 style="margin-top:12px">早見表（テレベ売上→歩合額）</h4>
-<table>
-<thead><tr><th>テレベ月次売上</th><th>歩合額</th><th>実質率</th></tr></thead>
-<tbody>
-<tr><td>¥80万</td><td class="num green"><strong>¥96,000</strong></td><td>12.0%</td></tr>
-<tr class="alt"><td>¥100万</td><td class="num green"><strong>¥120,000</strong></td><td>12.0%</td></tr>
-<tr><td>¥130万</td><td class="num green"><strong>¥165,000</strong></td><td>12.7%</td></tr>
-<tr class="alt"><td>¥150万</td><td class="num green"><strong>¥195,000</strong></td><td>13.0%</td></tr>
-<tr><td>¥200万</td><td class="num neutral"><strong>¥270,000</strong></td><td>13.5%</td></tr>
-<tr class="alt"><td>¥300万</td><td class="num gold"><strong>¥450,000</strong></td><td>15.0%</td></tr>
-<tr><td>¥500万</td><td class="num gold"><strong>¥810,000</strong></td><td>16.2%</td></tr>
-</tbody>
-</table>
-
-<p style="font-size:9pt;color:#666;margin-top:8px">
-  <strong>シミュレーション:</strong><br>
-  • 標準月（売上¥130万 = ¥165K + 6ヶ月継続¥80K + LTV¥500万到達¥50K）: ₱80K + <strong>月収 約¥295K + ₱80K</strong><br>
-  • エース月（売上¥300万 = ¥450K + 12ヶ月継続¥150K + LTV¥1,000万到達¥150K）: ₱80K + <strong>月収 約¥750K + ₱80K</strong>
-</p>
+<div class="callout gold">
+  <h3>📌 共通ルール</h3>
+  <p style="margin:6px 0;font-size:9.5pt">
+    • 歩合期間：<strong>獲得者＝永続</strong>（その客がいる限り）／<strong>橋渡し＝6ヶ月のみ</strong>。<br>
+    • 広告経由の客は歩合 <strong>半額</strong>（獲得者 5/7.5/10% ・ 橋渡し 1/1.5/2%）・<strong>12ヶ月のみ</strong>。<br>
+    • 同一人物が獲得者＋橋渡しを兼ねた場合は<strong>獲得者報酬のみ</strong>（二重取り防止）。
+  </p>
 </div>
 </section>
 
-<!-- ===================== 現地 ===================== -->
-<section>
-<h2>③ 🟥 現地スタッフ — 長期顧客への橋渡し役</h2>
-
-<div class="dept-section local">
-<h3>現地スタッフ（チョイ・ケビン・チェリン）</h3>
-<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: <strong>顧客を長期化する「橋」</strong>（デポジット獲得・テレベット移行のみで評価）</p>
-
-<h4>基本給（KRWベース）</h4>
-<table>
-<thead><tr><th>スタッフ</th><th>基本給(₩)</th><th>円換算(参考)</th></tr></thead>
-<tbody>
-<tr><td><strong>チョイ</strong></td><td class="num">₩3,500,000</td><td class="num">¥376,344</td></tr>
-<tr class="alt"><td><strong>ケビン</strong></td><td class="num">₩3,400,000</td><td class="num">¥365,591</td></tr>
-<tr><td><strong>チェリン</strong></td><td class="num">₩3,200,000</td><td class="num">¥344,086</td></tr>
-</tbody>
-</table>
-
-<h4 style="margin-top:14px">歩合・ボーナス（移行系のみ・現地アップセル歩合は廃止）</h4>
-<table>
-<thead><tr><th>項目</th><th>支給</th><th>条件</th></tr></thead>
-<tbody>
-<tr><td><strong>デポジット獲得</strong></td><td class="green"><strong>¥20,000/件</strong></td><td>デポジット契約成立時</td></tr>
-<tr class="alt"><td><strong>テレベット移行（即時）</strong></td><td class="green"><strong>¥15,000/件</strong></td><td>移行成立時</td></tr>
-<tr><td><strong>テレベット移行後追い歩合</strong></td><td class="green"><strong>2%（3年間限定）</strong></td><td>移行客のテレベ売上に対し</td></tr>
-</tbody>
-</table>
-
-<div style="background:rgba(231,76,60,0.1);padding:10px 14px;border-radius:8px;margin-top:10px;font-size:9pt">
-  <strong style="color:#a93226">⚠️ 重要な変更:</strong> 現地アップセル売上歩合（旧3%）は<strong>廃止</strong>。
-  「現地で居るだけ」評価をやめ、長期顧客創出（デポジット・テレベ移行）のみを明確に評価する。
-</div>
-
-<p style="font-size:9pt;color:#666;margin-top:8px">
-  <strong>シミュレーション:</strong> 月3件デポジット + 月2件テレベ移行 + 後追い¥30K = <strong>+¥160,000/月</strong>（基本給に上乗せ）
-</p>
-</div>
-</section>
-
-<!-- ===================== CSマーケ ===================== -->
-<section>
-<h2>④ 🟦 CSマーケティング — 新規・リピート・紹介</h2>
-
-<div class="dept-section cs">
-<h3>CSマーケティング（長岡きみ・長岡ゆみ）</h3>
-<p style="font-size:9.5pt;color:#555;margin:0 0 12px">役割: 新規獲得 ／ リピート管理 ／ 紹介促進</p>
-
-<h4>基本給</h4>
-<table>
-<thead><tr><th>スタッフ</th><th>基本給</th></tr></thead>
-<tbody>
-<tr><td><strong>長岡きみ</strong></td><td class="num">¥350,000</td></tr>
-<tr class="alt"><td><strong>長岡ゆみ</strong></td><td class="num">¥250,000</td></tr>
-</tbody>
-</table>
-
-<h4 style="margin-top:14px">歩合・ボーナス</h4>
-<table>
-<thead><tr><th>項目</th><th>支給</th><th>条件</th></tr></thead>
-<tbody>
-<tr><td><strong>新規獲得</strong></td><td>プラン別固定額（下表参照）</td><td>新規顧客の初来店時</td></tr>
-<tr class="alt"><td><strong>リピート獲得</strong></td><td>プラン別固定額（下表参照）</td><td>既存顧客の再来店時</td></tr>
-<tr><td><strong>紹介発生</strong></td><td>固定 <span class="green">¥10,000</span></td><td>紹介客の初来店時</td></tr>
-<tr class="alt"><td><strong>VVIP級リピート獲得</strong></td><td>上記＋追加 <span class="gold">¥20,000</span></td><td>Top10 VVIPのリピート時</td></tr>
-</tbody>
-</table>
-
-<h4 style="margin-top:14px">プラン別 固定報酬テーブル（CSマーケ）</h4>
-<table>
-<thead><tr><th>プラン</th><th>新規獲得</th><th>リピート獲得</th></tr></thead>
-<tbody>
-<tr><td>77万円プラン</td><td class="num green"><strong>¥3,000</strong></td><td class="num green"><strong>¥3,000</strong></td></tr>
-<tr class="alt"><td>100万円プラン</td><td class="num green"><strong>¥3,000</strong></td><td class="num green"><strong>¥4,000</strong></td></tr>
-<tr><td>200万円プラン</td><td class="num green"><strong>¥5,000</strong></td><td class="num green"><strong>¥5,000</strong></td></tr>
-<tr class="alt"><td>300万円プラン</td><td class="num green"><strong>¥7,000</strong></td><td class="num green"><strong>¥7,000</strong></td></tr>
-<tr><td>500万円プラン</td><td class="num green"><strong>¥10,000</strong></td><td class="num green"><strong>¥10,000</strong></td></tr>
-<tr class="alt"><td>1000万円プラン</td><td class="num gold"><strong>¥15,000</strong></td><td class="num gold"><strong>¥12,000</strong></td></tr>
-</tbody>
-</table>
-</div>
-</section>
-
-<!-- ===================== VVIP特別ボーナス ===================== -->
+<!-- ===================== ③ デポジットCPA・アバター ===================== -->
 <section style="page-break-before:always">
-<h2>⑤ ⭐ VVIP維持特別ボーナス（全部署対象）</h2>
+<h2><span class="pnum">03 / デポジット・アバター</span>獲得CPA・アバター・重要ルール</h2>
 
-<div class="vvip-special">
-<div class="badge">CRITICAL</div>
-<h3>「Top10 VVIPを失わないこと」が会社の生命線</h3>
-<p style="font-size:9.5pt;margin:8px 0">
-  データ分析でTop1で17.6%、Top5で44%の売上集中が判明。1名離脱が事業に致命的。<br>
-  <strong>全部署同時支給</strong>で「VVIPはチーム全員で守る」文化を金銭的に表現。
-</p>
+<h3>デポジット獲得CPA（獲得者向け）</h3>
+<div class="cpa-grid">
+  <div class="cpa-box main">
+    <div class="label">獲得者への支給額</div>
+    <div class="big">¥10,000</div>
+    <div class="note">1件あたり固定。デポジット規模を問わず一律。獲得月に確定 → 翌月20日支給。</div>
+  </div>
+  <div class="cpa-box sub">
+    <div class="label">客への還元（VIPランクプログラム）</div>
+    <div class="big">CIチップ 0.3〜1.0%</div>
+    <div class="note">入金額×ランク別レート。Silver以上はローリングリベート＋サービスチップも併用。</div>
+  </div>
+</div>
+
+<h4>支給条件（4つ）</h4>
 <table>
-<thead><tr><th>トリガー</th><th>対象部署</th><th>支給</th></tr></thead>
+<thead><tr><th style="width:120px">条件</th><th>内容</th></tr></thead>
 <tbody>
-<tr><td>Top10 VVIP のリピート来店</td><td>CS担当 ＋ 現地担当 ＋ テレベ担当 全員</td><td><strong>各 ¥30,000</strong></td></tr>
-<tr><td>VVIP の半年間離脱を防止（継続関係維持）</td><td>同上</td><td><strong>各 ¥50,000</strong></td></tr>
-<tr><td>新規VVIP獲得（LTV1,000万超予測）</td><td>CS担当</td><td><strong>¥100,000</strong></td></tr>
+<tr><td><strong>① ロック期間</strong></td><td><strong>3ヶ月以上</strong>のロック付きデポジット契約に客が応じた場合のみ CPA 発生。短期出金前提のデポジットは対象外。</td></tr>
+<tr class="alt"><td><strong>② 入金確認</strong></td><td>会社指定の入金口座で<strong>着金確認後</strong>に確定。Chargeback 発生時は永久回収。</td></tr>
+<tr><td><strong>③ 経路</strong></td><td>自己獲得＝CPA ¥10K ＋ 月次歩合 10/15/20% <strong>永続</strong>。広告経由＋営業フォロー＝CPA ¥10K ＋ 月次歩合<strong>半額12ヶ月</strong>。広告経由＋関与なし＝<strong class="red">¥0</strong>。</td></tr>
+<tr class="alt"><td><strong>④ 30日引出制限</strong></td><td>客が獲得後30日以内に入金の<strong>50%超</strong>を引き出した場合、CPAと既支給歩合を<strong class="red">100%返還</strong>（自己負担）。早期離脱客への保険。</td></tr>
 </tbody>
 </table>
-<p style="font-size:9pt;margin-top:8px">→ 1名のVVIPリピートで会社支出は ¥90,000（3部署×¥30K）。Top1の年間売上¥6.7億を維持できる価値と比べれば極めて低コスト。</p>
-</div>
-</section>
 
-<!-- ===================== デポジット連動 ===================== -->
-<section>
-<h2>⑥ 🌟 デポジット連動ボーナス（部署横断）</h2>
-
-<div class="deposit-callout">
-<h3>デポジットは最重要KPI</h3>
-<p style="font-size:9.5pt;margin:6px 0 12px">
-  <strong>顧客の本気度が高く、LTVが伸びる確率が圧倒的に高い</strong>。<br>
-  1人の顧客のデポジット成立で <strong>3部署が同時に報酬を得る</strong>分配型。
-</p>
-<table style="background:#fff;margin-top:8px">
-<thead><tr><th>部署</th><th>役割</th><th>報酬</th></tr></thead>
-<tbody>
-<tr><td><strong style="color:#1f5d8a">CSマーケ</strong></td><td>アポ獲得（デポ説明アポ）</td><td class="green"><strong>¥10,000 / 件</strong></td></tr>
-<tr class="alt"><td><strong style="color:#a93226">現地スタッフ</strong></td><td>デポジット契約成立</td><td class="green"><strong>¥20,000 / 件</strong></td></tr>
-<tr><td><strong style="color:#1f7d49">テレベット/アバター</strong></td><td>デポジット回収（実プレイ）</td><td class="green"><strong>¥10,000 / 件</strong></td></tr>
-</tbody>
-</table>
-<p style="font-size:9pt;margin-top:10px">→ 1顧客成立で会社支出は¥50,000。部署をまたいだ連携が報酬で促進される構造。</p>
-</div>
-</section>
-
-<!-- ===================== コスト試算 ===================== -->
-<section>
-<h2>⑦ 月次コスト試算</h2>
-
+<h4 style="margin-top:16px">顧客向けVIPランクプログラム（参考）</h4>
 <table>
-<thead><tr><th>項目</th><th>前提</th><th>金額</th></tr></thead>
+<thead><tr><th>ランク</th><th>月入金</th><th>月ローリング</th><th>CIチップ</th><th>リベート</th><th>サービス</th></tr></thead>
 <tbody>
-<tr><td>CSマーケ歩合</td><td>月20件・平均200万プラン</td><td class="num">¥120,000</td></tr>
-<tr class="alt"><td>現地アップセル歩合</td><td><span style="color:#999">廃止</span></td><td class="num" style="color:#999">¥0</td></tr>
-<tr><td>デポジット獲得（現地）</td><td>月3件 × ¥30,000</td><td class="num">¥90,000</td></tr>
-<tr class="alt"><td>テレベ移行（即時・現地）</td><td>月2件 × ¥20,000</td><td class="num">¥40,000</td></tr>
-<tr><td>テレベ移行後追い（現地）</td><td>3%（移行客の売上）</td><td class="num">¥30,000</td></tr>
-<tr class="alt"><td>テレベ売上歩合</td><td>¥130万 = 100万×12% + 30万×15%</td><td class="num">¥165,000</td></tr>
-<tr><td>テレベ継続ボーナス</td><td>6ヶ月継続 1名</td><td class="num">¥80,000</td></tr>
-<tr class="alt"><td>テレベLTV到達ボーナス</td><td>LTV¥500万到達 1名</td><td class="num">¥50,000</td></tr>
-<tr><td>VVIP特別ボーナス</td><td>月1名リピート（3部署計）</td><td class="num">¥90,000</td></tr>
-<tr style="border-top:2px solid #1f7d49;background:#e8f5e9"><td colspan="2"><strong>月次インセンティブ合計</strong></td><td class="num"><strong style="color:#1f7d49">¥604,000</strong></td></tr>
+<tr><td><strong style="color:#a9842f">Bronze</strong></td><td>¥100万+</td><td>¥500万+</td><td>0.3%</td><td>—</td><td>—</td></tr>
+<tr class="alt"><td><strong style="color:#7d7d7d">Silver</strong></td><td>¥500万+</td><td>¥2,500万+</td><td>0.5%</td><td>0.1%</td><td>¥20K/回</td></tr>
+<tr><td><strong style="color:#b8860b">Gold</strong></td><td>¥1,000万+</td><td>¥5,000万+</td><td>0.8%</td><td>0.15%</td><td>¥50K/回</td></tr>
+<tr class="alt"><td><strong>Black</strong></td><td>¥5,000万+</td><td>¥3億+</td><td>1.0%</td><td>0.2%</td><td>¥150K/回</td></tr>
 </tbody>
 </table>
+<p style="font-size:9pt;color:#666;margin-top:4px">※ 3ヶ月平均月次値で判定。3軸 AND 条件。Black は CIチップ月上限 ¥200万。</p>
 
-<div class="cost-summary">
-  <div class="cost-item">
-    <div class="num">¥604K</div>
-    <div class="label-text">月次インセンティブ</div>
-    <div class="ratio">粗利の15%</div>
+<h3 style="margin-top:24px"><span class="role avatar">アバター</span> スキルランク制（4段階）＋ チーム加点</h3>
+<div class="eval-grid">
+  <div>
+    <table>
+    <thead><tr><th>ランク</th><th>基本給／月</th><th>＋半期換算</th></tr></thead>
+    <tbody>
+    <tr><td>見習い</td><td class="num">₱40,000</td><td class="num">+₱5K</td></tr>
+    <tr class="alt"><td>標準</td><td class="num">₱50,000</td><td class="num">+₱8K</td></tr>
+    <tr><td>ベテラン</td><td class="num">₱80,000</td><td class="num">+₱10K</td></tr>
+    <tr class="alt"><td><strong>マスター</strong></td><td class="num"><strong>₱115,000</strong></td><td class="num">+₱14K</td></tr>
+    </tbody>
+    </table>
   </div>
-  <div class="cost-item">
-    <div class="num">¥2.32M</div>
-    <div class="label-text">月次基本給合計</div>
-    <div class="ratio">8名・3部署</div>
-  </div>
-  <div class="cost-item">
-    <div class="num">¥2.92M</div>
-    <div class="label-text">月次総人件費</div>
-    <div class="ratio">年¥3,510万</div>
+  <div>
+    <table>
+    <thead><tr><th>Lv</th><th>月総ローリング</th><th>レート</th><th>想定／チーム</th></tr></thead>
+    <tbody>
+    <tr><td>Lv1</td><td>25M ペソ+</td><td>+0.3%</td><td class="num">₱75K</td></tr>
+    <tr class="alt"><td><strong>Lv2 ★</strong></td><td>30M ペソ+</td><td>+0.5%</td><td class="num">₱150K</td></tr>
+    <tr><td>Lv3</td><td>35M ペソ+</td><td>+0.7%</td><td class="num">₱245K</td></tr>
+    <tr class="alt"><td>Lv4</td><td>40M ペソ+</td><td>+1.0%</td><td class="num">₱400K</td></tr>
+    <tr><td>Lv5</td><td>50M ペソ+</td><td>+1.2〜1.5%</td><td class="num">₱600-750K</td></tr>
+    </tbody>
+    </table>
   </div>
 </div>
+<p style="font-size:9pt;color:#666;margin:4px 0 0">★ Lv2 が推奨運用ライン。ローリング達成加点はチーム合算で判定 → 達成時にメイン2名で按分。</p>
+
+<h4 style="margin-top:14px">半期評価の5軸</h4>
+<ul class="badge-list">
+  <li>① プレイ回数（Hands/hr）　② 入力精度　③ 担当顧客レベル</li>
+  <li>④ ローリング金額　⑤ 顧客評価（VIPからの満足度）</li>
+</ul>
+
+<h3 style="margin-top:24px">月収レンジ（実例）</h3>
+<table>
+<thead><tr><th>シナリオ</th><th>獲得マネージャー</th><th>獲得ジュニア</th><th>橋渡し</th></tr></thead>
+<tbody>
+<tr><td>不調月（基本給のみ）</td><td class="num">¥385K</td><td class="num">¥250K</td><td class="num">¥385K</td></tr>
+<tr class="alt"><td>標準月（中規模客×2）</td><td class="num">¥462K</td><td class="num">¥362K</td><td class="num">¥418K</td></tr>
+<tr><td>大型VIP月（月利¥800万）</td><td class="num">¥910K</td><td class="num">¥810K</td><td class="num">¥553K</td></tr>
+<tr class="alt"><td>VVIP月（月利¥3,000万）</td><td class="num green">¥3,150K</td><td class="num green">¥3,050K</td><td class="num">¥1,155K</td></tr>
+<tr><td>メガVVIP月（月利¥5,000万）</td><td class="num green">¥5,950K</td><td class="num green">¥5,850K</td><td class="num">¥1,815K</td></tr>
+</tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:4px">※ 数値は70%即時受取分。残30%は半期ボーナス時に追加支給（在籍中のみ）。</p>
 </section>
 
-<!-- ===================== セーフティネット ===================== -->
+<!-- ===================== ④ 半期ボーナス・退職リスク ===================== -->
 <section style="page-break-before:always">
-<h2>⑧ 会社黒字維持セーフティネット</h2>
+<h2><span class="pnum">04 / 半期ボーナス・退職リスク</span>半期ボーナス・退職リスク・赤字保護</h2>
 
-<div class="safety-net">
-<h3>🛡️ 構造的な赤字防止装置</h3>
-
-<h4>① 基本給保証（無条件）</h4>
-<p style="font-size:9.5pt;margin:4px 0 10px">全スタッフの基本給は会社収支に関わらず100%支給。生活基盤を守る。</p>
-
-<h4>② 月次粗利の25%上限</h4>
-<p style="font-size:9.5pt;margin:4px 0 10px">全インセンティブ合計が月次粗利の25%を超えた場合、超過分は全員按分で減額。利益の75%は必ず会社に残る。</p>
-
-<h4>③ 利益連動係数（A型ボーナス・テレベ累進歩合に適用）</h4>
-<table style="background:#fff">
-<thead><tr><th>会社月次純利益</th><th>歩合支給率</th></tr></thead>
-<tbody>
-<tr><td class="green">≥ ¥100万（健全黒字）</td><td class="green"><strong>100%</strong></td></tr>
-<tr class="alt"><td>¥0 〜 ¥100万（薄利）</td><td><strong>85%</strong></td></tr>
-<tr><td>-¥1 〜 -¥50万（小赤字）</td><td class="gold"><strong>70%</strong></td></tr>
-<tr class="alt"><td>-¥50万 〜 -¥100万（中赤字）</td><td class="gold"><strong>40%</strong></td></tr>
-<tr><td class="red">< -¥100万（大赤字）</td><td class="red"><strong>0%</strong>（基本給のみ）</td></tr>
-</tbody>
-</table>
-
-<h4 style="margin-top:14px">④ テレベット部門P&L連動</h4>
-<table style="background:#fff">
-<thead><tr><th>テレベ部門純利益</th><th>適用歩合率</th></tr></thead>
-<tbody>
-<tr><td class="green">純利益 ≥ ¥100万</td><td class="green"><strong>12% / 15% / 18%</strong>（段階累進フル）</td></tr>
-<tr class="alt"><td>純利益 ¥0 〜 ¥100万</td><td><strong>12%固定</strong>（累進なし）</td></tr>
-<tr><td class="red">純利益 < ¥0（赤字）</td><td class="red"><strong>8%固定</strong>（最低保証）</td></tr>
-</tbody>
-</table>
+<h3>半期ボーナスの詳細（年2回・7/20・1/20）</h3>
+<h4>① 算定期間と支給日（3ヶ月ラグ）</h4>
+<div class="periods">
+  <div class="period-box"><div class="pl">第1期 算定</div><div class="pd">前年10/1 〜 当年3/31</div><div class="pg">支給: 7/20</div></div>
+  <div class="period-box"><div class="pl">第2期 算定</div><div class="pd">当年4/1 〜 当年9/30</div><div class="pg">支給: 翌1/20</div></div>
+  <div class="period-box warn"><div class="pl">⚠ 常時未払い</div><div class="pd">約3.7ヶ月分</div><div class="pg" style="color:#a93226">退職時に全額失効</div></div>
 </div>
-</section>
 
-<!-- ===================== 運用ルール ===================== -->
-<section>
-<h2>⑨ 運用ルール</h2>
+<h4>② 計算式</h4>
+<div class="formula-block">
+  <b>真の純利益</b> ＝ 半期売上 − 拠点経費 − 韓国人件費 − 月次歩合合計 − 顧客還元 − 広告費<br>
+  <b>プール</b> ＝ MAX(0, 真の純利益) × 10%<br>
+  <b>個人配分</b> ＝ プール × (個人加重 ÷ 全員加重) × 在籍期間係数<br>
+  <b>個人加重</b> ＝ 基本給 × 成果評価 × 上司評価
+</div>
 
+<h4>③ 評価2軸（成果KPI × 上司評価）</h4>
+<div class="eval-grid">
+  <div>
+    <table>
+    <thead><tr><th>成果評価</th><th>倍率</th></tr></thead>
+    <tbody>
+    <tr><td>S 卓越</td><td><strong class="green">1.4</strong></td></tr>
+    <tr class="alt"><td>A 優秀</td><td>1.2</td></tr>
+    <tr><td>B 標準</td><td>1.0</td></tr>
+    <tr class="alt"><td>C 要改善</td><td>0.8</td></tr>
+    <tr><td>D 不振</td><td class="red">0.6</td></tr>
+    </tbody>
+    </table>
+  </div>
+  <div>
+    <table>
+    <thead><tr><th>上司評価</th><th>倍率</th></tr></thead>
+    <tbody>
+    <tr><td>○ 期待を超える</td><td><strong class="green">1.1</strong></td></tr>
+    <tr class="alt"><td>△ 期待通り</td><td>1.0</td></tr>
+    <tr><td>× 期待を下回る</td><td class="red">0.9</td></tr>
+    </tbody>
+    </table>
+    <p style="font-size:10pt;margin:8px 0 0;text-align:center">最大 <strong class="green">S×○＝1.54倍</strong>　／　最低 <strong class="red">D××＝0.54倍</strong></p>
+  </div>
+</div>
+
+<div class="callout red">
+  <p style="margin:0 0 8px;font-size:9.5pt"><strong>引き留め二重ロック：</strong>月次歩合30%繰延 ＋ 半期ボーナス未払い分（3.7ヶ月）＝ 退職で <strong>¥1M〜¥4M超</strong> が消滅。</p>
+  <p style="margin:0;font-size:9.5pt"><strong>初年度移行措置：</strong>初回支給は <strong>2027/1/20</strong>（算定 2026/5/1〜9/30 の短縮5ヶ月）。以降は通常6ヶ月サイクル。</p>
+</div>
+
+<h3 style="margin-top:24px">退職時に失うもの（6つの仕組み）</h3>
 <table>
-<thead><tr><th>項目</th><th>ルール</th></tr></thead>
+<thead><tr><th style="width:180px">仕組み</th><th>退職時の影響</th></tr></thead>
 <tbody>
-<tr><td>給与支給日</td><td><strong>毎月20日</strong>（前月分を支給）</td></tr>
-<tr class="alt"><td>テレベ売上歩合</td><td>月次確定支給（テレベ部門P&L連動係数を適用）</td></tr>
-<tr><td>継続/LTV到達ボーナス</td><td>達成月の翌月20日に確定支給</td></tr>
-<tr class="alt"><td>VVIP特別ボーナス</td><td>該当事象発生月の翌月20日に支給</td></tr>
-<tr><td>移行後追い歩合</td><td>3年間限定で月次支給（同担当者）</td></tr>
-<tr class="alt"><td>担当変更時</td><td>引き継ぎ時点で旧担当の継続ボーナスは確定、新担当は新規スタート</td></tr>
+<tr><td><strong>① 永続歩合の喪失</strong></td><td>担当客の<strong>未来全ての</strong>月次歩合を失う（永続的剥奪）</td></tr>
+<tr class="alt"><td><strong>② 顧客のハウス化</strong></td><td>担当客は会社直営に移管。後任にも歩合は付かない</td></tr>
+<tr><td><strong>③ 30%繰延の失効</strong></td><td>直近6ヶ月分の繰延（数百万円規模）が消滅</td></tr>
+<tr class="alt"><td><strong>④ 半期ボーナス未払いの失効</strong></td><td>常時3.7ヶ月分の未払い PS が全額消滅</td></tr>
+<tr><td><strong>⑤ 30日引出時の100%返還</strong></td><td>客が30日以内に入金の50%超を引き出すと、CPA・歩合を全額返還</td></tr>
+<tr class="alt"><td><strong>⑥ 競業避止・接触禁止</strong></td><td>退職後 <strong>12ヶ月</strong>競合移籍禁止 ／ <strong>24ヶ月</strong>顧客接触禁止</td></tr>
+</tbody>
+</table>
+
+<h3 style="margin-top:24px">会社の赤字保護（3段階）</h3>
+<table>
+<thead><tr><th>状況</th><th>月次歩合の扱い</th></tr></thead>
+<tbody>
+<tr><td class="green">月次粗利プラス（黒字月）</td><td>通常通り支給</td></tr>
+<tr class="alt"><td class="red">月次粗利マイナス（赤字月）</td><td><strong>歩合ゼロ</strong>（基本給のみ）</td></tr>
+<tr><td>歩合合計が月次粗利の25%超</td><td>超過分を全員按分で減額（<strong>会社利益75%以上確保</strong>）</td></tr>
+</tbody>
+</table>
+<p style="font-size:9pt;color:#666;margin-top:4px">※ アバターは月次歩合の対象外。基本給は会社収支に関係なく支給（運営コスト）。</p>
+
+<h3 style="margin-top:24px">会社利益の3つの定義（重要）</h3>
+<table>
+<thead><tr><th>用語</th><th>定義</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><strong>テレベ利益</strong></td><td>カジノから受け取る収益（売上）</td><td>売上指標</td></tr>
+<tr class="alt"><td><strong>歩合対象粗利</strong></td><td>テレベ利益 −（拠点経費 ＋ 顧客還元 ＋ 広告費）</td><td class="green">月次歩合の計算ベース</td></tr>
+<tr><td><strong>真の純利益</strong></td><td>歩合対象粗利 −（韓国人件費 ＋ 月次歩合合計）</td><td class="green">半期ボーナス（×10%）の基準</td></tr>
 </tbody>
 </table>
 </section>
 
-<!-- ===================== 結論 ===================== -->
+<!-- ===================== まとめ ===================== -->
 <section>
 <div class="summary-final">
-<h2>⑩ 結論 — 全社が同じ方向を向く設計</h2>
-<div class="quote">
-  「テレベット = 安定収益の主軸」を全員で守る<br>
-  そのために、現地は「橋渡し」に集中させる
-</div>
+<h2>この制度が報いるもの</h2>
+<div class="quote">「客を獲得し、長期化し、勝たせすぎない」<br>その積み重ねが、3層すべての収入を最大化する</div>
 <ul>
-  <li><strong>テレベ歩合 8%</strong>＋ 継続/LTV到達ボーナス大幅強化（最大¥300K一時金）</li>
-  <li><strong>現地アップセル歩合廃止</strong> → 「居るだけ」評価をやめる</li>
-  <li><strong>デポジット・移行ボーナス強化</strong>（現地スタッフを「橋渡し役」と再定義）</li>
-  <li><strong>VVIP特別ボーナス維持</strong>（離脱防止が経営最優先）</li>
-  <li><strong>月次総人件費 ¥292万</strong>（粗利25%上限内・健全運用可能）</li>
-  <li>3〜6ヶ月後にテレベ部門単独黒字化見込み</li>
+  <li><strong>基本給</strong>で生活が守られる（会社が赤字でも100%支給）</li>
+  <li><strong>月の歩合</strong>は累進制（獲得者 最大20%・橋渡し 最大4%）。永続歩合は長く担当するほど積み上がる</li>
+  <li><strong>デポジット獲得 CPA ¥10,000／件</strong> ＋ LTV達成ボーナス（最大 ¥3.6M）</li>
+  <li><strong>半期ボーナス</strong>で会社の成功を共有（成果×上司評価で最大1.54倍）</li>
+  <li><strong>30%繰延＋半期未払い</strong>が在籍の価値を守る（退職で失う設計）</li>
 </ul>
 </div>
 </section>
 
 <footer>
-  ベットランクツアーズ テレベット強化型給与制度設計書 — 2026年4月29日 V4 / Official<br>
-  根拠データ: data-analysis.pdf（CRM全341名・全期間）／ 為替: 1 JPY = 9.3 KRW
+  ベットランクツアーズ テレベットインセンティブ制度 — 従業員向けガイド（2026年6月）<br>
+  本ガイドは制度の概要です。個別の支給判定・例外は会社規程および管理監督責任者の確定に従います。
 </footer>
 
 </div>
